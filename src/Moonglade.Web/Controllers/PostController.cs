@@ -4,6 +4,9 @@ using Moonglade.Pingback;
 using Moonglade.Web.Attributes;
 using NUglify;
 using System.ComponentModel.DataAnnotations;
+using Moonglade.Notification.Client;
+
+using NUglify;
 
 namespace Moonglade.Web.Controllers;
 
@@ -150,6 +153,21 @@ public class PostController : ControllerBase
     {
         await _mediator.Send(new PurgeRecycledCommand());
         return NoContent();
+    }
+
+    [HttpPost("email/contact")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> ContactEmail()
+    {
+        try
+        {
+            await _mediator.Publish(new ContactNotification());
+            return Ok(true);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
 
     [IgnoreAntiforgeryToken]

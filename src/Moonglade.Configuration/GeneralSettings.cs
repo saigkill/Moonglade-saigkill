@@ -94,6 +94,46 @@ public class GeneralSettings : IBlogSettings
     [Display(Name = "Show Admin login button under sidebar")]
     public bool ShowAdminLoginButton { get; set; }
 
+    [Display(Name = "Bings Site Verification Code")]
+    public string BingSiteVerificationCode { get; set; }
+
+    [Display(Name = "Yandex Verification Code")]
+    public string YandexSiteVerificationCode { get; set; }
+
+    [Display(Name = "Facebook App ID")]
+    public string FacebookAppId { get; set; }
+
+    [Display(Name = "Norton Save Web Site Verification Code")]
+    public string NortonSaveWebVerificationCode { get; set; }
+
+    [Display(Name = "World of Trust Verification Code")]
+    public string WorldOfTrustVerificationCode { get; set; }
+
+    [Display(Name = "Google Analytics Tracker Id")]
+    public string GoogleAnalytics { get; set; }
+
+
+    [Display(Name = "Clarity Project Id")]
+    public string ClarityProjectId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the used version.
+    /// </summary>
+    /// <value>
+    /// The used version.
+    /// </value>
+    [Display(Name = "Current used Syncfusion Version. If the official Version is 20.4.0.38 use 20.4.38")]
+    public string SyncfusionVersion { get; set; }
+
+    [Display(Name = "Github PAT")]
+    public string GithubPAT { get; set; }
+
+    [Display(Name = "Enable Nowplaying (See https://nowplaying.site/)")]
+    public bool EnableNowPlaying { get; set; }
+
+    [Display(Name = "Nowplaying Url")]
+    public string NowPlaying { get; set; }
+
     [MaxLength(64)]
     public string AvatarUrl { get; set; }
 

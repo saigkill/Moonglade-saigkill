@@ -1,4 +1,4 @@
-﻿namespace Moonglade.Web.ViewComponents;
+namespace Moonglade.Web.ViewComponents;
 
 public class MenuViewComponent : ViewComponent
 {

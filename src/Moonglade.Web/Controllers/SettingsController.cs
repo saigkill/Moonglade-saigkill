@@ -80,6 +80,16 @@ public class SettingsController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("social")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Social(SocialProfileSettings model)
+    {
+        _blogConfig.SocialProfileSettings = model;
+
+        await SaveConfigAsync(_blogConfig.SocialProfileSettings);
+        return NoContent();
+    }
+
     [HttpPost("notification")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Notification(NotificationSettings model)

@@ -26,6 +26,19 @@
         @Html.Raw(BlogConfig.GeneralSettings.SideBarCustomizedHtmlPitch)
     }
 
+    @if (BlogConfig.AdvancedSettings.EnableSyndication)
+    {
+        <partial name="_Syndication" />
+    }
+
+    @if (BlogConfig.GeneralSettings.EnableNowPlaying)
+    {
+        <h3 style="text-align: center;">Now playing</h3>
+        <div class="center-align">
+            <p><iframe height="230" src="@BlogConfig.GeneralSettings.NowPlaying" width="240" title="Codeproject Badge"></iframe></p>
+        </div>
+    }
+
     @if (BlogConfig.GeneralSettings.WidgetsTags)
     {
         <section id="aside-tags" class="mt-4 mb-4">
@@ -71,7 +84,7 @@
                 <i class="bi-rss"></i>
                 RSS / Atom
             </a>
-            
+
             @if (BlogConfig.AdvancedSettings.EnableOpml)
             {
                 <a asp-controller="Subscription" asp-action="Opml" class="btn btn-sm btn-round btn-outline-secondary" target="_blank">

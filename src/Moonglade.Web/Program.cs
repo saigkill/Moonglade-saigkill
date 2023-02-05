@@ -1,4 +1,4 @@
-﻿using AspNetCoreRateLimit;
+using AspNetCoreRateLimit;
 using Edi.Captcha;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -25,10 +25,10 @@ var builder = WebApplication.CreateBuilder(args);
 string dbType = builder.Configuration.GetConnectionString("DatabaseType");
 string connStr = builder.Configuration.GetConnectionString("MoongladeDatabase");
 
-var cultures = new[] { "en-US", "zh-Hans" }.Select(p => new CultureInfo(p)).ToList();
+var cultures = new[] { "en-US", "de-DE" }.Select(p => new CultureInfo(p)).ToList();
 
 WriteParameterTable();
-AnsiConsole.MarkupLine("[link=https://github.com/EdiWang/Moonglade]GitHub: EdiWang/Moonglade[/]");
+AnsiConsole.MarkupLine("[link=https://github.com/saigkill/Moonglade-saigkill]GitHub: saigkill/Moonglade[/]");
 
 ConfigureConfiguration();
 ConfigureServices(builder.Services);
@@ -88,15 +88,34 @@ void ConfigureServices(IServiceCollection services)
             .AddRateLimit(builder.Configuration.GetSection("IpRateLimiting"));
     services.AddApplicationInsightsTelemetry();
 
+    services.AddScoped<CalendarProvider>();
+    services.AddScoped<CertsProvider>();
+    services.AddScoped<ProjectsProvider>();
+    services.AddScoped<PublicationProvider>();
+    services.AddScoped<TalksProvider>();
+    services.AddScoped<TestimonialsProvider>();
+    services.AddScoped<VideosProvider>();
+    services.AddScoped<DonationService>();
+
     services.AddSession(options =>
     {
         options.IdleTimeout = TimeSpan.FromMinutes(20);
         options.Cookie.HttpOnly = true;
     }).AddSessionBasedCaptcha(options => options.FontStyle = FontStyle.Bold);
 
+    //DSGVO
+    services.Configure<CookiePolicyOptions>(options =>
+    {
+	    // Sets the display of the Cookie Consent banner (/Pages/Shared/_CookieConsentPartial.cshtml).
+	    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+	    options.CheckConsentNeeded = context => true;
+	    options.MinimumSameSitePolicy = SameSiteMode.Strict;
+    });
+
     services.AddLocalization(options => options.ResourcesPath = "Resources");
     services.AddControllers(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()))
             .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+            .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .ConfigureApiBehaviorOptions(ConfigureApiBehavior.BlogApiBehavior);
     services.AddRazorPages()
             .AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(Program)))

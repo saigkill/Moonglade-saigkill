@@ -1,0 +1,122 @@
+[
+    {
+        "id": "1",
+        "portfoliolink": "img/portfolio/MannsBlog.png",
+        "projectlink": "https://github.com/saigkill/saschamannsde",
+        "projectname": "MannsBlog",
+        "projectblurp": "Setting up a personal website with a portfolio",
+        "clients": "me myself and i",
+        "completion": "2021-07-24",
+        "projecttye": "Personal",
+        "authors": "Sascha Manns",
+        "language": "English"
+    },
+    {
+        "id": "2",
+        "portfoliolink": "img/portfolio/MannsBlog.png",
+        "projectlink": "https://github.com/saigkill/saschamannsde",
+        "projectname": "MannsBlog",
+        "projectblurp": "Erstellung einer privaten Seite mit Portfolio",
+        "clients": "me myself and i",
+        "completion": "2021-07-24",
+        "projecttye": "Personal",
+        "authors": "Sascha Manns",
+        "language": "German"
+    },
+    {
+        "id": "3",
+        "portfoliolink": "img/portfolio/WriteJobApplication.png",
+        "projectlink": "http://saigkill.github.io/latex_curriculum_vitae-dotnet",
+        "projectname": "LatexCurriculumVitae",
+        "projectblurp": "Writing a job applications (with LaTEX) with a database driven helper to manage sent applications.",
+        "clients": "me myself and i",
+        "completion": "2021-07-24",
+        "projecttye": "Personal",
+        "authors": "Sascha Manns",
+        "language": "English"
+    },
+    {
+        "id": "4",
+        "portfoliolink": "img/portfolio/WriteJobApplication.png",
+        "projectlink": "http://saigkill.github.io/latex_curriculum_vitae-dotnet",
+        "projectname": "LatexCurriculumVitae",
+        "projectblurp": "Erstellung von Bewerbungen (mit LaTEX) unter Zuhilfename eines Datenbankunterstützten Helfers um Bewerbungen zu verwalten.",
+        "clients": "me myself and i",
+        "completion": "2021-07-24",
+        "projecttye": "Personal",
+        "authors": "Sascha Manns",
+        "language": "German"
+    },
+    {
+        "id": "5",
+        "portfoliolink": "img/portfolio/book.png",
+        "projectlink": "https://d-nb.info/1042698783",
+        "projectname": "Plasma Active Handbook",
+        "projectblurp": "Writing a Handbook for the new introduced KDE User Experience for the new device classes (Tablet, Smartphone).",
+        "clients": "KDE Project / open-slx GmbH",
+        "completion": "2013-01-01",
+        "projecttye": "Ordered Work",
+        "authors": "Sascha Manns & Casey Takahashi",
+        "language": "English"
+    },
+    {
+        "id": "6",
+        "portfoliolink": "img/portfolio/book.png",
+        "projectlink": "https://d-nb.info/1042698783",
+        "projectname": "Plasma Active Handbook",
+        "projectblurp": "Schreiben eines handbuchs für die neu eingeführte User Experience für neue Geräteklassen (Tablet, Smartphone).",
+        "clients": "KDE Project / open-slx GmbH",
+        "completion": "2013-01-01",
+        "projecttye": "Bestellte Arbeit",
+        "authors": "Sascha Manns & Casey Takahasi",
+        "language": "German"
+    },
+    {
+        "id": "7",
+        "portfoliolink": "img/portfolio/htz.png",
+        "projectlink": "https://www.htz-neuwied.de/",
+        "projectname": "Webseite Heiltherapeutisches Zentrum Neuwied",
+        "projectblurp": "Creating a Wordpress Site for the HTZ, the AFH and the VMB.",
+        "clients": "Heiltherapeutisches Zentrum Neuwied",
+        "completion": "2018-01-01",
+        "projecttye": "Ordered Work",
+        "authors": "Sascha Manns",
+        "language": "English"
+    },
+    {
+        "id": "8",
+        "portfoliolink": "img/portfolio/htz.png",
+        "projectlink": "https://www.htz-neuwied.de/",
+        "projectname": "Webseite Heiltherapeutisches Zentrum Neuwied",
+        "projectblurp": "Erstellung einer Wordpress Seite für das HTZ, den AFH und den VMB.",
+        "clients": "Heiltherapeutisches Zentrum Neuwied",
+        "completion": "2018-01-01",
+        "projecttye": "Bestellte Arbeit",
+        "authors": "Sascha Manns",
+        "language": "German"
+    },
+    {
+        "id": "9",
+        "portfoliolink": "img/portfolio/Standard.jpg",
+        "projectlink": "https://www.myflow365.de/",
+        "projectname": "Mobile App for digital business processes",
+        "projectblurp": "Creating for mobile business process solutions for automobile dealer with connection to DAT and Schwacke.",
+        "clients": "Löhr Gruppe, Auto Levy and others",
+        "completion": "2018-01-01",
+        "projecttye": "Bestellte Arbeit",
+        "authors": "Sascha Manns",
+        "language": "English"
+    },
+    {
+        "id": "10",
+        "portfoliolink": "img/portfolio/Standard.jpg",
+        "projectlink": "https://www.myflow365.de/",
+        "projectname": "Mobile App für digitale Geschäftsprozesse",
+        "projectblurp": "Erstellung von Geschäftsprozess-Lösungen für Autohäuser mit Anbindung an DAT und Schwacke.",
+        "clients": "Löhr Gruppe, Auto Levy and others",
+        "completion": "2018-01-01",
+        "projecttye": "Bestellte Arbeit",
+        "authors": "Sascha Manns",
+        "language": "German"
+    }
+]

@@ -1,4 +1,4 @@
-﻿@page "/admin/settings/general"
+@page "/admin/settings/general"
 @model Moonglade.Web.Pages.Settings.GeneralModel
 @inject ITimeZoneResolver ZoneResolver
 @inject IOptions<RequestLocalizationOptions> LocOptions
@@ -29,8 +29,11 @@
 			Text = t.NativeName,
 			Value = t.Value.ToLower()
 		});
+	var settings = BlogConfig.GeneralSettings;
 }
-
+@section head {
+    <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@@6.2.1/css/all.css" rel="stylesheet" />
+}
 @section scripts{
 	<script src="~/js/app/imageuploader.js"></script>
 	<script src="~/js/3rd/bs-custom-file-input.min.js"></script>
@@ -86,6 +89,14 @@
         const form = document.querySelector('#form-settings');
         form.addEventListener('submit', settings.handleSettingsSubmit);
     </script>
+
+
+	<environment include="Development">
+            <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@6.2.1/css/all.css" rel="stylesheet" />
+        </environment>
+        <environment exclude="Development">
+            <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@6.2.1/css/all.css" rel="stylesheet" />
+        </environment>
 }
 
 <partial name="_SettingsHeader"/>
@@ -356,8 +367,62 @@
 			<input type="checkbox" name="ShowAdminLoginButton" value="true" class="form-check-input" @(Model.ViewModel.ShowAdminLoginButton ? "checked" : null)>
 		</div>
 	</div>
-</div>
-
+</div><div>
+                          <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Syncfusion Settings"]</h6>
+                          <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                              <div class="col-auto">
+                                  <i class="bi-1-circle-fill settings-entry-icon"></i>
+                              </div>
+                              <div class="col">
+                                  <label asp-for="@settings.SyncfusionVersion"></label>
+                              </div>
+                              <div class="col-md-5 text-end">
+                                  <input asp-for="@settings.SyncfusionVersion" class="form-control" />
+                              </div>
+                          </div>
+                      </div>
+                      <div>
+                          <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Github PAT"]</h6>
+                          <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                              <div class="col-auto">
+                                  <i class="fab fa-github settings-entry-icon"></i>
+                              </div>
+                              <div class="col">
+                                  <label asp-for="@settings.GithubPAT"></label>
+                              </div>
+                              <div class="col-md-5 text-end">
+                                  <input asp-for="@settings.GithubPAT" class="form-control" />
+                              </div>
+                          </div>
+                      </div>
+                      <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Now playing"]</h6>
+                      <div class="row g-3 align-items-center settings-entry mb-4">
+                          <div class="col-auto">
+                              <i class="bi bi-music-note-list settings-entry-icon"></i>
+                          </div>
+                          <div class="col">
+                              <label asp-for="@settings.EnableNowPlaying" class="form-check-label"></label>
+                          </div>
+                          <div class="col-md-5 text-end">
+                              <div class="form-check form-switch">
+                                  <input type="hidden" name="EnableNowPlaying" value="false">
+                                  <input type="checkbox" name="EnableNowPlaying" value="true" class="form-check-input" @(settings.EnableNowPlaying ? "checked" : null)>
+                              </div>
+                          </div>
+                      </div>
+                      <div>
+                          <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                              <div class="col-auto">
+                                  <i class="bi bi-music-note-list settings-entry-icon"></i>
+                              </div>
+                              <div class="col">
+                                  <label asp-for="@settings.NowPlaying"></label>
+                              </div>
+                              <div class="col-md-5 text-end">
+                                  <input asp-for="@settings.NowPlaying" class="form-control" />
+                              </div>
+                          </div>
+                      </div>
 <div class="mt-5">
 	<h6 class="card-subtitle mb-4 text-muted">
 		@SharedLocalizer["Footer"]

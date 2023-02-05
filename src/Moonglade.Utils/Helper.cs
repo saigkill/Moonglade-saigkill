@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Win32;
+using System.Globalization;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -371,13 +372,13 @@ public static class Helper
     public static string GenerateSlug(this string phrase)
     {
         string str = phrase.RemoveAccent().ToLower();
-        // invalid chars           
+        // invalid chars
         str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
-        // convert multiple spaces into one space   
+        // convert multiple spaces into one space
         str = Regex.Replace(str, @"\s+", " ").Trim();
-        // cut and trim 
+        // cut and trim
         str = str[..(str.Length <= 45 ? str.Length : 45)].Trim();
-        str = Regex.Replace(str, @"\s", "-"); // hyphens   
+        str = Regex.Replace(str, @"\s", "-"); // hyphens
         return str;
     }
 
@@ -538,4 +539,19 @@ public static class Helper
         { "#", "sharp" },
         { " ", "-" }
     };
+
+    public static LanguageEnum GetLanguage()
+    {
+        string culture = CultureInfo.CurrentCulture.Name;
+
+        switch (culture)
+        {
+            case "de-DE":
+                return LanguageEnum.German;
+            case "en-US":
+                return LanguageEnum.English;
+            default:
+                return LanguageEnum.Unknown;
+        }
+    }
 }

@@ -8,8 +8,8 @@
 # Reference: https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
 
 param(
-    $regionName = "East Asia", 
-    [bool] $useLinuxPlanWithDocker = 1, 
+    $regionName = "West Europe",
+    [bool] $useLinuxPlanWithDocker = 1,
     [bool] $createCDN = 0
 )
 
@@ -25,7 +25,7 @@ function Get-UrlStatusCode([string] $Url) {
 [Console]::ResetColor()
 # az login --use-device-code
 $output = az account show -o json | ConvertFrom-Json
-$subscriptionList = az account list -o json | ConvertFrom-Json 
+$subscriptionList = az account list -o json | ConvertFrom-Json
 $subscriptionList | Format-Table name, id, tenantId -AutoSize
 $subscriptionName = $output.name
 Write-Host "Currently logged in to subscription """$output.name.Trim()""" in tenant " $output.tenantId
@@ -82,12 +82,12 @@ function Get-RandomCharacters($length, $characters) {
     $private:ofs = ""
     return [String]$characters[$random]
 }
- 
-function Scramble-String([string]$inputString) {     
-    $characterArray = $inputString.ToCharArray()   
-    $scrambledStringArray = $characterArray | Get-Random -Count $characterArray.Length     
+
+function Scramble-String([string]$inputString) {
+    $characterArray = $inputString.ToCharArray()
+    $scrambledStringArray = $characterArray | Get-Random -Count $characterArray.Length
     $outputString = -join $scrambledStringArray
-    return $outputString 
+    return $outputString
 }
 
 $password = Get-RandomCharacters -length 5 -characters 'abcdefghiklmnoprstuvwxyz'
@@ -154,8 +154,8 @@ $appExists = $appCheck.Length -gt 0
 if (!$appExists) {
     Write-Host "Creating Web App"
     if ($useLinuxPlanWithDocker) {
-        Write-Host "Using Linux Plan with Docker image from 'ediwang/moonglade', this deployment will be ready to run."
-        $echo = az webapp create -g $rsgName -p $aspName -n $webAppName --deployment-container-image-name ediwang/moonglade
+        Write-Host "Using Linux Plan with Docker image from 'saigkill0/moonglade-saigkill', this deployment will be ready to run."
+        $echo = az webapp create -g $rsgName -p $aspName -n $webAppName --deployment-container-image-name saigkill0/moonglade-saigkill
     }
     else {
         Write-Host "Using Windows Plan with deployment from GitHub"
@@ -256,7 +256,7 @@ if ($createCDN) {
     #    $echo = az webapp config appsettings set -g $rsgName -n $webAppName --settings ImageStorage:CDNSettings:EnableCDNRedirect=true
     #    $echo = az webapp config appsettings set -g $rsgName -n $webAppName --settings ImageStorage:CDNSettings:CDNEndpoint="https://#$cdnEndpointName.azureedge.net/$storageContainerName"
     #}
-    
+
     Write-Host "It can take up to 10 minutes for endpoint '$cdnEndpointName.azureedge.net' to propagate, after that, please set CDN endpoint to 'https://#$cdnEndpointName.azureedge.net/$storageContainerName' in blog admin settings." -ForegroundColor Yellow
 }
 

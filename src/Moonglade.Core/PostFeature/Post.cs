@@ -1,4 +1,4 @@
-﻿using Moonglade.Core.CategoryFeature;
+using Moonglade.Core.CategoryFeature;
 using Moonglade.Core.TagFeature;
 using System.Linq.Expressions;
 

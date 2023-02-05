@@ -77,6 +77,11 @@ public class ContentSettings : IBlogSettings
         DisharmonyWords = "fuck|shit",
         CalloutSectionHtmlPitch = string.Empty
     };
+    [Display(Name = "Enable Donation Service")]
+    public bool EnableDonationService { get; set; }
+
+    [Display(Name = "Enable Sharing buttons")]
+    public bool EnableSharingButtons { get; set; }
 }
 
 public enum WordFilterMode

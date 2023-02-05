@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution Items", ".Solutio
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
 		..\azure-pipelines.yml = ..\azure-pipelines.yml
+		commit.sh = commit.sh
 		Directory.Build.props = Directory.Build.props
 		..\Dockerfile = ..\Dockerfile
 		..\LICENSE = ..\LICENSE
@@ -69,6 +70,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Data.MySql", "Moonglade.Data.MySql\Moonglade.Data.MySql.csproj", "{0267C513-2DB9-4697-A6FA-39BB83E1CA9B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Data.PostgreSql", "Moonglade.Data.PostgreSql\Moonglade.Data.PostgreSql.csproj", "{5750F136-DD4B-42F8-BA64-2371C2527505}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Data.DataProviders", "Moonglade.Data.DataProviders\Moonglade.Data.DataProviders.csproj", "{1C7B9632-4DF4-4366-BF7E-499A9A45762B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Data.ExternalAPI", "Moonglade.Data.ExternalAPI\Moonglade.Data.ExternalAPI.csproj", "{8E5A4465-3D3B-4881-AC84-77FC65BF393D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
