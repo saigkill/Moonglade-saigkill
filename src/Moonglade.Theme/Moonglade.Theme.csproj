@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Moonglade.Data\Moonglade.Data.csproj" />
+  </ItemGroup>
+
+</Project>

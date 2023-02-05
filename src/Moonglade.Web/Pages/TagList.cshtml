@@ -1,0 +1,20 @@
+﻿@page "/tags/{normalizedName:regex(^(?!-)([a-zA-Z0-9-]){{1,32}}$)}"
+@model Moonglade.Web.Pages.TagListModel
+
+<h3>
+    @ViewBag.TitlePrefix
+</h3>
+<hr />
+
+@if (Model.Posts.Any())
+{
+    <partial name="_PostList" model="Model.Posts" />
+}
+else
+{
+    <div class="alert alert-info">
+        @SharedLocalizer["No Posts."]
+    </div>
+}
+
+<partial name="_LightSwitch" />

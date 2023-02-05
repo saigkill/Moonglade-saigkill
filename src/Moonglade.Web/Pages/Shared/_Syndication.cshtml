@@ -1,0 +1,49 @@
+﻿<div class="card-header">
+    <div class="e-card-header-caption">
+        <h4 class="card-subtitle">Syndication</h4>
+    </div>
+</div>
+<div class="e-card-content">
+    <ul class="list-unstyled">
+        @if (BlogConfig.AdvancedSettings.YahooUrl != null)
+        {
+            <li><a href="@BlogConfig.AdvancedSettings.YahooUrl" rel="noopener" target="_blank"><img border="0" alt="add2yahoo" src="~/images/addyahoo.gif" /></a></li>
+        }
+        @if (BlogConfig.AdvancedSettings.NetvibesUrl != null)
+        {
+            <li><a href="@BlogConfig.AdvancedSettings.NetvibesUrl" rel="noopener" target="_blank"><img border="0" alt="add2netvibes" src="~/images/add2netvibes.gif" /></a></li>
+        }
+        @if (BlogConfig.AdvancedSettings.BlogaramaUrl != null)
+        {
+            <li><a href="@BlogConfig.AdvancedSettings.BlogaramaUrl" rel="noopener" target="_blank"><img src="http://www.blogarama.com/images/button_sm_1.gif" alt="Follow me on Blogarama" /></a></li>
+        }
+        @if (BlogConfig.AdvancedSettings.BloggereiEnabled)
+        {
+            <li><a href="https://www.bloggerei.de" target="_blank" rel="noopener"><img src="https://www.bloggerei.de/bgpublicon.jpg" width="80" height="15" border="0" alt="Blogverzeichnis - Bloggerei.de" /></a></li>
+        }
+        @if (BlogConfig.AdvancedSettings.BloggingfusionEnabled)
+        {
+            <li><a href="@BlogConfig.AdvancedSettings.BloggingfusionEnabled" rel="noopener" target="_blank"><img src="https://www.bloggingfusion.com/images/badges/bf-badge-88x31.png" alt="BloggingFusion" /></a></li>
+        }
+        @if (BlogConfig.AdvancedSettings.BloggeramtEnabled)
+        {
+            <li><a href="https://www.bloggeramt.de" title="Blog" target="_blank" rel="noopener"><img src="https://www.bloggeramt.de/images/blog_button1.gif" style="border: 0;" alt="Blogverzeichnis" /></a></li>
+        }
+        @if (BlogConfig.AdvancedSettings.TopblogsEnabled)
+        {
+            <li>
+                <!-- TopBlogs.de das Original - Blogverzeichnis | Blog Top Liste -->
+                <a href="https://www.topblogs.de/" target="_blank" rel="noopener"><img border="0" src="https://www.topblogs.de/tracker.php?do=in&id=11089" alt="TopBlogs.de das Original - Blogverzeichnis | Blog Top Liste" /></a>
+                <!-- /TopBlogs.de das Original - Blogverzeichnis | Blog Top Liste -->
+            </li>
+        }
+        @if (BlogConfig.AdvancedSettings.OntoplistUrl != null)
+        {
+            <li><a href="@BlogConfig.AdvancedSettings.OntoplistUrl" target="_blank" rel="noopener"><img src="https://www.ontoplist.com/images/ontoplist31.png?id=5b0f0088673d1" alt="Sascha Mannss Twilight Zone - OnToplist.com" border="0"></a></li>
+        }
+        @if (BlogConfig.AdvancedSettings.BloglovinUrl != null)
+        {
+            <!-- Begin Bloglovin Button -->
+        }
+    </ul>
+</div>
