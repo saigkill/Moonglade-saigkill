@@ -46,3 +46,4 @@ jobs:
       DockerNamespace: 'https://index.docker.io/v1'
       DockerRepository: 'saigkill0/'
       DockerImageTag: 'moonglade-saigkill:latest'
+      SlotName: 'production'
