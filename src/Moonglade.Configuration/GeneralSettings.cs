@@ -130,12 +130,6 @@ public class GeneralSettings : IBlogSettings
     [Display(Name = "Github PAT")]
     public string GithubPAT { get; set; }
 
-    [Display(Name = "Enable Nowplaying (See https://nowplaying.site/)")]
-    public bool EnableNowPlaying { get; set; }
-
-    [Display(Name = "Nowplaying Url")]
-    public string NowPlaying { get; set; }
-
     [MaxLength(64)]
     public string AvatarUrl { get; set; }
 

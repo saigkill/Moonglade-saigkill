@@ -472,36 +472,8 @@
                         </div>
                     </div>
                 </div>
-                <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Now playing"]</h6>
-                <div class="row g-3 align-items-center settings-entry mb-4">
-                    <div class="col-auto">
-                        <i class="bi bi-music-note-list settings-entry-icon"></i>
-                    </div>
-                    <div class="col">
-                        <label asp-for="@settings.EnableNowPlaying" class="form-check-label"></label>
-                    </div>
-                    <div class="col-md-5 text-end">
-                        <div class="form-check form-switch">
-                            <input type="hidden" name="EnableNowPlaying" value="false">
-                            <input type="checkbox" name="EnableNowPlaying" value="true" class="form-check-input" @(settings.EnableNowPlaying ? "checked" : null)>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                        <div class="col-auto">
-                            <i class="bi bi-music-note-list settings-entry-icon"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="@settings.NowPlaying"></label>
-                        </div>
-                        <div class="col-md-5 text-end">
-                            <input asp-for="@settings.NowPlaying" class="form-control" />
-                        </div>
-                    </div>
-                </div>
 
-                <div class="mt-5">
+            <div class="mt-5">
                     <h6 class="card-subtitle mb-4 text-muted">
                         @SharedLocalizer["Footer"]
                     </h6>
