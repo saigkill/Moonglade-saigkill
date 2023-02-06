@@ -36,3 +36,13 @@ jobs:
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
       artifactName: 'Drop'
+
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Nutzungsbasierte Bezahlung (7872a12f-66bb-46b3-8b12-edfaa181e48c)'
+      appType: 'webAppContainer'
+      WebAppName: 'mannsblog'
+      DockerNamespace: 'https://index.docker.io/v1'
+      DockerRepository: 'saigkill0/'
+      DockerImageTag: 'moonglade-saigkill:latest'
