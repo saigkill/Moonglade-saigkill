@@ -218,6 +218,21 @@
     <section class="post-content clearfix">
         <partial name="_PostContentRender" model="Model.Post.RawPostContent" />
     </section>
+    
+    @if (BlogConfig.ContentSettings.EnableSharingButtons)
+    {   <hr/>
+        <div>
+            <!-- ShareThis BEGIN -->
+            <div class="sharethis-inline-reaction-buttons"></div>
+            <!-- ShareThis END -->
+        </div>
+        <hr/>
+        <div class="sharethis">
+            <div class="sharethis-inline-share-buttons"></div>
+        </div>
+    }
+    
+    <hr/>
 
     @if (BlogConfig.ContentSettings.ShowPostFooter)
     {
@@ -225,7 +240,7 @@
             @Html.Raw(BlogConfig.ContentSettings.PostFooterHtmlPitch)
         </section>
     }
-
+    
     <partial name="_PostActions" model="Model.Post" />
 
     @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
@@ -235,11 +250,7 @@
             @SharedLocalizer["Read origin article"]
         </a>
     }
-    @if (BlogConfig.ContentSettings.EnableSharingButtons)
-    {
-        <br />
-        <div class="sharethis-inline-share-buttons"></div>
-    }
+    
     @if (BlogConfig.ContentSettings.EnableDonationService)
     {
         <div class="ad-container" style="margin-top: 30px; text-align: center;">

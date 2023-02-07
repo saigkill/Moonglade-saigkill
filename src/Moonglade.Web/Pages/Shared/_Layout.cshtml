@@ -11,6 +11,8 @@
     string syncStyle = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/bootstrap5-dark.css";
     string syncScript = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/dist/ej2.min.js";
     string revisitAfter = BlogConfig.AdvancedSettings.RobotsRevisitAfter.ToString() + " " + "days";
+    string shareThisPropertyID = BlogConfig.ContentSettings.ShareThisPropertyId;
+    string shareThis = "https://platform-api.sharethis.com/js/sharethis.js#property=" + shareThisPropertyID + "&product=inline-share-buttons&source=platform";
 }
 <!DOCTYPE html>
 <html>
@@ -164,7 +166,7 @@
 
     @if (BlogConfig.ContentSettings.EnableSharingButtons)
     {
-        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=63e29136b0cc4a001220e662&product=inline-share-buttons&source=platform" async="async"></script>
+        <script type="text/javascript" src="@shareThis" async="async"></script>
     }
 </head>
 <body class="@ViewBag.BodyClass">
