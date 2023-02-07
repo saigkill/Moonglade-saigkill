@@ -82,6 +82,9 @@ public class ContentSettings : IBlogSettings
 
     [Display(Name = "Enable Sharing buttons")]
     public bool EnableSharingButtons { get; set; }
+
+    [Display(Name = "ShareThis PropertyID")]
+    public string ShareThisPropertyId { get; set; }
 }
 
 public enum WordFilterMode

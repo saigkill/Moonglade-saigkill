@@ -338,6 +338,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="row g-3 align-items-center settings-entry mb-4">
+                    <div class="col-auto">
+                        <i class="settings-entry-icon bi bi-share"></i>
+                    </div>
+                    <div class="col">
+                        <label asp-for="@settings.ShareThisPropertyId"></label>
+                    </div>
+                    <div class="col-md-5">
+                        <input asp-for="@settings.ShareThisPropertyId" class="form-control" required />
+                    </div>
+                </div>
             </div>
         </div>
 
