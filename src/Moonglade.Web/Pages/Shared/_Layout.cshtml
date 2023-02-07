@@ -1,9 +1,4 @@
 ﻿@using Moonglade.Utils
-@using Moonglade.Web.TagHelpers
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.AspNetCore.Localization
-@using System.Globalization
-@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 @inject IViewLocalizer _localizer
 @{
@@ -11,23 +6,6 @@
     {
         BlogConfig.GeneralSettings.AvatarUrl = Url.Action("Avatar", "Assets");
     }
-
-	// Resolve culture
-	// Post language > User set display language > System default language
-	var langCode = BlogConfig.GeneralSettings.DefaultLanguageCode;
-	if (ViewBag.PostLangCode != null)
-	{
-		langCode = ViewBag.PostLangCode;
-	}
-	else
-	{
-		// CultureInfo.CurrentUICulture always has value, can not determine if is user selection
-		var cultureCookie = Context.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-		if (cultureCookie != null)
-		{
-			langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
-		}
-	}
 
     string syncVersion = BlogConfig.GeneralSettings.SyncfusionVersion;
     string syncStyle = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/bootstrap5-dark.css";
@@ -68,32 +46,6 @@
     @if (BlogConfig.GeneralSettings.WorldOfTrustVerificationCode != null)
     {
         <meta name='wot-verification' content='@BlogConfig.GeneralSettings.WorldOfTrustVerificationCode' />
-    // Resolve culture
-    // Post language > User set display language > System default language
-    var langCode = BlogConfig.GeneralSettings.DefaultLanguageCode;
-    if (ViewBag.PostLangCode != null)
-    {
-        langCode = ViewBag.PostLangCode;
-    }
-    else
-    {
-        // CultureInfo.CurrentUICulture always has value, can not determine if is user selection
-        var cultureCookie = Context.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-        if (cultureCookie != null)
-        {
-            langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
-        }
-    }
-}
-<!DOCTYPE html>
-<html lang="@langCode">
-<head profile=@(BlogConfig.GeneralSettings.UseDublinCoreMetaData ? "http://dublincore.org/documents/dcq-html/" : null)>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @if (BlogConfig.GeneralSettings.UseDublinCoreMetaData)
-    {
-	    <link rel="schema.DC"      href="http://purl.org/dc/elements/1.1/" />
-	    <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" />
     }
     @if (IsSectionDefined("keywords"))
     {
@@ -154,8 +106,6 @@
         <foaf href="/foaf.xml" />
     }
     <partial name="_Favicons" />
-
-    @await RenderSectionAsync("head", false)
     <environment exclude="Development">
         <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
         <link href="https://cdn.jsdelivr.net/npm/cookieconsent@@3.1.1/src/styles/base.css" rel="stylesheet" />
@@ -195,6 +145,7 @@
     {
         <link href="~/custom.css" rel="stylesheet" asp-append-version="true" />
     }
+
     <environment include="Production">
         @if (!(bool)Context.Items["DNT"])
         {
@@ -202,6 +153,11 @@
         }
     </environment>
     <script src="~/js/3rd/jquery.slim.min.js" asp-append-version="true"></script>
+
+    @if (BlogConfig.ContentSettings.EnableSharingButtons)
+    {
+        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=63e29136b0cc4a001220e662&product=inline-share-buttons&source=platform" async="async"></script>
+    }
 </head>
 <body class="@ViewBag.BodyClass">
     @if (BlogConfig.ContentSettings.ShowCalloutSection)
@@ -283,8 +239,8 @@
                     <div class="row">
                         <div class="col-3">
                             <img src="@BlogConfig.GeneralSettings.AvatarUrl"
-                             alt="@BlogConfig.GeneralSettings.OwnerName"
-                             class="rounded-circle blogger-head-pic" />
+                                 alt="@BlogConfig.GeneralSettings.OwnerName"
+                                 class="rounded-circle blogger-head-pic" />
                         </div>
                         <div class="col-9">
                             <h4 class="text-center">
@@ -319,8 +275,7 @@
     <partial name="_Toast" />
 
     <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-<script type="module" src="~/js/app/base.js" asp-append-version="true"></script>
-<script src="~/js/app/httpService.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/app/base.js" asp-append-version="true"></script>
     <environment include="Developent">
         <script src="~/js/app/httpService.js" asp-append-version="true"></script>
         <script src="~/lib/codersrank/activity/codersrank-activity.js"></script>

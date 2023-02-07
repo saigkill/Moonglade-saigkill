@@ -123,8 +123,6 @@
 <section id="activity" class="section">
     <div class="intro">
         <div class="container">
-            <h1>@_localizer["activity-title"]</h1>
-            <codersrank-activity username="saigkill" labels legend tooltip></codersrank-activity>
             <h1>@_localizer["activity-all"]</h1>
             <figure style="width: 130%;"><embed src="https://wakatime.com/share/@@saigkill/9e796a7c-915e-4a42-bbd4-ee884ae9ee06.svg"></embed></figure>
             <h1>@_localizer["activity-last30"]</h1>
@@ -162,8 +160,8 @@
 <!-- Certs-->
 <section id="certs" class="section">
     <div class="col-md-offset2 col-md-8">
-        <div class="control-container center-align">
-            <ejs-carousel id="certCarousel" animationEffect="Fade">
+        <div class="control-container center-align" style="width: 950px;">
+            <ejs-carousel id="certCarousel" animationEffect="Fade" buttonsVisibility="Hidden" showIndicators="false">
                 <e-carousel-items>
                     @foreach (var cert in _certs.Get())
                     {

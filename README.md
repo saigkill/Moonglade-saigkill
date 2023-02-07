@@ -18,7 +18,7 @@ This is the way https://edi.wang is deployed, by taking advantage of as many Azu
 
 This diagram shows a full Azure deployment for Moonglade for reference.
 
-![image](https://cdn-blog.edi.wang/web-assets/ediwang-azure-arch-visio-nov2022.png)
+![image](https://ediwang.cdn.moonglade.blog/web-assets/ediwang-azure-arch-visio-nov2022.png)
 
 ### 🐋 Quick Deploy on Azure
 
@@ -202,6 +202,9 @@ There are a few individuals already setup thier blogs using Moonglade on Azure (
 - [Leslie Wang](https://lesliewxj.com/)
 - [AllenMasters](https://allenmasters.com)
 - [Hao's House](https://haxu.dev/)
-- [Sascha.Manns](https://saschamanns.de/)
 
 *Just Submit PR or issue if you want your blog to be listed here*
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade?ref=badge_large)
