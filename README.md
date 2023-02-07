@@ -1,13 +1,16 @@
 # Moonglade-saigkill Blog
 
 The [.NET](https://dotnet.microsoft.com/) blog system of [edi.wang](https://edi.wang) that runs on [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
-This `saigkill` Version is a fork of the original project. It enables Site Verifying services (Bing, Yandex, Norton Safe Web and World of Trust), also some Analytics services (Google Analytics, MS Clarity). Some other interesting features are planned.
+
+This `saigkill` Version is a fork of the original project. It enables Site Verifying services (Bing, Yandex, Norton Safe Web and World of Trust), a basic support of Dublin Core, also some Analytics services (Google Analytics, MS Clarity).
+
+The upstream project provides managing sites. This feature is also present in this version. Becuase of a lack of page localization i decided to use plain razor pages for my pages. If you want to use my fork, and want to use the native pages support, so delete the pages `About`, `Contact`, `CurriculumVitae`, `Imprint`, `Privacy`, `Talks` and `Testimonials`.
 
 |What|Where|
 |-----|-------------------------------------------------------------------------------------|
-|Code  | [https://github.com/saigkill/Moonglade] |
-|Bugs & feature requests  | [https://github.com/saigkill/Moonglade/issues] |
-|The author's blog | [http://saschamanns.de] |
+|Code  | https://github.com/saigkill/Moonglade |
+|Bugs & feature requests  | https://github.com/saigkill/Moonglade/issues |
+|The author's blog | http://saschamanns.de |
 
 | What | Status |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -15,7 +18,7 @@ This `saigkill` Version is a fork of the original project. It enables Site Verif
 |Code quality Sonarcloud | [![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/saigkill_moonglade/master?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/project/overview?id=saigkill_moonglade) |
 |Code coverage Codeclimate | [![Test Coverage](https://api.codeclimate.com/v1/badges/2918dcfd1fe8df3f3c17/test_coverage)](https://codeclimate.com/github/saigkill/Moonglade/test_coverage)
 |Continuous integration | [![.NET Build Linux](https://github.com/saigkill/Moonglade/actions/workflows/dotnet.yml/badge.svg)](https://github.com/saigkill/Moonglade/actions/workflows/dotnet.yml) |
-|Docker build & deploy |  [![Docker Linux x64](https://github.com/saigkill/Moonglade/actions/workflows/docker2.yml/badge.svg)](https://github.com/saigkill/Moonglade/actions/workflows/docker.yml)|
+|Docker build & deploy |  [![Docker Linux x64](https://github.com/saigkill/Moonglade/actions/workflows/docker.yml/badge.svg)](https://github.com/saigkill/Moonglade/actions/workflows/docker.yml)|
 |Security check CodeQL | ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/saigkill/Moonglade/codeql.yml) |
 |Security check Snyk | [![Known Vulnerabilities](https://snyk.io/test/github/saigkill/Moonglade/badge.svg)](https://app.snyk.io) |
 |License check | [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade?ref=badge_shield) |
@@ -203,6 +206,7 @@ If you need email notification for new comments, new replies and pingbacks, you 
 - [X] FOAF
 - [X] RSD
 - [X] MetaWeblog (Basic Support)
+- [X] Dublin Core (Basic Support)
 - [ ] BlogML - Under triage
 - [ ] APML - Not planned
 - [ ] Trackback - Not planned

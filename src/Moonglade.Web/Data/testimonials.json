@@ -25,13 +25,13 @@
   },
   {
     "id": 3,
-    "link": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/testimonials/andreas.jpg",
+    "link": "https://www.linkedin.com/in/saigkill/",
     "blurp": "Sascha is currently the main driving force behind the openSUSE Weekly news letter. He works together with different community members world wide to create the newsletter. During his time as editor and due to his efforts, the weekly news team has grown and the news letter gets translated in more than a dozen languages. I appreciate the enthusiasm Sascha shows for openSUSE marketing in general and for the news letter especially.",
     "recommender": "Andreas Jaeger",
     "recommenderJob": "Product Manager at SUSE",
     "recommenderLocation": "Nuernberg, Germany",
     "relationship": "working in the same project",
-    "imagePath": "img/testimonials/andreas.jpg",
+    "imagePath": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/testimonials/andreas.jpg",
     "date": "2010-02-04",
     "language": "English"
   },
