@@ -64,8 +64,14 @@ public class AdvancedSettings : IBlogSettings
     [Display(Name = "Enable Topblogs")]
     public bool TopblogsEnabled { get; set; }
 
+    [Display(Name = "Topblogs TrackerID")]
+    public string TopblogsTrackerID { get; set; }
+
     [Display(Name = "Ontoplist Url")]
     public string OntoplistUrl { get; set; }
+
+    [Display(Name = "Ontoplist ID")]
+    public string OntoplistID { get; set; }
 
     [Display(Name = "Your Add to Yahoo Url. e.g. https://yourdomain/rss")]
     public string YahooUrl { get; set; }
