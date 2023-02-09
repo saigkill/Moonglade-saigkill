@@ -95,7 +95,7 @@
         {
             <style>
                 @uglifiedCss.Code
-            </style>
+                </style>
         }
     }
 }
@@ -172,6 +172,13 @@
 
         utils.formatUtcTime();
     </script>
+}
+@section head{
+    <style>
+        .sharethis-inline-share-buttons{
+            width: 500px;
+        }
+    </style>
 }
 
 <article class="article-post-slug box border position-relative mb-4" data-postid="@Model.Post.Id" lang="@Model.Post.ContentLanguageCode">
