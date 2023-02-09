@@ -1,5 +1,7 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Http;
+
 using Moonglade.Configuration;
 using Moonglade.Utils;
 
@@ -25,7 +27,8 @@ public class GetRssStringQueryHandler : IRequestHandler<GetRssStringQuery, strin
             blogConfig.GeneralSettings.Description,
             Helper.FormatCopyright2Html(blogConfig.GeneralSettings.Copyright).Replace("&copy;", "©"),
             $"Moonglade v{Helper.AppVersion}",
-            baseUrl);
+            baseUrl,
+            blogConfig.GeneralSettings.DefaultLanguageCode);
     }
 
     public async Task<string> Handle(GetRssStringQuery request, CancellationToken ct)

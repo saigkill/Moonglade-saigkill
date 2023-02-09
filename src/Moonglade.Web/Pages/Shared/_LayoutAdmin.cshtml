@@ -10,7 +10,7 @@
     }
 }
 <!DOCTYPE html>
-<html>
+<html lang="@BlogConfig.GeneralSettings.DefaultLanguageCode">
 
 <head>
     <title>
@@ -93,7 +93,7 @@
                     @if (BlogConfig.ContentSettings.CommentProvider == CommentProvider.BuiltIn)
                     {
                         <a asp-page="/Admin/Comments"
-                       class="list-group-item list-group-item-action @(currentPage is "/Admin/Comments" ? "active" : null)">
+                           class="list-group-item list-group-item-action @(currentPage is "/Admin/Comments" ? "active" : null)">
                             <i class="bi-chat-left-text admin-nav-icon"></i>
                             @SharedLocalizer["Comments"]
                         </a>
@@ -121,7 +121,7 @@
                     @if (AuthOptions.Value.Provider == AuthenticationProvider.Local)
                     {
                         <a asp-page="/Admin/LocalAccount"
-                       class="list-group-item list-group-item-action @(currentPage is "/Admin/LocalAccount" ? "active" : null)">
+                           class="list-group-item list-group-item-action @(currentPage is "/Admin/LocalAccount" ? "active" : null)">
                             <i class="bi-people admin-nav-icon"></i>
                             @SharedLocalizer["Accounts"]
                         </a>
