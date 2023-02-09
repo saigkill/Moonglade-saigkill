@@ -2,6 +2,8 @@
 @model Moonglade.Web.Pages.PostModel
 @inject Moonglade.Data.DataProviders.DonationService _donationService
 @using Moonglade.Utils
+@using Moonglade.Web.Helpers
+@using Moonglade.Web.TagHelpers
 @using NUglify
 @using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
@@ -80,6 +82,7 @@
         <meta name="twitter:creator" content="@@ghUserFix" />
     <link href="~/css/post-slug.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/highlighter-custom.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/donations.css" rel="stylesheet" asp-append-version="true" />
     @if (BlogConfig.ContentSettings.DocumentOutline)
     {
         <link href="~/css/outline.css" rel="stylesheet" />
@@ -98,11 +101,12 @@
 }
 
 @section opengraph{
-    <meta property="og:site_name" content="@BlogConfig.GeneralSettings.SiteTitle">
-    <meta property="og:type" content="article" />
-    <meta property="og:description" content="@Model.Post.ContentAbstract" />
     <meta property="og:title" content="@Model.Post.Title" />
-    <meta property="og:locale" content="@culture" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="@BlogConfig.GeneralSettings.SiteTitle" />
+    <meta property="og:locale" content="@Model.Post.ContentLanguageCode" />
+    <meta property="og:description" content="@Model.Post.ContentAbstract" />
+
     <meta property="fb:app_id" content="@BlogConfig.GeneralSettings.FacebookAppId" />
     @if (!string.IsNullOrWhiteSpace(BlogConfig.GeneralSettings.CanonicalPrefix))
     {
@@ -218,14 +222,14 @@
     <section class="post-content clearfix">
         <partial name="_PostContentRender" model="Model.Post.RawPostContent" />
     </section>
-    
+
     @if (BlogConfig.ContentSettings.EnableSharingButtons)
     {   <hr/>
         <div class="sharethis-inline-reaction-buttons"></div>
         <hr/>
         <div class="sharethis-inline-share-buttons"></div>
     }
-    
+
     <hr/>
 
     @if (BlogConfig.ContentSettings.ShowPostFooter)
@@ -234,7 +238,7 @@
             @Html.Raw(BlogConfig.ContentSettings.PostFooterHtmlPitch)
         </section>
     }
-    
+
     <partial name="_PostActions" model="Model.Post" />
 
     @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))

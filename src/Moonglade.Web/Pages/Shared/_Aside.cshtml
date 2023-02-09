@@ -28,7 +28,10 @@
 
     @if (BlogConfig.AdvancedSettings.EnableSyndication)
     {
-        <partial name="_Syndication" />
+        <br />
+        <section id="aside-syndication">
+            <partial name="_Syndication" />
+        </section>
     }
 
     @if (BlogConfig.GeneralSettings.WidgetsTags)

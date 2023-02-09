@@ -1,10 +1,32 @@
 ﻿@using Moonglade.Utils
+@using Moonglade.Web.TagHelpers
+@using Syncfusion.EJ2
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 @inject IViewLocalizer _localizer
 @{
     if (string.IsNullOrEmpty(BlogConfig.GeneralSettings.AvatarUrl))
     {
         BlogConfig.GeneralSettings.AvatarUrl = Url.Action("Avatar", "Assets");
+    }
+
+    // Resolve culture
+    // Post language > User set display language > System default language
+    var langCode = BlogConfig.GeneralSettings.DefaultLanguageCode;
+    if (ViewBag.PostLangCode != null)
+    {
+        langCode = ViewBag.PostLangCode;
+    }
+    else
+    {
+        // CultureInfo.CurrentUICulture always has value, can not determine if is user selection
+        var cultureCookie = Context.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+        if (cultureCookie != null)
+        {
+            langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
+        }
     }
 
     string syncVersion = BlogConfig.GeneralSettings.SyncfusionVersion;
@@ -15,7 +37,7 @@
     string shareThis = "https://platform-api.sharethis.com/js/sharethis.js#property=" + shareThisPropertyID + "&product=inline-share-buttons&source=platform";
 }
 <!DOCTYPE html>
-<html>
+<html lang="@langCode">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

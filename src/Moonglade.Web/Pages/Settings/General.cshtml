@@ -17,6 +17,15 @@
                     Value = t.Id.ToString()
                 });
 
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new { Value = c.Name, c.NativeName });
+
+    var langList = cultureItems
+        .Select(t => new SelectListItem
+                {
+                    Text = t.NativeName,
+                    Value = t.Value.ToLower()
+                });
     var settings = BlogConfig.GeneralSettings;
 }
 
@@ -145,7 +154,18 @@
                                     <select class="form-select" asp-for="ViewModel.TimeZoneId" asp-items="@tzList"></select>
                                 </div>
                             </div>
-
+                            <div class="row g-3 align-items-center settings-entry mb-4">
+                                <div class="col-auto">
+                                    <i class="bi-globe settings-entry-icon"></i>
+                                </div>
+                                <div class="col">
+                                    <label for="DefaultLanguageCode">@SharedLocalizer["Default language"]</label>
+                                    <div class="form-text">@SharedLocalizer["Blog will use this language for SEO by default unless specified in blog post."]</div>
+                                </div>
+                                <div class="col-md-5 text-end">
+                                    <select class="form-select" asp-for="ViewModel.DefaultLanguageCode" asp-items="@langList"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -429,79 +449,82 @@
                         </div>
                     </div>
 
-<div class="row g-3 align-items-center settings-entry mb-4">
-	<div class="col-auto">
-		<i class="bi-hand-index settings-entry-icon"></i>
-	</div>
-	<div class="col">
-		<label asp-for="ViewModel.ShowAdminLoginButton" class="form-check-label"></label>
-	</div>
-	<div class="col-md-4 text-end">
-		<div class="form-check form-switch">
-			<input type="hidden" name="ShowAdminLoginButton" value="false">
-			<input type="checkbox" name="ShowAdminLoginButton" value="true" class="form-check-input" @(Model.ViewModel.ShowAdminLoginButton ? "checked" : null)>
-		</div>
-	</div>
-</div><div>
-                          <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Syncfusion Settings"]</h6>
-                          <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                              <div class="col-auto">
-                                  <i class="bi-1-circle-fill settings-entry-icon"></i>
-                              </div>
-                              <div class="col">
-                                  <label asp-for="@settings.SyncfusionVersion"></label>
-                              </div>
-                              <div class="col-md-5 text-end">
-                                  <input asp-for="@settings.SyncfusionVersion" class="form-control" />
-                              </div>
-                          </div>
-                      </div>
-                      <div>
-                          <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Github PAT"]</h6>
-                          <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                              <div class="col-auto">
-                                  <i class="fab fa-github settings-entry-icon"></i>
-                              </div>
-                              <div class="col">
-                                  <label asp-for="@settings.GithubPAT"></label>
-                              </div>
-                              <div class="col-md-5 text-end">
-                                  <input asp-for="@settings.GithubPAT" class="form-control" />
-                              </div>
-                          </div>
-                      </div>
-                      <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Now playing"]</h6>
-                      <div class="row g-3 align-items-center settings-entry mb-4">
-                          <div class="col-auto">
-                              <i class="bi bi-music-note-list settings-entry-icon"></i>
-                          </div>
-                          <div class="col">
-                              <label asp-for="@settings.EnableNowPlaying" class="form-check-label"></label>
-                          </div>
-                          <div class="col-md-5 text-end">
-                              <div class="form-check form-switch">
-                                  <input type="hidden" name="EnableNowPlaying" value="false">
-                                  <input type="checkbox" name="EnableNowPlaying" value="true" class="form-check-input" @(settings.EnableNowPlaying ? "checked" : null)>
-                              </div>
-                          </div>
-                      </div>
-                      <div>
-                          <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                              <div class="col-auto">
-                                  <i class="bi bi-music-note-list settings-entry-icon"></i>
-                              </div>
-                              <div class="col">
-                                  <label asp-for="@settings.NowPlaying"></label>
-                              </div>
-                              <div class="col-md-5 text-end">
-                                  <input asp-for="@settings.NowPlaying" class="form-control" />
-                              </div>
-                          </div>
-                      </div>
-<div class="mt-5">
-	<h6 class="card-subtitle mb-4 text-muted">
-		@SharedLocalizer["Footer"]
-	</h6>
+                    <div class="row g-3 align-items-center settings-entry mb-4">
+                        <div class="col-auto">
+                            <i class="bi-hand-index settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.ShowAdminLoginButton" class="form-check-label"></label>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="form-check form-switch">
+                                <input type="hidden" name="ShowAdminLoginButton" value="false">
+                                <input type="checkbox" name="ShowAdminLoginButton" value="true" class="form-check-input" @(Model.ViewModel.ShowAdminLoginButton ? "checked" : null)>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Syncfusion Settings"]</h6>
+                    <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                        <div class="col-auto">
+                            <i class="bi-1-circle-fill settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="@settings.SyncfusionVersion"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="@settings.SyncfusionVersion" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            <div>
+	            <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Github PAT"]</h6>
+	            <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+		            <div class="col-auto">
+			            <i class="fab fa-github settings-entry-icon"></i>
+		            </div>
+		            <div class="col">
+			            <label asp-for="@settings.GithubPAT"></label>
+		            </div>
+		            <div class="col-md-5 text-end">
+			            <input asp-for="@settings.GithubPAT" class="form-control" />
+		            </div>
+	            </div>
+            </div>
+            <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Now playing"]</h6>
+                                  <div class="row g-3 align-items-center settings-entry mb-4">
+                                      <div class="col-auto">
+                                          <i class="bi bi-music-note-list settings-entry-icon"></i>
+                                      </div>
+                                      <div class="col">
+                                          <label asp-for="@settings.EnableNowPlaying" class="form-check-label"></label>
+                                      </div>
+                                      <div class="col-md-5 text-end">
+                                          <div class="form-check form-switch">
+                                              <input type="hidden" name="EnableNowPlaying" value="false">
+                                              <input type="checkbox" name="EnableNowPlaying" value="true" class="form-check-input" @(settings.EnableNowPlaying ? "checked" : null)>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div>
+                                      <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                                          <div class="col-auto">
+                                              <i class="bi bi-music-note-list settings-entry-icon"></i>
+                                          </div>
+                                          <div class="col">
+                                              <label asp-for="@settings.NowPlaying"></label>
+                                          </div>
+                                          <div class="col-md-5 text-end">
+                                              <input asp-for="@settings.NowPlaying" class="form-control" />
+                                          </div>
+                                      </div>
+                                  </div>
+
+            <div class="mt-5">
+                    <h6 class="card-subtitle mb-4 text-muted">
+                        @SharedLocalizer["Footer"]
+                    </h6>
 
 	<div class="row g-3 align-items-center settings-entry mb-2">
 		<div class="col-auto">
