@@ -1,9 +1,11 @@
-﻿<div class="card-header">
-    <div class="e-card-header-caption">
-        <h4 class="card-subtitle">Syndication</h4>
-    </div>
-</div>
-<div class="e-card-content">
+﻿@{
+    string ontoplistPrefix = "https://www.ontoplist.com/images/ontoplist31.png?id="; //63e50902a62dd
+    string ontoplistLink = ontoplistPrefix + BlogConfig.AdvancedSettings.OntoplistID;
+    string topblogsPrefix = "https://www.topblogs.de/tracker.php?do=in&id="; // 11089
+    string topblogsLink = topblogsPrefix + BlogConfig.AdvancedSettings.OntoplistID;
+}
+<div class="card-header">Syndication</div>
+<div class="card-body">
     <ul class="list-unstyled">
         @if (BlogConfig.AdvancedSettings.YahooUrl != null)
         {
@@ -33,13 +35,13 @@
         {
             <li>
                 <!-- TopBlogs.de das Original - Blogverzeichnis | Blog Top Liste -->
-                <a href="https://www.topblogs.de/" target="_blank" rel="noopener"><img border="0" src="https://www.topblogs.de/tracker.php?do=in&id=11089" alt="TopBlogs.de das Original - Blogverzeichnis | Blog Top Liste" /></a>
+                <a href="https://www.topblogs.de/" target="_blank" rel="noopener"><img border="0" src="@topblogsLink" alt="TopBlogs.de das Original - Blogverzeichnis | Blog Top Liste" /></a>
                 <!-- /TopBlogs.de das Original - Blogverzeichnis | Blog Top Liste -->
             </li>
         }
         @if (BlogConfig.AdvancedSettings.OntoplistUrl != null)
         {
-            <li><a href="@BlogConfig.AdvancedSettings.OntoplistUrl" target="_blank" rel="noopener"><img src="https://www.ontoplist.com/images/ontoplist31.png?id=5b0f0088673d1" alt="Sascha Mannss Twilight Zone - OnToplist.com" border="0"></a></li>
+            <li><a href="@BlogConfig.AdvancedSettings.OntoplistUrl" target="_blank"><img src="@ontoplistLink" alt="Best Software Development Blogs - OnToplist.com" border="0"></a></li>
         }
         @if (BlogConfig.AdvancedSettings.BloglovinUrl != null)
         {

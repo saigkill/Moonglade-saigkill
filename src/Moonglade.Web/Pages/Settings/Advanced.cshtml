@@ -421,6 +421,17 @@
                             <input asp-for="@settings.OntoplistUrl" class="form-control" />
                         </div>
                     </div>
+                    <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                        <div class="col-auto">
+                            <i class="bi bi-book settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="@settings.OntoplistID"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="@settings.OntoplistID" class="form-control" />
+                        </div>
+                    </div>
                     <div class="row g-3 align-items-center settings-entry mb-4">
                         <div class="col-auto">
                             <i class="bi bi-book settings-entry-icon"></i>
@@ -449,20 +460,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row g-3 align-items-center settings-entry mb-4">
-                        <div class="col-auto">
-                            <i class="bi bi-book settings-entry-icon"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="@settings.BloggereiEnabled" class="form-check-label"></label>
-                        </div>
-                        <div class="col-md-4 text-end">
-                            <div class="form-check form-switch">
-                                <input type="hidden" name="BloggereiEnabled" value="false">
-                                <input type="checkbox" name="BloggereiEnabled" value="true" class="form-check-input" @(settings.BloggereiEnabled ? "checked" : null)>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="row g-3 align-items-center settings-entry mb-4">
                         <div class="col-auto">
                             <i class="bi bi-book settings-entry-icon"></i>
@@ -489,6 +487,17 @@
                                 <input type="hidden" name="TopblogsEnabled" value="false">
                                 <input type="checkbox" name="TopblogsEnabled" value="true" class="form-check-input" @(settings.TopblogsEnabled ? "checked" : null)>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                        <div class="col-auto">
+                            <i class="bi bi-book settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="@settings.TopblogsTrackerID"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="@settings.TopblogsTrackerID" class="form-control" />
                         </div>
                     </div>
                 </div>

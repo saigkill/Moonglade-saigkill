@@ -24,10 +24,6 @@
     string ghProfile = BlogConfig.SocialProfileSettings.GitHub;
     string ghUser = ghProfile.Replace("https://github.com/", "");
     string ghUserFix = "@" + ghUser;
-    var host = HttpContext.Request.GetEncodedUrl();
-    string fbScriptLink = "https://connect.facebook.net/" + finallang + "/sdk.js#xfbml=1&version=v15.0";
-    string fbShare = host + Model.Post.Slug;
-    string fbSharedArticle = "https://www.facebook.com/sharer/sharer.php?u=" + fbShare + "&amp;src=sdkpreparse";
 }
 
 @section keywords {
@@ -221,15 +217,9 @@
     
     @if (BlogConfig.ContentSettings.EnableSharingButtons)
     {   <hr/>
-        <div>
-            <!-- ShareThis BEGIN -->
-            <div class="sharethis-inline-reaction-buttons"></div>
-            <!-- ShareThis END -->
-        </div>
+        <div class="sharethis-inline-reaction-buttons"></div>
         <hr/>
-        <div class="sharethis">
-            <div class="sharethis-inline-share-buttons"></div>
-        </div>
+        <div class="sharethis-inline-share-buttons"></div>
     }
     
     <hr/>
@@ -249,13 +239,6 @@
             <i class="bi-link"></i>
             @SharedLocalizer["Read origin article"]
         </a>
-    }
-    
-    @if (BlogConfig.ContentSettings.EnableDonationService)
-    {
-        <div class="ad-container" style="margin-top: 30px; text-align: center;">
-            @_donationService.InlineAdd()
-        </div>
     }
 </article>
 @if (BlogConfig.ContentSettings.EnableComments)
@@ -353,6 +336,13 @@
 else
 {
     <div class="alert alert-warning">@SharedLocalizer["Comment is disabled by blog administrator."]</div>
+}
+
+@if (BlogConfig.ContentSettings.EnableDonationService)
+{
+    <div class="ad-container" style="margin-top: 30px; text-align: center;">
+        @_donationService.InlineAdd()
+    </div>
 }
 
 <partial name="_LightSwitch" />
