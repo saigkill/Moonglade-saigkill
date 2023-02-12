@@ -478,66 +478,91 @@
                         </div>
                     </div>
                 </div>
-            <div>
-	            <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Github PAT"]</h6>
-	            <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-		            <div class="col-auto">
-			            <i class="fab fa-github settings-entry-icon"></i>
-		            </div>
-		            <div class="col">
-			            <label asp-for="@settings.GithubPAT"></label>
-		            </div>
-		            <div class="col-md-5 text-end">
-			            <input asp-for="@settings.GithubPAT" class="form-control" />
-		            </div>
+                <div>
+                    <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Github PAT"]</h6>
+                    <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                        <div class="col-auto">
+                            <i class="fab fa-github settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="@settings.GithubPAT"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="@settings.GithubPAT" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <h6 class="card-subtitle mb-3 text-muted">IndexNow</h6>
+                <div class="row g-3 align-items-center settings-entry mb-4">
+                    <div class="col-auto">
+                        <i class="bi-search settings-entry-icon"></i>
+                    </div>
+                    <div class="col">
+                        <label asp-for="@settings.EnableIndexNow" class="form-check-label"></label>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="form-check form-switch">
+                            <input type="hidden" name="EnableIndexNow" value="false">
+                            <input type="checkbox" name="EnableIndexNow" value="true" class="form-check-input" @(settings.EnableIndexNow ? "checked" : null)>
+                        </div>
+                    </div>
+                </div>
+            <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+	            <div class="col-auto">
+		            <i class="bi-search settings-entry-icon"></i>
+	            </div>
+	            <div class="col">
+		            <label asp-for="@settings.IndexNowAPIKey"></label>
+	            </div>
+	            <div class="col-md-5 text-end">
+		            <input asp-for="@settings.IndexNowAPIKey" class="form-control" />
 	            </div>
             </div>
             <h6 class="card-subtitle mb-3 text-muted">@SharedLocalizer["Now playing"]</h6>
-                                  <div class="row g-3 align-items-center settings-entry mb-4">
-                                      <div class="col-auto">
-                                          <i class="bi bi-music-note-list settings-entry-icon"></i>
-                                      </div>
-                                      <div class="col">
-                                          <label asp-for="@settings.EnableNowPlaying" class="form-check-label"></label>
-                                      </div>
-                                      <div class="col-md-5 text-end">
-                                          <div class="form-check form-switch">
-                                              <input type="hidden" name="EnableNowPlaying" value="false">
-                                              <input type="checkbox" name="EnableNowPlaying" value="true" class="form-check-input" @(settings.EnableNowPlaying ? "checked" : null)>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div>
-                                      <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                                          <div class="col-auto">
-                                              <i class="bi bi-music-note-list settings-entry-icon"></i>
-                                          </div>
-                                          <div class="col">
-                                              <label asp-for="@settings.NowPlaying"></label>
-                                          </div>
-                                          <div class="col-md-5 text-end">
-                                              <input asp-for="@settings.NowPlaying" class="form-control" />
-                                          </div>
-                                      </div>
-                                  </div>
-
-            <div class="mt-5">
+                                              <div class="row g-3 align-items-center settings-entry mb-4">
+                                                  <div class="col-auto">
+                                                      <i class="bi bi-music-note-list settings-entry-icon"></i>
+                                                  </div>
+                                                  <div class="col">
+                                                      <label asp-for="@settings.EnableNowPlaying" class="form-check-label"></label>
+                                                  </div>
+                                                  <div class="col-md-5 text-end">
+                                                      <div class="form-check form-switch">
+                                                          <input type="hidden" name="EnableNowPlaying" value="false">
+                                                          <input type="checkbox" name="EnableNowPlaying" value="true" class="form-check-input" @(settings.EnableNowPlaying ? "checked" : null)>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div>
+                                                  <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
+                                                      <div class="col-auto">
+                                                          <i class="bi bi-music-note-list settings-entry-icon"></i>
+                                                      </div>
+                                                      <div class="col">
+                                                          <label asp-for="@settings.NowPlaying"></label>
+                                                      </div>
+                                                      <div class="col-md-5 text-end">
+                                                          <input asp-for="@settings.NowPlaying" class="form-control" />
+                                                      </div>
+                                                  </div>
+                                              </div>
+                <div class="mt-5">
                     <h6 class="card-subtitle mb-4 text-muted">
                         @SharedLocalizer["Footer"]
                     </h6>
 
-	<div class="row g-3 align-items-center settings-entry mb-2">
-		<div class="col-auto">
-			<i class="bi-check2-square settings-entry-icon"></i>
-		</div>
-		<div class="col">
-			<label asp-for="ViewModel.Copyright"></label>
-			<div class="form-text">@SharedLocalizer["Use [c] for copyright mark: &copy;, [year] for current year."]</div>
-		</div>
-		<div class="col-md-5 text-end">
-			<input asp-for="ViewModel.Copyright" class="form-control" required/>
-		</div>
-	</div>
+                    <div class="row g-3 align-items-center settings-entry mb-2">
+                        <div class="col-auto">
+                            <i class="bi-check2-square settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.Copyright"></label>
+                            <div class="form-text">@SharedLocalizer["Use [c] for copyright mark: &copy;, [year] for current year."]</div>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.Copyright" class="form-control" required />
+                        </div>
+                    </div>
 
                     <div class="form-floating">
                         <textarea asp-for="ViewModel.FooterCustomizedHtmlPitch"

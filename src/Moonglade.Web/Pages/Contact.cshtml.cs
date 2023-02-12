@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using Moonglade.Data.DataProviders.Models;
@@ -6,10 +8,17 @@ namespace Moonglade.Web.Pages
 {
     public class ContactModel : PageModel
     {
-
+        [Required]
         public string Name { get; set; }
+
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
         public string Subject { get; set; }
+
+        [Required]
         public string Body { get; set; }
         public IList<IFormFile> Attachment { get; set; }
         public void OnGet()

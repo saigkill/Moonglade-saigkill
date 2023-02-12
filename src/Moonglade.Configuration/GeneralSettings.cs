@@ -128,6 +128,12 @@ public class GeneralSettings : IBlogSettings
     [Display(Name = "Github PAT")]
     public string GithubPAT { get; set; }
 
+    [Display(Name = "Enable IndexNow")]
+    public bool EnableIndexNow { get; set; }
+
+    [Display(Name = "IndexNow API Key")]
+    public string IndexNowAPIKey { get; set; }
+
     [MaxLength(64)]
     public string AvatarUrl { get; set; }
 
@@ -169,3 +175,4 @@ public enum SideBarOption
     Left = 1,
     Disabled = 2
 }
+
