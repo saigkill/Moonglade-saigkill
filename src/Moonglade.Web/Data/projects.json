@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/Moonglade.png",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/Moonglade.png",
     "projectlink": "https://github.com/saigkill/Moonglade",
     "projectname": "MannsBlog",
     "projectblurp": "Setting up a personal website with a portfolio",
@@ -13,7 +13,7 @@
   },
   {
     "id": "2",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/Moonglade.png",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/Moonglade.png",
     "projectlink": "https://github.com/saigkill/Moonglade",
     "projectname": "MannsBlog",
     "projectblurp": "Erstellung einer privaten Seite mit Portfolio",
@@ -25,8 +25,8 @@
   },
   {
     "id": "3",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/WriteJobApplication.png",
-    "projectlink": "http://saigkill.github.io/latex_curriculum_vitae-dotnet",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/WriteJobApplication.png",
+    "projectlink": "https://github.com/saigkill/JobApplicationManager",
     "projectname": "JobApplicationManager",
     "projectblurp": "Writing a job applications (with LaTEX) with a database driven helper to manage sent applications.",
     "clients": "me myself and i",
@@ -37,8 +37,8 @@
   },
   {
     "id": "4",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/WriteJobApplication.png",
-    "projectlink": "http://saigkill.github.io/latex_curriculum_vitae-dotnet",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/WriteJobApplication.png",
+    "projectlink": "https://github.com/saigkill/JobApplicationManager",
     "projectname": "JobApplicationManager",
     "projectblurp": "Erstellung von Bewerbungen (mit LaTEX) unter Zuhilfename eines Datenbankunterstützten Helfers um Bewerbungen zu verwalten.",
     "clients": "me myself and i",
@@ -49,7 +49,7 @@
   },
   {
     "id": "5",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/book.png",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/book.png",
     "projectlink": "https://d-nb.info/1042698783",
     "projectname": "Plasma Active Handbook",
     "projectblurp": "Writing a Handbook for the new introduced KDE User Experience for the new device classes (Tablet, Smartphone).",
@@ -61,7 +61,7 @@
   },
   {
     "id": "6",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/book.png",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/book.png",
     "projectlink": "https://d-nb.info/1042698783",
     "projectname": "Plasma Active Handbook",
     "projectblurp": "Schreiben eines handbuchs für die neu eingeführte User Experience für neue Geräteklassen (Tablet, Smartphone).",
@@ -73,7 +73,7 @@
   },
   {
     "id": "7",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/htz-website.png",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/htz-website.png",
     "projectlink": "https://www.htz-neuwied.de/",
     "projectname": "Webseite Heiltherapeutisches Zentrum Neuwied",
     "projectblurp": "Creating a Wordpress Site for the HTZ, the AFH and the VMB.",
@@ -85,7 +85,7 @@
   },
   {
     "id": "8",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/htz-website.png",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/htz-website.png",
     "projectlink": "https://www.htz-neuwied.de/",
     "projectname": "Webseite Heiltherapeutisches Zentrum Neuwied",
     "projectblurp": "Erstellung einer Wordpress Seite für das HTZ, den AFH und den VMB.",
@@ -97,7 +97,7 @@
   },
   {
     "id": "9",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/Standard.jpg",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/Standard.jpg",
     "projectlink": "https://www.myflow365.de/",
     "projectname": "Mobile App for digital business processes",
     "projectblurp": "Creating for mobile business process solutions for automobile dealer with connection to DAT and Schwacke.",
@@ -109,7 +109,7 @@
   },
   {
     "id": "10",
-    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/download/projects/Standard.jpg",
+    "portfoliolink": "https://moongladestorage722.blob.core.windows.net/moongladeimages722/Standard.jpg",
     "projectlink": "https://www.myflow365.de/",
     "projectname": "Mobile App für digitale Geschäftsprozesse",
     "projectblurp": "Erstellung von Geschäftsprozess-Lösungen für Autohäuser mit Anbindung an DAT und Schwacke.",

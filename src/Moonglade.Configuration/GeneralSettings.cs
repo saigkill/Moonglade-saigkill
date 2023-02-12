@@ -130,6 +130,12 @@ public class GeneralSettings : IBlogSettings
     [Display(Name = "Github PAT")]
     public string GithubPAT { get; set; }
 
+    [Display(Name = "Enable IndexNow")]
+    public bool EnableIndexNow { get; set; }
+
+    [Display(Name = "IndexNow API Key")]
+    public string IndexNowAPIKey { get; set; }
+
     [MaxLength(64)]
     public string AvatarUrl { get; set; }
 
@@ -137,7 +143,7 @@ public class GeneralSettings : IBlogSettings
 
     [Required]
     [RegularExpression("^[a-z]{2}-[a-zA-Z]{2,4}$")]
-    public string DefaultLanguageCode { get; set; }
+    public string DefaultLanguageCode { get; set; } = "en-us";
 
     public GeneralSettings() => ThemeId = 1;
 }

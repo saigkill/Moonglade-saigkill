@@ -2,6 +2,7 @@
 
 using Moonglade.Caching.Filters;
 using Moonglade.Core.PostFeature;
+using Moonglade.Data.ExternalAPI.IndexNow;
 using Moonglade.Notification.Client;
 using Moonglade.Pingback;
 using Moonglade.Web.Attributes;
@@ -97,6 +98,12 @@ public class PostController : ControllerBase
                 if (_blogConfig.AdvancedSettings.EnablePingbackSend)
                 {
                     _ = Task.Run(async () => { await _pingbackSender.TrySendPingAsync(link, postEntity.PostContent); });
+                }
+
+                if (_blogConfig.GeneralSettings.EnableIndexNow)
+                {
+                    var indexNow = new IndexNow(_blogConfig);
+                    indexNow.SendRequest(link);
                 }
             }
 
