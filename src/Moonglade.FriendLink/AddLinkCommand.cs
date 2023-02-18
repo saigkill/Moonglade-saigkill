@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+
+using MediatR;
+
 using Moonglade.Data.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Utils;
-using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.FriendLink;
 
@@ -28,13 +30,13 @@ public class AddLinkCommand : IRequest, IValidatableObject
     }
 }
 
-public class AddLinkCommandHandler : AsyncRequestHandler<AddLinkCommand>
+public class AddLinkCommandHandler : IRequestHandler<AddLinkCommand>
 {
     private readonly IRepository<FriendLinkEntity> _repo;
 
     public AddLinkCommandHandler(IRepository<FriendLinkEntity> repo) => _repo = repo;
 
-    protected override async Task Handle(AddLinkCommand request, CancellationToken ct)
+    public async Task Handle(AddLinkCommand request, CancellationToken ct)
     {
         var link = new FriendLinkEntity
         {

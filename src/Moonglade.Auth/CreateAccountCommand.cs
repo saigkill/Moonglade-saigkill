@@ -1,7 +1,8 @@
-﻿using Moonglade.Data.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Moonglade.Data.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Utils;
-using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Auth;
 
@@ -21,12 +22,12 @@ public class CreateAccountCommand : IRequest
     public string Password { get; set; }
 }
 
-public class CreateAccountCommandHandler : AsyncRequestHandler<CreateAccountCommand>
+public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand>
 {
     private readonly IRepository<LocalAccountEntity> _repo;
     public CreateAccountCommandHandler(IRepository<LocalAccountEntity> repo) => _repo = repo;
 
-    protected override Task Handle(CreateAccountCommand request, CancellationToken ct)
+    public Task Handle(CreateAccountCommand request, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(request.Username))
         {

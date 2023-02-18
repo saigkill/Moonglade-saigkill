@@ -1,4 +1,5 @@
 ﻿using MediatR;
+
 using Moonglade.Data.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Utils;
@@ -10,13 +11,13 @@ public class UpdateLinkCommand : AddLinkCommand
     public Guid Id { get; set; }
 }
 
-public class UpdateLinkCommandHandler : AsyncRequestHandler<UpdateLinkCommand>
+public class UpdateLinkCommandHandler : IRequestHandler<UpdateLinkCommand>
 {
     private readonly IRepository<FriendLinkEntity> _repo;
 
     public UpdateLinkCommandHandler(IRepository<FriendLinkEntity> repo) => _repo = repo;
 
-    protected override async Task Handle(UpdateLinkCommand request, CancellationToken ct)
+    public async Task Handle(UpdateLinkCommand request, CancellationToken ct)
     {
         if (!Uri.IsWellFormedUriString(request.LinkUrl, UriKind.Absolute))
         {

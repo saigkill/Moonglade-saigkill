@@ -1,4 +1,5 @@
 ﻿using MediatR;
+
 using Moonglade.Data.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Data.Spec;
@@ -7,7 +8,7 @@ namespace Moonglade.Comments;
 
 public record DeleteCommentsCommand(Guid[] Ids) : IRequest;
 
-public class DeleteCommentsCommandHandler : AsyncRequestHandler<DeleteCommentsCommand>
+public class DeleteCommentsCommandHandler : IRequestHandler<DeleteCommentsCommand>
 {
     private readonly IRepository<CommentEntity> _commentRepo;
     private readonly IRepository<CommentReplyEntity> _commentReplyRepo;
@@ -18,7 +19,7 @@ public class DeleteCommentsCommandHandler : AsyncRequestHandler<DeleteCommentsCo
         _commentReplyRepo = commentReplyRepo;
     }
 
-    protected override async Task Handle(DeleteCommentsCommand request, CancellationToken ct)
+    public async Task Handle(DeleteCommentsCommand request, CancellationToken ct)
     {
         var spec = new CommentSpec(request.Ids);
         var comments = await _commentRepo.ListAsync(spec);
