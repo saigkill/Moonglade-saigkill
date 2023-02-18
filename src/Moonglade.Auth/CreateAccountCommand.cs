@@ -1,7 +1,8 @@
-﻿using Moonglade.Data.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Moonglade.Data.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Utils;
-using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Auth;
 

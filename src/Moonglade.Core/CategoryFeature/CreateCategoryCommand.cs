@@ -1,5 +1,6 @@
-﻿using Moonglade.Caching;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Moonglade.Caching;
 
 namespace Moonglade.Core.CategoryFeature;
 
