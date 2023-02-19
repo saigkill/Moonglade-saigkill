@@ -26,6 +26,8 @@
     string ghProfile = BlogConfig.SocialProfileSettings.GitHub;
     string ghUser = ghProfile.Replace("https://github.com/", "");
     string ghUserFix = "@" + ghUser;
+
+	ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
 }
 
 @section keywords {
@@ -73,13 +75,14 @@
 		}
     }
     <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="@Model.Post.Title" />
-        <meta name="twitter:description" content="@Model.Post.ContentAbstract" />
-        @if (Model.Post.HeroImageUrl != null)
-        {
-            <meta name="twitter:image" content="@Model.Post.HeroImageUrl" />
-        }
-        <meta name="twitter:creator" content="@@ghUserFix" />
+    <meta name="twitter:title" content="@Model.Post.Title" />
+    <meta name="twitter:description" content="@Model.Post.ContentAbstract" />
+    @if (Model.Post.HeroImageUrl != null)
+    {
+        <meta name="twitter:image" content="@Model.Post.HeroImageUrl" />
+    }
+    <meta name="twitter:creator" content="@@ghUserFix" />
+
     <link href="~/css/post-slug.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/highlighter-custom.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/donations.css" rel="stylesheet" asp-append-version="true" />

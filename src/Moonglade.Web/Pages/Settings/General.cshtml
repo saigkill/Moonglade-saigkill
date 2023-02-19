@@ -2,6 +2,7 @@
 @model Moonglade.Web.Pages.Settings.GeneralModel
 @inject ITimeZoneResolver ZoneResolver
 @inject IMediator Mediator
+
 @{
     var tzList = ZoneResolver.ListTimeZones().Select(t => new SelectListItem
             {
@@ -17,6 +18,8 @@
                     Value = t.Id.ToString()
                 });
 
+    var settings = BlogConfig.GeneralSettings;
+
     var cultureItems = LocOptions.Value.SupportedUICultures
         .Select(c => new { Value = c.Name, c.NativeName });
 
@@ -26,7 +29,6 @@
                     Text = t.NativeName,
                     Value = t.Value.ToLower()
                 });
-    var settings = BlogConfig.GeneralSettings;
 }
 
 @section head {

@@ -1,9 +1,10 @@
 ﻿@using Moonglade.Utils
 @using Moonglade.Web.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Localization
+@using System.Globalization
 @using Syncfusion.EJ2
 @using System.Globalization
-@using Microsoft.AspNetCore.Localization
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 @inject IViewLocalizer _localizer
 @{
@@ -28,7 +29,6 @@
             langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
         }
     }
-
     string syncVersion = BlogConfig.GeneralSettings.SyncfusionVersion;
     string syncStyle = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/bootstrap5-dark.css";
     string syncScript = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/dist/ej2.min.js";
