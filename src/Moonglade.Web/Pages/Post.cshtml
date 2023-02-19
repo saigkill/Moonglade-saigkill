@@ -21,6 +21,9 @@
     TimeToRead timeToRead = Model.Post.GetTimeToRead(SharedLocalizer);
     string ghProfile = BlogConfig.SocialProfileSettings.GitHub;
     string ghUser = ghProfile.Replace("https://github.com/", "");
+    string ghUserFix = "@" + ghUser;
+
+    ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
 }
 
 @section keywords {

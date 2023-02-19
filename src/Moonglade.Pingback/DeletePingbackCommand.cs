@@ -13,6 +13,5 @@ public class DeletePingbackCommandHandler : IRequestHandler<DeletePingbackComman
 
     public DeletePingbackCommandHandler(IRepository<PingbackEntity> repo) => _repo = repo;
 
-    public Task Handle(DeletePingbackCommand request, CancellationToken ct) =>
-        _repo.DeleteAsync(request.Id, ct);
+    public Task Handle(DeletePingbackCommand request, CancellationToken ct) => _repo.DeleteAsync(request.Id, ct);
 }

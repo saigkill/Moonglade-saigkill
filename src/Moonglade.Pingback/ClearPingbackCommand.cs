@@ -13,6 +13,5 @@ public class ClearPingbackCommandHandler : IRequestHandler<ClearPingbackCommand>
 
     public ClearPingbackCommandHandler(IRepository<PingbackEntity> repo) => _repo = repo;
 
-    public Task Handle(ClearPingbackCommand request, CancellationToken ct) =>
-        _repo.Clear(ct);
+    public Task Handle(ClearPingbackCommand request, CancellationToken ct) => _repo.Clear(ct);
 }

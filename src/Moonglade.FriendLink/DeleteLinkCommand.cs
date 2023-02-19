@@ -13,6 +13,5 @@ public class DeleteLinkCommandHandler : IRequestHandler<DeleteLinkCommand>
 
     public DeleteLinkCommandHandler(IRepository<FriendLinkEntity> repo) => _repo = repo;
 
-    public Task Handle(DeleteLinkCommand request, CancellationToken ct) =>
-        _repo.DeleteAsync(request.Id, ct);
+    public Task Handle(DeleteLinkCommand request, CancellationToken ct) => _repo.DeleteAsync(request.Id, ct);
 }
