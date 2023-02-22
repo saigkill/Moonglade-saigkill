@@ -2,26 +2,26 @@
 @using Moonglade.Data.DataProviders.Models
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Syncfusion.EJ2.RichTextEditor
-@model Moonglade.Web.Pages.ContactModel
+@model Moonglade.Notification.Client.ContactNotification
 @{
 }
 @addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
 @Html.AntiForgeryToken()
 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 @section scripts {
-    <script type="module">
+    @*<script type="module">
         import * as settings from '/js/app/admin.settings.module.js';
 
-        const form = document.querySelector('#form-settings');
+        const form = document.querySelector('#form1');
         form.addEventListener('submit', settings.handleSettingsSubmit);
-    </script>
+    </script>*@
 }
 
 <div class="col-lg-12 control-section" id="control-fluid">
     @*<h4 style="text-align: center;">@_localizer["viewbag-pagename"]</h4>*@
     <h1>Currently contact is disabled.</h1>
     <div class="control_wrapper" id="control_wrapper">
-        <form id="form1" enctype="multipart/form-data" class="form-vertical" asp-controller="Post" asp-action="ContactEmail" method="post">
+        <form id="form1" class="form-vertical" asp-controller="Page" asp-action="ContactEmail" method="post">
             <div class="form-group" style="padding-top: 11px;">
                 <div class="e-float-input">
                     <input class="e-input" name="Name" type="text" asp-for="Name" data-required-message="@_localizer["enter-name"]" required data-msg-containerid="nameError" placeholder="@_localizer["your-name"]" />
@@ -53,14 +53,6 @@
                               class="form-control h-100px"
                               spellcheck="false" cols="10" rows="10" required></textarea>
                     <label class="form-label" asp-for="@Model.Body">@_localizer["message"]</label>
-                </div>
-            </div>
-            <div class="form-group" style="padding-top: 11px;">
-                <div class="e-float-input">
-                    <input class="samplebtn e-control e-btn" type="file" asp-for="Attachment" multiple />
-                    <span class="e-float-line"></span>
-                    <label class="e-float-text e-label-top" for="Attachment">@_localizer["attachment"]</label>
-                    <div id="uploadError"></div>
                 </div>
             </div>
             <div style="text-align: center; padding-top: 11px;">
