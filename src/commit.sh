@@ -22,3 +22,11 @@ git add .
 git commit -m "sync from git to azure"
 
 git push
+
+git checkout develop
+git merge master develop
+
+git add .
+git commit -m "sync from git to azure"
+
+git push

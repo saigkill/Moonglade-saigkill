@@ -1,6 +1,8 @@
 ﻿using Moonglade.Caching.Filters;
 using Moonglade.Core.PageFeature;
+using Moonglade.Notification.Client;
 using Moonglade.Web.Attributes;
+
 using NUglify;
 
 namespace Moonglade.Web.Controllers;
@@ -65,5 +67,20 @@ public class PageController : Controller
 
         _cache.Remove(CacheDivision.Page, page.Slug);
         return NoContent();
+    }
+
+    [HttpPost("email/contact")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> ContactEmail(ContactNotification notification)
+    {
+        try
+        {
+            await _mediator.Send(new ContactNotification(notification.Name, notification.Subject, notification.Email, notification.Body));
+            return Ok(true);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
 }

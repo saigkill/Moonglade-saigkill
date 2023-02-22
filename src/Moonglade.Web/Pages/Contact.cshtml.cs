@@ -27,11 +27,11 @@ namespace Moonglade.Web.Pages
 
         public void OnPostSubmit(ContactFormModel model)
         {
-            this.Name = model.Name;
-            this.Email = model.Email;
-            this.Subject = model.Subject;
-            this.Body = model.Body;
-            this.Attachment = model.Attachment;
+            Name = model.Name;
+            Email = model.Email;
+            Subject = model.Subject;
+            Body = model.Body;
+            Attachment = model.Attachment;
 
             //Read SMTP settings from AppSettings.json.
             //string host = this.Configuration.GetValue<string>("Smtp:Server");

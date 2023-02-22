@@ -6,19 +6,14 @@ This `saigkill` Version is a fork of the original project. It enables Site Verif
 
 The upstream project provides managing sites. This feature is also present in this version. Becuase of a lack of page localization i decided to use plain razor pages for my pages. If you want to use my fork, and want to use the native pages support, so delete the pages `About`, `Contact`, `CurriculumVitae`, `Imprint`, `Privacy`, `Talks` and `Testimonials`.
 
-|What|Where|
-|-----|-------------------------------------------------------------------------------------|
-|Code  | https://github.com/saigkill/Moonglade |
-|Bugs & feature requests  | https://github.com/saigkill/Moonglade/issues |
-|The author's blog | http://saschamanns.de |
-
 | What | Status |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |Code quality Codeclimate | [![Maintainability](https://api.codeclimate.com/v1/badges/2918dcfd1fe8df3f3c17/maintainability)](https://codeclimate.com/github/saigkill/Moonglade/maintainability) |
 |Code quality Sonarcloud | [![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/saigkill_moonglade/master?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/project/overview?id=saigkill_moonglade) |
-|Code coverage Codeclimate | [![Test Coverage](https://api.codeclimate.com/v1/badges/2918dcfd1fe8df3f3c17/test_coverage)](https://codeclimate.com/github/saigkill/Moonglade/test_coverage)
-|Continuous integration | [![.NET Build Linux](https://github.com/saigkill/Moonglade/actions/workflows/dotnet.yml/badge.svg)](https://github.com/saigkill/Moonglade/actions/workflows/dotnet.yml) |
-|Docker build & deploy |  [![Docker Linux x64](https://github.com/saigkill/Moonglade/actions/workflows/docker.yml/badge.svg)](https://github.com/saigkill/Moonglade/actions/workflows/docker.yml)|
+|Build prod |  [![Build status](https://dev.azure.com/saigkill/Moonglade/_apis/build/status/mannsblog%20-%20CI%20(productive))](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=57)|
+|Build dev | [![Build status](https://dev.azure.com/saigkill/Moonglade/_apis/build/status/mannsblog%20-%20CI%20(dev))](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=58) |
+|Deploy prod | [![Build status](https://vsrm.dev.azure.com/saigkill/_apis/public/Release/badge/2ff70274-0a21-44d3-bbb2-7e44e5fcce67/3/4)](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=56) |
+|Deploy dev | [![Build status](https://vsrm.dev.azure.com/saigkill/_apis/public/Release/badge/2ff70274-0a21-44d3-bbb2-7e44e5fcce67/2/3)](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=56) |
 |Security check CodeQL | ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/saigkill/Moonglade/codeql.yml) |
 |Security check Snyk | [![Known Vulnerabilities](https://snyk.io/test/github/saigkill/Moonglade/badge.svg)](https://app.snyk.io) |
 |License check | [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade?ref=badge_shield) |
