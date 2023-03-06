@@ -76,3 +76,4 @@ public class PostEditModel
 
     public bool WarnSlugModification => PublishDate.HasValue && (DateTime.UtcNow - PublishDate.Value).Days > 7;
 }
+
