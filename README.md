@@ -8,20 +8,12 @@ The upstream project provides managing sites. This feature is also present in th
 
 | What | Status |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Code quality Codeclimate | [![Maintainability](https://api.codeclimate.com/v1/badges/2918dcfd1fe8df3f3c17/maintainability)](https://codeclimate.com/github/saigkill/Moonglade/maintainability) |
-|Code quality Sonarcloud | [![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/saigkill_moonglade/master?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/project/overview?id=saigkill_moonglade) |
 |Build prod |  [![Build status](https://dev.azure.com/saigkill/Moonglade/_apis/build/status/mannsblog%20-%20CI%20(productive))](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=57)|
 |Build dev | [![Build status](https://dev.azure.com/saigkill/Moonglade/_apis/build/status/mannsblog%20-%20CI%20(dev))](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=58) |
 |Deploy prod | [![Build status](https://vsrm.dev.azure.com/saigkill/_apis/public/Release/badge/2ff70274-0a21-44d3-bbb2-7e44e5fcce67/3/4)](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=56) |
 |Deploy dev | [![Build status](https://vsrm.dev.azure.com/saigkill/_apis/public/Release/badge/2ff70274-0a21-44d3-bbb2-7e44e5fcce67/2/3)](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=56) |
 |Security check CodeQL | ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/saigkill/Moonglade/codeql.yml) |
-|Security check Snyk | [![Known Vulnerabilities](https://snyk.io/test/github/saigkill/Moonglade/badge.svg)](https://app.snyk.io) |
-|License check | [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade?ref=badge_shield) |
-|Open Issues | ![GitHub issues](https://img.shields.io/github/issues/saigkill/Moonglade) |
-|Open Pull Request | ![Pull Requests](https://img.shields.io/github/issues-pr/saigkill/moonglade) |
-|Conventional commits | [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) |
 |License | ![GitHub](https://img.shields.io/github/license/saigkill/Moonglade) |
-|Downloads|![GitHub All Releases](https://img.shields.io/github/downloads/saigkill/Moonglade/total)|
 
 ## 📦 Deployment
 

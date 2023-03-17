@@ -18,7 +18,7 @@
         HttpContext.Response.Headers.Add("X-Robots-Tag", "noindex, nofollow");
     }
     ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
-    TimeToRead timeToRead = Model.Post.GetTimeToRead(SharedLocalizer);
+    TimeToRead timeToRead = Model.Post.GetTimeToRead();
     string ghProfile = BlogConfig.SocialProfileSettings.GitHub;
     string ghUser = ghProfile.Replace("https://github.com/", "");
     string ghUserFix = "@" + ghUser;

@@ -8,10 +8,10 @@
 
 @namespace Moonglade.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@addTagHelper *, Microsoft.FeatureManagement.AspNetCore
 @addTagHelper *, Moonglade.Web
 @addTagHelper *, Syncfusion.EJ2
 @inject IBlogConfig BlogConfig
-@inject IStringLocalizer<SharedResource> SharedLocalizer
+
+@inject IStringLocalizer<Program> SharedLocalizer
 @inject Moonglade.Data.DataProviders.PublicationProvider _pubs
 @inject IViewLocalizer _localizer

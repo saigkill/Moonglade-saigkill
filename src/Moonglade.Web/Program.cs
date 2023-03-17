@@ -170,7 +170,7 @@ void ConfigureServices(IServiceCollection services)
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .ConfigureApiBehaviorOptions(ConfigureApiBehavior.BlogApiBehavior);
     services.AddRazorPages()
-            .AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)))
+            .AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(Program)))
             .AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Admin/Post", "admin");
