@@ -4,8 +4,8 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageProjectUrl>https://github.com/EdiWang/Moonglade</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/EdiWang/Moonglade</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/saigkill/Moonglade</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/saigkill/Moonglade</RepositoryUrl>
 		<UserSecretsId>bbb2a205-c78d-404b-8c7d-c5b8e9bea4d8</UserSecretsId>
 	</PropertyGroup>
 
@@ -43,14 +43,13 @@
 		<PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
 		<PackageReference Include="Edi.ImageWatermark" Version="2.8.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.3" />
+		<PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="20.4.0.48" />
 		<PackageReference Include="Syncfusion.Licensing" Version="20.4.0.48" />
 		<PackageReference Include="UAParser" Version="3.1.47" />
 		<PackageReference Include="WilderMinds.MetaWeblog" Version="5.1.1" />
 		<PackageReference Include="Spectre.Console" Version="0.46.0" />
-		<PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
-    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="20.4.0.48" />
-    <PackageReference Include="Syncfusion.Licensing" Version="20.4.0.48" />
+		<PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.5" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,6 +63,7 @@
 		<ProjectReference Include="..\Moonglade.Data.SqlServer\Moonglade.Data.SqlServer.csproj" />
 		<ProjectReference Include="..\Moonglade.FriendLink\Moonglade.FriendLink.csproj" />
 		<ProjectReference Include="..\Moonglade.ImageStorage\Moonglade.ImageStorage.csproj" />
+		<ProjectReference Include="..\Moonglade.Menus\Moonglade.Menus.csproj" />
 		<ProjectReference Include="..\Moonglade.Notification.Client\Moonglade.Notification.Client.csproj" />
 		<ProjectReference Include="..\Moonglade.Pingback\Moonglade.Pingback.csproj" />
 		<ProjectReference Include="..\Moonglade.Syndication\Moonglade.Syndication.csproj" />
