@@ -24,8 +24,6 @@ public class BlogDbContext : DbContext
     public virtual DbSet<TagEntity> Tag { get; set; }
     public virtual DbSet<FriendLinkEntity> FriendLink { get; set; }
     public virtual DbSet<PageEntity> CustomPage { get; set; }
-    public virtual DbSet<MenuEntity> Menu { get; set; }
-    public virtual DbSet<SubMenuEntity> SubMenu { get; set; }
     public virtual DbSet<LocalAccountEntity> LocalAccount { get; set; }
     public virtual DbSet<PingbackEntity> Pingback { get; set; }
     public virtual DbSet<BlogThemeEntity> BlogTheme { get; set; }
@@ -38,8 +36,6 @@ public class BlogDbContext : DbContext
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new TagConfiguration());
         modelBuilder.ApplyConfiguration(new FriendLinkConfiguration());
-        modelBuilder.ApplyConfiguration(new MenuConfiguration());
-        modelBuilder.ApplyConfiguration(new SubMenuConfiguration());
         modelBuilder.ApplyConfiguration(new BlogConfigurationConfiguration());
 
         modelBuilder
@@ -72,7 +68,6 @@ public static class BlogDbContextExtension
         context.Pingback.RemoveRange();
         context.PostExtension.RemoveRange();
         context.Post.RemoveRange();
-        context.Menu.RemoveRange();
         context.BlogConfiguration.RemoveRange();
         context.BlogAsset.RemoveRange();
         context.BlogTheme.RemoveRange();
