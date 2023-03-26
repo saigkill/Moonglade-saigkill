@@ -57,16 +57,17 @@ public class BlogConfig : IBlogConfig
     private readonly List<int> _keysToInit = new();
     private T AssignValueForConfigItem<T>(int index, T defaultValue, IDictionary<string, string> config) where T : IBlogSettings
     {
-        var name = typeof(T).Name;
+	    var name = typeof(T).Name;
 
-        if (config.TryGetValue(name, out var value))
-        {
-            return value.FromJson<T>();
-        }
+	    if (config.TryGetValue(name, out var value))
+	    {
+		    return value.FromJson<T>();
+	    }
 
-        _keysToInit.Add(index);
-        return defaultValue;
+	    _keysToInit.Add(index);
+	    return defaultValue;
     }
+
 
     public KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings
     {

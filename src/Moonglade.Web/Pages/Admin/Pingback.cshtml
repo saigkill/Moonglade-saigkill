@@ -80,7 +80,7 @@
     <div class="pingbacks-container">
         @foreach (var item in pingbackRecords.OrderByDescending(p => p.PingTimeUtc))
         {
-            <div id="pingback-box-@item.Id" class="pingback-item row">
+            <div id="pingback-box-@item.Id" class="row">
                 <div class="col">
                     <strong>
                         <a href="@item.SourceUrl" target="_blank">@item.SourceTitle</a>
@@ -104,10 +104,7 @@
                     </a>
                 </div>
             </div>
-<<<<<<< HEAD
-=======
             <hr id="pingback-box-hr-@item.Id" />
->>>>>>> fcf4fb51 (sync from git to azure)
         }
     </div>
 </div>
