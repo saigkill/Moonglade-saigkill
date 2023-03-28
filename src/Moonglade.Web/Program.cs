@@ -17,6 +17,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Moonglade.Data.DataProviders;
 using WilderMinds.MetaWeblog;
+
 using Encoder = Moonglade.Web.Configuration.Encoder;
 
 Console.OutputEncoding = Encoding.UTF8;
@@ -85,47 +86,6 @@ void ConfigureServices(IServiceCollection services)
     AppDomain.CurrentDomain.Load("Moonglade.Data");
 
     services.AddMediatR(config => config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-
-    // Fix docker deployments on Azure App Service blows up with Azure AD authentication
-    // https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-6.0
-    // "Outside of using IIS Integration when hosting out-of-process, Forwarded Headers Middleware isn't enabled by default."
-    var knownProxies = builder.Configuration.GetSection("KnownProxies").Get<string[]>();
-    builder.Services.Configure<ForwardedHeadersOptions>(options =>
-    {
-        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-
-        if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
-        {
-            // Fix #712
-            // Adding KnownProxies will make Azure App Service boom boom with Azure AD redirect URL
-            // Result in `https` incorrectly written into `http` and make `/signin-oidc` url invalid.
-            AnsiConsole.MarkupLine("[yellow]Running in Docker, skip adding 'KnownProxies'.[/]");
-        }
-        else
-        {
-            options.ForwardLimit = null;
-            options.KnownProxies.Clear();
-
-            if (knownProxies != null)
-            {
-                foreach (var ip in knownProxies)
-                {
-                    options.KnownProxies.Add(IPAddress.Parse(ip));
-                }
-
-                AnsiConsole.MarkupLine("Added known proxies [green]({0})[/]: {1}",
-                    knownProxies.Length,
-                    System.Text.Json.JsonSerializer.Serialize(knownProxies).EscapeMarkup());
-            }
-        }
-    });
-
-    var syncfusionLicense = builder.Configuration.GetSection("SyncfusionLicenseKey").Get<String>();
-    if (syncfusionLicense != null)
-    {
-        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicense);
-    }
-
     services.AddOptions()
             .AddHttpContextAccessor()
             .AddRateLimit(builder.Configuration.GetSection("IpRateLimiting"));
