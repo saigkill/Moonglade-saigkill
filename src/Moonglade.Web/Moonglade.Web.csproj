@@ -43,13 +43,13 @@
 		<PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
 		<PackageReference Include="Edi.ImageWatermark" Version="2.8.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.3" />
-		<PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="20.4.0.48" />
-		<PackageReference Include="Syncfusion.Licensing" Version="20.4.0.48" />
+		<PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.4" />
+		<PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="21.1.37" />
+		<PackageReference Include="Syncfusion.Licensing" Version="21.1.37" />
 		<PackageReference Include="UAParser" Version="3.1.47" />
 		<PackageReference Include="WilderMinds.MetaWeblog" Version="5.1.1" />
 		<PackageReference Include="Spectre.Console" Version="0.46.0" />
-		<PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.5" />
+		<PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
 	</ItemGroup>
 
 	<ItemGroup>
