@@ -43,8 +43,9 @@ ConfigureConfiguration();
 ConfigureServices(builder.Services);
 
 var app = builder.Build();
-
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
 await FirstRun();
+
 
 ConfigureMiddleware();
 
