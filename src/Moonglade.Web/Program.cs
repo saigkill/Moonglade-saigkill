@@ -37,7 +37,7 @@ ConfigureConfiguration();
 ConfigureServices(builder.Services);
 
 var app = builder.Build();
-
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
 await FirstRun();
 
 
@@ -85,8 +85,6 @@ void ConfigureServices(IServiceCollection services)
     AppDomain.CurrentDomain.Load("Moonglade.Theme");
     AppDomain.CurrentDomain.Load("Moonglade.Configuration");
     AppDomain.CurrentDomain.Load("Moonglade.Data");
-
-    Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
 
     services.AddMediatR(config => config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
     services.AddOptions()
