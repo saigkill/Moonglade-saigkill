@@ -1,6 +1,6 @@
 param(
-    $regionName = "West Europe", 
-    [bool] $useLinuxPlanWithDocker = 1, 
+    $regionName = "West Europe",
+    [bool] $useLinuxPlanWithDocker = 1,
     [bool] $createCDN = 1
 )
 
@@ -16,7 +16,7 @@ function Get-UrlStatusCode([string] $Url) {
 [Console]::ResetColor()
 # az login --use-device-code
 $output = az account show -o json | ConvertFrom-Json
-$subscriptionList = az account list -o json | ConvertFrom-Json 
+$subscriptionList = az account list -o json | ConvertFrom-Json
 $subscriptionList | Format-Table name, id, tenantId -AutoSize
 $subscriptionName = $output.name
 Write-Host "Currently logged in to subscription """$output.name.Trim()""" in tenant " $output.tenantId
@@ -30,35 +30,35 @@ else {
     Write-Host "Changed to subscription ("$subscriptionName")"
 }
 
-while($true) {
-    $webAppName = Read-Host -Prompt "Enter webapp name"
-    $webAppName = $webAppName.Trim()
-    if($webAppName.ToLower() -match "xbox") {
-        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
-        continue
-    } elseif ($webAppName.ToLower() -match "windows") {
-        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
-        continue
-    } elseif ($webAppName.ToLower() -match "login") {
-        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
-        continue
-    } elseif ($webAppName.ToLower() -match "microsoft") {
-        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
-        continue
-    }
-    # Create the request
-    $HTTP_Status = Get-UrlStatusCode('https://' + $webAppName + '.azurewebsites.net')
-    if($HTTP_Status -eq 0) {
-        break
-    } else {
-        Write-Host "Webapp name taken"
-    }
-}
+#while($true) {
+#    $webAppName = Read-Host -Prompt "Enter webapp name"
+#    $webAppName = $webAppName.Trim()
+#    if($webAppName.ToLower() -match "xbox") {
+#        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
+#        continue
+#    } elseif ($webAppName.ToLower() -match "windows") {
+#        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
+#        continue
+#    } elseif ($webAppName.ToLower() -match "login") {
+#        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
+#        continue
+#    } elseif ($webAppName.ToLower() -match "microsoft") {
+#        Write-Host "Webapp name cannot have keywords xbox,windows,login,microsoft"
+#        continue
+#    }
+#    # Create the request
+#    $HTTP_Status = Get-UrlStatusCode('https://' + $webAppName + '.azurewebsites.net')
+#    if($HTTP_Status -eq 0) {
+#        break
+#    } else {
+#        Write-Host "Webapp name taken"
+#    }
+#}
 
 # Start script
-$rndNumber = 722
+$webAppName = Read-Host -Prompt "Enter webapp name"
+$rndNumber = Read-Host -Prompt "Enter Ressource Group Number"
 $rsgName = "moongladersg$rndNumber"
-$aspName = "moongladeplan$rndNumber"
 $storageAccountName = "moongladestorage$rndNumber"
 $storageContainerName = "moongladeimages$rndNumber"
 $cdnProfileName = "moongladecdn$rndNumber"
@@ -125,7 +125,7 @@ if ($createCDN) {
         $echo = az webapp config appsettings set -g $rsgName -n $webAppName --settings ImageStorage:CDNSettings:EnableCDNRedirect=true
         $echo = az webapp config appsettings set -g $rsgName -n $webAppName --settings ImageStorage:CDNSettings:CDNEndpoint="https://#$cdnEndpointName.azureedge.net/$storageContainerName"
     }
-    
+
     Write-Host "It can take up to 10 minutes for endpoint '$cdnEndpointName.azureedge.net' to propagate, after that, please set CDN endpoint to 'https://#$cdnEndpointName.azureedge.net/$storageContainerName' in blog admin settings." -ForegroundColor Yellow
 }
 
