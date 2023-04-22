@@ -19,7 +19,7 @@
     }
 
     ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
-    TimeToRead timeToRead = Model.Post.GetTimeToRead(SharedLocalizer);
+    TimeToRead timeToRead = Model.Post.GetTimeToRead();
     var culture = CultureInfo.CurrentCulture.Name;
     var htmllang = culture.Split('-');
     var finallang = htmllang[0];
