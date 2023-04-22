@@ -49,7 +49,7 @@ public class BlogConfig : IBlogConfig
         AdvancedSettings = AssignValueForConfigItem(6, AdvancedSettings.DefaultValue, config);
         CustomStyleSheetSettings = AssignValueForConfigItem(7, CustomStyleSheetSettings.DefaultValue, config);
         CustomMenuSettings = AssignValueForConfigItem(10, CustomMenuSettings.DefaultValue, config);
-		SocialProfileSettings = AssignValueForConfigItem(11, SocialProfileSettings, config)
+        SocialProfileSettings = AssignValueForConfigItem(11, SocialProfileSettings, config);
 
         return _keysToInit.AsEnumerable();
     }
@@ -67,7 +67,6 @@ public class BlogConfig : IBlogConfig
 	    _keysToInit.Add(index);
 	    return defaultValue;
     }
-
 
     public KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings
     {

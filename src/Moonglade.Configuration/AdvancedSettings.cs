@@ -10,6 +10,9 @@ public class AdvancedSettings : IBlogSettings
     [MaxLength(1024)]
     public string RobotsTxtContent { get; set; }
 
+    [Display(Name = "Robots should revisit after X days.")]
+    public int RobotsRevisitAfter { get; set; }
+
     [Display(Name = "Enable Pingback send")]
     public bool EnablePingbackSend { get; set; } = true;
 
