@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Moonglade.Notification.Client;
 
 using NUglify;
+using RestSharp;
 
 namespace Moonglade.Web.Controllers;
 
@@ -96,6 +97,12 @@ public class PostController : ControllerBase
                         day = pubDate.Day,
                         postEntity.Slug
                     });
+
+                if (_blogConfig.GeneralSettings.IndexNowAPIKey is not null)
+                {
+	                var indexNowCLient = new IndexNowClient(_blogConfig);
+	                await indexNowCLient.SendRequestAsync(link);
+                }
 
                 if (_blogConfig.AdvancedSettings.EnablePingbackSend)
                 {

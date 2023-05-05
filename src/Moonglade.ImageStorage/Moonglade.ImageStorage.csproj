@@ -10,5 +10,6 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
     <PackageReference Include="Minio" Version="4.0.7" />
     <PackageReference Include="Pzy.Qiniu" Version="0.1.2" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 </Project>

@@ -44,6 +44,7 @@
 		<PackageReference Include="Edi.ImageWatermark" Version="2.8.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.4" />
+		<PackageReference Include="RestSharp" Version="110.2.0" />
 		<PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="21.1.35" />
 		<PackageReference Include="Syncfusion.Licensing" Version="21.1.35" />
 		<PackageReference Include="UAParser" Version="3.1.47" />

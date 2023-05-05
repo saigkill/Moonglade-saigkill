@@ -128,9 +128,6 @@ public class GeneralSettings : IBlogSettings
     [Display(Name = "Github PAT")]
     public string GithubPAT { get; set; }
 
-    [Display(Name = "Enable IndexNow")]
-    public bool EnableIndexNow { get; set; }
-
     [Display(Name = "IndexNow API Key")]
     public string IndexNowAPIKey { get; set; }
 

@@ -16,6 +16,8 @@ using System.Net;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Moonglade.Data.DataProviders;
+using Moonglade.Data.ExternalAPI;
+using Moonglade.Data.ExternalAPI.GitHub;
 using WilderMinds.MetaWeblog;
 
 using Encoder = Moonglade.Web.Configuration.Encoder;
@@ -100,6 +102,7 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<TestimonialsProvider>();
     services.AddScoped<VideosProvider>();
     services.AddScoped<DonationService>();
+    services.AddScoped<GithubUserRepositoriesProvider>();
 
     services.AddSession(options =>
     {
