@@ -26,7 +26,7 @@ namespace Moonglade.Data.ExternalAPI.IndexNow
 
 			foreach (var ping in toPing)
 			{
-				var client = new RestClient("https://" + ping);
+				var client = new RestClient($"https://{ping}");
 				var request = new RestRequest("/indexnow", Method.Post);
 
 				request.AddHeader("ContentType", "application/json");
