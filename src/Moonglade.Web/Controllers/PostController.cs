@@ -101,7 +101,7 @@ public class PostController : ControllerBase
                 if (_blogConfig.GeneralSettings.IndexNowAPIKey is not null)
                 {
 	                var indexNowCLient = new IndexNowClient(_blogConfig);
-	                await indexNowCLient.SendRequestAsync(link);
+	                if (link != null) await indexNowCLient.SendRequestAsync(link);
                 }
 
                 if (_blogConfig.AdvancedSettings.EnablePingbackSend)
