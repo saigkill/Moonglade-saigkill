@@ -9,7 +9,7 @@
 @inject Moonglade.Data.DataProviders.GithubUserRepositoriesProvider _repos
 @inject IViewLocalizer _localizer
 @{
-	var repoList = await _repos.GetUserRepositories();
+    var repoList = await _repos.GetUserRepositories();
 }
 @section head {
     <environment include="Development">
@@ -55,6 +55,7 @@
                 <div class="center-align">
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage722.blob.core.windows.net/moongladeimages722/Sascha1.jpg" />
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage722.blob.core.windows.net/moongladeimages722/coat-of-arms.png" />
+                    <p>@_localizer["coat-of-arms-title"]</p>
                 </div>
             </div>
         </div>

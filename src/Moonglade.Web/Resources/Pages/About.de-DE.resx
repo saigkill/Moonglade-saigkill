@@ -166,4 +166,7 @@ als Packager, Redakteur des wöchentlichen Newsletters und innerhalb des Members
   <data name="connect-header" xml:space="preserve">
     <value>Lasst uns verbinden</value>
   </data>
+  <data name="coat-of-arms-title" xml:space="preserve">
+    <value>Gräfliches Haus Manns-Potocki</value>
+  </data>
 </root>
