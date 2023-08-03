@@ -7,7 +7,6 @@
 @using RestSharp
 @inject Moonglade.Data.DataProviders.PublicationProvider _pubs
 @inject Moonglade.Data.DataProviders.GithubUserRepositoriesProvider _repos
-@inject IViewLocalizer _localizer
 @{
     var repoList = await _repos.GetUserRepositories();
 }
@@ -32,14 +31,14 @@
 }
 <div class="sec pt-4">
     <div class="container">
-        <h3>@_localizer["Me and the Blog"]</h3>
+        <h3>@SharedLocalizer["Me and the Blog"]</h3>
         <hr />
         <div class="row">
             <div class="col-md-7">
                 <section id="self-intro">
                     <blockquote class="blockquote">
                         <p>
-                            @_localizer["intro"]
+                            @SharedLocalizer["intro"]
                         </p>
                         <img src="https://github-readme-stats-ten-gilt.vercel.app/api?username=saigkill" />
                     </blockquote>
@@ -55,7 +54,7 @@
                 <div class="center-align">
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage722.blob.core.windows.net/moongladeimages722/Sascha1.jpg" />
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage722.blob.core.windows.net/moongladeimages722/coat-of-arms.png" />
-                    <p>@_localizer["coat-of-arms-title"]</p>
+                    <p>@SharedLocalizer["about-coat-of-arms"]</p>
                 </div>
             </div>
         </div>
@@ -63,13 +62,13 @@
 </div>
 
 <div class="sec">
-    <h4 class="center-text"><@_localizer["connect-header"]</h4>
+    <h4 class="center-text"><@SharedLocalizer["about-connect"]</h4>
     <partial name="Shared/_SocialProfiles" />
 </div>
 
 
 <div class="sec">
-    <h4 class="center-text">@_localizer["publications"]</h4>
+    <h4 class="center-text">@SharedLocalizer["about-publications"]</h4>
     @foreach (var pub in _pubs.Get())
     {
         <div tabindex="0" class="e-card" id="@pub.Id">
@@ -84,11 +83,11 @@
                 <div class="card-text"><small>@pub.PublicationName - @pub.Publisher</small></div>
                 @if (!string.IsNullOrWhiteSpace(pub.Identifier))
                 {
-                    <div class="muted"><small>@pub.Identifier, @_localizer["publisher-published"]: <time datetime="@pub.DatePublished">@pub.DatePublished</time></small></div>
+                    <div class="muted"><small>@pub.Identifier, @SharedLocalizer["Published"]: <time datetime="@pub.DatePublished">@pub.DatePublished</time></small></div>
                 }
                 else
                 {
-                    <div class="muted"><small>@_localizer["publisher-published"]: @pub.DatePublished</small></div>
+                    <div class="muted"><small>@SharedLocalizer["Published"]: @pub.DatePublished</small></div>
                 }
             </div>
         </div>
@@ -96,7 +95,7 @@
 </div>
 
 <div class="sec">
-    <h4 class="center-text">@_localizer["opensource"]</h4>
+    <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
     @foreach (var repo in repoList)
     {
         <div tabindex="0" class="e-card" id="@repo.id">
@@ -107,7 +106,7 @@
             </div>
             <div class="e-card-content">
                 <div class="card-text">@repo.description</div>
-                <div class="muted"><small>@_localizer["last-updated"]: <time datetime="@repo.updated_at">@repo.updated_at</time></small></div>
+                <div class="muted"><small>@SharedLocalizer["last-updated"]: <time datetime="@repo.updated_at">@repo.updated_at</time></small></div>
             </div>
         </div>
     }

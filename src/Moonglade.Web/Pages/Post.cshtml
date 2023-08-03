@@ -1,4 +1,4 @@
-﻿@page "/post/{year:int:min(1900):length(4)}/{month:int:range(1,12)}/{day:int:range(1,31)}/{slug:regex(^(?!-)([a-zA-Z0-9-]){{1,128}}$)}"
+@page "/post/{year:int:min(1900):length(4)}/{month:int:range(1,12)}/{day:int:range(1,31)}/{slug:regex(^(?!-)([a-zA-Z0-9-]){{1,128}}$)}"
 @model Moonglade.Web.Pages.PostModel
 @inject Moonglade.Data.DataProviders.DonationService _donationService
 @using Moonglade.Utils
@@ -156,9 +156,6 @@
         }
 
         var pid = document.querySelector('article').dataset.postid;
-        viewpost.getStatistics(pid);
-        viewpost.registerRatingButtons(pid);
-        viewpost.postStatistics(pid, false);
 
         window.fitImageToDevicePixelRatio = @BlogConfig.ImageSettings.FitImageToDevicePixelRatio.ToString().ToLower();
 
@@ -221,6 +218,11 @@
 
         <hr class="d-none d-md-block" />
     </header>
+    
+    @if (Model.Post.IsOutdated)
+    {
+        <partial name="_PostOutdatedMessage" />
+    }
 
     @if (!string.IsNullOrWhiteSpace(Model.Post.HeroImageUrl))
     {

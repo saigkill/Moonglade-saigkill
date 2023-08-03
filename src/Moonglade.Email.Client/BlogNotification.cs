@@ -1,31 +1,31 @@
-﻿using Azure.Storage.Queues;
+﻿using System.Text;
+using System.Text.Json;
+using Azure.Storage.Queues;
 using Microsoft.Extensions.Logging;
 using Moonglade.Configuration;
 using Moonglade.Data.Exporting.Exporters;
-using System.Text;
-using System.Text.Json;
 
-namespace Moonglade.Notification.Client;
+namespace Moonglade.Email.Client;
 
-public interface IMoongladeNotification
+public interface IBlogNotification
 {
-    Task EnqueueNotification<T>(MailMesageTypes type, string[] toAddresses, T payload) where T : class;
+    Task Enqueue<T>(MailMesageTypes type, string[] receipts, T payload) where T : class;
 }
 
-public class MoongladeNotification : IMoongladeNotification
+public class BlogNotification : IBlogNotification
 {
-    private readonly ILogger<MoongladeNotification> _logger;
+    private readonly ILogger<BlogNotification> _logger;
     private readonly NotificationSettings _notificationSettings;
 
-    public MoongladeNotification(
-        ILogger<MoongladeNotification> logger,
+    public BlogNotification(
+        ILogger<BlogNotification> logger,
         IBlogConfig blogConfig)
     {
         _logger = logger;
         _notificationSettings = blogConfig.NotificationSettings;
     }
 
-    public async Task EnqueueNotification<T>(MailMesageTypes type, string[] toAddresses, T payload) where T : class
+    public async Task Enqueue<T>(MailMesageTypes type, string[] receipts, T payload) where T : class
     {
         if (!_notificationSettings.EnableEmailSending) return;
 
@@ -35,7 +35,7 @@ public class MoongladeNotification : IMoongladeNotification
 
             var en = new EmailNotification
             {
-                DistributionList = string.Join(';', toAddresses),
+                DistributionList = string.Join(';', receipts),
                 MessageType = type.ToString(),
                 MessageBody = JsonSerializer.Serialize(payload, MoongladeJsonSerializerOptions.Default),
             };
@@ -62,11 +62,4 @@ public class MoongladeNotification : IMoongladeNotification
 
         await queue.SendMessageAsync(base64Json);
     }
-}
-
-internal class EmailNotification
-{
-    public string DistributionList { get; set; }
-    public string MessageType { get; set; }
-    public string MessageBody { get; set; }
 }

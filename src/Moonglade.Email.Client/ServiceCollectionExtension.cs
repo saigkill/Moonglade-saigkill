@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Moonglade.Notification.Client;
+namespace Moonglade.Email.Client;
 
 public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddNotification(this IServiceCollection services)
     {
-        services.AddScoped<IMoongladeNotification, MoongladeNotification>();
+        services.AddScoped<IBlogNotification, BlogNotification>();
         return services;
     }
 }

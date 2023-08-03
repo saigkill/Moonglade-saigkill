@@ -38,7 +38,7 @@
 }
 
 ::selection {
-    background-color: var(--bs-primary);
+    background-color: var(--accent-color1);
     color: var(--bs-white);
     text-shadow: none;
 }
@@ -281,8 +281,8 @@ h5 {
 
 .blogger-head-pic {
     border: 5px solid var(--transparent-light-50);
-    height: 110px;
-    width: 110px;
+    height: 120px;
+    width: 120px;
 }
 
 .blog-info-photo-text {
@@ -533,7 +533,8 @@ div.animbrand a:hover {
     }
 
 .navbar .dropdown-item.active,
-.dropdown-item:hover {
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
     background-color: var(--accent-color3);
     color: var(--bs-white);
     text-decoration: none;

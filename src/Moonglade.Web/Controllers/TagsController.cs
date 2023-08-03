@@ -1,5 +1,4 @@
-﻿using Moonglade.Caching.Filters;
-using Moonglade.Core.TagFeature;
+﻿using Moonglade.Core.TagFeature;
 using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Web.Controllers;
@@ -17,8 +16,8 @@ public class TagsController : ControllerBase
     [ProducesResponseType(typeof(IReadOnlyList<string>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Names()
     {
-        var tagNames = await _mediator.Send(new GetTagNamesQuery());
-        return Ok(tagNames);
+        var names = await _mediator.Send(new GetTagNamesQuery());
+        return Ok(names);
     }
 
     [HttpPost]

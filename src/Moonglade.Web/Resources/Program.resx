@@ -1,17 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -117,6 +117,226 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="about-intro" xml:space="preserve">
+    <value>Sascha Manns is a German software developer (C#, Linux) and book author. He has worked in the openSUSE community
+as a packager, editor of the weekly newsletter and within the Membership Application Team. He was temporarily involved in the "Balsam Professional" distribution, an openSUSE derivative, in manual writing and product support. After finishing his studies as an IT specialist in application development, he entered C# development, and dealt with various topics such as: Windows Presentation Foundation, Entity Framework, WinUI3, Web API, Web App, and others.</value>
+  </data>
+  <data name="about-publications" xml:space="preserve">
+    <value>Publications</value>
+  </data>
+  <data name="about-publisher-published" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="about-opensource" xml:space="preserve">
+    <value>Some of my Open Source Projects</value>
+  </data>
+  <data name="about-connect" xml:space="preserve">
+    <value>Let's connect</value>
+  </data>
+  <data name="about-last-updated" xml:space="preserve">
+    <value>Last update</value>
+  </data>
+  <data name="contact-enter-name" xml:space="preserve">
+    <value>* Enter your name</value>
+  </data>
+  <data name="contact-enter-subject" xml:space="preserve">
+    <value>* Enter your Subject</value>
+  </data>
+  <data name="contact-subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="contact-enter-email" xml:space="preserve">
+    <value>* Please enter valid email</value>
+  </data>
+  <data name="contact-enter-body" xml:space="preserve">
+    <value>* Enter your message</value>
+  </data>
+  <data name="contact-email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="contact-message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="contact-submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="cv-about-experience" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="activity-title" xml:space="preserve">
+    <value>My coding Activity (Just public Repos on Github, last year)</value>
+  </data>
+  <data name="activity-last30" xml:space="preserve">
+    <value>Used programming languages last 30 days</value>
+  </data>
+  <data name="activity-all" xml:space="preserve">
+    <value>My full coding activity (last year)</value>
+  </data>
+  <data name="about-year1" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="about-year" xml:space="preserve">
+    <value>old</value>
+  </data>
+  <data name="about-program" xml:space="preserve">
+    <value>I love it to program and realize Workflows into Solutions.</value>
+  </data>
+  <data name="about-other-skills" xml:space="preserve">
+    <value>Other Skills:</value>
+  </data>
+  <data name="about-name" xml:space="preserve">
+    <value>My Name is</value>
+  </data>
+  <data name="about-jobs" xml:space="preserve">
+    <value>I am a </value>
+  </data>
+  <data name="portfolio-title" xml:space="preserve">
+    <value>My Portfolio</value>
+  </data>
+  <data name="about-experience" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="education-title" xml:space="preserve">
+    <value>Education and training</value>
+  </data>
+  <data name="experience-cert-employment" xml:space="preserve">
+    <value>Employment &lt;br /&gt; Certificate</value>
+  </data>
+  <data name="experience-certs" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="experience-content" xml:space="preserve">
+    <value>Contents</value>
+  </data>
+  <data name="experience-downloadcv" xml:space="preserve">
+    <value>Download cv</value>
+  </data>
+  <data name="experience-header" xml:space="preserve">
+    <value>Work Experience</value>
+  </data>
+  <data name="experience-header1" xml:space="preserve">
+    <value>Continuing Education</value>
+  </data>
+  <data name="jobs-title" xml:space="preserve">
+    <value>Previous professional stations</value>
+  </data>
+  <data name="last" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="masterhead-lead" xml:space="preserve">
+    <value>Welcome to my Curriculum Vitae</value>
+  </data>
+  <data name="project-2-blurp" xml:space="preserve">
+    <value>A utility to write an application using LaTEX and to manage the status of all sent.</value>
+  </data>
+  <data name="projects" xml:space="preserve">
+    <value>Projects</value>
+  </data>
+  <data name="projects-1-blurp" xml:space="preserve">
+    <value>This Website</value>
+  </data>
+  <data name="services-app" xml:space="preserve">
+    <value>App-Development</value>
+  </data>
+  <data name="services-app-blurp" xml:space="preserve">
+    <value>I realize your Workflows as platform independend apps by using modern frameworks like .NET, Angular and other technologies.</value>
+  </data>
+  <data name="services-architect" xml:space="preserve">
+    <value>Software Architecture</value>
+  </data>
+  <data name="services-architect-blurp" xml:space="preserve">
+    <value>As a software architect, I make sure that the existing code remains maintainable and portable and therefore fit for your company's future.</value>
+  </data>
+  <data name="services-my" xml:space="preserve">
+    <value>My</value>
+  </data>
+  <data name="services-specialization" xml:space="preserve">
+    <value>Specialization</value>
+  </data>
+  <data name="services-web" xml:space="preserve">
+    <value>Web-Development</value>
+  </data>
+  <data name="services-web-blurp" xml:space="preserve">
+    <value>Your website i'm creating by using technologies like ASP .NET, PHP, Angular or Vue.js.</value>
+  </data>
+  <data name="skills-title" xml:space="preserve">
+    <value>Skills</value>
+  </data>
+  <data name="testimonials" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="testimonials-testimonial" xml:space="preserve">
+    <value>Testimonials</value>
+  </data>
+  <data name="viewbag-pageblurp" xml:space="preserve">
+    <value>A collection of my held talks</value>
+  </data>
+  <data name="viewbag-pagename" xml:space="preserve">
+    <value>My Talks</value>
+  </data>
+  <data name="viewbag-title" xml:space="preserve">
+    <value>My Talks - Sascha Manns's Twilight Zone</value>
+  </data>
+  <data name="write-me" xml:space="preserve">
+    <value>Write me</value>
+  </data>
+  <data name="disclaimer3" xml:space="preserve">
+    <value>&lt;strong&gt; Copyrights and trademark rights &lt;/strong&gt;: All content presented on this website, such as texts, photographs, graphics, brands and trademarks are protected by the respective property rights (copyrights, trademark rights). The use, reproduction, etc. are subject to our rights or the rights of the respective authors or rights administrators.</value>
+  </data>
+  <data name="adress" xml:space="preserve">
+    <value>adress as above</value>
+  </data>
+  <data name="contact" xml:space="preserve">
+    <value>Contact options</value>
+  </data>
+  <data name="contact-form" xml:space="preserve">
+    <value>contact form</value>
+  </data>
+  <data name="disclaimer" xml:space="preserve">
+    <value>Disclaimer of liability</value>
+  </data>
+  <data name="disclaimer1" xml:space="preserve">
+    <value>The content of this online offer was created carefully and according to our current state of knowledge, but is only for information purposes and does not have any legally binding effect, unless it is legally binding information (e.g. the imprint, the data protection declaration, terms and conditions or mandatory instructions for consumers). We reserve the right to change or delete the content in full or in part, provided that contractual obligations remain unaffected. All offers are non-binding.</value>
+  </data>
+  <data name="disclaimer2" xml:space="preserve">
+    <value>&lt;strong&gt; Links to other websites &lt;/strong&gt;: Contents of external websites to which we refer directly or indirectly are outside our area of responsibility and we do not adopt them as our own. The provider of the linked websites is solely liable for all content and in particular for damage resulting from the use of the information that can be accessed on the linked websites.</value>
+  </data>
+  <data name="disclaimer4" xml:space="preserve">
+    <value>&lt;strong&gt; Notes on legal violations &lt;/strong&gt;: If you notice legal violations on our website, we ask you to inform us about them. We will remove illegal content and links immediately after taking notice.</value>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>E-mail address</value>
+  </data>
+  <data name="imprint-header" xml:space="preserve">
+    <value>Imprint</value>
+  </data>
+  <data name="imprint-service" xml:space="preserve">
+    <value>Service provider</value>
+  </data>
+  <data name="journalistic" xml:space="preserve">
+    <value>Journalistic and editorial offers</value>
+  </data>
+  <data name="liability" xml:space="preserve">
+    <value>Liability and property rights notices</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>This imprint also applies to the following social media presences and online profiles</value>
+  </data>
+  <data name="responsibility" xml:space="preserve">
+    <value>Content responsibility</value>
+  </data>
+  <data name="seal" xml:space="preserve">
+    <value>Legal text by Dr. Schwenke - please click for more information</value>
+  </data>
+  <data name="socialmedia" xml:space="preserve">
+    <value>Social media and other online presences</value>
+  </data>
+  <data name="telefon" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="onlinemarketing-security" xml:space="preserve">
+    <value>&lt;strong&gt; Security measures: &lt;/strong&gt; IP masking (pseudonymization of the IP address).</value>
+  </data>
   <data name="analytics-blurp" xml:space="preserve">
     <value>The web analysis (also known as "range measurement") is used to evaluate the flow of visitors to our online offer and can measure behavior, interests or demographic information about visitors, such as include age or gender, as pseudonymous values. With the help of the range analysis we can e.g. recognize at which time our online offer or its functions or content are used most often or invite you to reuse. We can also understand which areas need optimization.</value>
   </data>
@@ -227,20 +447,20 @@
   <data name="cookies-type-rights" xml:space="preserve">
     <value>&lt;strong&gt; Notes on legal bases: &lt;/strong&gt; The legal basis on which we process your personal data with the help of cookies depends on whether we ask for your consent. If this is the case and you consent to the use of cookies, the legal basis for processing your data is the declared consent. Otherwise, the data processed with the help of cookies will be processed on the basis of our legitimate interests (e.g. in the business operation of our online offer and its improvement) or, if the use of cookies is necessary, to fulfill our contractual obligations.</value>
   </data>
+  <data name="cookies-types" xml:space="preserve">
+    <value>&lt;strong&gt; A distinction is made between the following cookie types and functions: &lt;/strong&gt;</value>
+  </data>
   <data name="cookies-type-save" xml:space="preserve">
     <value>&lt;strong&gt; Storage duration: &lt;/strong&gt; If we do not provide you with any explicit information on the storage duration of permanent cookies (e.g. in the context of a so-called cookie opt-in), please assume that the storage duration will be up to two Years.</value>
   </data>
   <data name="cookies-type-statistic" xml:space="preserve">
     <value>&lt;strong&gt; Statistics, marketing and personalization cookies &lt;/strong&gt;: Furthermore, cookies are usually also used in the context of range measurement and when the interests of a user or his behavior (e.g. viewing certain content, using functions, etc. ) are saved on individual websites in a user profile. Such profiles are used to provide users with e.g. Display content that matches their potential interests. This process is also known as "tracking", i.e. following up the potential interests of users. Insofar as we use cookies or "tracking" technologies, we will inform you separately in our data protection declaration or in the context of obtaining consent.</value>
   </data>
-  <data name="cookies-type-third" xml:space="preserve">
-    <value>&lt;strong&gt; Third-party cookies (also: third-party cookies) &lt;/strong&gt;: Third-party cookies are mainly used by advertisers (so-called third parties) to process user information.</value>
-  </data>
-  <data name="cookies-types" xml:space="preserve">
-    <value>&lt;strong&gt; A distinction is made between the following cookie types and functions: &lt;/strong&gt;</value>
-  </data>
   <data name="cookies-types-temp" xml:space="preserve">
     <value>&lt;strong&gt; Temporary cookies (also: session or session cookies): &lt;/strong&gt;&amp;nbsp;Temporary cookies are deleted at the latest after a user has left an online offer and closed his browser.</value>
+  </data>
+  <data name="cookies-type-third" xml:space="preserve">
+    <value>&lt;strong&gt; Third-party cookies (also: third-party cookies) &lt;/strong&gt;: Third-party cookies are mainly used by advertisers (so-called third parties) to process user information.</value>
   </data>
   <data name="delete" xml:space="preserve">
     <value>Deletion of data</value>
@@ -361,9 +581,6 @@
   </data>
   <data name="onlinemarketing-purpose" xml:space="preserve">
     <value>&lt;strong&gt; Purposes of processing: &lt;/strong&gt; Tracking (e.g. interest / behavioral profiling, use of cookies), remarketing, conversion measurement (measurement of the effectiveness of marketing measures), interest-based and behavioral marketing, profiling (creation of user profiles), range measurement ( e.g. access statistics, recognition of returning visitors).</value>
-  </data>
-  <data name="onlinemarketing-security" xml:space="preserve">
-    <value>&lt;strong&gt; Security measures: &lt;/strong&gt; IP masking (pseudonymization of the IP address).</value>
   </data>
   <data name="onlinemarketing-services" xml:space="preserve">
     <value>Used services and service providers</value>
@@ -577,9 +794,6 @@ Translated with www.DeepL.com/Translator (free version)</value>
   <data name="responsible-phone" xml:space="preserve">
     <value>Phone</value>
   </data>
-  <data name="seal" xml:space="preserve">
-    <value>Legal text by Dr. Schwenke - please click for more information</value>
-  </data>
   <data name="seal1" xml:space="preserve">
     <value>Created with free Datenschutz-Generator.de by Dr. Thomas Schwenke</value>
   </data>
@@ -631,10 +845,40 @@ Translated with www.DeepL.com/Translator (free version)</value>
   <data name="toc-update" xml:space="preserve">
     <value>Change and update of the data protection declaration</value>
   </data>
-  <data name="viewbag-pagename" xml:space="preserve">
-    <value>Data Privacy</value>
+  <data name="slides" xml:space="preserve">
+    <value>In the last years i held some talks on Events. Here some of my slides</value>
   </data>
-  <data name="viewbag-title" xml:space="preserve">
-    <value>Data Privacy - Sascha Manns's Twilight Zone</value>
+  <data name="held" xml:space="preserve">
+    <value>Held</value>
+  </data>
+  <data name="show-talk" xml:space="preserve">
+    <value>Show Talk</value>
+  </data>
+  <data name="tests" xml:space="preserve">
+    <value>These recommendations come from former colleagues, of recent years.</value>
+  </data>
+  <data name="cookie-string" xml:space="preserve">
+    <value>Please read the Privacy Agreement by clicking on "Learn More", then click on the "Accept" Button below.</value>
+  </data>
+  <data name="button1" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="button" xml:space="preserve">
+    <value>Learn More</value>
+  </data>
+  <data name="Me and the blog" xml:space="preserve">
+    <value>My blog and i</value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="last-updated" xml:space="preserve">
+    <value>Last updated</value>
+  </data>
+  <data name="Your name" xml:space="preserve">
+    <value>Your name</value>
+  </data>
+  <data name="privacy-title" xml:space="preserve">
+    <value>Data Privacy</value>
   </data>
 </root>

@@ -1,12 +1,10 @@
-﻿@using Moonglade.Utils
+@using Moonglade.Utils
 @using Moonglade.Web.TagHelpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.AspNetCore.Localization
 @using System.Globalization
 @using Syncfusion.EJ2
-@using System.Globalization
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@inject IViewLocalizer _localizer
 @{
     if (string.IsNullOrEmpty(BlogConfig.GeneralSettings.AvatarUrl))
     {
@@ -266,9 +264,9 @@
                                  alt="@BlogConfig.GeneralSettings.OwnerName"
                                  class="rounded-circle blogger-head-pic" />
                         </div>
-                        <div class="col-9">
-                            <h4 class="text-center">
-                                @BlogConfig.GeneralSettings.ShortDescription
+                        <div class="col-9 position-relative">
+                            <h4 class="text-center w-100 position-absolute top-50 start-50 translate-middle">
+                                @BlogConfig.GeneralSettings.Description
                             </h4>
                         </div>
                     </div>
