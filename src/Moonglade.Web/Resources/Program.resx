@@ -265,7 +265,7 @@ as a packager, editor of the weekly newsletter and within the Membership Applica
   <data name="testimonials" xml:space="preserve">
     <value>Last</value>
   </data>
-  <data name="testimonials-testimonial" xml:space="preserve">
+  <data name="testimonial-testimonials" xml:space="preserve">
     <value>Testimonials</value>
   </data>
   <data name="viewbag-pageblurp" xml:space="preserve">
@@ -880,5 +880,11 @@ Translated with www.DeepL.com/Translator (free version)</value>
   </data>
   <data name="privacy-title" xml:space="preserve">
     <value>Data Privacy</value>
+  </data>
+  <data name="talks" xml:space="preserve">
+    <value>Talks</value>
+  </data>
+  <data name="intro" xml:space="preserve">
+    <value>Last activities</value>
   </data>
 </root>

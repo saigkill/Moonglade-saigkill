@@ -10,6 +10,7 @@ using Edi.PasswordGenerator;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 using Moonglade.Data.DataProviders;
 using Moonglade.Data.MySql;
@@ -129,6 +130,7 @@ void ConfigureServices(IServiceCollection services)
 			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
 			.ConfigureApiBehaviorOptions(ConfigureApiBehavior.BlogApiBehavior);
 	services.AddRazorPages()
+			.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
 			.AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(Program)))
 			.AddRazorPagesOptions(options =>
 			{

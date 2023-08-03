@@ -952,7 +952,7 @@
     <value></value>
   </data>
   <data name="intro" xml:space="preserve">
-    <value></value>
+    <value>Letzte Aktivitäten</value>
   </data>
   <data name="opensource" xml:space="preserve">
     <value></value>
@@ -1114,7 +1114,7 @@ als Packager, Redakteur des wöchentlichen Newsletters und innerhalb des Members
   <data name="testimonials" xml:space="preserve">
     <value>Letzte</value>
   </data>
-  <data name="testimonials-testimonial" xml:space="preserve">
+  <data name="testimonial-testimonials" xml:space="preserve">
     <value>Empfehlungen</value>
   </data>
   <data name="viewbag-pageblurp" xml:space="preserve">
@@ -1719,5 +1719,8 @@ als Packager, Redakteur des wöchentlichen Newsletters und innerhalb des Members
   </data>
   <data name="privacy-title" xml:space="preserve">
     <value>Datenschutz</value>
+  </data>
+  <data name="talks" xml:space="preserve">
+    <value>Vorträge</value>
   </data>
 </root>
