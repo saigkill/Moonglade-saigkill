@@ -4,7 +4,7 @@
 [![Docker Linux x64](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml/badge.svg)](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml)
 ![.NET Build Linux](https://github.com/EdiWang/Moonglade/workflows/.NET%20Build%20Linux/badge.svg) 
 
-The [.NET](https://dotnet.microsoft.com/) blog system of [edi.wang](https://edi.wang) that runs on [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
+The [.NET](https://dotnet.microsoft.com/) blog system that optimized for [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
 
 This `saigkill` Version is a fork of the original project. It enables Site Verifying services (Bing, Yandex, Norton Safe Web and World of Trust), a basic support of Dublin Core, also some Analytics services (Google Analytics, MS Clarity).
 
@@ -27,6 +27,17 @@ But there is no automated script to deploy it, you need to manually create all t
 ### 🐋 Quick Deploy on Azure (App Service on Linux)
 
 Use automated deployment script to get your Moonglade up and running in 10 minutes with minimal Azure components, follow instructions [here](https://github.com/EdiWang/Moonglade/wiki/Quick-Deploy-on-Azure)
+
+### 🐋 Quick Deploy with Docker-Compose
+
+Simply go the the root folder of this repo and run:
+
+```bash
+docker-compose build
+docker-compose up
+```
+
+That's it! Now open: [Browser: http://localhost:8080](http://localhost:8080)
 
 ### 🐧 Quick Deploy on Linux without Docker
 
