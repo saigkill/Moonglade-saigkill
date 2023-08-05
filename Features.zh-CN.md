@@ -133,7 +133,11 @@
 
 ### OIDC
 
+<<<<<<< HEAD
 - Azure Active Directory
+=======
+- Microsoft Entra ID
+>>>>>>> develop
 
 ### 本地账号
 

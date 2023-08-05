@@ -1,4 +1,5 @@
-﻿using MediatR;
+using MediatR;
+
 using Moonglade.Data.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Data.Spec;
@@ -9,14 +10,14 @@ public record GetCommentsQuery(int PageSize, int PageIndex) : IRequest<IReadOnly
 
 public class GetCommentsQueryHandler : IRequestHandler<GetCommentsQuery, IReadOnlyList<CommentDetailedItem>>
 {
-    private readonly IRepository<CommentEntity> _repo;
-    public GetCommentsQueryHandler(IRepository<CommentEntity> repo) => _repo = repo;
+	private readonly IRepository<CommentEntity> _repo;
+	public GetCommentsQueryHandler(IRepository<CommentEntity> repo) => _repo = repo;
 
-    public Task<IReadOnlyList<CommentDetailedItem>> Handle(GetCommentsQuery request, CancellationToken ct)
-    {
-        var spec = new CommentSpec(request.PageSize, request.PageIndex);
-        var comments = _repo.SelectAsync(spec, CommentDetailedItem.EntitySelector);
+	public Task<IReadOnlyList<CommentDetailedItem>> Handle(GetCommentsQuery request, CancellationToken ct)
+	{
+		var spec = new CommentSpec(request.PageSize, request.PageIndex);
+		var comments = _repo.SelectAsync(spec, CommentDetailedItem.EntitySelector, ct);
 
-        return comments;
-    }
+		return comments;
+	}
 }

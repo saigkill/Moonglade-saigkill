@@ -9,6 +9,7 @@
 }
 
 @section scripts{
+<<<<<<< HEAD
     <script type="text/javascript" src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
     <script>
         require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' }});
@@ -26,6 +27,11 @@
                 )}`;
             }
         };
+=======
+    <partial name="_MonacoLoaderScript" />
+    <script>
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs' } });
+>>>>>>> develop
 
         var cssContentEditor = null;
 

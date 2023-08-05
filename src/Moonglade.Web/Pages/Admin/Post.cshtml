@@ -1,4 +1,4 @@
-﻿@page "/admin/post"
+@page "/admin/post"
 @using X.PagedList.Mvc.Core
 @model Moonglade.Web.Pages.Admin.PostModel
 @{
@@ -9,14 +9,14 @@
     <script type="module">
         import * as utils from '/js/app/utils.module.js'
 
-        window.deleteConfirm = function(postid) {
+        window.deleteConfirm = function (postid) {
             var cfm = confirm("Delete Confirmation?");
             if (cfm) {
                 window.deletePost(postid);
             }
         }
 
-        window.deletePost = function(postid) {
+        window.deletePost = function (postid) {
             callApi(`/api/post/${postid}/recycle`,
                 'DELETE',
                 {},
@@ -42,7 +42,7 @@
 
     @if (Model.PostSegments.Count == 0)
     {
-        <partial name="_NoPosts"/>
+        <partial name="_NoPosts" />
     }
     else
     {
@@ -71,9 +71,6 @@
                             <span class="text-muted me-2">
                                 <time data-utc-label="@item.CreateTimeUtc.ToString("u")">@item.CreateTimeUtc</time>
                             </span>
-
-                            <i class="bi-eye"></i>
-                            <span class="text-muted">@item.Hits</span>
                         </div>
                     </div>
 
@@ -82,16 +79,16 @@
                         <button class="btn btn-outline-danger btn-sm btn-delete" onclick="window.deleteConfirm('@item.Id')"><i class="bi-trash"></i></button>
                     </div>
                 </div>
-                <hr/>
+                <hr />
             </div>
         }
 
         @Html.PagedListPager(Model.PostSegments, page => $"?pageIndex={page}&searchTerm={Model.SearchTerm}", new ()
-        {
-            LiElementClasses = new[] {"page-item"},
-            PageClasses = new[] {"page-link"},
-            UlElementClasses = new[] {"pagination justify-content-end"},
-            DisplayEllipsesWhenNotShowingAllPageNumbers = false
-        })
+    {
+    LiElementClasses = new[] {"page-item"},
+    PageClasses = new[] {"page-link"},
+    UlElementClasses = new[] {"pagination justify-content-end"},
+    DisplayEllipsesWhenNotShowingAllPageNumbers = false
+    })
     }
 </div>

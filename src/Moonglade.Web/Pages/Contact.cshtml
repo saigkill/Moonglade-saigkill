@@ -1,8 +1,8 @@
-﻿@page "/contact"
+@page "/contact"
 @using Moonglade.Data.DataProviders.Models
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Syncfusion.EJ2.RichTextEditor
-@model Moonglade.Notification.Client.ContactNotification
+@model Moonglade.Email.Client.ContactNotification
 @{
 }
 @addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -24,39 +24,39 @@
         <form id="form1" class="form-vertical" asp-controller="Page" asp-action="ContactEmail" method="post">
             <div class="form-group" style="padding-top: 11px;">
                 <div class="e-float-input">
-                    <input class="e-input" name="Name" type="text" asp-for="Name" data-required-message="@_localizer["enter-name"]" required data-msg-containerid="nameError" placeholder="@_localizer["your-name"]" />
+                    <input class="e-input" name="Name" type="text" asp-for="Name" data-required-message="@SharedLocalizer["contact-enter-name"]" required data-msg-containerid="nameError" placeholder="@SharedLocalizer["Your name"]" />
                     <span class="e-float-line"></span>
-                    <label class="e-float-text e-label-top" for="Name">@_localizer["your-name"]</label>
+                    <label class="e-float-text e-label-top" for="Name">@SharedLocalizer["Your name"]</label>
                     <div id="nameError"></div>
                 </div>
             </div>
             <div class="form-group" style="padding-top: 11px;">
                 <div class="e-float-input">
-                    <input class="e-input" name="Subject" type="text" asp-for="Subject" data-required-message="@_localizer["enter-subject"]" required data-msg-containerid="subjectError" placeholder="@_localizer["subject"]" />
+                    <input class="e-input" name="Subject" type="text" asp-for="Subject" data-required-message="@SharedLocalizer["contact-enter-subject"]" required data-msg-containerid="subjectError" placeholder="@SharedLocalizer["contact-subject"]" />
                     <span class="e-float-line"></span>
-                    <label class="e-float-text e-label-top" for="Subject">@_localizer["subject"]</label>
+                    <label class="e-float-text e-label-top" for="Subject">@SharedLocalizer["contact-subject"]</label>
                     <div id="subjectError"></div>
                 </div>
             </div>
             <div class="form-group" style="padding-top: 11px;">
                 <div class="e-float-input">
-                    <input class="e-input" name="Email" type="text" asp-for="Email" data-validation="email" data-required-message="@_localizer["enter-email"]" required data-msg-containerid="mailError" placeholder="@_localizer["email"]" />
+                    <input class="e-input" name="Email" type="text" asp-for="Email" data-validation="email" data-required-message="@SharedLocalizer["contact-enter-email"]" required data-msg-containerid="mailError" placeholder="@SharedLocalizer["email"]" />
                     <span class="e-float-line"></span>
-                    <label class="e-float-text e-label-top" for="Email">@_localizer["email"]</label>
+                    <label class="e-float-text e-label-top" for="Email">@SharedLocalizer["email"]</label>
                     <div id="mailError"></div>
                 </div>
             </div>
             <div class="form-group" style="padding-top: 11px;">
                 <div class="e-float-input">
                     <textarea asp-for="@Model.Body"
-                              placeholder="@_localizer["enter-body"]"
+                              placeholder="@SharedLocalizer["contact-enter-body"]"
                               class="form-control h-100px"
                               spellcheck="false" cols="10" rows="10" required></textarea>
-                    <label class="form-label" asp-for="@Model.Body">@_localizer["message"]</label>
+                    <label class="form-label" asp-for="@Model.Body">@SharedLocalizer["contact-message"]</label>
                 </div>
             </div>
             <div style="text-align: center; padding-top: 11px;">
-                <input id="submit-btn" class="samplebtn e-control e-btn" type="submit" value="@_localizer["submit"]" data-ripple="true"></input>
+                <input id="submit-btn" class="samplebtn e-control e-btn" type="submit" value="@SharedLocalizer["contact-submit"]" data-ripple="true"></input>
                 <button id="resetbtn" class="samplebtn e-control e-btn" type="reset" data-ripple="true">Reset</button>
             </div>
         </form>

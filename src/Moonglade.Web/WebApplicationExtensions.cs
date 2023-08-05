@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Moonglade.Data.MySql;
 using Moonglade.Data.PostgreSql;
 using Moonglade.Data.SqlServer;
@@ -63,9 +63,32 @@ public static class WebApplicationExtensions
         {
             foreach (var key in toAdd)
             {
-                if (key == 10)
+                switch (key)
                 {
-                    await mediator.Send(new AddEmptyConfigurationCommand(key, nameof(CustomMenuSettings), new CustomMenuSettings().ToJson()));
+                    case 1:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(ContentSettings), ContentSettings.DefaultValue.ToJson()));
+                        break;
+                    case 2:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(NotificationSettings), NotificationSettings.DefaultValue.ToJson()));
+                        break;
+                    case 3:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(FeedSettings), FeedSettings.DefaultValue.ToJson()));
+                        break;
+                    case 4:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(GeneralSettings), GeneralSettings.DefaultValue.ToJson()));
+                        break;
+                    case 5:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(ImageSettings), ImageSettings.DefaultValue.ToJson()));
+                        break;
+                    case 6:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(AdvancedSettings), AdvancedSettings.DefaultValue.ToJson()));
+                        break;
+                    case 7:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(CustomStyleSheetSettings), CustomStyleSheetSettings.DefaultValue.ToJson()));
+                        break;
+                    case 10:
+                        await mediator.Send(new AddDefaultConfigurationCommand(key, nameof(CustomMenuSettings), CustomMenuSettings.DefaultValue.ToJson()));
+                        break;
                 }
             }
         }

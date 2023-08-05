@@ -1,26 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Using Include="System.Text" />
+  <ItemGroup>
+    <Using Include="System.Text" />
 
-		<Using Include="Microsoft.AspNetCore.Mvc" />
-		<Using Include="Microsoft.AspNetCore.Authorization" />
+    <Using Include="Microsoft.AspNetCore.Mvc" />
+    <Using Include="Microsoft.AspNetCore.Authorization" />
 
-		<Using Include="MediatR" />
-	</ItemGroup>
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		
-		<PackageReference Include="Microsoft.Identity.Web" Version="2.7.0" />
-	</ItemGroup>
+    <Using Include="MediatR" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
 
-	<ItemGroup>
-		<ProjectReference Include="..\Moonglade.Data\Moonglade.Data.csproj" />
-		<ProjectReference Include="..\Moonglade.Utils\Moonglade.Utils.csproj" />
-	</ItemGroup>
+
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.13.2" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Moonglade.Data\Moonglade.Data.csproj" />
+    <ProjectReference Include="..\Moonglade.Utils\Moonglade.Utils.csproj" />
+  </ItemGroup>
 </Project>

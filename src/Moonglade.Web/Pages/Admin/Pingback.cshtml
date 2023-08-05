@@ -1,4 +1,4 @@
-﻿@page "/admin/pingback"
+@page "/admin/pingback"
 @using Moonglade.Pingback
 @inject IMediator Mediator
 @{
@@ -28,14 +28,14 @@
     <script type="module">
         import * as utils from '/js/app/utils.module.js'
 
-        window.deletePingback = function(pingbackId) {
+        window.deletePingback = function (pingbackId) {
             callApi(`/pingback/${pingbackId}`, 'DELETE', {},
                 (resp) => {
                     document.querySelector(`#pingback-box-${pingbackId}`).remove();
                 });
         }
 
-        window.clearPingback = function() {
+        window.clearPingback = function () {
             callApi(`/pingback/clear`, 'DELETE', {},
                 (resp) => {
                     blogToast.success('Pingback logs are cleared');
@@ -80,7 +80,8 @@
     <div class="pingbacks-container">
         @foreach (var item in pingbackRecords.OrderByDescending(p => p.PingTimeUtc))
         {
-            <div id="pingback-box-@item.Id" class="pingback-item row">
+
+            <div id="pingback-box-@item.Id" class="row">
                 <div class="col">
                     <strong>
                         <a href="@item.SourceUrl" target="_blank">@item.SourceTitle</a>
@@ -104,6 +105,7 @@
                     </a>
                 </div>
             </div>
+            <hr id="pingback-box-hr-@item.Id" />
         }
     </div>
 </div>

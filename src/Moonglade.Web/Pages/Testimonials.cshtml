@@ -1,5 +1,4 @@
-﻿@page "/testimonials"
-@inject IViewLocalizer _localizer
+@page "/testimonials"
 @inject Moonglade.Data.DataProviders.TestimonialsProvider _tests
 @{
 }
@@ -11,8 +10,9 @@
         <link rel="stylesheet" href="~/css/testimonials.css" />
     </environment>
 }
-<h1>@_localizer["viewbag-pagename"]</h1>
-<h2>@_localizer["tests"]</h2>
+
+<h1>@SharedLocalizer["testimonial-testimonials"]</h1>
+<h2>@SharedLocalizer["tests"]</h2>
 <div class="container">
     <div class="row">
         <div class="col-md-offset2 col-md-8">

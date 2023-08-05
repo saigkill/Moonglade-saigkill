@@ -1,4 +1,4 @@
-﻿@page "/admin/post/edit/{id:guid?}"
+@page "/admin/post/edit/{id:guid?}"
 @using Microsoft.AspNetCore.Builder
 @model Moonglade.Web.Pages.Admin.EditPostModel
 @inject IOptions<RequestLocalizationOptions> LocOptions
@@ -27,13 +27,13 @@
         switch (ec)
         {
             case EditorChoice.Html:
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.2.0/tinymce.min.js" integrity="sha512-tofxIFo8lTkPN/ggZgV89daDZkgh1DunsMYBq41usfs3HbxMRVHWFAjSi/MXrT+Vw5XElng9vAfMmOWdLg0YbA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.6.0/tinymce.min.js" integrity="sha512-hMjDyb/4G3SapFEM71rK+Gea0+ZEr9vDlhBTyjSmRjuEgza0Ytsb67GE0aSpRMYW++z6kZPPcnddwlUG6VKm9w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 break;
             case EditorChoice.Markdown:
-                <script src="https://unpkg.com/simplemde@1.11.2/dist/simplemde.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js" integrity="sha512-ksSfTk6JIdsze75yZ8c+yDVLu09SNefa9IicxEE+HZvWo9kLPY1vrRlmucEMHQReWmEdKqusQWaDMpkTb3M2ug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 <script src="~/js/3rd/inline-attachment.js"></script>
                 <script src="~/js/3rd/codemirror-4.inline-attachment.js"></script>
-                <link id="css-simplemde" href="https://unpkg.com/simplemde@1.11.2/dist/simplemde.min.css" rel="stylesheet" />
+                <link id="css-simplemde" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css" integrity="sha512-lB03MbtC3LxImQ+BKnZIyvVHTQ8SSmQ15AhVh5U/+CCp4wKtZMvgLGXbZIjIBBbnKsmk3/6n2vcF8a9CtVVSfA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
                 break;
         }
     }
@@ -111,10 +111,6 @@
             }
 
             var selectedCatIds = data.getAll('SelectedCatIds');
-            if (selectedCatIds.length == 0) {
-                blogToast.error('Please select at least 1 category.');
-                return;
-            }
 
             value["SelectedCatIds"] = selectedCatIds;
             const newValue = utils.toMagicJson(value);
@@ -148,7 +144,12 @@
 }
 
 @section head{
-    <link href="~/lib/tagify/tagify.min.css" rel="stylesheet" />
+    <link href="~/lib/tagify/tagify.css" rel="stylesheet" />
+    <style>
+        .tagify {
+            width: 100% !important;
+        }
+    </style>
 }
 
 <div class="p-4">
@@ -156,7 +157,7 @@
     <form class="post-edit-form" asp-controller="Post" asp-action="CreateOrEdit">
         <input type="hidden" asp-for="ViewModel.PostId" />
         <input type="hidden" asp-for="ViewModel.IsPublished" />
-        <div class="row">
+        <div class="row g-2">
             <div class="col-md-9 col-xl-10">
                 <input type="text" asp-for="ViewModel.Title" class="form-control form-control-lg" placeholder="@SharedLocalizer["Title"]" required maxlength="128" />
                 <div class="mt-1">
@@ -211,10 +212,6 @@
             </div>
             <div class="col-md-3 col-xl-2">
                 <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="bi-clipboard-check me-1"></i>
-                        @SharedLocalizer["Options"]
-                    </div>
                     <div class="card-body">
                         <div class="form-check form-switch mb-2">
                             <input type="checkbox" name="EnableComment" value="true" class="form-check-input" @(Model.ViewModel.EnableComment ? "checked" : null)>
@@ -227,6 +224,10 @@
                         <div class="form-check form-switch">
                             <input type="checkbox" name="FeedIncluded" value="true" class="form-check-input" @(Model.ViewModel.FeedIncluded ? "checked" : null)>
                             <label asp-for="ViewModel.FeedIncluded" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input type="checkbox" name="IsOutdated" value="true" class="form-check-input" @(Model.ViewModel.IsOutdated ? "checked" : null)>
+                            <label asp-for="ViewModel.IsOutdated" class="form-check-label"></label>
                         </div>
                     </div>
                     <div class="card-body border-top">

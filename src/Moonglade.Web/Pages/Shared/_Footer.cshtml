@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Builder
 @using Moonglade.Utils
 
 @inject IOptions<RequestLocalizationOptions> LocOptions
@@ -16,7 +16,7 @@
                     @Html.Raw(Helper.FormatCopyright2Html(BlogConfig.GeneralSettings.Copyright))
                 </div>
                 <small>
-                    Powered by <a href="https://github.com/saigkill/Moonglade" target="_blank">Moonglade-saigkill</a> @Helper.AppVersion
+                    Powered by <a href="https://github.com/saigkill/Moonglade-saigkill" target="_blank">Moonglade-saigkill</a> @Helper.AppVersion
                 </small>
 
                 <div align='' style="margin-top: 20px;">
@@ -42,7 +42,7 @@
 
             <section id="footer-language-mobile" class="col-3 d-block d-md-none text-end font-125rem">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#langselectormodal" aria-label="Choose display language"><i class="bi-globe"></i></a>
-           </section>
+            </section>
         </div>
     </div>
 </footer>
