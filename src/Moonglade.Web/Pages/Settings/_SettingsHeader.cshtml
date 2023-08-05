@@ -1,4 +1,4 @@
-﻿@{
+@{
     var currentPage = ViewContext.RouteData.Values["Page"]?.ToString();
 }
 
@@ -29,8 +29,4 @@
             <a class="nav-link @(currentPage == "/Settings/SocialProfiles" ? "active" : null)" asp-page="./SocialProfiles">@SharedLocalizer["Social Profiles"]</a>
         </li>
     </ul>
-<<<<<<< HEAD
 </div>
-=======
-</div>
->>>>>>> develop

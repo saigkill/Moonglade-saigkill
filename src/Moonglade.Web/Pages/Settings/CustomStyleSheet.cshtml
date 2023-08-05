@@ -1,4 +1,4 @@
-﻿@page "/admin/settings/custom-css"
+@page "/admin/settings/custom-css"
 @Html.AntiForgeryToken()
 @{
     var settings = BlogConfig.CustomStyleSheetSettings;
@@ -9,29 +9,9 @@
 }
 
 @section scripts{
-<<<<<<< HEAD
-    <script type="text/javascript" src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
-    <script>
-        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' }});
-        // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
-        // the default worker url location (used when creating WebWorkers). The problem here is that
-        // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
-        // a web worker through a same-domain script
-        window.MonacoEnvironment = {
-            getWorkerUrl: function(workerId, label) {
-                return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-        self.MonacoEnvironment = {
-          baseUrl: 'https://unpkg.com/monaco-editor@latest/min/'
-        };
-        importScripts('https://unpkg.com/monaco-editor@latest/min/vs/base/worker/workerMain.js');`
-                )}`;
-            }
-        };
-=======
     <partial name="_MonacoLoaderScript" />
     <script>
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs' } });
->>>>>>> develop
 
         var cssContentEditor = null;
 
@@ -59,7 +39,7 @@
     </script>
     <script type="module">
         import * as settings from '/js/app/admin.settings.module.js';
-        
+
         function handleSubmit(event) {
             assignEditorValues();
             settings.handleSettingsSubmit(event);
@@ -90,7 +70,6 @@
         </div>
 
         <div id="CssContentEditor" class="monaco-target">
-
         </div>
         <textarea asp-for="@settings.CssCode" class="settings-csscontent-textarea d-none"></textarea>
 
