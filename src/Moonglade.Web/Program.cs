@@ -106,6 +106,8 @@ void ConfigureServices(IServiceCollection services)
 	services.AddScoped<PublicationProvider>();
 	services.AddScoped<TalksProvider>();
 	services.AddScoped<TestimonialsProvider>();
+	services.AddScoped<MembershipProvider>();
+	services.AddScoped<HonoraryPositionsProvider>();
 	services.AddScoped<VideosProvider>();
 	services.AddScoped<DonationService>();
 	services.AddScoped<GithubUserRepositoriesProvider>();

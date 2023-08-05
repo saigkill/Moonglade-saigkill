@@ -887,4 +887,10 @@ Translated with www.DeepL.com/Translator (free version)</value>
   <data name="intro" xml:space="preserve">
     <value>Last activities</value>
   </data>
+  <data name="about-memberships" xml:space="preserve">
+    <value>Memberships</value>
+  </data>
+  <data name="about-hpos" xml:space="preserve">
+    <value>Honorary Positions</value>
+  </data>
 </root>
