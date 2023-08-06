@@ -1,6 +1,8 @@
 # Moonglade-saigkill Blog
 
-This `saigkill` Version is a fork of the original project. It enables Site Verifying services (Bing, Yandex, Norton Safe Web and World of Trust), a basic support of Dublin Core, also some Analytics services (Google Analytics, MS Clarity).
+The [.NET](https://dotnet.microsoft.com/) blog system that optimized for [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
+
+This `saigkill` Version is a fork of the original project. It enables Site verifying services (Bing, Yandex, Norton Safe Web and World of Trust), a basic support of Dublin Core, also some Analytics services (Google Analytics, MS Clarity).
 
 The upstream project provides managing sites. This feature is also present in this version. Becuase of a lack of page localization i decided to use plain razor pages for my pages. If you want to use my fork, and want to use the native pages support, so delete the pages `About`, `Contact`, `CurriculumVitae`, `Imprint`, `Privacy`, `Talks` and `Testimonials`.
 

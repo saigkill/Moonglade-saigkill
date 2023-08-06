@@ -1723,4 +1723,10 @@ als Packager, Redakteur des wöchentlichen Newsletters und innerhalb des Members
 	<data name="talks" xml:space="preserve">
     <value>Vorträge</value>
   </data>
+  <data name="about-memberships" xml:space="preserve">
+    <value>Mitgliedschaften</value>
+  </data>
+  <data name="about-hpos" xml:space="preserve">
+    <value>Ehrenämter</value>
+  </data>
 </root>

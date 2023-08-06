@@ -299,7 +299,7 @@ as a packager, editor of the weekly newsletter and within the Membership Applica
     <value>The content of this online offer was created carefully and according to our current state of knowledge, but is only for information purposes and does not have any legally binding effect, unless it is legally binding information (e.g. the imprint, the data protection declaration, terms and conditions or mandatory instructions for consumers). We reserve the right to change or delete the content in full or in part, provided that contractual obligations remain unaffected. All offers are non-binding.</value>
   </data>
   <data name="disclaimer2" xml:space="preserve">
-    <value>&lt;strong&gt; Links to other websites &lt;/strong&gt;: Contents of external websites to which we refer directly or indirectly are outside our area of responsibility and we do not adopt them as our own. The provider of the linked websites is solely liable for all content and in particular for damage resulting from the use of the information that can be accessed on the linked websites.</value>
+    <value>&amp;lt;strong&amp;gt; Links to other websites &amp;lt;/strong&amp;gt;: Contents of external websites to which we refer directly or indirectly are outside our area of responsibility and we do not adopt them as our own. The provider of the linked websites is solely liable for all content and in particular for damage resulting from the use of the information that can be accessed on the linked websites.</value>
   </data>
   <data name="disclaimer4" xml:space="preserve">
     <value>&lt;strong&gt; Notes on legal violations &lt;/strong&gt;: If you notice legal violations on our website, we ask you to inform us about them. We will remove illegal content and links immediately after taking notice.</value>
@@ -886,5 +886,11 @@ Translated with www.DeepL.com/Translator (free version)</value>
   </data>
   <data name="intro" xml:space="preserve">
     <value>Last activities</value>
+  </data>
+  <data name="about-memberships" xml:space="preserve">
+    <value>Memberships</value>
+  </data>
+  <data name="about-hpos" xml:space="preserve">
+    <value>Honorary Positions</value>
   </data>
 </root>

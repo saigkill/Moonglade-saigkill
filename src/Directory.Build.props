@@ -1,8 +1,8 @@
 <Project>
 	<PropertyGroup>
 		<Authors>Sascha Manns</Authors>
-		<Company>Sascha Manns</Company>
-		<Copyright>(C) 2023 Sascha.Manns@outlook.com</Copyright>
+		<Company>sascha.manns</Company>
+		<Copyright>(C) 2023 sascha.manns@outlook.com</Copyright>
 		<AssemblyVersion>12.13.0.0</AssemblyVersion>
 		<FileVersion>12.13.0.0</FileVersion>
 		<Version>12.13.0-preview</Version>

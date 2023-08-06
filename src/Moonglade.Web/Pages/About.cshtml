@@ -7,9 +7,8 @@
 @using RestSharp
 @inject Moonglade.Data.DataProviders.PublicationProvider _pubs
 @inject Moonglade.Data.DataProviders.GithubUserRepositoriesProvider _repos
-@{
-    var repoList = await _repos.GetUserRepositories();
-}
+@inject Moonglade.Data.DataProviders.MembershipProvider _memberships
+@inject Moonglade.Data.DataProviders.HonoraryPositionsProvider _hpos
 @section head {
     <environment include="Development">
         <link rel="stylesheet" href="~/css/about.min.css" />
@@ -34,16 +33,6 @@
         <h3>@SharedLocalizer["Me and the Blog"]</h3>
         <hr />
         <div class="row">
-            @* <div class="col-md-7">
-            <section id="self-intro">
-            <blockquote class="blockquote">
-            <p>
-            @SharedLocalizer["intro"]
-            </p>
-            <img src="https://github-readme-stats-ten-gilt.vercel.app/api?username=saigkill" />
-            </blockquote>
-            </section>
-            </div> *@
             <div class="col-md-5">
                 <div class="center-align">
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage722.blob.core.windows.net/moongladeimages722/Sascha1.jpg" />
@@ -60,6 +49,51 @@
     <partial name="Shared/_SocialProfiles" />
 </div>
 
+<div class="sec">
+    <h4 class="center-text">@SharedLocalizer["about-memberships"]</h4>
+    @foreach (var membership in _memberships.Get())
+    {
+        @if (membership.Active)
+        {
+            <div tabindex="0" class="e-card" id="@membership.Id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@membership.Link" target="_blank" class="">@membership.Org</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    @if (!string.IsNullOrWhiteSpace(membership.Blurp))
+                    {
+                        <div class="muted"><small>@membership.Blurp</small></div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="sec">
+    <h4 class="center-text">@SharedLocalizer["about-hpos"]</h4>
+    @foreach (var pos in _hpos.Get())
+    {
+        @if (pos.Active)
+        {
+            <div tabindex="0" class="e-card" id="@pos.Id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@pos.Link" target="_blank" class="">@pos.Blurp</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    @if (!string.IsNullOrWhiteSpace(pos.Org))
+                    {
+                        <div class="muted"><small>@pos.Org</small></div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-publications"]</h4>
@@ -90,7 +124,7 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
-    @foreach (var repo in repoList)
+    @foreach (var repo in await _repos.GetUserRepositories())
     {
         <div tabindex="0" class="e-card" id="@repo.id">
             <div class="card-header">
