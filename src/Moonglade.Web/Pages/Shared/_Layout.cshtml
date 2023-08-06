@@ -322,21 +322,21 @@
         <script src="https://cdn.jsdelivr.net/npm/cookieconsent@@3.1.1/src/cookieconsent.js"></script>
     </environment>
 
-    @if (BlogConfig.GeneralSettings.AutoDarkLightTheme && (ViewBag.DisableLightSwitch == null || !ViewBag.DisableLightSwitch))
-    {
-        <script type="module">
-            import * as theme from '/js/app/theme.module.js'
-            window.theme = theme;
+    @* @if (BlogConfig.GeneralSettings.AutoDarkLightTheme && (ViewBag.DisableLightSwitch == null || !ViewBag.DisableLightSwitch))
+    { *@
+    <script type="module">
+        import * as theme from '/js/app/theme.module.js'
+        window.theme = theme;
 
-            if (window.matchMedia && window.theme) {
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    theme.useDarkMode();
-                } else {
-                    theme.useLightMode();
-                }
-            }
-        </script>
-    }
+        // if (window.matchMedia && window.theme) {
+        //     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        theme.useDarkMode();
+        //     } else {
+        //         theme.useLightMode();
+        //     }
+        // }
+    </script>
+    @* } *@
 
     @if (BlogConfig.GeneralSettings.ClarityProjectId != null)
     {
