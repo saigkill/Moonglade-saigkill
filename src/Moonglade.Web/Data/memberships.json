@@ -30,5 +30,21 @@
 		"blurp": "",
 		"active": true,
 		"language": "German"
+	},
+	{
+		"id": 5,
+		"link": "https://bdvb.de/",
+		"org": "Bundesverband Deutscher Volks- und Betriebswirte e.V.",
+		"blurp": "",
+		"active": true,
+		"language": "English"
+	},
+	{
+		"id": 6,
+		"link": "https://bdvb.de/",
+		"org": "Bundesverband Deutscher Volks- und Betriebswirte e.V.",
+		"blurp": "",
+		"active": true,
+		"language": "German"
 	}
 ]
