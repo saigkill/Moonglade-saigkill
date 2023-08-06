@@ -10,14 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Data\honorary-positions.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Data\honorary-positions.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="System.Text" />
 
     <Using Include="Microsoft.AspNetCore.Mvc" />
@@ -42,7 +34,7 @@
 
   <ItemGroup>
     <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
-    <Content Update="Data\publications.json">
+    <Content Update="Data\">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
