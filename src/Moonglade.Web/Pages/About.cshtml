@@ -9,9 +9,6 @@
 @inject Moonglade.Data.DataProviders.GithubUserRepositoriesProvider _repos
 @inject Moonglade.Data.DataProviders.MembershipProvider _memberships
 @inject Moonglade.Data.DataProviders.HonoraryPositionsProvider _hpos
-@{
-    var repoList = await _repos.GetUserRepositories();
-}
 @section head {
     <environment include="Development">
         <link rel="stylesheet" href="~/css/about.min.css" />
@@ -35,7 +32,7 @@
     <div class="container">
         <h3>@SharedLocalizer["Me and the Blog"]</h3>
         <hr />
-        <div class="row">        
+        <div class="row">
             <div class="col-md-5">
                 <div class="center-align">
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage722.blob.core.windows.net/moongladeimages722/Sascha1.jpg" />
@@ -127,7 +124,7 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
-    @foreach (var repo in repoList)
+    @foreach (var repo in await _repos.GetUserRepositories())
     {
         <div tabindex="0" class="e-card" id="@repo.id">
             <div class="card-header">
