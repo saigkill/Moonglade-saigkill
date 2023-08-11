@@ -46,21 +46,5 @@
 		"blurp": "",
 		"active": true,
 		"language": "German"
-	},
-	{
-		"id": 7,
-		"link": "https://www.vr-rheinahreifel.de/",
-		"org": "Cooperative member Volksbank RheinAhrEifel",
-		"blurp": "",
-		"active": true,
-		"language": "English"
-	},
-	{
-		"id": 8,
-		"link": "https://www.vr-rheinahreifel.de/",
-		"org": "Genossenschaftsmitglied Volksbank RheinAhrEifel",
-		"blurp": "",
-		"active": true,
-		"language": "German"
 	}
 ]
