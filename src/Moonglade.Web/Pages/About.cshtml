@@ -9,6 +9,9 @@
 @inject Moonglade.Data.DataProviders.GithubUserRepositoriesProvider _repos
 @inject Moonglade.Data.DataProviders.MembershipProvider _memberships
 @inject Moonglade.Data.DataProviders.HonoraryPositionsProvider _hpos
+@{
+    var repos = await _repos.GetUserRepositories();
+}
 @section head {
     <environment include="Development">
         <link rel="stylesheet" href="~/css/about.min.css" />
@@ -97,45 +100,49 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-publications"]</h4>
-    @foreach (var pub in _pubs.Get())
-    {
-        <div tabindex="0" class="e-card" id="@pub.Id">
-            <div class="card-header">
-                <div class="e-card-header-caption">
-                    <h4 class="card-subtitle"><a href="@pub.Link" target="_blank" class="">@pub.Title</a></h4>
+    <div style="height: 500px; overflow-y: scroll;">
+        @foreach (var pub in _pubs.Get())
+        {
+            <div tabindex="0" class="e-card" id="@pub.Id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@pub.Link" target="_blank" class="">@pub.Title</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+
+                    <div class="card-text"><small>@pub.Authors</small></div>
+                    <div class="card-text"><small>@pub.PublicationName - @pub.Publisher</small></div>
+                    @if (!string.IsNullOrWhiteSpace(pub.Identifier))
+                    {
+                        <div class="muted"><small>@pub.Identifier, @SharedLocalizer["Published"]: <time datetime="@pub.DatePublished">@pub.DatePublished</time></small></div>
+                    }
+                    else
+                    {
+                        <div class="muted"><small>@SharedLocalizer["Published"]: @pub.DatePublished</small></div>
+                    }
                 </div>
             </div>
-            <div class="e-card-content">
-
-                <div class="card-text"><small>@pub.Authors</small></div>
-                <div class="card-text"><small>@pub.PublicationName - @pub.Publisher</small></div>
-                @if (!string.IsNullOrWhiteSpace(pub.Identifier))
-                {
-                    <div class="muted"><small>@pub.Identifier, @SharedLocalizer["Published"]: <time datetime="@pub.DatePublished">@pub.DatePublished</time></small></div>
-                }
-                else
-                {
-                    <div class="muted"><small>@SharedLocalizer["Published"]: @pub.DatePublished</small></div>
-                }
-            </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
-    @foreach (var repo in await _repos.GetUserRepositories())
-    {
-        <div tabindex="0" class="e-card" id="@repo.id">
-            <div class="card-header">
-                <div class="e-card-header-caption">
-                    <h4 class="card-subtitle"><a href="@repo.html_url" target="_blank" class="">@repo.name</a></h4>
+    <div style="height: 500px; overflow-y: scroll;">
+        @foreach (var repo in await _repos.GetUserRepositories())
+        {
+            <div tabindex="0" class="e-card" id="@repo.id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@repo.html_url" target="_blank" class="">@repo.name</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    <div class="card-text">@repo.description</div>
+                    <div class="muted"><small>@SharedLocalizer["last-updated"]: <time datetime="@repo.updated_at">@repo.updated_at</time></small></div>
                 </div>
             </div>
-            <div class="e-card-content">
-                <div class="card-text">@repo.description</div>
-                <div class="muted"><small>@SharedLocalizer["last-updated"]: <time datetime="@repo.updated_at">@repo.updated_at</time></small></div>
-            </div>
-        </div>
-    }
+        }
+    </div>
 </div>
