@@ -1729,4 +1729,7 @@ als Packager, Redakteur des wöchentlichen Newsletters und innerhalb des Members
   <data name="about-hpos" xml:space="preserve">
     <value>Ehrenämter</value>
   </data>
+  <data name="about-mandates" xml:space="preserve">
+    <value>Mandate</value>
+  </data>
 </root>

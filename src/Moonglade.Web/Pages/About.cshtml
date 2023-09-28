@@ -9,6 +9,7 @@
 @inject Moonglade.Data.DataProviders.GithubUserRepositoriesProvider _repos
 @inject Moonglade.Data.DataProviders.MembershipProvider _memberships
 @inject Moonglade.Data.DataProviders.HonoraryPositionsProvider _hpos
+@inject Moonglade.Data.DataProviders.MandatesProvider _mandates
 @{
     var repos = await _repos.GetUserRepositories();
 }
@@ -72,6 +73,23 @@
                 </div>
             </div>
         }
+    }
+</div>
+
+<div class="sec">
+    <h4 class="center-text">@SharedLocalizer["about-mandates"]</h4>
+    @foreach (var mandates in _mandates.Get())
+    {
+        <div tabindex="0" class="e-card" id="@mandates.Id">
+            <div class="card-header">
+                <div class="e-card-header-caption">
+                    <h4 class="card-subtitle"><a href="@mandates.Link" target="_blank" class="">@mandates.Blurp</a></h4>
+                </div>
+            </div>
+            <div class="e-card-content">
+                <div class="muted"><small>@mandates.Org - @mandates.Years</small></div>
+            </div>
+        </div>
     }
 </div>
 

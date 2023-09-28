@@ -111,6 +111,7 @@ void ConfigureServices(IServiceCollection services)
 	services.AddScoped<VideosProvider>();
 	services.AddScoped<DonationService>();
 	services.AddScoped<GithubUserRepositoriesProvider>();
+	services.AddScoped<MandatesProvider>();
 
 	services.AddSession(options =>
 	{

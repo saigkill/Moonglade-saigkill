@@ -893,4 +893,7 @@ Translated with www.DeepL.com/Translator (free version)</value>
   <data name="about-hpos" xml:space="preserve">
     <value>Honorary Positions</value>
   </data>
+  <data name="about-mandates" xml:space="preserve">
+    <value>Mandates</value>
+  </data>
 </root>

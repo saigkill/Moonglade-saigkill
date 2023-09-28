@@ -1,0 +1,18 @@
+[
+	{
+		"id": 1,
+		"link": "https://hg-hagen.gi.de/hochschulgruppe/vorstand",
+		"org": "German Informatics Society",
+		"blurp": "Chairman University Group Hagen",
+		"years": "2023",
+		"language": "English"
+	},
+	{
+		"id": 2,
+		"link": "https://hg-hagen.gi.de/hochschulgruppe/vorstand",
+		"org": "Gesellschaft für Informatik e.V.",
+		"blurp": "Vorstandsvorsitzender Hochschulgruppe Hagen",
+		"years": "2023",
+		"language": "German"
+	}
+]
