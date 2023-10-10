@@ -7,7 +7,7 @@ public class ContentSettings : IBlogSettings
 {
     [Display(Name = "Comment provider")]
     public CommentProvider CommentProvider { get; set; }
-    
+
     [Display(Name = "Comments display order")]
     public CommentOrder CommentOrder { get; set; }
 
@@ -24,10 +24,9 @@ public class ContentSettings : IBlogSettings
     [Display(Name = "Comments require review and approval")]
     public bool RequireCommentReview { get; set; }
 
-    [DataType(DataType.MultilineText)]
-    [Display(Name = "Blocked words")]
-    [MaxLength(2048)]
-    public string DisharmonyWords { get; set; } = string.Empty;
+    [Display(Name = "Automatically close comments on posts older than x days")]
+    [Range(0, 65536)]
+    public int CloseCommentAfterDays { get; set; }
 
     [Display(Name = "Enable word filter")]
     public bool EnableWordFilter { get; set; }
@@ -56,6 +55,9 @@ public class ContentSettings : IBlogSettings
     [Display(Name = "Show call-out section")]
     public bool ShowCalloutSection { get; set; }
 
+    [Display(Name = "Display time for publish date")]
+    public bool DisplayTimeForPubDate { get; set; } = true;
+
     [Display(Name = "Show customize footer on each post")]
     public bool ShowPostFooter { get; set; }
 
@@ -77,7 +79,6 @@ public class ContentSettings : IBlogSettings
         EnableWordFilter = false,
         PostListPageSize = 10,
         HotTagAmount = 10,
-        DisharmonyWords = "fuck|shit",
         CalloutSectionHtmlPitch = string.Empty
     };
     [Display(Name = "Enable Donation Service")]

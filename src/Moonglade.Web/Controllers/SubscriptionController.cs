@@ -51,7 +51,7 @@ public class SubscriptionController : ControllerBase
         var route = hasRoute ? routeName.ToLower().Trim() : null;
 
         return await _cache.GetOrCreateAsync(
-            hasRoute ? BlogCachePartition.PostCountCategory.ToString() : BlogCachePartition.General.ToString(), route ?? "rss", async entry =>
+            hasRoute ? BlogCachePartition.RssCategory.ToString() : BlogCachePartition.General.ToString(), route ?? "rss", async entry =>
             {
                 entry.SlidingExpiration = TimeSpan.FromHours(1);
 
@@ -65,14 +65,18 @@ public class SubscriptionController : ControllerBase
             });
     }
 
-    [HttpGet("atom")]
-    public async Task<IActionResult> Atom()
+    [HttpGet("atom/{routeName?}")]
+    public async Task<IActionResult> Atom([MaxLength(64)] string routeName = null)
     {
-        return await _cache.GetOrCreateAsync(BlogCachePartition.General.ToString(), "atom", async entry =>
+        bool hasRoute = !string.IsNullOrWhiteSpace(routeName);
+        var route = hasRoute ? routeName.ToLower().Trim() : null;
+
+        return await _cache.GetOrCreateAsync(
+            hasRoute ? BlogCachePartition.AtomCategory.ToString() : BlogCachePartition.General.ToString(), route ?? "atom", async entry =>
         {
             entry.SlidingExpiration = TimeSpan.FromHours(1);
 
-            var xml = await _mediator.Send(new GetAtomStringQuery());
+            var xml = await _mediator.Send(new GetAtomStringQuery(routeName));
             return Content(xml, "text/xml");
         });
     }

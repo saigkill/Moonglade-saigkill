@@ -1,4 +1,4 @@
-﻿@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core
 @using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -19,12 +19,7 @@ else
 {
     foreach (var item in Model)
     {
-	    if (item.LangCode == culture)
-        {
-            <partial name="_PostListEntry" model="item" />
-            <div class="mb-4 d-none d-md-block"></div>
-            <hr class="d-none d-md-block" />
-        }
+        <partial name="_PostListEntry" model="item" />
     }
 
     @Html.PagedListPager(Model, page => ViewData["sortBy"] == null ? $"?p={page}" : $"?p={page}&sortBy={ViewData["sortBy"]}", new()

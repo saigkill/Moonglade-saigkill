@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-    <PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
+    <AssemblyName>Moonglade.Web</AssemblyName>
+    <RootNamespace>Moonglade.Web</RootNamespace>
+    <IsTestProject>false</IsTestProject>
+    <IsPackable>false</IsPackable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/saigkill/Moonglade</PackageProjectUrl>
     <RepositoryUrl>https://github.com/saigkill/Moonglade</RepositoryUrl>
     <UserSecretsId>bbb2a205-c78d-404b-8c7d-c5b8e9bea4d8</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
     <Using Include="System.Text" />
-
     <Using Include="Microsoft.AspNetCore.Mvc" />
     <Using Include="Microsoft.AspNetCore.Authorization" />
-
     <Using Include="MediatR" />
     <Using Include="Edi.CacheAside.InMemory" />
-
     <Using Include="Moonglade.Web" />
     <Using Include="Moonglade.Web.Configuration" />
     <Using Include="Moonglade.Web.Filters" />
@@ -31,20 +31,18 @@
     <Using Include="Moonglade.Data" />
     <Using Include="Moonglade.ImageStorage" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
     <Content Update="Data\">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
-    <PackageReference Include="Edi.ImageWatermark" Version="2.8.0" />
+    <PackageReference Include="Edi.ImageWatermark" Version="2.10.0" />
     <PackageReference Include="Edi.PasswordGenerator" Version="1.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.11" />
     <PackageReference Include="UAParser" Version="3.1.47" />
     <PackageReference Include="WilderMinds.MetaWeblog" Version="5.1.1" />
     <PackageReference Include="Spectre.Console" Version="0.47.0" />
@@ -52,7 +50,6 @@
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="21.1.35" />
     <PackageReference Include="Syncfusion.Licensing" Version="21.1.35" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Moonglade.Auth\Moonglade.Auth.csproj" />
     <ProjectReference Include="..\Moonglade.Comments\Moonglade.Comments.csproj" />

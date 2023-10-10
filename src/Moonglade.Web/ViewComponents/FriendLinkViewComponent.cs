@@ -1,3 +1,4 @@
+using Moonglade.Data.Entities;
 using Moonglade.FriendLink;
 
 namespace Moonglade.Web.ViewComponents;
@@ -18,12 +19,12 @@ public class FriendLinkViewComponent : ViewComponent
         try
         {
             var links = await _mediator.Send(new GetAllLinksQuery());
-            return View(links ?? new List<Link>());
+            return View(links ?? new List<FriendLinkEntity>());
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Error Reading FriendLink.");
-            return Content(e.Message);
+            return Content("ERROR");
         }
     }
 }

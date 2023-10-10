@@ -4,8 +4,7 @@ using Moonglade.Core.PostFeature;
 using Moonglade.Data.ExternalAPI.IndexNow;
 using Moonglade.Pingback;
 using Moonglade.Web.Attributes;
-
-using NUglify;
+using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Web.Controllers;
 
@@ -50,29 +49,14 @@ public class PostController : ControllerBase
 		{
 			if (!ModelState.IsValid) return Conflict(ModelState.CombineErrorMessages());
 
-			if (!string.IsNullOrWhiteSpace(model.InlineCss))
-			{
-				var uglifyTest = Uglify.Css(model.InlineCss);
-				if (uglifyTest.HasErrors)
-				{
-					foreach (var err in uglifyTest.Errors)
-					{
-						ModelState.AddModelError(model.InlineCss, err.ToString());
-					}
-					return BadRequest(ModelState.CombineErrorMessages());
-				}
-
-				model.InlineCss = uglifyTest.Code;
-			}
-
-			var tzDate = _timeZoneResolver.NowOfTimeZone;
-			if (model.ChangePublishDate &&
-				model.PublishDate.HasValue &&
-				model.PublishDate <= tzDate &&
-				model.PublishDate.GetValueOrDefault().Year >= 1975)
-			{
-				model.PublishDate = _timeZoneResolver.ToUtc(model.PublishDate.Value);
-			}
+            var tzDate = _timeZoneResolver.NowOfTimeZone;
+            if (model.ChangePublishDate &&
+                model.PublishDate.HasValue &&
+                model.PublishDate <= tzDate &&
+                model.PublishDate.GetValueOrDefault().Year >= 1975)
+            {
+                model.PublishDate = _timeZoneResolver.ToUtc(model.PublishDate.Value);
+            }
 
 			var postEntity = model.PostId == Guid.Empty ?
 				await _mediator.Send(new CreatePostCommand(model)) :

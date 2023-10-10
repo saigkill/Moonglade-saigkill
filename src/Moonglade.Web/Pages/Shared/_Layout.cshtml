@@ -1,7 +1,4 @@
 @using Moonglade.Utils
-@using Moonglade.Web.TagHelpers
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Localization
 @using System.Globalization
 @using Syncfusion.EJ2
@@ -250,7 +247,9 @@
     <div id="page-content" class="content">
         @if (null != ViewBag.HideSideBar && ViewBag.HideSideBar)
         {
-            @RenderBody()
+            <main>
+                @RenderBody()
+            </main>
         }
         else
         {
@@ -280,9 +279,9 @@
                         <partial name="_Aside" />
                     }
 
-                    <section class="col-md-12 @(BlogConfig.GeneralSettings.SideBarOption == SideBarOption.Disabled ? null : "col-lg-9")">
+                    <main class="col-md-12 @(BlogConfig.GeneralSettings.SideBarOption == SideBarOption.Disabled ? null : "col-lg-9")">
                         @RenderBody()
-                    </section>
+                    </main>
 
                     @if (BlogConfig.GeneralSettings.SideBarOption == SideBarOption.Right)
                     {
