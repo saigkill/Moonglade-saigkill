@@ -5,11 +5,12 @@
 
 @{
     ViewBag.TitlePrefix = null;
+    ViewBag.BodyClass = "body-home-index bg-gray-1";
     ViewBag.ActionName = "Index";
 
 }
 
-<h3 class="d-flex">
+<h3 class="d-flex align-items-center mb-4">
     <span>
         @SharedLocalizer["All Posts"]
     </span>
@@ -28,7 +29,6 @@
         <i class="bi-rss font-125rem"></i>
     </a>
 </h3>
-<hr />
 
 @if (Model.Posts.Any())
 {

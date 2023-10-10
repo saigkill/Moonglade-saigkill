@@ -1,4 +1,4 @@
-@page "/admin/post"
+﻿@page "/admin/post"
 @using X.PagedList.Mvc.Core
 @model Moonglade.Web.Pages.Admin.PostModel
 @{
@@ -29,12 +29,15 @@
     </script>
 }
 
-<partial name="_PostManageHeader" />
+@section admintoolbar{
+    <partial name="_PostManageHeader" />
+}
+
 @Html.AntiForgeryToken()
 
-<div class="ps-4 pe-4">
+<div>
     <form method="post">
-        <div class="d-flex search-box mb-4">
+        <div class="d-flex search-box mb-3">
             <input type="search" aria-label="Search" asp-for="SearchTerm" class="form-control" placeholder="Search" />
             <button class="btn btn-light btn-search my-sm-0" type="submit"><i class="bi-search text-dark"></i></button>
         </div>
@@ -48,7 +51,7 @@
     {
         foreach (var item in Model.PostSegments)
         {
-            <div id="post-@item.Id">
+            <div id="post-@item.Id" class="p-3 mb-2 rounded-3 shadow-sm border bg-white">
                 <div class="d-flex">
                     <div class="flex-grow-1">
                         <a asp-page="/Post"
@@ -79,7 +82,6 @@
                         <button class="btn btn-outline-danger btn-sm btn-delete" onclick="window.deleteConfirm('@item.Id')"><i class="bi-trash"></i></button>
                     </div>
                 </div>
-                <hr />
             </div>
         }
 
@@ -87,7 +89,7 @@
     {
     LiElementClasses = new[] {"page-item"},
     PageClasses = new[] {"page-link"},
-    UlElementClasses = new[] {"pagination justify-content-end"},
+    UlElementClasses = new[] {"pagination mt-4"},
     DisplayEllipsesWhenNotShowingAllPageNumbers = false
     })
     }

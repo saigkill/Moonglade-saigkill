@@ -3,11 +3,7 @@
 @inject Moonglade.Data.DataProviders.DonationService _donationService
 @using Moonglade.Utils
 @using Moonglade.Web.Helpers
-@using Moonglade.Web.TagHelpers
-@using NUglify
 @using System.Globalization
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.AspNetCore.Http.Extensions;
 
 @Html.AntiForgeryToken()
 
@@ -17,7 +13,7 @@
     {
         HttpContext.Response.Headers.Add("X-Robots-Tag", "noindex, nofollow");
     }
-  
+
     ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
     TimeToRead timeToRead = Model.Post.GetTimeToRead();
     var culture = CultureInfo.CurrentCulture.Name;
@@ -54,25 +50,25 @@
         <meta property="article:tag" content="@string.Join(", ", Model.Post.Tags.Select(t => t.DisplayName))" />
     @if (BlogConfig.GeneralSettings.UseDublinCoreMetaData)
     {
-        <meta name="DC.Title" content="@Model.Post.Title" />
-        <meta name="DC.Publisher" content="@(string.IsNullOrWhiteSpace(Model.Post.Author) ? BlogConfig.GeneralSettings.OwnerName : Model.Post.Author)" />
-        <meta name="DC.Language" content="@Model.Post.ContentLanguageCode" />
-        <meta name="DC.Creator" content="@(string.IsNullOrWhiteSpace(Model.Post.Author) ? BlogConfig.GeneralSettings.OwnerName : Model.Post.Author)" />
-        <meta name="DC.Type" content="Text" />
-        <meta name="DC.Format" content="text/html" />
-        <meta name="DC.Format.MIME" content="text/html" />
-        <meta name="DC.Format.SysReq" content="Internet browser" />
-        @if (Model.Post.OriginLink != null)
-        {
-            <meta name="DC.Source" content="@Model.Post.OriginLink">
-        }
-        <meta name="DC.Subject" content="@string.Join(", ", Model.Post.Categories.Select(t => t.DisplayName))" />
-        <meta name="DC.Subject.Keyword" content="@string.Join(", ", Model.Post.Tags.Select(t => t.NormalizedName))" />
-        @if (BlogConfig.GeneralSettings.DcLicenseUrl != null)
-        {
-            <meta name="DCTERMS.license"  scheme="DCTERMS.URI" content="@BlogConfig.GeneralSettings.DcLicenseUrl" />
-            <meta name="DCTERMS.rightsHolder" content="@(string.IsNullOrWhiteSpace(Model.Post.Author) ? BlogConfig.GeneralSettings.OwnerName : Model.Post.Author) "/>
-        }
+	    <meta name="DC.Title" content="@Model.Post.Title" />
+	    <meta name="DC.Publisher" content="@(string.IsNullOrWhiteSpace(Model.Post.Author) ? BlogConfig.GeneralSettings.OwnerName : Model.Post.Author)" />
+	    <meta name="DC.Language" content="@Model.Post.ContentLanguageCode" />
+	    <meta name="DC.Creator" content="@(string.IsNullOrWhiteSpace(Model.Post.Author) ? BlogConfig.GeneralSettings.OwnerName : Model.Post.Author)" />
+	    <meta name="DC.Type" content="Text" />
+	    <meta name="DC.Format" content="text/html" />
+	    <meta name="DC.Format.MIME" content="text/html" />
+	    <meta name="DC.Format.SysReq" content="Internet browser" />
+	    @if (Model.Post.OriginLink != null)
+	    {
+		    <meta name="DC.Source" content="@Model.Post.OriginLink">
+	    }
+	    <meta name="DC.Subject" content="@string.Join(", ", Model.Post.Categories.Select(t => t.DisplayName))" />
+	    <meta name="DC.Subject.Keyword" content="@string.Join(", ", Model.Post.Tags.Select(t => t.NormalizedName))" />
+		@if (BlogConfig.GeneralSettings.DcLicenseUrl != null)
+		{
+			<meta name="DCTERMS.license"  scheme="DCTERMS.URI" content="@BlogConfig.GeneralSettings.DcLicenseUrl" />
+			<meta name="DCTERMS.rightsHolder" content="@(string.IsNullOrWhiteSpace(Model.Post.Author) ? BlogConfig.GeneralSettings.OwnerName : Model.Post.Author) "/>
+		}
     }
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="@Model.Post.Title" />
@@ -90,17 +86,6 @@
     {
         <link href="~/css/outline.css" rel="stylesheet" />
     }
-
-    @if (!string.IsNullOrWhiteSpace(Model.Post.InlineCss))
-    {
-        var uglifiedCss = Uglify.Css(Model.Post.InlineCss);
-        if (!uglifiedCss.HasErrors)
-        {
-            <style>
-                @uglifiedCss.Code
-                </style>
-        }
-    }
 }
 
 @section opengraph{
@@ -109,6 +94,7 @@
     <meta property="og:site_name" content="@BlogConfig.GeneralSettings.SiteTitle" />
     <meta property="og:locale" content="@Model.Post.ContentLanguageCode" />
     <meta property="og:description" content="@Model.Post.ContentAbstract" />
+
     <meta property="fb:app_id" content="@BlogConfig.GeneralSettings.FacebookAppId" />
     @if (!string.IsNullOrWhiteSpace(BlogConfig.GeneralSettings.CanonicalPrefix))
     {
@@ -135,7 +121,6 @@
                 '.post-content h5');
         </script>
     }
-
     <script type="module">
         import * as viewpost from '/js/app/viewpost.module.js'
         import * as utils from '/js/app/utils.module.js'
@@ -155,12 +140,9 @@
             </text>
         }
 
-        var pid = document.querySelector('article').dataset.postid;
-
         window.fitImageToDevicePixelRatio = @BlogConfig.ImageSettings.FitImageToDevicePixelRatio.ToString().ToLower();
 
         var q = new QRious({
-
             element: document.querySelector('.post-qrcode'),
             value: document.URL,
             size: 200
@@ -168,6 +150,7 @@
 
         $('#comment-form').on('submit', function (e) {
             e.preventDefault();
+            let pid = document.querySelector('article').dataset.postid;
             viewpost.submitComment(pid);
         });
 
@@ -182,7 +165,7 @@
     </style>
 }
 
-<article class="article-post-slug box border position-relative mb-4" data-postid="@Model.Post.Id" lang="@Model.Post.ContentLanguageCode">
+<article class="article-post-slug position-relative p-4 rounded-3 shadow-sm border bg-white mb-4" data-postid="@Model.Post.Id" lang="@Model.Post.ContentLanguageCode">
     @if (Model.Post.Featured)
     {
         <partial name="_FeaturedTag" />
@@ -207,7 +190,16 @@
 
             <i class="bi-calendar-event"></i>
             <span class="me-2">
-                <time data-utc-label="@Model.Post.PubDateUtc.GetValueOrDefault().ToString("u")">@Model.Post.PubDateUtc</time>
+                @if (BlogConfig.ContentSettings.DisplayTimeForPubDate)
+                {
+                    <time data-utc-label="@Model.Post.PubDateUtc.GetValueOrDefault().ToString("u")">@Model.Post.PubDateUtc</time>
+                }
+                else
+                {
+                    <time>
+                        @DateOnly.FromDateTime(Model.Post.PubDateUtc.GetValueOrDefault()) (UTC)
+                    </time>
+                }
             </span>
 
             <i class="bi-eye d-none d-sm-inline"></i>
@@ -219,12 +211,11 @@
 
         <hr class="d-none d-md-block" />
     </header>
-    
+
     @if (Model.Post.IsOutdated)
     {
         <partial name="_PostOutdatedMessage" />
     }
-
 
     @if (!string.IsNullOrWhiteSpace(Model.Post.HeroImageUrl))
     {
@@ -263,95 +254,55 @@
         </a>
     }
 </article>
+
 @if (BlogConfig.ContentSettings.EnableComments)
 {
-    switch (BlogConfig.ContentSettings.CommentProvider)
+    var days = DateTime.UtcNow.Date.Subtract(Model.Post.PubDateUtc.GetValueOrDefault()).Days;
+
+    if (BlogConfig.ContentSettings.CloseCommentAfterDays > 0 && days > BlogConfig.ContentSettings.CloseCommentAfterDays)
     {
-        case CommentProvider.BuiltIn:
-            <div class="d-print-none">
-                @if (Model.Post.CommentEnabled)
-                {
-                    <div class="card bg-light comment-form-containter mb-4">
-                            <div class="card-header">
+        <div class="alert alert-warning">@SharedLocalizer["Comment is closed."]</div>
+    }
+    else
+    {
+        switch (BlogConfig.ContentSettings.CommentProvider)
+        {
+            case CommentProvider.BuiltIn:
+                <div class="d-print-none">
+                    @if (Model.Post.CommentEnabled)
+                    {
+                        <section class="comment-form-containter p-3 rounded-3 shadow-sm border bg-white mb-4">
+                            <h6 class="card-subtitle mb-3 text-muted">
                                 <i class="bi-chat-left-text"></i>
                                 @SharedLocalizer["Comments"]
-                            </div>
-                            <form id="comment-form">
-                                <div class="card-body">
-                                    <div class="row g-1 mb-2">
-                                        <div class="col-md-4">
-                                            <input type="text"
-                                                   class="form-control"
-                                                   placeholder="Your name"
-                                                   id="input-comment-name"
-                                                   required/>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <input type="email"
-                                                   class="form-control"
-                                                   placeholder="Email (Optional)"
-                                                   id="input-comment-email"
-                                                   data-bs-toggle="tooltip"
-                                                   data-placement="top"
-                                                   title="@SharedLocalizer["Providing your email address can enable blog admin to send notifications for replying your comment. Your email address will also be used to show Gravatar if it has one."]"/>
-                                        </div>
-                                    </div>
-                                    <div class="comment-md-content mb-2">
-                                        <textarea id="input-comment-content"
-                                              class="form-control"
-                                              cols="60"
-                                              rows="4"
-                                              placeholder="@SharedLocalizer["Your comments (Markdown supported)"]"
-                                              maxlength="1024"
-                                              required></textarea>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <div class="input-group">
-                                                <img id="img-captcha" onclick="viewpost.resetCaptchaImage()" src="~/captcha-image" data-bs-toggle="tooltip" data-placement="top" title="@SharedLocalizer["Can't read? Click to change another image."]" alt="Captcha image"/>
-                                                <input type="text"
-                                                       id="input-comment-captcha"
-                                                       class="form-control input-captcha"
-                                                       placeholder="Captcha Code"
-                                                       autocomplete="off"
-                                                       minlength="4"
-                                                       maxlength="4"
-                                                       required/>
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <button id="btn-submit-comment" type="submit" class="btn btn-success float-end">
-                                                <span id="loadingIndicator" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                                                @SharedLocalizer["Submit"]
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            </h6>
+                            <partial name="_CommentForm" />
+                        </section>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">@SharedLocalizer["Comment of this post is disabled."]</div>
+                    }
+
+                    <div id="thx-for-comment" class="alert alert-warning" style="display: none;">
+                        @SharedLocalizer["Thanks, your comment is pending approval now."] <br />
+                        @SharedLocalizer["It will show up once blog administrator approved your comment."]
                     </div>
-                }
-                else
-                {
-                    <div class="alert alert-warning">@SharedLocalizer["Comment of this post is disabled."]</div>
-                }
-                <div id="thx-for-comment" class="alert alert-warning" style="display: none;">
-                    @SharedLocalizer["Thanks, your comment is pending approval now."] <br/>
-                    @SharedLocalizer["It will show up once blog administrator approved your comment."]
-                </div>
 
-                <div id="thx-for-comment-non-review" class="alert alert-success" style="display: none;">
-                    @SharedLocalizer["Thanks for your comment."] <br/>
-                    @SharedLocalizer["Refresh the page to see your comment."]
-                </div>
+                    <div id="thx-for-comment-non-review" class="alert alert-success" style="display: none;">
+                        @SharedLocalizer["Thanks for your comment."] <br />
+                        @SharedLocalizer["Refresh the page to see your comment."]
+                    </div>
 
-                <section id="comments-list">
-                    @await Component.InvokeAsync("CommentList", new {postId = Model.Post.Id})
-                </section>
-            </div>
-            break;
-        case CommentProvider.ThirdParty:
-            @Html.Raw(BlogConfig.ContentSettings.ThirdPartyCommentHtmlPitch)
-            break;
+                    <section id="comments-list">
+                        @await Component.InvokeAsync("CommentList", new {postId = Model.Post.Id})
+                    </section>
+                </div>
+                break;
+            case CommentProvider.ThirdParty:
+                @Html.Raw(BlogConfig.ContentSettings.ThirdPartyCommentHtmlPitch)
+                break;
+        }
     }
 }
 else

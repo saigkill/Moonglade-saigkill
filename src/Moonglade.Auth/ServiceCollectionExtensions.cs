@@ -14,15 +14,15 @@ public static class ServiceCollectionExtensions
 		var authentication = section.Get<AuthenticationSettings>();
 		services.Configure<AuthenticationSettings>(section);
 
-		switch (authentication.Provider)
-		{
-			case AuthenticationProvider.AzureAD:
-				services.AddAuthentication(options =>
-				{
-					options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-					options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-				}).AddMicrosoftIdentityWebApp(configuration.GetSection("Authentication:AzureAd"));
-				// Internally pass `null` to cookie options so there's no way to add `AccessDeniedPath` here.
+        switch (authentication.Provider)
+        {
+            case AuthenticationProvider.EntraID:
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                }).AddMicrosoftIdentityWebApp(configuration.GetSection("Authentication:EntraID"));
+                // Internally pass `null` to cookie options so there's no way to add `AccessDeniedPath` here.
 
 				break;
 			case AuthenticationProvider.Local:

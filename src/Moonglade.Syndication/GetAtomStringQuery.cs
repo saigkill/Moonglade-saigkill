@@ -1,4 +1,4 @@
-using MediatR;
+﻿using MediatR;
 
 using Microsoft.AspNetCore.Http;
 
@@ -7,34 +7,37 @@ using Moonglade.Utils;
 
 namespace Moonglade.Syndication;
 
-public record GetAtomStringQuery : IRequest<string>;
+public record GetAtomStringQuery(string CategoryName = null) : IRequest<string>;
 
 public class GetAtomStringQueryHandler : IRequestHandler<GetAtomStringQuery, string>
 {
-	private readonly ISyndicationDataSource _sdds;
-	private readonly FeedGenerator _feedGenerator;
+    private readonly ISyndicationDataSource _sdds;
+    private readonly FeedGenerator _feedGenerator;
 
-	public GetAtomStringQueryHandler(IBlogConfig blogConfig, ISyndicationDataSource sdds, IHttpContextAccessor httpContextAccessor)
-	{
-		_sdds = sdds;
+    public GetAtomStringQueryHandler(IBlogConfig blogConfig, ISyndicationDataSource sdds, IHttpContextAccessor httpContextAccessor)
+    {
+        _sdds = sdds;
 
-		var acc = httpContextAccessor;
-		var baseUrl = $"{acc.HttpContext.Request.Scheme}://{acc.HttpContext.Request.Host}";
+        var acc = httpContextAccessor;
+        var baseUrl = $"{acc.HttpContext.Request.Scheme}://{acc.HttpContext.Request.Host}";
 
-		_feedGenerator = new(
-			baseUrl,
-			blogConfig.GeneralSettings.SiteTitle,
-			blogConfig.GeneralSettings.Description,
-			Helper.FormatCopyright2Html(blogConfig.GeneralSettings.Copyright).Replace("&copy;", "©"),
-			$"Moonglade v{Helper.AppVersion}",
-			baseUrl,
-			blogConfig.GeneralSettings.DefaultLanguageCode);
-	}
+        _feedGenerator = new(
+            baseUrl,
+            blogConfig.GeneralSettings.SiteTitle,
+            blogConfig.GeneralSettings.Description,
+            Helper.FormatCopyright2Html(blogConfig.GeneralSettings.Copyright).Replace("&copy;", "©"),
+            $"Moonglade v{Helper.AppVersion}",
+            baseUrl,
+            blogConfig.GeneralSettings.DefaultLanguageCode);
+    }
 
-	public async Task<string> Handle(GetAtomStringQuery request, CancellationToken ct)
-	{
-		_feedGenerator.FeedItemCollection = await _sdds.GetFeedDataAsync();
-		var xml = await _feedGenerator.WriteAtomAsync();
-		return xml;
-	}
+    public async Task<string> Handle(GetAtomStringQuery request, CancellationToken ct)
+    {
+        var data = await _sdds.GetFeedDataAsync(request.CategoryName);
+        if (data is null) return null;
+
+        _feedGenerator.FeedItemCollection = data;
+        var xml = await _feedGenerator.WriteAtomAsync();
+        return xml;
+    }
 }

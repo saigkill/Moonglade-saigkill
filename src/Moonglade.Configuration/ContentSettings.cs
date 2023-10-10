@@ -5,11 +5,11 @@ namespace Moonglade.Configuration;
 
 public class ContentSettings : IBlogSettings
 {
-	[Display(Name = "Comment provider")]
-	public CommentProvider CommentProvider { get; set; }
+    [Display(Name = "Comment provider")]
+    public CommentProvider CommentProvider { get; set; }
 
-	[Display(Name = "Comments display order")]
-	public CommentOrder CommentOrder { get; set; }
+    [Display(Name = "Comments display order")]
+    public CommentOrder CommentOrder { get; set; }
 
 	[Display(Name = "Post title alignment")]
 	public PostTitleAlignment PostTitleAlignment { get; set; } = PostTitleAlignment.Left;
@@ -24,10 +24,9 @@ public class ContentSettings : IBlogSettings
 	[Display(Name = "Comments require review and approval")]
 	public bool RequireCommentReview { get; set; }
 
-	[DataType(DataType.MultilineText)]
-	[Display(Name = "Blocked words")]
-	[MaxLength(2048)]
-	public string DisharmonyWords { get; set; } = string.Empty;
+    [Display(Name = "Automatically close comments on posts older than x days")]
+    [Range(0, 65536)]
+    public int CloseCommentAfterDays { get; set; }
 
 	[Display(Name = "Enable word filter")]
 	public bool EnableWordFilter { get; set; }
@@ -56,8 +55,11 @@ public class ContentSettings : IBlogSettings
 	[Display(Name = "Show call-out section")]
 	public bool ShowCalloutSection { get; set; }
 
-	[Display(Name = "Show customize footer on each post")]
-	public bool ShowPostFooter { get; set; }
+    [Display(Name = "Display time for publish date")]
+    public bool DisplayTimeForPubDate { get; set; } = true;
+
+    [Display(Name = "Show customize footer on each post")]
+    public bool ShowPostFooter { get; set; }
 
 	[Display(Name = "Post footer HTML code")]
 	public string PostFooterHtmlPitch { get; set; }
@@ -68,27 +70,25 @@ public class ContentSettings : IBlogSettings
 	[Display(Name = "Word count in abstract")]
 	public int PostAbstractWords { get; set; } = 400;
 
-	[Display(Name = "Enable Donation Service")]
-	public bool EnableDonationService { get; set; }
+    [JsonIgnore]
+    public static ContentSettings DefaultValue => new()
+    {
+        EnableComments = true,
+        RequireCommentReview = true,
+        EnableGravatar = true,
+        EnableWordFilter = false,
+        PostListPageSize = 10,
+        HotTagAmount = 10,
+        CalloutSectionHtmlPitch = string.Empty
+    };
+    [Display(Name = "Enable Donation Service")]
+    public bool EnableDonationService { get; set; }
 
-	[Display(Name = "Enable Sharing buttons")]
-	public bool EnableSharingButtons { get; set; }
+    [Display(Name = "Enable Sharing buttons")]
+    public bool EnableSharingButtons { get; set; }
 
-	[Display(Name = "ShareThis PropertyID")]
-	public string ShareThisPropertyId { get; set; }
-
-	[JsonIgnore]
-	public static ContentSettings DefaultValue => new()
-	{
-		EnableComments = true,
-		RequireCommentReview = true,
-		EnableGravatar = true,
-		EnableWordFilter = false,
-		PostListPageSize = 10,
-		HotTagAmount = 10,
-		DisharmonyWords = "fuck|shit",
-		CalloutSectionHtmlPitch = string.Empty
-	};
+    [Display(Name = "ShareThis PropertyID")]
+    public string ShareThisPropertyId { get; set; }
 }
 
 public enum WordFilterMode

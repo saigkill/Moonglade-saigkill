@@ -6,26 +6,19 @@ This `saigkill` Version is a fork of the original project. It enables Site verif
 
 The upstream project provides managing sites. This feature is also present in this version. Becuase of a lack of page localization i decided to use plain razor pages for my pages. If you want to use my fork, and want to use the native pages support, so delete the pages `About`, `Contact`, `CurriculumVitae`, `Imprint`, `Privacy`, `Talks` and `Testimonials`.
 
-| What | Status |
-|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|Build prod |  [![Build status](https://dev.azure.com/saigkill/Moonglade/_apis/build/status/mannsblog%20-%20CI%20(productive))](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=57)|
-|Build dev | [![Build status](https://dev.azure.com/saigkill/Moonglade/_apis/build/status/mannsblog%20-%20CI%20(dev))](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=58) |
-|Deploy prod | [![Build status](https://vsrm.dev.azure.com/saigkill/_apis/public/Release/badge/2ff70274-0a21-44d3-bbb2-7e44e5fcce67/3/4)](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=56) |
-|Deploy dev | [![Build status](https://vsrm.dev.azure.com/saigkill/_apis/public/Release/badge/2ff70274-0a21-44d3-bbb2-7e44e5fcce67/2/3)](https://dev.azure.com/saigkill/Moonglade/_build/latest?definitionId=56) |
-|Security check CodeQL | ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/saigkill/Moonglade/codeql.yml) |
-|License | ![GitHub](https://img.shields.io/github/license/saigkill/Moonglade) |
+**IMPORTANT: Moonglade will move to .NET 8 LTS in November 2023 with v14.x release**
 
 ## 📦 Deployment
 
-- It is recommended to use stable code from [Release](https://github.com/EdiWang/Moonglade/releases) rather than master branch.
+- Please use stable code from [Release](https://github.com/EdiWang/Moonglade/releases) branch rather than master branch.
 
-- It is recommended to enable HTTP/2 support on your web server.
+- HTTPS is required, and it is recommended to enable HTTP/2 support on your web server.
 
-### ☁ Full Deploy on Azure (Recommend)
+### ☁ Full Deploy on Azure
 
 This is the way https://edi.wang is deployed, by taking advantage of as many Azure services as possible, the blog can run very fast and secure. 
 
-But there is no automated script to deploy it, you need to manually create all the resources and configure them.
+There is no automated script to deploy it, you need to manually create all the resources.
 
 ![image](https://cdn-blog.edi.wang/web-assets/ediwang-azure-arch-visio-nov2022.png)
 
@@ -43,7 +36,6 @@ docker-compose up
 ```
 
 That's it! Now open: [Browser: http://localhost:8080](http://localhost:8080)
->>>>>>> develop
 
 ### 🐧 Quick Deploy on Linux without Docker
 
@@ -53,14 +45,13 @@ To quickly get it running on a new Linux machine without Docker, follow instruct
 
 Tools | Alternative
 --- | ---
-[Visual Studio 2022 v17.4+](https://visualstudio.microsoft.com/) | [Visual Studio Code](https://code.visualstudio.com/) with [.NET 7.0 SDK](http://dot.net)
+[Visual Studio 2022 v17.7+](https://visualstudio.microsoft.com/) | [Visual Studio Code](https://code.visualstudio.com/) with [.NET 7.0 SDK](http://dot.net)
 [SQL Server 2022](https://www.microsoft.com/en-us/sql-server/sql-server-2022) | [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver16&WT.mc_id=AZ-MVP-5002809), PostgreSQL or MySQL 
 
 ### 💾 Setup Database
 
 Moonglade supports three types of database. You can choose from SQL Server, PostgreSQL or MySQL.
 
-<<<<<<< HEAD
 Update your database connection string in `appsettings.*.json`
 
 #### SQL Server
@@ -98,17 +89,17 @@ Build and run `./src/Moonglade.sln`
 
 ## ⚙ Configuration
 
-> This section discuss system settings in **appsettings.[env].json**. For blog settings, please use "/admin/settings" UI.
-
-**For production, it is strongly recommended to use Environment Variables over appsetting.json file.**
+> This section discuss environment settings in **appsettings.[env].json**. For blog settings, please use "/admin/settings" UI.
 
 ### 🛡 Authentication
+
+> You can choose one authentication provider from below.
 
 #### [Microsoft Entra ID](https://azure.microsoft.com/en-us/services/active-directory/)
 
 See [Wiki document](https://github.com/EdiWang/Moonglade/wiki/Use-Microsoft-Entra-ID-Authentication)
 
-#### Local Account (Alternative)
+#### Local Account
 
 Set `Authentication:Provider` to `"Local"`. You can manage accounts in `/admin/settings/account`
 
@@ -131,7 +122,7 @@ You need to create an [**Azure Blob Storage**](https://azure.microsoft.com/en-us
 
 When configured the image storage to use Azure Blob, you can take advantage of CDN for your image resources. Just enable CDN in admin settings, the blog will get images from CDN.
 
-#### [Minio Blob Storage](https://min.io/) (Free)
+#### [Minio Blob Storage](https://min.io/)
 
 You need to hava an [**Minio Server**](https://docs.min.io/). 
 
@@ -139,21 +130,6 @@ You need to hava an [**Minio Server**](https://docs.min.io/).
 "Provider": "miniostorage"
 "MinioStorageSettings": {
   "EndPoint": "Minio Server Endpoint(eg:localhost:9600)",
-  "AccessKey": "Your Access Key",
-  "SecretKey": "Your Secret Key",
-  "BucketName": "Your BucketName",
-  "WithSSL": false
-}
-```
-
-#### [Qiniu Blob Storage](https://qiniu.com/) (Almost free)
-
-You need to hava an Qiniu cloud account, and use [Kodo](https://www.qiniu.com/products/kodo) storage service. 
-
-```json
-"Provider": "qiniustorage"
-"QiniuStorageSettings": {
-  "EndPoint": "Your Custom Domain",
   "AccessKey": "Your Access Key",
   "SecretKey": "Your Secret Key",
   "BucketName": "Your BucketName",
@@ -174,7 +150,7 @@ You can also choose File System for image storage if you don't have a cloud opti
 
 ### 🤬 Comment Moderator
 
-- [Comment Moderator Settings](https://github.com/EdiWang/Moonglade/wiki/Comment-Moderator-Settings)
+See https://github.com/EdiWang/Moonglade.ContentSecurity
 
 ### 📧 Email Notification
 
@@ -196,8 +172,8 @@ If you need email notification for new comments, new replies and pingbacks, you 
 - [X] FOAF
 - [X] RSD
 - [X] MetaWeblog (Basic Support)
-- [X] Dublin Core (Basic Support)
-- [ ] BlogML - Under triage
+- [X] Dublin Core Metadata (Basic Support)
+- [ ] BlogML - Not planned
 - [ ] APML - Not planned
 - [ ] Trackback - Not planned
 
@@ -218,6 +194,26 @@ There are a few individuals already setup thier blogs using Moonglade on Azure (
 
 *Just Submit PR or issue if you want your blog to be listed here*
 
+## ⚖️ Disclaimer
 
-## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsaigkill%2FMoonglade?ref=badge_large)
+The following disclaimer applies to the software named "Moonglade" developed by Edi Wang and other [contributors](https://github.com/EdiWang/Moonglade/graphs/contributors) (hereinafter referred to as "the software developer"):
+
+This project is not affiliated with Microsoft Corporation. All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.
+
+The software developer does not provide any warranties or guarantees regarding the functionality, performance, or suitability of Moonglade for any specific purpose. The software is provided "as is," and the software developer shall not be held liable for any direct or indirect damages arising from the use or inability to use Moonglade.
+
+### Data Privacy
+
+Moonglade does not send any user data or information to any government, **including the Chinese government**. The software is designed to prioritize and respect user privacy.
+
+### Data Collection
+
+While using Moonglade, please note that the platform on which you deploy the software may collect data and usage information. This data collection is solely the responsibility of the platform and not the software developer. We encourage you to review thier privacy policy and terms of service of the platform to understand how your data is handled.
+
+### User Responsibility
+
+As a user of Moonglade, it is your responsibility to ensure compliance with applicable laws and regulations regarding data privacy and usage. The software developer shall not be held liable for any misuse, unauthorized access, or mishandling of data by the user or the platform on which Moonglade is deployed.
+
+### Updates and Modifications
+
+The software developer may release updates or modifications to Moonglade from time to time. It is recommended that users stay informed about these updates and apply them to ensure optimal performance and security.

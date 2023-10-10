@@ -12,6 +12,7 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Razor;
 
+using Moonglade.Comments.Moderator;
 using Moonglade.Data.DataProviders;
 using Moonglade.Data.MySql;
 using Moonglade.Data.PostgreSql;
@@ -111,6 +112,7 @@ void ConfigureServices(IServiceCollection services)
 	services.AddScoped<VideosProvider>();
 	services.AddScoped<DonationService>();
 	services.AddScoped<GithubUserRepositoriesProvider>();
+	services.AddScoped<MandatesProvider>();
 
 	services.AddSession(options =>
 	{
@@ -151,12 +153,16 @@ void ConfigureServices(IServiceCollection services)
 		options.Cookie.Name = $"X-{csrfName}";
 		options.FormFieldName = $"{csrfName}-FORM";
 		options.HeaderName = "XSRF-TOKEN";
-	}).Configure<RequestLocalizationOptions>(options =>
+	});
+
+	services.Configure<RequestLocalizationOptions>(options =>
 	{
 		options.DefaultRequestCulture = new("en-US");
 		options.SupportedCultures = cultures;
 		options.SupportedUICultures = cultures;
-	}).Configure<RouteOptions>(options =>
+	});
+
+	services.Configure<RouteOptions>(options =>
 	{
 		options.LowercaseUrls = true;
 		options.LowercaseQueryStrings = true;
@@ -175,7 +181,7 @@ void ConfigureServices(IServiceCollection services)
 			.AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
 			.AddBlogConfig()
 			.AddBlogAuthenticaton(builder.Configuration)
-			.AddComments(builder.Configuration)
+			.AddContentModerator(builder.Configuration)
 			.AddImageStorage(builder.Configuration, options => options.ContentRootPath = builder.Environment.ContentRootPath)
 			.Configure<List<ManifestIcon>>(builder.Configuration.GetSection("ManifestIcons"));
 
@@ -317,9 +323,9 @@ void ConfigureMiddleware()
 		app.UseMiddleware<RSDMiddleware>().UseMetaWeblog("/metaweblog");
 	}
 
-	app.UseMiddleware<SiteMapMiddleware>()
-			  .UseMiddleware<PoweredByMiddleware>()
-			  .UseMiddleware<DNTMiddleware>();
+	app.UseMiddleware<SiteMapMiddleware>();
+	app.UseMiddleware<PoweredByMiddleware>();
+	app.UseMiddleware<DNTMiddleware>();
 
 	if (app.Environment.IsDevelopment())
 	{
@@ -328,6 +334,7 @@ void ConfigureMiddleware()
 	else
 	{
 		app.UseStatusCodePages(ConfigureStatusCodePages.Handler).UseExceptionHandler("/error");
+		app.UseHsts();
 	}
 
 	app.UseHttpsRedirection();
