@@ -10,7 +10,10 @@ using Edi.PasswordGenerator;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.Razor;
+
 using Moonglade.Comments.Moderator;
+using Moonglade.Data.DataProviders;
 using Moonglade.Data.MySql;
 using Moonglade.Data.PostgreSql;
 using Moonglade.Data.SqlServer;
@@ -21,9 +24,7 @@ using Moonglade.Syndication;
 using SixLabors.Fonts;
 
 using Spectre.Console;
-using System.Globalization;
-using System.Net;
-using System.Text.Json.Serialization;
+
 using WilderMinds.MetaWeblog;
 
 using Encoder = Moonglade.Web.Configuration.Encoder;
@@ -145,43 +146,43 @@ void ConfigureServices(IServiceCollection services)
 	// Fix Chinese character being encoded in HTML output
 	services.AddSingleton(Encoder.MoongladeHtmlEncoder);
 
-    services.AddAntiforgery(options =>
-    {
-        const string csrfName = "CSRF-TOKEN-MOONGLADE";
-        options.Cookie.Name = $"X-{csrfName}";
-        options.FormFieldName = $"{csrfName}-FORM";
-        options.HeaderName = "XSRF-TOKEN";
-    });
+	services.AddAntiforgery(options =>
+	{
+		const string csrfName = "CSRF-TOKEN-MOONGLADE";
+		options.Cookie.Name = $"X-{csrfName}";
+		options.FormFieldName = $"{csrfName}-FORM";
+		options.HeaderName = "XSRF-TOKEN";
+	});
 
-    services.Configure<RequestLocalizationOptions>(options =>
-    {
-        options.DefaultRequestCulture = new("en-US");
-        options.SupportedCultures = cultures;
-        options.SupportedUICultures = cultures;
-    });
+	services.Configure<RequestLocalizationOptions>(options =>
+	{
+		options.DefaultRequestCulture = new("en-US");
+		options.SupportedCultures = cultures;
+		options.SupportedUICultures = cultures;
+	});
 
-    services.Configure<RouteOptions>(options =>
-    {
-        options.LowercaseUrls = true;
-        options.LowercaseQueryStrings = true;
-        options.AppendTrailingSlash = false;
-    });
+	services.Configure<RouteOptions>(options =>
+	{
+		options.LowercaseUrls = true;
+		options.LowercaseQueryStrings = true;
+		options.AppendTrailingSlash = false;
+	});
 
 	services.AddTransient<IPasswordGenerator, DefaultPasswordGenerator>();
 
-    services.AddHealthChecks();
-    services.AddPingback()
-            .AddSyndication()
-            .AddNotification()
-            .AddInMemoryCacheAside()
-            .AddMetaWeblog<Moonglade.Web.MetaWeblogService>()
-            .AddScoped<ValidateCaptcha>()
-            .AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
-            .AddBlogConfig()
-            .AddBlogAuthenticaton(builder.Configuration)
-            .AddContentModerator(builder.Configuration)
-            .AddImageStorage(builder.Configuration, options => options.ContentRootPath = builder.Environment.ContentRootPath)
-            .Configure<List<ManifestIcon>>(builder.Configuration.GetSection("ManifestIcons"));
+	services.AddHealthChecks();
+	services.AddPingback()
+			.AddSyndication()
+			.AddNotification()
+			.AddInMemoryCacheAside()
+			.AddMetaWeblog<Moonglade.Web.MetaWeblogService>()
+			.AddScoped<ValidateCaptcha>()
+			.AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
+			.AddBlogConfig()
+			.AddBlogAuthenticaton(builder.Configuration)
+			.AddContentModerator(builder.Configuration)
+			.AddImageStorage(builder.Configuration, options => options.ContentRootPath = builder.Environment.ContentRootPath)
+			.Configure<List<ManifestIcon>>(builder.Configuration.GetSection("ManifestIcons"));
 
 	switch (dbType!.ToLower())
 	{
@@ -321,19 +322,19 @@ void ConfigureMiddleware()
 		app.UseMiddleware<RSDMiddleware>().UseMetaWeblog("/metaweblog");
 	}
 
-    app.UseMiddleware<SiteMapMiddleware>();
-    app.UseMiddleware<PoweredByMiddleware>();
-    app.UseMiddleware<DNTMiddleware>();
+	app.UseMiddleware<SiteMapMiddleware>();
+	app.UseMiddleware<PoweredByMiddleware>();
+	app.UseMiddleware<DNTMiddleware>();
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseDeveloperExceptionPage();
-    }
-    else
-    {
-        app.UseStatusCodePages(ConfigureStatusCodePages.Handler).UseExceptionHandler("/error");
-        app.UseHsts();
-    }
+	if (app.Environment.IsDevelopment())
+	{
+		app.UseDeveloperExceptionPage();
+	}
+	else
+	{
+		app.UseStatusCodePages(ConfigureStatusCodePages.Handler).UseExceptionHandler("/error");
+		app.UseHsts();
+	}
 
 	app.UseHttpsRedirection();
 	app.UseRequestLocalization(new RequestLocalizationOptions
