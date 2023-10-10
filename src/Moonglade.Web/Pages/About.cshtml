@@ -11,16 +11,14 @@
 @inject Moonglade.Data.DataProviders.HonoraryPositionsProvider _hpos
 @inject Moonglade.Data.DataProviders.MandatesProvider _mandates
 @{
-    var repos = await _repos.GetUserRepositories();
 }
 @section head {
     <environment include="Development">
         <link rel="stylesheet" href="~/css/about.min.css" />
-        <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@6.2.1/css/all.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/about.css" />
-        <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@6.2.1/css/all.min.css" rel="stylesheet" />
+
     </environment>
 }
 
@@ -145,7 +143,7 @@
     </div>
 </div>
 
-<div class="sec">
+@* <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
     <div style="height: 500px; overflow-y: scroll;">
         @foreach (var repo in await _repos.GetUserRepositories())
@@ -163,4 +161,4 @@
             </div>
         }
     </div>
-</div>
+</div> *@
