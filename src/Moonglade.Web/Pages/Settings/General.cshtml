@@ -36,7 +36,7 @@
     <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@@6.2.1/css/all.css" rel="stylesheet" />
 }
 
-@section scripts{
+@section scripts {
     <script src="~/js/app/imageuploader.js"></script>
     <script src="~/js/3rd/bs-custom-file-input.min.js"></script>
     <script type="module">
@@ -100,7 +100,7 @@
     </environment>
 }
 
-@section admintoolbar{
+@section admintoolbar {
     <partial name="_SettingsHeader" />
 }
 
@@ -438,6 +438,22 @@
                 </div>
                 <div>
                     <h4 class="admin-subtitle fw-bold mb-2">
+                        @SharedLocalizer["Syncfusion Settings"]
+                    </h4>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-1-circle-fill settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="@settings.SyncfusionVersion"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="@settings.SyncfusionVersion" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="admin-subtitle fw-bold mb-2">
                         @SharedLocalizer["Dublin Core Metadata"]
                     </h4>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
@@ -464,6 +480,20 @@
                         </div>
                         <div class="col-md-5 text-end">
                             <input asp-for="@BlogConfig.GeneralSettings.DcLicenseUrl" class="form-control" />
+                        </div>
+                    </div>
+                    <h4 class="admin-subtitle fw-bold mb-2">
+                        @SharedLocalizer["APIKeys"]
+                    </h4>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-link settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="@BlogConfig.GeneralSettings.GithubPAT"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="@BlogConfig.GeneralSettings.GithubPAT" class="form-control" />
                         </div>
                     </div>
                 </div>

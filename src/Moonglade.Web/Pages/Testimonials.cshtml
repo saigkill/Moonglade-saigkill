@@ -1,5 +1,5 @@
 @page "/testimonials"
-@inject Moonglade.Data.DataProviders.TestimonialsProvider _tests
+@inject Moonglade.Data.Services.TestimonialService _tests
 @{
 }
 @section head {
@@ -18,14 +18,14 @@
             <div class="control-container">
                 <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" showIndicators="false">
                     <e-carousel-items>
-                        @foreach (var testimonial in _tests.Get())
+                        @foreach (var testimonial in _tests.GetTestimonials())
                         {
                             <e-carousel-item template='<div class="testimonial">
                         <div class="pic">
                             <img src="@testimonial.ImagePath" alt="">
                         </div>
                         <p class="description">
-                            @testimonial.Blurp
+                            @testimonial.Summary
                         </p>
                         <h3 class="title">
                             @testimonial.Recommender

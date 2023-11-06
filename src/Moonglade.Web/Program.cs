@@ -11,11 +11,13 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 
 using Moonglade.Comments.Moderator;
 using Moonglade.Data.DataProviders;
 using Moonglade.Data.MySql;
 using Moonglade.Data.PostgreSql;
+using Moonglade.Data.Services;
 using Moonglade.Data.SqlServer;
 using Moonglade.Email.Client;
 using Moonglade.Pingback;
@@ -37,13 +39,14 @@ var builder = WebApplication.CreateBuilder(args);
 string dbType = builder.Configuration.GetConnectionString("DatabaseType");
 string connStr = builder.Configuration.GetConnectionString("MoongladeDatabase");
 
+
 var cultures = new[] { "en-US", "de-DE" }.Select(p => new CultureInfo(p)).ToList();
 
 WriteParameterTable();
 AnsiConsole.MarkupLine("[link=https://github.com/saigkill/Moonglade-saigkill]GitHub: saigkill/Moonglade[/]");
 
 ConfigureConfiguration();
-ConfigureServices(builder.Services);
+ConfigureServices(builder.Services, connStr);
 
 var app = builder.Build();
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
@@ -87,7 +90,7 @@ void ConfigureConfiguration()
 	builder.Configuration.AddJsonFile("manifesticons.json", false, true);
 }
 
-void ConfigureServices(IServiceCollection services)
+void ConfigureServices(IServiceCollection services, string connString)
 {
 	AppDomain.CurrentDomain.Load("Moonglade.Core");
 	AppDomain.CurrentDomain.Load("Moonglade.FriendLink");
@@ -95,24 +98,27 @@ void ConfigureServices(IServiceCollection services)
 	AppDomain.CurrentDomain.Load("Moonglade.Configuration");
 	AppDomain.CurrentDomain.Load("Moonglade.Data");
 
+	services.AddDbContextFactory<moongladedb722Context>(options => options.UseSqlServer(connString));
+
 	services.AddMediatR(config => config.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 	services.AddOptions()
 			.AddHttpContextAccessor()
 			.AddRateLimit(builder.Configuration.GetSection("IpRateLimiting"));
 	services.AddApplicationInsightsTelemetry();
 
-	services.AddScoped<CalendarProvider>();
-	services.AddScoped<CertsProvider>();
-	services.AddScoped<ProjectsProvider>();
-	services.AddScoped<PublicationProvider>();
-	services.AddScoped<TalksProvider>();
-	services.AddScoped<TestimonialsProvider>();
-	services.AddScoped<MembershipProvider>();
-	services.AddScoped<HonoraryPositionsProvider>();
-	services.AddScoped<VideosProvider>();
-	services.AddScoped<DonationService>();
 	services.AddScoped<GithubUserRepositoriesProvider>();
-	services.AddScoped<MandatesProvider>();
+
+	services.AddScoped<CalendarProvider>();
+	services.AddScoped<CertificateService>();
+	services.AddScoped<DonationService>();
+	services.AddScoped<HonoraryPositionService>();
+	services.AddScoped<MandateService>();
+	services.AddScoped<MembershipService>();
+	services.AddScoped<ProjectService>();
+	services.AddScoped<PublicationService>();
+	services.AddScoped<TalksService>();
+	services.AddScoped<TestimonialService>();
+	services.AddScoped<VideoService>();
 
 	services.AddSession(options =>
 	{

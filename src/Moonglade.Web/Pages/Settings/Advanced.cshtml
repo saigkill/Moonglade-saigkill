@@ -10,7 +10,7 @@
 @section head {
     <link href="https://cdn.jsdelivr.net/npm/@@fortawesome/fontawesome-free@@6.2.1/css/all.css" rel="stylesheet" />
 }
-@section scripts{
+@section scripts {
     <script type="module">
         import * as settings from '/js/app/admin.settings.module.js';
 
@@ -107,7 +107,7 @@
     </script>
 }
 
-@section admintoolbar{
+@section admintoolbar {
     <partial name="_SettingsHeader" />
 }
 
@@ -312,6 +312,10 @@
                             </a>
                         </div>
                     </div>
+
+                    <h4 class="admin-subtitle fw-bold mb-2">
+                        @SharedLocalizer["Syndication"]
+                    </h4>
                     <div class="row g-3 align-items-center settings-entry mb-4">
                         <div class="col-auto">
                             <i class="bi bi-book settings-entry-icon"></i>
@@ -460,6 +464,7 @@
                             <input asp-for="@settings.TopblogsTrackerID" class="form-control" />
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
