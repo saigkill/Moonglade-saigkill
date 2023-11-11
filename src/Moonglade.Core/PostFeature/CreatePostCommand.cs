@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Moonglade.Configuration;
 using Moonglade.Core.TagFeature;
+using Moonglade.Data.Generated.Entities;
 using Moonglade.Data.Spec;
 using Moonglade.Utils;
 

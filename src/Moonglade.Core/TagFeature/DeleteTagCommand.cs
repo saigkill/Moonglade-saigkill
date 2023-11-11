@@ -1,4 +1,5 @@
 ﻿using Moonglade.Data;
+using Moonglade.Data.Generated.Entities;
 using Moonglade.Data.Spec;
 
 namespace Moonglade.Core.TagFeature;

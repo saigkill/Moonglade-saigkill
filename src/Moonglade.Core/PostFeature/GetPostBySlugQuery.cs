@@ -1,5 +1,6 @@
 ﻿using Edi.CacheAside.InMemory;
 using Microsoft.Extensions.Configuration;
+using Moonglade.Data.Generated.Entities;
 using Moonglade.Data.Spec;
 using Moonglade.Utils;
 

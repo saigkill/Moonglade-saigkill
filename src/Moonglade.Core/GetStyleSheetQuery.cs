@@ -1,4 +1,6 @@
-﻿namespace Moonglade.Core;
+﻿using Moonglade.Data.Generated.Entities;
+
+namespace Moonglade.Core;
 
 public record GetStyleSheetQuery(Guid Id) : IRequest<StyleSheetEntity>;
 

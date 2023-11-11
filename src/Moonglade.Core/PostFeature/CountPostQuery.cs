@@ -1,4 +1,6 @@
-﻿namespace Moonglade.Core.PostFeature;
+﻿using Moonglade.Data.Generated.Entities;
+
+namespace Moonglade.Core.PostFeature;
 
 public enum CountType
 {

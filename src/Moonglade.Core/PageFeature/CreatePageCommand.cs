@@ -1,4 +1,6 @@
-﻿namespace Moonglade.Core.PageFeature;
+﻿using Moonglade.Data.Generated.Entities;
+
+namespace Moonglade.Core.PageFeature;
 
 public record CreatePageCommand(EditPageRequest Payload) : IRequest<Guid>;
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moonglade.Configuration;
 using Moonglade.Core.TagFeature;
+using Moonglade.Data.Generated.Entities;
 using Moonglade.Utils;
 
 namespace Moonglade.Core.PostFeature;

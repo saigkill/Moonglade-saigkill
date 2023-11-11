@@ -1,5 +1,4 @@
-using Moonglade.Data.Entities;
-using Moonglade.Utils;
+using LanguageEnum = Moonglade.Data.Enum.LanguageEnum;
 
 namespace Moonglade.Data.Services;
 
@@ -29,7 +28,7 @@ public class VideoService
 	{
 		try
 		{
-			LanguageEnum culture = Helper.GetLanguage();
+			LanguageEnum culture = DataHelper.GetLanguage();
 			return _context.Videos.Where(l => l.Language == culture).OrderByDescending(d => d.DatePublished).ToList();
 		}
 		catch

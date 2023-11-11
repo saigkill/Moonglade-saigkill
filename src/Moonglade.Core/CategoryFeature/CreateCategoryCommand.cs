@@ -1,4 +1,5 @@
 using Edi.CacheAside.InMemory;
+using Moonglade.Data.Generated.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Core.CategoryFeature;

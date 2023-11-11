@@ -1,4 +1,4 @@
-﻿using Moonglade.Data.Entities;
+﻿using Moonglade.Data.Generated.Entities;
 using Moonglade.Email.Client;
 using Moonglade.Pingback;
 using Moonglade.Web.Attributes;

@@ -1,4 +1,4 @@
-﻿using Moonglade.Data.Entities;
+﻿using Moonglade.Data.Generated.Entities;
 using System.Security.Cryptography;
 using System.Xml;
 

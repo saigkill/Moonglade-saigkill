@@ -1,4 +1,5 @@
-﻿using Moonglade.Data.Spec;
+﻿using Moonglade.Data.Generated.Entities;
+using Moonglade.Data.Spec;
 using System.Linq.Expressions;
 
 namespace Moonglade.Core.PostFeature;

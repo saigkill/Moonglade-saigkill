@@ -1,5 +1,4 @@
-using Moonglade.Data.Entities;
-using Moonglade.Utils;
+using Moonglade.Data.Enum;
 
 namespace Moonglade.Data.Services;
 
@@ -29,7 +28,7 @@ public class TestimonialService
 	{
 		try
 		{
-			LanguageEnum culture = Helper.GetLanguage();
+			LanguageEnum culture = DataHelper.GetLanguage();
 			return _context.Testimonials.Where(c => c.Language == culture).OrderByDescending(d => d.Date).ToList();
 		}
 		catch

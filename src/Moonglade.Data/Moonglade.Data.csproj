@@ -18,4 +18,29 @@
     <ItemGroup>
       <ProjectReference Include="..\Moonglade.Utils\Moonglade.Utils.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Custom\Context\" />
+      <Folder Include="Custom\Entities\" />
+      <Folder Include="Custom\Enums\" />
+      <Folder Include="Custom\Structs\" />
+      <Folder Include="Generated\Context\" />
+      <Folder Include="Generated\Structs\" />
+      <Folder Include="Helper\" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Moonglade1.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Moonglade1.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Moonglade1.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Moonglade1.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

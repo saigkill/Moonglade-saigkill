@@ -1,4 +1,6 @@
-﻿namespace Moonglade.Core.TagFeature;
+﻿using Moonglade.Data.Generated.Entities;
+
+namespace Moonglade.Core.TagFeature;
 
 public record GetTagNamesQuery : IRequest<IReadOnlyList<string>>;
 

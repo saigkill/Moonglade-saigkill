@@ -1,7 +1,10 @@
 @page "/talks"
+@using Moonglade.Data.Entities
+@using Moonglade.Data.Enum
+@using LanguageEnum = Moonglade.Data.Enum.LanguageEnum
 @inject Moonglade.Data.Services.TalksService _talks
 @{
-    LanguageEnum culture = Helper.GetLanguage();
+    LanguageEnum culture = DataHelper.GetLanguage();
 }
 <div class="row">
     <h1>@SharedLocalizer["talks"]</h1>

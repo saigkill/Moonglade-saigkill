@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moonglade.Core.PageFeature;
-using Moonglade.Data.Entities;
+using Moonglade.Data.Generated.Entities;
 
 namespace Moonglade.Web.Pages.Admin;
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moonglade.Data.Generated.Entities;
 using System.Text.RegularExpressions;
 
 namespace Moonglade.Core.PostFeature;
