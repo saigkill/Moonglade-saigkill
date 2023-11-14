@@ -1,11 +1,11 @@
-﻿using Moonglade.Configuration;
-using Moonglade.Data.ExternalAPI;
 using Moonglade.Data.ExternalAPI.GitHub;
 using Moonglade.Data.ExternalAPI.GitHub.Models;
+
 using Newtonsoft.Json;
+
 using RestSharp;
 
-namespace Moonglade.Data.DataProviders;
+namespace Moonglade.Web.Services;
 
 public class GithubUserRepositoriesProvider : IGithubUserRepositoriesProvider
 {

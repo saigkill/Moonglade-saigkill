@@ -1,6 +1,9 @@
-﻿using Edi.PasswordGenerator;
+using Edi.PasswordGenerator;
+
 using Microsoft.AspNetCore.Localization;
+
 using Moonglade.Email.Client;
+
 using NUglify;
 
 namespace Moonglade.Web.Controllers;
@@ -8,271 +11,256 @@ namespace Moonglade.Web.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class SettingsController : ControllerBase
+public class SettingsController(
+		IBlogConfig blogConfig,
+		ILogger<SettingsController> logger,
+		IMediator mediator) : ControllerBase
 {
-    #region Private Fields
+	[AllowAnonymous]
+	[HttpGet("set-lang")]
+	public IActionResult SetLanguage(string culture, string returnUrl)
+	{
+		try
+		{
+			if (string.IsNullOrWhiteSpace(culture)) return BadRequest();
 
-    private readonly IMediator _mediator;
-    private readonly IBlogConfig _blogConfig;
-    private readonly ILogger<SettingsController> _logger;
+			Response.Cookies.Append(
+				CookieRequestCultureProvider.DefaultCookieName,
+				CookieRequestCultureProvider.MakeCookieValue(new(culture)),
+				new() { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+			);
 
-    #endregion
+			return LocalRedirect(string.IsNullOrWhiteSpace(returnUrl) ? "~/" : returnUrl);
+		}
+		catch (Exception e)
+		{
+			logger.LogError(e, e.Message, culture, returnUrl);
 
-    public SettingsController(
-        IBlogConfig blogConfig,
-        ILogger<SettingsController> logger,
-        IMediator mediator)
-    {
-        _blogConfig = blogConfig;
-        _logger = logger;
-        _mediator = mediator;
-    }
+			// We shall not respect the return URL now, because the returnUrl might be hacking.
+			return NoContent();
+		}
+	}
 
-    [AllowAnonymous]
-    [HttpGet("set-lang")]
-    public IActionResult SetLanguage(string culture, string returnUrl)
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(culture)) return BadRequest();
+	[HttpPost("general")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCachePartition.General, "theme" })]
+	public async Task<IActionResult> General(GeneralSettings model, ITimeZoneResolver timeZoneResolver)
+	{
+		model.AvatarUrl = blogConfig.GeneralSettings.AvatarUrl;
 
-            Response.Cookies.Append(
-                CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new(culture)),
-                new() { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-            );
+		blogConfig.GeneralSettings = model;
+		blogConfig.GeneralSettings.TimeZoneUtcOffset = timeZoneResolver.GetTimeSpanByZoneId(model.TimeZoneId);
 
-            return LocalRedirect(string.IsNullOrWhiteSpace(returnUrl) ? "~/" : returnUrl);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, e.Message, culture, returnUrl);
+		await SaveConfigAsync(blogConfig.GeneralSettings);
 
-            // We shall not respect the return URL now, because the returnUrl might be hacking.
-            return NoContent();
-        }
-    }
+		AppDomain.CurrentDomain.SetData("CurrentThemeColor", null);
 
-    [HttpPost("general")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCachePartition.General, "theme" })]
-    public async Task<IActionResult> General(GeneralSettings model, ITimeZoneResolver timeZoneResolver)
-    {
-        model.AvatarUrl = _blogConfig.GeneralSettings.AvatarUrl;
+		return NoContent();
+	}
 
-        _blogConfig.GeneralSettings = model;
-        _blogConfig.GeneralSettings.TimeZoneUtcOffset = timeZoneResolver.GetTimeSpanByZoneId(model.TimeZoneId);
+	[HttpPost("content")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	public async Task<IActionResult> Content(ContentSettings model)
+	{
+		blogConfig.ContentSettings = model;
 
-        await SaveConfigAsync(_blogConfig.GeneralSettings);
+		await SaveConfigAsync(blogConfig.ContentSettings);
+		return NoContent();
+	}
 
-        AppDomain.CurrentDomain.SetData("CurrentThemeColor", null);
+	[HttpPost("social")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	public async Task<IActionResult> Social(SocialProfileSettings model)
+	{
+		blogConfig.SocialProfileSettings = model;
 
-        return NoContent();
-    }
+		await SaveConfigAsync(blogConfig.SocialProfileSettings);
+		return NoContent();
+	}
 
-    [HttpPost("content")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Content(ContentSettings model)
-    {
-        _blogConfig.ContentSettings = model;
+	[HttpPost("notification")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	public async Task<IActionResult> Notification(NotificationSettings model)
+	{
+		if (model.EnableEmailSending && string.IsNullOrWhiteSpace(model.AzureStorageQueueConnection))
+		{
+			ModelState.AddModelError(nameof(model.AzureStorageQueueConnection), "Azure Storage Queue Connection is required.");
+			return BadRequest(ModelState.CombineErrorMessages());
+		}
 
-        await SaveConfigAsync(_blogConfig.ContentSettings);
-        return NoContent();
-    }
+		blogConfig.NotificationSettings = model;
 
-    [HttpPost("social")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Social(SocialProfileSettings model)
-    {
-        _blogConfig.SocialProfileSettings = model;
+		await SaveConfigAsync(blogConfig.NotificationSettings);
+		return NoContent();
+	}
 
-        await SaveConfigAsync(_blogConfig.SocialProfileSettings);
-        return NoContent();
-    }
+	[HttpPost("email/test")]
+	[IgnoreAntiforgeryToken]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public async Task<IActionResult> TestEmail()
+	{
+		try
+		{
+			await mediator.Publish(new TestNotification());
+			return Ok(true);
+		}
+		catch (Exception e)
+		{
+			return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+		}
+	}
 
-    [HttpPost("notification")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Notification(NotificationSettings model)
-    {
-        if (model.EnableEmailSending && string.IsNullOrWhiteSpace(model.AzureStorageQueueConnection))
-        {
-            ModelState.AddModelError(nameof(model.AzureStorageQueueConnection), "Azure Storage Queue Connection is required.");
-            return BadRequest(ModelState.CombineErrorMessages());
-        }
+	[HttpPost("subscription")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	public async Task<IActionResult> Subscription(FeedSettings model)
+	{
+		blogConfig.FeedSettings = model;
 
-        _blogConfig.NotificationSettings = model;
+		await SaveConfigAsync(blogConfig.FeedSettings);
+		return NoContent();
+	}
 
-        await SaveConfigAsync(_blogConfig.NotificationSettings);
-        return NoContent();
-    }
+	[HttpPost("watermark")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> Image(ImageSettings model, IBlogImageStorage imageStorage)
+	{
+		blogConfig.ImageSettings = model;
 
-    [HttpPost("email/test")]
-    [IgnoreAntiforgeryToken]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> TestEmail()
-    {
-        try
-        {
-            await _mediator.Publish(new TestNotification());
-            return Ok(true);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-        }
-    }
+		if (model.EnableCDNRedirect)
+		{
+			if (null != blogConfig.GeneralSettings.AvatarUrl
+			&& !blogConfig.GeneralSettings.AvatarUrl.StartsWith(model.CDNEndpoint))
+			{
+				try
+				{
+					var avatarData = await mediator.Send(new GetAssetQuery(AssetId.AvatarBase64));
 
-    [HttpPost("subscription")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Subscription(FeedSettings model)
-    {
-        _blogConfig.FeedSettings = model;
+					if (!string.IsNullOrWhiteSpace(avatarData))
+					{
+						var avatarBytes = Convert.FromBase64String(avatarData);
+						var fileName = $"avatar-{AssetId.AvatarBase64:N}.png";
+						fileName = await imageStorage.InsertAsync(fileName, avatarBytes);
+						blogConfig.GeneralSettings.AvatarUrl = blogConfig.ImageSettings.CDNEndpoint.CombineUrl(fileName);
 
-        await SaveConfigAsync(_blogConfig.FeedSettings);
-        return NoContent();
-    }
+						await SaveConfigAsync(blogConfig.GeneralSettings);
+					}
+				}
+				catch (FormatException e)
+				{
+					logger.LogError(e, $"Error {nameof(Image)}(), Invalid Base64 string");
+				}
+			}
+		}
+		else
+		{
+			blogConfig.GeneralSettings.AvatarUrl = Url.Action("Avatar", "Assets");
+			await SaveConfigAsync(blogConfig.GeneralSettings);
+		}
 
-    [HttpPost("watermark")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Image(ImageSettings model, IBlogImageStorage imageStorage)
-    {
-        _blogConfig.ImageSettings = model;
+		await SaveConfigAsync(blogConfig.ImageSettings);
 
-        if (model.EnableCDNRedirect)
-        {
-            if (null != _blogConfig.GeneralSettings.AvatarUrl
-            && !_blogConfig.GeneralSettings.AvatarUrl.StartsWith(model.CDNEndpoint))
-            {
-                try
-                {
-                    var avatarData = await _mediator.Send(new GetAssetQuery(AssetId.AvatarBase64));
+		return NoContent();
+	}
 
-                    if (!string.IsNullOrWhiteSpace(avatarData))
-                    {
-                        var avatarBytes = Convert.FromBase64String(avatarData);
-                        var fileName = $"avatar-{AssetId.AvatarBase64:N}.png";
-                        fileName = await imageStorage.InsertAsync(fileName, avatarBytes);
-                        _blogConfig.GeneralSettings.AvatarUrl = _blogConfig.ImageSettings.CDNEndpoint.CombineUrl(fileName);
+	[HttpPost("advanced")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	public async Task<IActionResult> Advanced(AdvancedSettings model)
+	{
+		model.MetaWeblogPasswordHash = !string.IsNullOrWhiteSpace(model.MetaWeblogPassword) ?
+			Helper.HashPassword(model.MetaWeblogPassword) :
+			blogConfig.AdvancedSettings.MetaWeblogPasswordHash;
 
-                        await SaveConfigAsync(_blogConfig.GeneralSettings);
-                    }
-                }
-                catch (FormatException e)
-                {
-                    _logger.LogError(e, $"Error {nameof(Image)}(), Invalid Base64 string");
-                }
-            }
-        }
-        else
-        {
-            _blogConfig.GeneralSettings.AvatarUrl = Url.Action("Avatar", "Assets");
-            await SaveConfigAsync(_blogConfig.GeneralSettings);
-        }
+		blogConfig.AdvancedSettings = model;
 
-        await SaveConfigAsync(_blogConfig.ImageSettings);
+		await SaveConfigAsync(blogConfig.AdvancedSettings);
+		return NoContent();
+	}
 
-        return NoContent();
-    }
+	[HttpPost("shutdown")]
+	[ProducesResponseType(StatusCodes.Status202Accepted)]
+	public IActionResult Shutdown(IHostApplicationLifetime applicationLifetime)
+	{
+		logger.LogWarning($"Shutdown is requested by '{User.Identity?.Name}'.");
+		applicationLifetime.StopApplication();
+		return Accepted();
+	}
 
-    [HttpPost("advanced")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Advanced(AdvancedSettings model)
-    {
-        model.MetaWeblogPasswordHash = !string.IsNullOrWhiteSpace(model.MetaWeblogPassword) ?
-            Helper.HashPassword(model.MetaWeblogPassword) :
-            _blogConfig.AdvancedSettings.MetaWeblogPasswordHash;
+	[HttpPost("reset")]
+	[ProducesResponseType(StatusCodes.Status202Accepted)]
+	public async Task<IActionResult> Reset(BlogDbContext context, IHostApplicationLifetime applicationLifetime)
+	{
+		logger.LogWarning($"System reset is requested by '{User.Identity?.Name}', IP: {Helper.GetClientIP(HttpContext)}.");
 
-        _blogConfig.AdvancedSettings = model;
+		await context.ClearAllData();
 
-        await SaveConfigAsync(_blogConfig.AdvancedSettings);
-        return NoContent();
-    }
+		applicationLifetime.StopApplication();
+		return Accepted();
+	}
 
-    [HttpPost("shutdown")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public IActionResult Shutdown(IHostApplicationLifetime applicationLifetime)
-    {
-        _logger.LogWarning($"Shutdown is requested by '{User.Identity?.Name}'.");
-        applicationLifetime.StopApplication();
-        return Accepted();
-    }
+	[HttpPost("custom-css")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> CustomStyleSheet(CustomStyleSheetSettings model)
+	{
+		if (model.EnableCustomCss && string.IsNullOrWhiteSpace(model.CssCode))
+		{
+			ModelState.AddModelError(nameof(CustomStyleSheetSettings.CssCode), "CSS Code is required");
+			return BadRequest(ModelState.CombineErrorMessages());
+		}
 
-    [HttpPost("reset")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> Reset(BlogDbContext context, IHostApplicationLifetime applicationLifetime)
-    {
-        _logger.LogWarning($"System reset is requested by '{User.Identity?.Name}', IP: {Helper.GetClientIP(HttpContext)}.");
+		var uglifyTest = Uglify.Css(model.CssCode);
+		if (uglifyTest.HasErrors)
+		{
+			foreach (var err in uglifyTest.Errors)
+			{
+				ModelState.AddModelError(model.CssCode, err.ToString());
+			}
+			return BadRequest(ModelState.CombineErrorMessages());
+		}
 
-        await context.ClearAllData();
+		blogConfig.CustomStyleSheetSettings = model;
 
-        applicationLifetime.StopApplication();
-        return Accepted();
-    }
+		await SaveConfigAsync(blogConfig.CustomStyleSheetSettings);
+		return NoContent();
+	}
 
-    [HttpPost("custom-css")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CustomStyleSheet(CustomStyleSheetSettings model)
-    {
-        if (model.EnableCustomCss && string.IsNullOrWhiteSpace(model.CssCode))
-        {
-            ModelState.AddModelError(nameof(CustomStyleSheetSettings.CssCode), "CSS Code is required");
-            return BadRequest(ModelState.CombineErrorMessages());
-        }
+	[HttpPost("custom-menu")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> CustomMenu(CustomMenuSettingsJsonModel model)
+	{
+		if (model.IsEnabled && string.IsNullOrWhiteSpace(model.MenuJson))
+		{
+			ModelState.AddModelError(nameof(CustomMenuSettingsJsonModel.MenuJson), "Menus is required");
+			return BadRequest(ModelState.CombineErrorMessages());
+		}
 
-        var uglifyTest = Uglify.Css(model.CssCode);
-        if (uglifyTest.HasErrors)
-        {
-            foreach (var err in uglifyTest.Errors)
-            {
-                ModelState.AddModelError(model.CssCode, err.ToString());
-            }
-            return BadRequest(ModelState.CombineErrorMessages());
-        }
+		blogConfig.CustomMenuSettings = new()
+		{
+			IsEnabled = model.IsEnabled,
+			Menus = model.MenuJson.FromJson<Menu[]>()
+		};
 
-        _blogConfig.CustomStyleSheetSettings = model;
+		await SaveConfigAsync(blogConfig.CustomMenuSettings);
+		return NoContent();
+	}
 
-        await SaveConfigAsync(_blogConfig.CustomStyleSheetSettings);
-        return NoContent();
-    }
+	[HttpGet("password/generate")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public IActionResult GeneratePassword([FromServices] IPasswordGenerator passwordGenerator)
+	{
+		var password = passwordGenerator.GeneratePassword(new(10, 3));
+		return Ok(new
+		{
+			ServerTimeUtc = DateTime.UtcNow,
+			Password = password
+		});
+	}
 
-    [HttpPost("custom-menu")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CustomMenu(CustomMenuSettingsJsonModel model)
-    {
-        if (model.IsEnabled && string.IsNullOrWhiteSpace(model.MenuJson))
-        {
-            ModelState.AddModelError(nameof(CustomMenuSettingsJsonModel.MenuJson), "Menus is required");
-            return BadRequest(ModelState.CombineErrorMessages());
-        }
-
-        _blogConfig.CustomMenuSettings = new()
-        {
-            IsEnabled = model.IsEnabled,
-            Menus = model.MenuJson.FromJson<Menu[]>()
-        };
-
-        await SaveConfigAsync(_blogConfig.CustomMenuSettings);
-        return NoContent();
-    }
-
-    [HttpGet("password/generate")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult GeneratePassword([FromServices] IPasswordGenerator passwordGenerator)
-    {
-        var password = passwordGenerator.GeneratePassword(new(10, 3));
-        return Ok(new
-        {
-            ServerTimeUtc = DateTime.UtcNow,
-            Password = password
-        });
-    }
-
-    private async Task SaveConfigAsync<T>(T blogSettings) where T : IBlogSettings
-    {
-        var kvp = _blogConfig.UpdateAsync(blogSettings);
-        await _mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
-    }
+	private async Task SaveConfigAsync<T>(T blogSettings) where T : IBlogSettings
+	{
+		var kvp = blogConfig.UpdateAsync(blogSettings);
+		await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
+	}
 }

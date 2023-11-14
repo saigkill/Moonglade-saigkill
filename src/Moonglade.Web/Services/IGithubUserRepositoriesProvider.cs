@@ -1,7 +1,6 @@
-﻿using Moonglade.Configuration;
 using Moonglade.Data.ExternalAPI.GitHub.Models;
 
-namespace Moonglade.Data.DataProviders;
+namespace Moonglade.Web.Services;
 
 public interface IGithubUserRepositoriesProvider
 {

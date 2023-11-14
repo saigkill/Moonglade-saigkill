@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 
 using Moonglade.Comments.Moderator;
-using Moonglade.Data.DataProviders;
 using Moonglade.Data.MySql;
 using Moonglade.Data.PostgreSql;
 using Moonglade.Data.Services;
@@ -22,6 +21,7 @@ using Moonglade.Data.SqlServer;
 using Moonglade.Email.Client;
 using Moonglade.Pingback;
 using Moonglade.Syndication;
+using Moonglade.Web.Services;
 
 using SixLabors.Fonts;
 
@@ -30,6 +30,7 @@ using Spectre.Console;
 using WilderMinds.MetaWeblog;
 
 using Encoder = Moonglade.Web.Configuration.Encoder;
+using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 Console.OutputEncoding = Encoding.UTF8;
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -69,6 +70,8 @@ void WriteParameterTable()
 	var ipEntry = Dns.GetHostEntry(strHostName);
 	var ips = ipEntry.AddressList;
 
+	var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
 	table.AddColumn("Parameter");
 	table.AddColumn("Value");
 	table.AddRow(new Markup("[blue]Path[/]"), new Text(Environment.CurrentDirectory));
@@ -77,9 +80,16 @@ void WriteParameterTable()
 	table.AddRow(new Markup("[blue]Host[/]"), new Text(Environment.MachineName));
 	table.AddRow(new Markup("[blue]IP addresses[/]"), new Rows(ips.Select(p => new Text(p.ToString()))));
 	table.AddRow(new Markup("[blue]Database type[/]"), new Text(dbType!));
+
+	if (!string.IsNullOrWhiteSpace(envName) && envName.ToLower() == "development")
+	{
+		table.AddRow(new Markup("[blue]Connection String[/]"), new Text(builder.Configuration.GetConnectionString("MoongladeDatabase")));
+	}
+
 	table.AddRow(new Markup("[blue]Image storage[/]"), new Text(builder.Configuration["ImageStorage:Provider"]!));
 	table.AddRow(new Markup("[blue]Authentication provider[/]"), new Text(builder.Configuration["Authentication:Provider"]!));
 	table.AddRow(new Markup("[blue]Editor[/]"), new Text(builder.Configuration["Editor"]!));
+	table.AddRow(new Markup("[blue]ASPNETCORE_ENVIRONMENT[/]"), new Text(envName ?? "N/A"));
 
 	AnsiConsole.Write(table);
 }
@@ -108,7 +118,7 @@ void ConfigureServices(IServiceCollection services, string connString)
 
 	services.AddScoped<GithubUserRepositoriesProvider>();
 
-	services.AddScoped<CalendarProvider>();
+	//services.AddScoped<CalendarProvider>();
 	services.AddScoped<CertificateService>();
 	services.AddScoped<DonationService>();
 	services.AddScoped<HonoraryPositionService>();
@@ -210,22 +220,23 @@ async Task FirstRun()
 	try
 	{
 		var startUpResut = await app.InitStartUp(dbType);
-		switch (startUpResut)
+
+		// Change `switch-case` to `if-else` for workaround https://github.com/dotnet/aspnetcore/issues/51285
+		if (startUpResut == StartupInitResult.DatabaseConnectionFail)
 		{
-			case StartupInitResult.DatabaseConnectionFail:
-				app.MapGet("/", () => Results.Problem(
-					detail: "Database connection test failed, please check your connection string and firewall settings, then RESTART Moonglade manually.",
-					statusCode: 500
-					));
-				app.Run();
-				return;
-			case StartupInitResult.DatabaseSetupFail:
-				app.MapGet("/", () => Results.Problem(
-					detail: "Database setup failed, please check error log, then RESTART Moonglade manually.",
-					statusCode: 500
+			app.MapGet("/", () => Results.Problem(
+				detail: "Database connection test failed, please check your connection string and firewall settings, then RESTART Moonglade manually.",
+				statusCode: 500
 				));
-				app.Run();
-				return;
+			app.Run();
+		}
+		else if (startUpResut == StartupInitResult.DatabaseSetupFail)
+		{
+			app.MapGet("/", () => Results.Problem(
+				detail: "Database setup failed, please check error log, then RESTART Moonglade manually.",
+				statusCode: 500
+			));
+			app.Run();
 		}
 	}
 	catch (Exception e)
@@ -249,10 +260,10 @@ void ConfigureMiddleware()
 		// ASP.NET Core always use the last value in XFF header, which is AFD's IP address
 		// Need to set as `X-Azure-ClientIP` as workaround
 		// https://learn.microsoft.com/en-us/azure/frontdoor/front-door-http-headers-protocol
-		var forwardedForHeaderName = builder.Configuration["ForwardedHeaders:ForwardedForHeaderName"];
-		if (!string.IsNullOrWhiteSpace(forwardedForHeaderName))
+		var headerName = builder.Configuration["ForwardedHeaders:HeaderName"];
+		if (!string.IsNullOrWhiteSpace(headerName))
 		{
-			fho.ForwardedForHeaderName = forwardedForHeaderName;
+			fho.ForwardedForHeaderName = headerName;
 		}
 
 		var knownProxies = builder.Configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>();
@@ -339,7 +350,7 @@ void ConfigureMiddleware()
 	else
 	{
 		app.UseStatusCodePages(ConfigureStatusCodePages.Handler).UseExceptionHandler("/error");
-		app.UseHsts();
+		// app.UseHsts();
 	}
 
 	app.UseHttpsRedirection();

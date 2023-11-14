@@ -45,7 +45,7 @@ To quickly get it running on a new Linux machine without Docker, follow instruct
 
 Tools | Alternative
 --- | ---
-[Visual Studio 2022 v17.7+](https://visualstudio.microsoft.com/) | [Visual Studio Code](https://code.visualstudio.com/) with [.NET 7.0 SDK](http://dot.net)
+[Visual Studio 2022 v17.8+](https://visualstudio.microsoft.com/) | [Visual Studio Code](https://code.visualstudio.com/) with [.NET 8.0 SDK](http://dot.net)
 [SQL Server 2022](https://www.microsoft.com/en-us/sql-server/sql-server-2022) | [SQL Server LocalDB](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/sql-server-express-localdb?view=sql-server-ver16&WT.mc_id=AZ-MVP-5002809), PostgreSQL or MySQL 
 
 ### 💾 Setup Database
@@ -177,24 +177,7 @@ If you need email notification for new comments, new replies and pingbacks, you 
 - [ ] APML - Not planned
 - [ ] Trackback - Not planned
 
-## 🐼 Example Blogs
-
-There are a few individuals already setup thier blogs using Moonglade on Azure (Global or China), Alibaba Cloud, Tencent Cloud, etc.
-
-- [zchwei](https://zchwei.com/)
-- [yycoding](https://www.yycoding.xyz/)
-- [51azure](https://www.51azure.cloud/)
-- [Zhuangkh](https://zhuangkh.com/)
-- [HueiFeng](https://blog.stackable.cn/)
-- [Leslie Wang](https://lesliewxj.com/)
-- [AllenMasters](https://allenmasters.com)
-- [Hao's House](https://haxu.dev/)
-- [Sascha.Manns](https://saschamanns.de/)
-- [王高峰博客](https://blog.wanggaofeng.net)
-
-*Just Submit PR or issue if you want your blog to be listed here*
-
-## ⚖️ Disclaimer
+## ⚖️ Disclaimer (Global)
 
 The following disclaimer applies to the software named "Moonglade" developed by Edi Wang and other [contributors](https://github.com/EdiWang/Moonglade/graphs/contributors) (hereinafter referred to as "the software developer"):
 
@@ -217,3 +200,17 @@ As a user of Moonglade, it is your responsibility to ensure compliance with appl
 ### Updates and Modifications
 
 The software developer may release updates or modifications to Moonglade from time to time. It is recommended that users stay informed about these updates and apply them to ensure optimal performance and security.
+
+## 免责申明
+
+此项目(Moonglade)及其配套组件均为免费开源的产品，仅用于学习交流，并且不直接向中国提供服务，中国用户请于下载后立即删除。
+
+任何中国境内的组织及个人不得使用此项目(Moonglade)及其配套组件构建任何形式的面向中国境内用户的网站或服务。
+
+不可用于任何违反中华人民共和国(含台湾省)或使用者所在地区法律法规的用途。
+
+因为作者即本人仅完成代码的开发和开源活动(开源即任何人都可以下载使用)，从未参与用户的任何运营和盈利活动。
+
+且不知晓用户后续将程序源代码用于何种用途，故用户使用过程中所带来的任何法律责任即由用户自己承担。
+
+[《开源软件有漏洞，作者需要负责吗？是的！》](https://go.edi.wang/aka/os251)
