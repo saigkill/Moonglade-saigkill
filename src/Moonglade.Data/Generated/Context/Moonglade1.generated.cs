@@ -84,6 +84,11 @@ namespace Moonglade.Data.Context
       #endregion DbSets
 
       /// <summary>
+      /// Default connection string
+      /// </summary>
+      public static string ConnectionString { get; set; } = @"https://test.de";
+
+      /// <summary>
       ///     <para>
       ///         Initializes a new instance of the <see cref="T:Microsoft.EntityFrameworkCore.DbContext" /> class using the specified options.
       ///         The <see cref="M:Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)" /> method will still be called to allow further
@@ -185,7 +190,7 @@ namespace Moonglade.Data.Context
                      .IsRequired();
 
          modelBuilder.Entity<global::Moonglade.Data.HonoraryPositonEntity>()
-                     .ToTable("HonoraryPositions")
+                     .ToTable("HonoraryPositons")
                      .HasKey(t => t.Id);
          modelBuilder.Entity<global::Moonglade.Data.HonoraryPositonEntity>()
                      .Property(t => t.Id)
@@ -319,7 +324,6 @@ namespace Moonglade.Data.Context
                      .IsRequired();
          modelBuilder.Entity<global::Moonglade.Data.PublicationEntity>()
                      .Property(t => t.DatePublished)
-                     .HasColumnName("datetime")
                      .HasColumnType("datetime")
                      .IsRequired();
          modelBuilder.Entity<global::Moonglade.Data.PublicationEntity>()
@@ -367,7 +371,6 @@ namespace Moonglade.Data.Context
                      .IsRequired();
          modelBuilder.Entity<global::Moonglade.Data.TalkEntity>()
                      .Property(t => t.Date)
-                     .HasColumnName("datetime")
                      .HasColumnType("datetime")
                      .IsRequired();
 
@@ -412,7 +415,6 @@ namespace Moonglade.Data.Context
                      .IsRequired();
          modelBuilder.Entity<global::Moonglade.Data.TestimonialEntity>()
                      .Property(t => t.Date)
-                     .HasColumnName("datetime")
                      .HasColumnType("datetime")
                      .IsRequired();
 
@@ -437,7 +439,6 @@ namespace Moonglade.Data.Context
                      .IsRequired();
          modelBuilder.Entity<global::Moonglade.Data.VideoEntity>()
                      .Property(t => t.DatePublished)
-                     .HasColumnName("datetime")
                      .HasColumnType("datetime");
 
          modelBuilder.Entity<global::Moonglade.Data.Entities.VideoType>()

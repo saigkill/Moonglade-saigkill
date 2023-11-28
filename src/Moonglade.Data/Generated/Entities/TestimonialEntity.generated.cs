@@ -108,7 +108,7 @@ namespace Moonglade.Data
        *************************************************************************/
 
       /// <summary>
-      /// Required, HasColumnName(&quot;datetime&quot;)
+      /// Required
       /// </summary>
       [Required]
       public DateTime Date { get; set; }

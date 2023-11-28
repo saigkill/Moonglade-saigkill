@@ -115,7 +115,7 @@ namespace Moonglade.Data
       public string Authors { get; set; }
 
       /// <summary>
-      /// Required, HasColumnName(&quot;datetime&quot;)
+      /// Required
       /// </summary>
       [Required]
       public DateTime DatePublished { get; set; }

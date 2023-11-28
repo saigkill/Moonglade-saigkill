@@ -18,7 +18,7 @@
             <div class="control-container">
                 <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" showIndicators="false">
                     <e-carousel-items>
-                        @foreach (var testimonial in _tests.GetTestimonials())
+                        @foreach (var testimonial in _tests.GetTestimonialEntity())
                         {
                             <e-carousel-item template='<div class="testimonial">
                         <div class="pic">

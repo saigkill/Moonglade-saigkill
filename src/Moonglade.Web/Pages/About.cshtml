@@ -56,7 +56,7 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-memberships"]</h4>
-    @foreach (var membership in _membershipService.GetMemberships())
+    @foreach (var membership in _membershipService.GetMembershipEntity())
     {
         @if (membership.Active)
         {
@@ -79,7 +79,7 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-mandates"]</h4>
-    @foreach (var mandates in _mandateService.GetMandates())
+    @foreach (var mandates in _mandateService.GetMandateEntitys())
     {
         <div tabindex="0" class="e-card" id="@mandates.Id">
             <div class="card-header">
@@ -120,7 +120,7 @@
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-publications"]</h4>
     <div style="height: 500px; overflow-y: scroll;">
-        @foreach (var pub in _publicationService.GetPublications())
+        @foreach (var pub in _publicationService.GetPublicationEntity())
         {
             <div tabindex="0" class="e-card" id="@pub.Id">
                 <div class="card-header">

@@ -83,9 +83,6 @@ namespace Moonglade.Data
        * Properties
        *************************************************************************/
 
-      /// <summary>
-      /// HasColumnName(&quot;datetime&quot;)
-      /// </summary>
       public DateTime? DatePublished { get; set; }
 
       /// <summary>

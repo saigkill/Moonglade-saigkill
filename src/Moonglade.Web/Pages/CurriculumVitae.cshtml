@@ -162,7 +162,7 @@
         <div class="control-container center-align" style="width: 950px;">
             <ejs-carousel id="certCarousel" animationEffect="Fade" buttonsVisibility="Hidden" showIndicators="false">
                 <e-carousel-items>
-                    @foreach (var cert in _certService.GetCertificates())
+                    @foreach (var cert in _certService.GetCertificateEntity())
                     {
                         string cssClass;
                         if (cert.Landscape)
