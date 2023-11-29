@@ -1,12 +1,11 @@
 # Moonglade-saigkill Blog
 
-The [.NET](https://dotnet.microsoft.com/) blog system that optimized for [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
-
-This `saigkill` Version is a fork of the original project. It enables Site verifying services (Bing, Yandex, Norton Safe Web and World of Trust), a basic support of Dublin Core, also some Analytics services (Google Analytics, MS Clarity).
+[![Docker Linux x64](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml/badge.svg)](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml)
+![Man hours](https://manhours.aiursoft.cn/r/github.com/ediwang/moonglade.svg)
 
 The upstream project provides managing sites. This feature is also present in this version. Becuase of a lack of page localization i decided to use plain razor pages for my pages. If you want to use my fork, and want to use the native pages support, so delete the pages `About`, `Contact`, `CurriculumVitae`, `Imprint`, `Privacy`, `Talks` and `Testimonials`.
 
-**IMPORTANT: Moonglade will move to .NET 8 LTS in November 2023 with v14.x release**
+> IMPORTANT: Moonglade has moved to .NET 8 LTS in November 2023 with v14.x release, please upgrade your server to use v14
 
 ## 📦 Deployment
 
@@ -176,30 +175,6 @@ If you need email notification for new comments, new replies and pingbacks, you 
 - [ ] BlogML - Not planned
 - [ ] APML - Not planned
 - [ ] Trackback - Not planned
-
-## ⚖️ Disclaimer (Global)
-
-The following disclaimer applies to the software named "Moonglade" developed by Edi Wang and other [contributors](https://github.com/EdiWang/Moonglade/graphs/contributors) (hereinafter referred to as "the software developer"):
-
-This project is not affiliated with Microsoft Corporation. All product names, logos, and brands are property of their respective owners. All company, product and service names used in this website are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.
-
-The software developer does not provide any warranties or guarantees regarding the functionality, performance, or suitability of Moonglade for any specific purpose. The software is provided "as is," and the software developer shall not be held liable for any direct or indirect damages arising from the use or inability to use Moonglade.
-
-### Data Privacy
-
-Moonglade does not send any user data or information to any government, **including the Chinese government**. The software is designed to prioritize and respect user privacy.
-
-### Data Collection
-
-While using Moonglade, please note that the platform on which you deploy the software may collect data and usage information. This data collection is solely the responsibility of the platform and not the software developer. We encourage you to review thier privacy policy and terms of service of the platform to understand how your data is handled.
-
-### User Responsibility
-
-As a user of Moonglade, it is your responsibility to ensure compliance with applicable laws and regulations regarding data privacy and usage. The software developer shall not be held liable for any misuse, unauthorized access, or mishandling of data by the user or the platform on which Moonglade is deployed.
-
-### Updates and Modifications
-
-The software developer may release updates or modifications to Moonglade from time to time. It is recommended that users stay informed about these updates and apply them to ensure optimal performance and security.
 
 ## 免责申明
 

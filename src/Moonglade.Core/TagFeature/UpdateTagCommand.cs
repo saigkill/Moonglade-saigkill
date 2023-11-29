@@ -5,7 +5,7 @@ namespace Moonglade.Core.TagFeature;
 
 public record UpdateTagCommand(int Id, string Name) : IRequest<OperationCode>;
 
-public class UpdateTagCommandHandler : IRequestHandler<UpdateTagCommand, OperationCode>
+public class UpdateTagCommandHandler(IRepository<TagEntity> repo) : IRequestHandler<UpdateTagCommand, OperationCode>
 {
 	private readonly IRepository<TagEntity> _repo;
 
