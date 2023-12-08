@@ -36,15 +36,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
+    <PackageReference Include="Edi.ChinaDetector" Version="0.2.251-preview.1" />
     <PackageReference Include="Edi.ImageWatermark" Version="2.11.1" />
     <PackageReference Include="Edi.PasswordGenerator" Version="1.1.0" />
     <PackageReference Include="UAParser" Version="3.1.47" />
     <PackageReference Include="WilderMinds.MetaWeblog" Version="5.1.1" />
-    <PackageReference Include="Spectre.Console" Version="0.47.0" />
-    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="21.1.35" />
-    <PackageReference Include="Syncfusion.Licensing" Version="21.1.35" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.0-rc.2.23480.2" />
+    <PackageReference Include="Spectre.Console" Version="0.48.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Moonglade.Auth\Moonglade.Auth.csproj" />
