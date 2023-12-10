@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-LABEL maintainer="edi.wang@outlook.com"
-LABEL repo="https://github.com/EdiWang/Moonglade"
+LABEL maintainer="sascha.manns@outlook.com"
+LABEL repo="https://dev.azure.com/saigkill/Moonglade"
 
 USER app
 

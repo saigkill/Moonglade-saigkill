@@ -17,7 +17,10 @@ else
 {
     foreach (var item in Model)
     {
-        <partial name="_PostListEntry" model="item" />
+        if (item.LangCode == culture)
+        {
+            <partial name="_PostListEntry" model="item" />
+        }
     }
 
     @Html.PagedListPager(Model, page => ViewData["sortBy"] == null ? $"?p={page}" : $"?p={page}&sortBy={ViewData["sortBy"]}", new()
