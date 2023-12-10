@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using Moonglade.Data.Generated.Entities;
 using Moonglade.Data.Spec;
 
@@ -33,25 +35,25 @@ public class ListPostSegmentQueryHandler(IRepository<PostEntity> repo) : IReques
         var spec = new PostPagingSpec(request.PostStatus, request.Keyword, request.PageSize, request.Offset);
         var posts = await repo.SelectAsync(spec, PostSegment.EntitySelector, ct);
 
-		Expression<Func<PostEntity, bool>> countExp = p => null == request.Keyword || p.Title.Contains(request.Keyword);
+        Expression<Func<PostEntity, bool>> countExp = p => null == request.Keyword || p.Title.Contains(request.Keyword);
 
-		switch (request.PostStatus)
-		{
-			case PostStatus.Draft:
-				countExp.AndAlso(p => !p.IsPublished && !p.IsDeleted);
-				break;
-			case PostStatus.Published:
-				countExp.AndAlso(p => p.IsPublished && !p.IsDeleted);
-				break;
-			case PostStatus.Deleted:
-				countExp.AndAlso(p => p.IsDeleted);
-				break;
-			case PostStatus.Default:
-				countExp.AndAlso(p => true);
-				break;
-			default:
-				throw new ArgumentOutOfRangeException(nameof(request.PostStatus), request.PostStatus, null);
-		}
+        switch (request.PostStatus)
+        {
+            case PostStatus.Draft:
+                countExp.AndAlso(p => !p.IsPublished && !p.IsDeleted);
+                break;
+            case PostStatus.Published:
+                countExp.AndAlso(p => p.IsPublished && !p.IsDeleted);
+                break;
+            case PostStatus.Deleted:
+                countExp.AndAlso(p => p.IsDeleted);
+                break;
+            case PostStatus.Default:
+                countExp.AndAlso(p => true);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(request.PostStatus), request.PostStatus, null);
+        }
 
         var totalRows = await repo.CountAsync(countExp, ct);
         return (posts, totalRows);
