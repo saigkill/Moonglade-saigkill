@@ -1,8 +1,7 @@
-﻿using System.Net;
-using System.Net.Mime;
-using Moonglade.Configuration;
+﻿using Moonglade.Configuration;
 
 using RestSharp;
+
 using ContentType = RestSharp.ContentType;
 
 namespace Moonglade.Data.ExternalAPI.GitHub
@@ -11,6 +10,11 @@ namespace Moonglade.Data.ExternalAPI.GitHub
     {
         public IBlogConfig _config;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GithubClient"/> class.
+        /// </summary>
+        /// <param name="config">The configuration object that contains settings for the Github client.</param>
         public GithubClient(IBlogConfig config)
         {
             _config = config;
@@ -46,18 +50,18 @@ namespace Moonglade.Data.ExternalAPI.GitHub
             {
                 if (body != null)
                 {
-	                request.AddStringBody(body, ContentType.Json);
+                    request.AddStringBody(body, ContentType.Json);
                 }
             }
 
             try
             {
-	            var response = await client.ExecuteGetAsync(request, token);
-	            return response;
+                var response = await client.ExecuteGetAsync(request, token);
+                return response;
             }
             catch
             {
-	            throw new Exception("Request failed. See logs.");
+                throw new Exception("Request failed. See logs.");
             }
         }
     }

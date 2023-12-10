@@ -351,14 +351,23 @@
 
     @if (BlogConfig.GeneralSettings.GoogleAnalytics != null)
     {
-        <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "https://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
-        <script type="text/javascript">
-            var pageTracker = _gat._getTracker("@(BlogConfig.GeneralSettings.GoogleAnalytics)");
-            pageTracker._initData();
-            pageTracker._trackPageview();
+        @* <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "https://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    var pageTracker = _gat._getTracker("@(BlogConfig.GeneralSettings.GoogleAnalytics)");
+    pageTracker._initData();
+    pageTracker._trackPageview();
+    </script> *@
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@BlogConfig.GeneralSettings.GoogleAnalytics"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', '@BlogConfig.GeneralSettings.GoogleAnalytics');
         </script>
     }
 
