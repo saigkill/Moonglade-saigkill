@@ -4,7 +4,7 @@ env:
   AZURE_WEBAPP_NAME: moonglade-ediwang-ea
   SLOT_NAME: staging
   AZURE_WEBAPP_PACKAGE_PATH: '.'
-  DOTNET_VERSION: '7.0.x'
+  DOTNET_VERSION: '8.0.x'
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up .NET
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 

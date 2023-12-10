@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using Moonglade.Data.Entities;
+using Moonglade.Data.Generated.Entities;
 
 namespace Moonglade.Data;
 
@@ -19,7 +19,7 @@ public class Seed
             await dbContext.CustomPage.AddRangeAsync(GetPages());
 
             // Add example post
-            var content = "Moonglade is the blog system for https://edi.wang. Powered by .NET 7 and runs on Microsoft Azure.";
+            var content = "Moonglade is the blog system for https://edi.wang. Powered by .NET 8 and runs on Microsoft Azure, the best cloud on the planet.";
 
             var post = new PostEntity
             {

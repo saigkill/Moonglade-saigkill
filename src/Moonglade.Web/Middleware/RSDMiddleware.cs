@@ -2,27 +2,23 @@ using System.Xml;
 
 namespace Moonglade.Web.Middleware;
 
-public class RSDMiddleware
+public class RSDMiddleware(RequestDelegate next)
 {
-	private readonly RequestDelegate _next;
+    public async Task Invoke(HttpContext httpContext, IBlogConfig blogConfig)
+    {
+        if (httpContext.Request.Path == "/rsd")
+        {
+            var siteRootUrl = Helper.ResolveRootUrl(httpContext, blogConfig.GeneralSettings.CanonicalPrefix, true);
+            var xml = await GetRSDData(siteRootUrl);
 
-	public RSDMiddleware(RequestDelegate next) => _next = next;
-
-	public async Task Invoke(HttpContext httpContext, IBlogConfig blogConfig)
-	{
-		if (httpContext.Request.Path == "/rsd")
-		{
-			var siteRootUrl = Helper.ResolveRootUrl(httpContext, blogConfig.GeneralSettings.CanonicalPrefix, true);
-			var xml = await GetRSDData(siteRootUrl);
-
-			httpContext.Response.ContentType = "text/xml";
-			await httpContext.Response.WriteAsync(xml, httpContext.RequestAborted);
-		}
-		else
-		{
-			await _next(httpContext);
-		}
-	}
+            httpContext.Response.ContentType = "text/xml";
+            await httpContext.Response.WriteAsync(xml, httpContext.RequestAborted);
+        }
+        else
+        {
+            await next(httpContext);
+        }
+    }
 
 	private static async Task<string> GetRSDData(string siteRootUrl)
 	{

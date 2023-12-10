@@ -38,9 +38,10 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @if (!string.IsNullOrWhiteSpace(BlogConfig.GeneralSettings.CanonicalPrefix))
+    @if (BlogConfig.GeneralSettings.UseDublinCoreMetaData)
     {
-        <meta itemprop="publisher" href="@(Helper.ResolveCanonicalUrl(BlogConfig.GeneralSettings.CanonicalPrefix, Context.Request.Path))" />
+        <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+        <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" />
     }
     <meta name='contact' content='@BlogConfig.GeneralSettings.OwnerEmail' />
     <meta itemprop="copyrightHolder" name='copyright' content='Copyright (c) 2017 - @DateTime.Now.Year @BlogConfig.GeneralSettings.OwnerName' />
@@ -365,5 +366,10 @@
     <ejs-scripts></ejs-scripts>
 
     @await RenderSectionAsync("scripts", false)
+
+    @if (!string.IsNullOrWhiteSpace(BlogConfig.AdvancedSettings.FootScripts))
+    {
+        @Html.Raw(BlogConfig.AdvancedSettings.FootScripts)
+    }
 </body>
 </html>

@@ -1732,4 +1732,13 @@ als Packager, Redakteur des wöchentlichen Newsletters und innerhalb des Members
   <data name="about-mandates" xml:space="preserve">
     <value>Mandate</value>
   </data>
+  <data name="Syndication" xml:space="preserve">
+    <value>Syndizierung</value>
+  </data>
+  <data name="APIKeys" xml:space="preserve">
+    <value>API Schlüssel</value>
+  </data>
+  <data name="Videos" xml:space="preserve">
+    <value>Videos</value>
+  </data>
 </root>

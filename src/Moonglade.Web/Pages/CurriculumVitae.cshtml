@@ -1,6 +1,5 @@
 @page "/curriculum_vitae"
-@inject Moonglade.Data.DataProviders.PublicationProvider _pubs
-@inject Moonglade.Data.DataProviders.CertsProvider _certs
+@inject Moonglade.Data.Services.CertificateService _certService
 @{
     int age = DateTime.Now.Year - 1979;
     int experience = DateTime.Now.Year - 2009;
@@ -157,13 +156,13 @@
 
 <hr />
 
-<!-- Certs-->
+<!-- Certs -->
 <section id="certs" class="section">
     <div class="col-md-offset2 col-md-8">
         <div class="control-container center-align" style="width: 950px;">
             <ejs-carousel id="certCarousel" animationEffect="Fade" buttonsVisibility="Hidden" showIndicators="false">
                 <e-carousel-items>
-                    @foreach (var cert in _certs.Get())
+                    @foreach (var cert in _certService.GetCertificateEntity())
                     {
                         string cssClass;
                         if (cert.Landscape)
@@ -175,13 +174,13 @@
                             cssClass = "certificate portrait";
                         }
                         <e-carousel-item template='<div style="text-align: center" class="certificate">
-                        <div class="pic">
-                            <a href="@cert.Link"><img class="@cssClass" src="@cert.LinkImg" alt=""></img></a>
-                        </div>
-                        <p class="description">
-                            @cert.Content
-                        </p>
-                    </div>'></e-carousel-item>
+		                    <div class="pic">
+			                    <a href="@cert.Link"><img class="@cssClass" src="@cert.Image" alt=""></img></a>
+		                    </div>
+		                    <p class="description">
+			                    @cert.Content
+		                    </p>
+	                    </div>'></e-carousel-item>
                     }
                 </e-carousel-items>
             </ejs-carousel>

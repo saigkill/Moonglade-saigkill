@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -371,7 +370,6 @@ public static class Helper
 		// cut and trim
 		str = str[..(str.Length <= 45 ? str.Length : 45)].Trim();
 		str = Regex.Replace(str, @"\s", "-"); // hyphens
-
 		return str;
 	}
 

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>Moonglade.Comments</AssemblyName>
         <RootNamespace>Moonglade.Comments</RootNamespace>
         <IsTestProject>false</IsTestProject>
@@ -9,7 +9,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Edi.Captcha" Version="3.18.0" />
+        <PackageReference Include="Edi.Captcha" Version="3.19.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Moonglade.Configuration\Moonglade.Configuration.csproj" />

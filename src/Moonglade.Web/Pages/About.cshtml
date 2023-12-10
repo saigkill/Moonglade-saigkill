@@ -5,12 +5,14 @@
 @using Moonglade.Data.ExternalAPI.GitHub.Models
 @using Newtonsoft.Json
 @using RestSharp
-@inject Moonglade.Data.DataProviders.PublicationProvider _pubs
-@inject Moonglade.Data.DataProviders.GithubUserRepositoriesProvider _repos
-@inject Moonglade.Data.DataProviders.MembershipProvider _memberships
-@inject Moonglade.Data.DataProviders.HonoraryPositionsProvider _hpos
-@inject Moonglade.Data.DataProviders.MandatesProvider _mandates
+@inject Moonglade.Web.Services.GithubUserRepositoriesProvider _repos
+@inject Moonglade.Data.Services.HonoraryPositionService _hpoService
+@inject Moonglade.Data.Services.CertificateService _certService
+@inject Moonglade.Data.Services.MandateService _mandateService
+@inject Moonglade.Data.Services.MembershipService _membershipService
+@inject Moonglade.Data.Services.PublicationService _publicationService
 @{
+    //var repos = await _repos.GetUserRepositories();
 }
 @section head {
     <environment include="Development">
@@ -53,20 +55,20 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-memberships"]</h4>
-    @foreach (var membership in _memberships.Get())
+    @foreach (var membership in _membershipService.GetMembershipEntity())
     {
         @if (membership.Active)
         {
             <div tabindex="0" class="e-card" id="@membership.Id">
                 <div class="card-header">
                     <div class="e-card-header-caption">
-                        <h4 class="card-subtitle"><a href="@membership.Link" target="_blank" class="">@membership.Org</a></h4>
+                        <h4 class="card-subtitle"><a href="@membership.Link" target="_blank" class="">@membership.Organzation</a></h4>
                     </div>
                 </div>
                 <div class="e-card-content">
-                    @if (!string.IsNullOrWhiteSpace(membership.Blurp))
+                    @if (!string.IsNullOrWhiteSpace(membership.Summary))
                     {
-                        <div class="muted"><small>@membership.Blurp</small></div>
+                        <div class="muted"><small>@membership.Summary</small></div>
                     }
                 </div>
             </div>
@@ -76,16 +78,16 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-mandates"]</h4>
-    @foreach (var mandates in _mandates.Get())
+    @foreach (var mandates in _mandateService.GetMandateEntitys())
     {
         <div tabindex="0" class="e-card" id="@mandates.Id">
             <div class="card-header">
                 <div class="e-card-header-caption">
-                    <h4 class="card-subtitle"><a href="@mandates.Link" target="_blank" class="">@mandates.Blurp</a></h4>
+                    <h4 class="card-subtitle"><a href="@mandates.Link" target="_blank" class="">@mandates.Summary</a></h4>
                 </div>
             </div>
             <div class="e-card-content">
-                <div class="muted"><small>@mandates.Org - @mandates.Years</small></div>
+                <div class="muted"><small>@mandates.Organization - @mandates.Years</small></div>
             </div>
         </div>
     }
@@ -93,20 +95,20 @@
 
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-hpos"]</h4>
-    @foreach (var pos in _hpos.Get())
+    @foreach (var pos in _hpoService.GetHonoraryPositions())
     {
         @if (pos.Active)
         {
             <div tabindex="0" class="e-card" id="@pos.Id">
                 <div class="card-header">
                     <div class="e-card-header-caption">
-                        <h4 class="card-subtitle"><a href="@pos.Link" target="_blank" class="">@pos.Blurp</a></h4>
+                        <h4 class="card-subtitle"><a href="@pos.Link" target="_blank" class="">@pos.Summary</a></h4>
                     </div>
                 </div>
                 <div class="e-card-content">
-                    @if (!string.IsNullOrWhiteSpace(pos.Org))
+                    @if (!string.IsNullOrWhiteSpace(pos.Organization))
                     {
-                        <div class="muted"><small>@pos.Org</small></div>
+                        <div class="muted"><small>@pos.Organization</small></div>
                     }
                 </div>
             </div>
@@ -117,7 +119,7 @@
 <div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-publications"]</h4>
     <div style="height: 500px; overflow-y: scroll;">
-        @foreach (var pub in _pubs.Get())
+        @foreach (var pub in _publicationService.GetPublicationEntity())
         {
             <div tabindex="0" class="e-card" id="@pub.Id">
                 <div class="card-header">

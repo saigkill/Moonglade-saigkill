@@ -18,11 +18,14 @@ function slugify(text) {
 }
 
 export function initEvents(slugifyTitle) {
-	if (slugifyTitle) {
-		$('#ViewModel_Title').change(function () {
-			document.querySelector('#ViewModel_Slug').value = slugify($(this).val());
-		});
-	}
+    if (slugifyTitle) {
+        $('#ViewModel_Title').change(function () {
+            var newSlug = slugify($(this).val());
+            if (newSlug) {
+                document.querySelector('#ViewModel_Slug').value = newSlug;
+            }
+        });
+    }
 
 	$('#btn-preview').click(function (e) {
 		submitForm(e);
@@ -98,66 +101,65 @@ export function initEvents(slugifyTitle) {
 }
 
 export function loadTinyMCE(textareaSelector) {
-	if (window.tinyMCE !== undefined) {
-		window.tinyMCE.init({
-			selector: textareaSelector,
-			themes: 'silver',
-			skin: 'tinymce-5',
-			height: 'calc(100vh - 400px)',
-			relative_urls: false, // avoid image upload fuck up
-			browser_spellcheck: true,
-			branding: false,
-			block_formats: 'Paragraph=p; Header 2=h2; Header 3=h3; Header 4=h4; Preformatted=pre',
-			plugins: 'advlist autolink autosave link image lists charmap preview anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table directionality template codesample emoticons',
-			toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | paste pastetext removeformat | hr link image codesample | charmap emoticons table media | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code | fullscreen',
-			save_onsavecallback: function () {
-				$('#btn-save').trigger('click');
-			},
-			paste_data_images: true,
-			images_upload_url: '/image',
-			images_upload_credentials: true,
-			extended_valid_elements: 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|loading=lazy]',
-			body_class: 'post-content',
-			content_css: '/css/tinymce-custom.css',
-			codesample_languages: [
-				{ text: 'Bash', value: 'bash' },
-				{ text: 'C#', value: 'csharp' },
-				{ text: 'C', value: 'c' },
-				{ text: 'C++', value: 'cpp' },
-				{ text: 'CSS', value: 'css' },
-				{ text: 'Dockerfile', value: 'dockerfile' },
-				{ text: 'F#', value: 'fsharp' },
-				{ text: 'Go', value: 'go' },
-				{ text: 'HTML/XML', value: 'markup' },
-				{ text: 'JavaScript', value: 'javascript' },
-				{ text: 'Json', value: 'json' },
-				{ text: 'Kotlin', value: 'kotlin' },
-				{ text: 'Less', value: 'less' },
-				{ text: 'Lua', value: 'lua' },
-				{ text: 'Markdown', value: 'markdown' },
-				{ text: 'PowerShell', value: 'powershell' },
-				{ text: 'Plain Text', value: 'plaintext' },
-				{ text: 'Python', value: 'python' },
-				{ text: 'PHP', value: 'php' },
-				{ text: 'R', value: 'r' },
-				{ text: 'Ruby', value: 'ruby' },
-				{ text: 'Rust', value: 'rust' },
-				{ text: 'SCSS', value: 'scss' },
-				{ text: 'SQL', value: 'sql' },
-				{ text: 'Swift', value: 'swift' },
-				{ text: 'TypeScript', value: 'typescript' },
-				{ text: 'Visual Basic', value: 'vb' },
-				{ text: 'YAML', value: 'yaml' }
-			],
-			setup: function (editor) {
-				editor.on('NodeChange', function (e) {
-					if (e.element.tagName === 'IMG') {
-						e.element.setAttribute('loading', 'lazy');
-					}
-				});
-			}
-		});
-	}
+    if (window.tinyMCE !== undefined) {
+        window.tinyMCE.init({
+            selector: textareaSelector,
+            themes: 'silver',
+            skin: 'tinymce-5',
+            height: 'calc(100vh - 400px)',
+            relative_urls: false, // avoid image upload fuck up
+            browser_spellcheck: true,
+            branding: false,
+            block_formats: 'Paragraph=p; Header 2=h2; Header 3=h3; Header 4=h4; Preformatted=pre',
+            plugins: 'advlist autolink autosave link image lists charmap preview anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table directionality template codesample emoticons',
+            toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | paste pastetext removeformat | hr link image codesample | charmap emoticons table media | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code | fullscreen',
+            save_onsavecallback: function () {
+                $('#btn-save').trigger('click');
+            },
+            paste_data_images: true,
+            images_upload_url: '/image',
+            images_upload_credentials: true,
+            extended_valid_elements: 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|loading=lazy]',
+            body_class: 'post-content',
+            content_css: '/css/tinymce-custom.css',
+            codesample_languages: [
+                { text: 'Bash', value: 'bash' },
+                { text: 'C#', value: 'csharp' },
+                { text: 'C', value: 'c' },
+                { text: 'C++', value: 'cpp' },
+                { text: 'CSS', value: 'css' },
+                { text: 'Dockerfile', value: 'dockerfile' },
+                { text: 'F#', value: 'fsharp' },
+                { text: 'Go', value: 'go' },
+                { text: 'HTML/XML', value: 'markup' },
+                { text: 'JavaScript', value: 'javascript' },
+                { text: 'Json', value: 'json' },
+                { text: 'Kotlin', value: 'kotlin' },
+                { text: 'Less', value: 'less' },
+                { text: 'Lua', value: 'lua' },
+                { text: 'Markdown', value: 'markdown' },
+                { text: 'PowerShell', value: 'powershell' },
+                { text: 'Plain Text', value: 'plaintext' },
+                { text: 'Python', value: 'python' },
+                { text: 'R', value: 'r' },
+                { text: 'Ruby', value: 'ruby' },
+                { text: 'Rust', value: 'rust' },
+                { text: 'SCSS', value: 'scss' },
+                { text: 'SQL', value: 'sql' },
+                { text: 'Swift', value: 'swift' },
+                { text: 'TypeScript', value: 'typescript' },
+                { text: 'Visual Basic', value: 'vb' },
+                { text: 'YAML', value: 'yaml' }
+            ],
+            setup: function (editor) {
+                editor.on('NodeChange', function (e) {
+                    if (e.element.tagName === 'IMG') {
+                        e.element.setAttribute('loading', 'lazy');
+                    }
+                });
+            }
+        });
+    }
 }
 
 export function loadMdEditor(textareaSelector) {
@@ -193,23 +195,23 @@ export function loadMdEditor(textareaSelector) {
 }
 
 export function keepAlive() {
-	var tid = setInterval(postNonce, 60 * 1000);
-	function postNonce() {
-		var num = Math.random();
-		fetch('/api/post/keep-alive',
-			{
-				method: 'POST',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-				credentials: 'include',
-				body: JSON.stringify({ nonce: num })
-			}).then(async (response) => {
-				console.info('live');
-			});
-	}
-	function abortTimer() {
-		clearInterval(tid);
-	}
+    var tid = setInterval(postNonce, 60 * 1000);
+    function postNonce() {
+        var num = Math.random();
+        fetch('/api/post/keep-alive',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ nonce: num })
+            }).then(async (response) => {
+                console.info('live');
+            });
+    }
+    function abortTimer() {
+        clearInterval(tid);
+    }
 }

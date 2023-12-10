@@ -5,21 +5,24 @@ using System.Text.Json.Serialization;
 using AspNetCoreRateLimit;
 
 using Edi.Captcha;
+using Edi.ChinaDetector;
 using Edi.PasswordGenerator;
 
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 
 using Moonglade.Comments.Moderator;
-using Moonglade.Data.DataProviders;
 using Moonglade.Data.MySql;
 using Moonglade.Data.PostgreSql;
+using Moonglade.Data.Services;
 using Moonglade.Data.SqlServer;
 using Moonglade.Email.Client;
 using Moonglade.Pingback;
 using Moonglade.Syndication;
+using Moonglade.Web.Services;
 
 using SixLabors.Fonts;
 
@@ -28,6 +31,7 @@ using Spectre.Console;
 using WilderMinds.MetaWeblog;
 
 using Encoder = Moonglade.Web.Configuration.Encoder;
+using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 Console.OutputEncoding = Encoding.UTF8;
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -36,6 +40,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 string dbType = builder.Configuration.GetConnectionString("DatabaseType");
 string connStr = builder.Configuration.GetConnectionString("MoongladeDatabase");
+
 
 var cultures = new[] { "en-US", "de-DE" }.Select(p => new CultureInfo(p)).ToList();
 
@@ -47,8 +52,9 @@ ConfigureServices(builder.Services);
 
 var app = builder.Build();
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
-await FirstRun();
 
+await DetectChina();
+await FirstRun();
 
 ConfigureMiddleware();
 
@@ -66,6 +72,8 @@ void WriteParameterTable()
 	var ipEntry = Dns.GetHostEntry(strHostName);
 	var ips = ipEntry.AddressList;
 
+	var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
 	table.AddColumn("Parameter");
 	table.AddColumn("Value");
 	table.AddRow(new Markup("[blue]Path[/]"), new Text(Environment.CurrentDirectory));
@@ -74,9 +82,16 @@ void WriteParameterTable()
 	table.AddRow(new Markup("[blue]Host[/]"), new Text(Environment.MachineName));
 	table.AddRow(new Markup("[blue]IP addresses[/]"), new Rows(ips.Select(p => new Text(p.ToString()))));
 	table.AddRow(new Markup("[blue]Database type[/]"), new Text(dbType!));
+
+	if (!string.IsNullOrWhiteSpace(envName) && envName.ToLower() == "development")
+	{
+		table.AddRow(new Markup("[blue]Connection String[/]"), new Text(builder.Configuration.GetConnectionString("MoongladeDatabase")));
+	}
+
 	table.AddRow(new Markup("[blue]Image storage[/]"), new Text(builder.Configuration["ImageStorage:Provider"]!));
 	table.AddRow(new Markup("[blue]Authentication provider[/]"), new Text(builder.Configuration["Authentication:Provider"]!));
 	table.AddRow(new Markup("[blue]Editor[/]"), new Text(builder.Configuration["Editor"]!));
+	table.AddRow(new Markup("[blue]ASPNETCORE_ENVIRONMENT[/]"), new Text(envName ?? "N/A"));
 
 	AnsiConsole.Write(table);
 }
@@ -101,18 +116,19 @@ void ConfigureServices(IServiceCollection services)
 			.AddRateLimit(builder.Configuration.GetSection("IpRateLimiting"));
 	services.AddApplicationInsightsTelemetry();
 
-	services.AddScoped<CalendarProvider>();
-	services.AddScoped<CertsProvider>();
-	services.AddScoped<ProjectsProvider>();
-	services.AddScoped<PublicationProvider>();
-	services.AddScoped<TalksProvider>();
-	services.AddScoped<TestimonialsProvider>();
-	services.AddScoped<MembershipProvider>();
-	services.AddScoped<HonoraryPositionsProvider>();
-	services.AddScoped<VideosProvider>();
-	services.AddScoped<DonationService>();
 	services.AddScoped<GithubUserRepositoriesProvider>();
-	services.AddScoped<MandatesProvider>();
+
+	//services.AddScoped<CalendarProvider>();
+	services.AddScoped<CertificateService>();
+	services.AddScoped<DonationService>();
+	services.AddScoped<HonoraryPositionService>();
+	services.AddScoped<MandateService>();
+	services.AddScoped<MembershipService>();
+	services.AddScoped<ProjectService>();
+	services.AddScoped<PublicationService>();
+	services.AddScoped<TalksService>();
+	services.AddScoped<TestimonialService>();
+	services.AddScoped<VideoService>();
 
 	services.AddSession(options =>
 	{
@@ -200,27 +216,74 @@ void ConfigureServices(IServiceCollection services)
 	}
 }
 
+async Task DetectChina()
+{
+	// Read config `Experimental:DetectChina` to decide how to deal with China
+	// Refer: https://go.edi.wang/aka/os251
+	var detectChina = builder.Configuration["Experimental:DetectChina"];
+	if (!string.IsNullOrWhiteSpace(detectChina))
+	{
+		var service = new OfflineChinaDetectService();
+		var result = await service.Detect(DetectionMethod.TimeZone | DetectionMethod.Culture);
+		if (result.Rank >= 1)
+		{
+			DealWithChina(detectChina);
+		}
+		else
+		{
+			// Try online detection
+			var onlineService = new OnlineChinaDetectService(new());
+			var onlineResult = await onlineService.Detect(DetectionMethod.IPAddress | DetectionMethod.GFWTest);
+			if (onlineResult.Rank >= 1)
+			{
+				DealWithChina(detectChina);
+			}
+		}
+	}
+}
+
+void DealWithChina(string detectChina)
+{
+	switch (detectChina.ToLower())
+	{
+		case "block":
+			app.MapGet("/", () => Results.Text(
+				"Due to legal and regulation concerns, we regret to inform you that deploying Moonglade on servers located in Mainland China is currently not possible",
+				statusCode: 251
+			));
+			app.Run();
+
+			break;
+		case "allow":
+		default:
+			app.Logger.LogInformation("Current server is suspected to be located in Mainland China, Moonglade will still run on full functionality.");
+
+			break;
+	}
+}
+
 async Task FirstRun()
 {
 	try
 	{
 		var startUpResut = await app.InitStartUp(dbType);
-		switch (startUpResut)
+
+		// Change `switch-case` to `if-else` for workaround https://github.com/dotnet/aspnetcore/issues/51285
+		if (startUpResut == StartupInitResult.DatabaseConnectionFail)
 		{
-			case StartupInitResult.DatabaseConnectionFail:
-				app.MapGet("/", () => Results.Problem(
-					detail: "Database connection test failed, please check your connection string and firewall settings, then RESTART Moonglade manually.",
-					statusCode: 500
-					));
-				app.Run();
-				return;
-			case StartupInitResult.DatabaseSetupFail:
-				app.MapGet("/", () => Results.Problem(
-					detail: "Database setup failed, please check error log, then RESTART Moonglade manually.",
-					statusCode: 500
+			app.MapGet("/", () => Results.Problem(
+				detail: "Database connection test failed, please check your connection string and firewall settings, then RESTART Moonglade manually.",
+				statusCode: 500
 				));
-				app.Run();
-				return;
+			app.Run();
+		}
+		else if (startUpResut == StartupInitResult.DatabaseSetupFail)
+		{
+			app.MapGet("/", () => Results.Problem(
+				detail: "Database setup failed, please check error log, then RESTART Moonglade manually.",
+				statusCode: 500
+			));
+			app.Run();
 		}
 	}
 	catch (Exception e)
@@ -244,10 +307,10 @@ void ConfigureMiddleware()
 		// ASP.NET Core always use the last value in XFF header, which is AFD's IP address
 		// Need to set as `X-Azure-ClientIP` as workaround
 		// https://learn.microsoft.com/en-us/azure/frontdoor/front-door-http-headers-protocol
-		var forwardedForHeaderName = builder.Configuration["ForwardedHeaders:ForwardedForHeaderName"];
-		if (!string.IsNullOrWhiteSpace(forwardedForHeaderName))
+		var headerName = builder.Configuration["ForwardedHeaders:HeaderName"];
+		if (!string.IsNullOrWhiteSpace(headerName))
 		{
-			fho.ForwardedForHeaderName = forwardedForHeaderName;
+			fho.ForwardedForHeaderName = headerName;
 		}
 
 		var knownProxies = builder.Configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>();
@@ -334,7 +397,7 @@ void ConfigureMiddleware()
 	else
 	{
 		app.UseStatusCodePages(ConfigureStatusCodePages.Handler).UseExceptionHandler("/error");
-		app.UseHsts();
+		// app.UseHsts();
 	}
 
 	app.UseHttpsRedirection();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using Moonglade.Data.SqlServer.Configurations;
 
 namespace Moonglade.Data.SqlServer;
@@ -10,7 +11,7 @@ public class SqlServerBlogDbContext : BlogDbContext
     {
     }
 
-    public SqlServerBlogDbContext(DbContextOptions options)
+    public SqlServerBlogDbContext(DbContextOptions<SqlServerBlogDbContext> options)
         : base(options)
     {
     }

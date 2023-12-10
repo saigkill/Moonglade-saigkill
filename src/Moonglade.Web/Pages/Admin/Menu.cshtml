@@ -1,6 +1,8 @@
 ﻿@page "/admin/menu"
 @Html.AntiForgeryToken()
 @{
+    ViewBag.Title = "Menu";
+
     var bc = BlogConfig.CustomMenuSettings;
     var settings = new CustomMenuSettingsJsonModel
             {
@@ -9,35 +11,17 @@
             };
 }
 
-@section scripts{
+@section scripts {
     <partial name="_MonacoLoaderScript" />
     <script>
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs' } });
-
         var jsonContentEditor = null;
 
         require(['vs/editor/editor.main'], function () {
-            initJsonEditor();
+            jsonContentEditor = initEditor('JsonContentEditor', "#settings_MenuJson", 'json', true);
         });
 
-        var initJsonEditor = function () {
-            var jsonContentEditorDiv = document.getElementById('JsonContentEditor');
-            jsonContentEditor = monaco.editor.create(jsonContentEditorDiv, {
-                language: 'json'
-            });
-            jsonContentEditor.layout();
-
-            var jsonValue = document.querySelector("#settings_MenuJson").value;
-            window.jsonContentEditor.setValue(jsonValue);
-        }
-
-        var assignEditorValues = function () {
-            var jsonValue = window.jsonContentEditor.getValue();
-            document.querySelector("#settings_MenuJson").value = jsonValue;
-        }
-
         var clearMenus = function () {
-            window.jsonContentEditor.setValue("[]");
+            jsonContentEditor.setValue("[]");
             document.querySelector("#settings_MenuJson").value = "[]";
         }
     </script>
@@ -45,7 +29,7 @@
         import * as settings from '/js/app/admin.settings.module.js';
 
         function handleSubmit(event) {
-            assignEditorValues();
+            assignEditorValues(jsonContentEditor, "#settings_MenuJson");
             settings.handleSettingsSubmit(event);
         }
 
@@ -54,7 +38,7 @@
     </script>
 }
 
-@section head{
+@section head {
     <style>
         .monaco-target {
             border: 1px solid #dee2e6;
@@ -64,7 +48,7 @@
     </style>
 }
 
-@section admintoolbar{
+@section admintoolbar {
     <div class="admin-toolbar pb-2 border-bottom mb-3">
         <a href="javascript:window.clearMenus();" class="btn btn-outline-danger btn-delete-selected">
             <i class="bi-trash"></i> @SharedLocalizer["Clear menus"]
@@ -89,7 +73,8 @@
             <div class="col-md-5 text-end">
                 <div class="form-check form-switch form-control-lg">
                     <input type="hidden" name="IsEnabled" value="false">
-                    <input type="checkbox" name="IsEnabled" value="true" class="form-check-input" @(@settings.IsEnabled ? "checked" : null) />
+                    <input type="checkbox" name="IsEnabled" value="true" class="form-check-input" @(@settings.IsEnabled
+                        ? "checked" : null) />
                 </div>
             </div>
         </div>
@@ -109,7 +94,8 @@
     </div>
 </form>
 
-<div class="modal fade" id="examplecodemodal" tabindex="-1" role="dialog" aria-labelledby="exampleLabel" aria-hidden="true">
+<div class="modal fade" id="examplecodemodal" tabindex="-1" role="dialog" aria-labelledby="exampleLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

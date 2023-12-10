@@ -1,56 +1,36 @@
 ﻿using MediatR;
 using Moonglade.Comments.Moderator;
 using Moonglade.Configuration;
-using Moonglade.Data.Entities;
+using Moonglade.Data.Generated.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Data.Spec;
 
 namespace Moonglade.Comments;
 
-public class CreateCommentCommand : IRequest<(int Status, CommentDetailedItem Item)>
+public class CreateCommentCommand(Guid postId, CommentRequest payload, string ipAddress) : IRequest<(int Status, CommentDetailedItem Item)>
 {
-    public CreateCommentCommand(Guid postId, CommentRequest payload, string ipAddress)
-    {
-        PostId = postId;
-        Payload = payload;
-        IpAddress = ipAddress;
-    }
+    public Guid PostId { get; set; } = postId;
 
-    public Guid PostId { get; set; }
+    public CommentRequest Payload { get; set; } = payload;
 
-    public CommentRequest Payload { get; set; }
-
-    public string IpAddress { get; set; }
+    public string IpAddress { get; set; } = ipAddress;
 }
 
-public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, (int Status, CommentDetailedItem Item)>
+public class CreateCommentCommandHandler(IBlogConfig blogConfig, IRepository<PostEntity> postRepo, IModeratorService moderator, IRepository<CommentEntity> commentRepo) :
+        IRequestHandler<CreateCommentCommand, (int Status, CommentDetailedItem Item)>
 {
-    private readonly IBlogConfig _blogConfig;
-    private readonly IRepository<PostEntity> _postRepo;
-    private readonly IModeratorService _moderator;
-    private readonly IRepository<CommentEntity> _commentRepo;
-
-    public CreateCommentCommandHandler(
-        IBlogConfig blogConfig, IRepository<PostEntity> postRepo, IModeratorService moderator, IRepository<CommentEntity> commentRepo)
-    {
-        _blogConfig = blogConfig;
-        _postRepo = postRepo;
-        _moderator = moderator;
-        _commentRepo = commentRepo;
-    }
-
     public async Task<(int Status, CommentDetailedItem Item)> Handle(CreateCommentCommand request, CancellationToken ct)
     {
-        if (_blogConfig.ContentSettings.EnableWordFilter)
+        if (blogConfig.ContentSettings.EnableWordFilter)
         {
-            switch (_blogConfig.ContentSettings.WordFilterMode)
+            switch (blogConfig.ContentSettings.WordFilterMode)
             {
                 case WordFilterMode.Mask:
-                    request.Payload.Username = await _moderator.Mask(request.Payload.Username);
-                    request.Payload.Content = await _moderator.Mask(request.Payload.Content);
+                    request.Payload.Username = await moderator.Mask(request.Payload.Username);
+                    request.Payload.Content = await moderator.Mask(request.Payload.Content);
                     break;
                 case WordFilterMode.Block:
-                    if (await _moderator.Detect(request.Payload.Username, request.Payload.Content))
+                    if (await moderator.Detect(request.Payload.Username, request.Payload.Content))
                     {
                         await Task.CompletedTask;
                         return (-1, null);
@@ -60,16 +40,16 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
         }
 
         var spec = new PostSpec(request.PostId, false);
-        var postInfo = await _postRepo.FirstOrDefaultAsync(spec, p => new
+        var postInfo = await postRepo.FirstOrDefaultAsync(spec, p => new
         {
             p.Title,
             p.PubDateUtc
         });
 
-        if (_blogConfig.ContentSettings.CloseCommentAfterDays > 0)
+        if (blogConfig.ContentSettings.CloseCommentAfterDays > 0)
         {
             var days = DateTime.UtcNow.Date.Subtract(postInfo.PubDateUtc.GetValueOrDefault()).Days;
-            if (days > _blogConfig.ContentSettings.CloseCommentAfterDays)
+            if (days > blogConfig.ContentSettings.CloseCommentAfterDays)
             {
                 return (-2, null);
             }
@@ -84,10 +64,10 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
             CreateTimeUtc = DateTime.UtcNow,
             Email = request.Payload.Email,
             IPAddress = request.IpAddress,
-            IsApproved = !_blogConfig.ContentSettings.RequireCommentReview
+            IsApproved = !blogConfig.ContentSettings.RequireCommentReview
         };
 
-        await _commentRepo.AddAsync(model, ct);
+        await commentRepo.AddAsync(model, ct);
 
         var item = new CommentDetailedItem
         {

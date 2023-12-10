@@ -14,7 +14,12 @@ public class AdvancedSettings : IBlogSettings
 	[Display(Name = "Robots should revisit after X days.")]
 	public int RobotsRevisitAfter { get; set; }
 
-	[Display(Name = "Enable Pingback send")]
+	[Display(Name = "Foot JavaScript")]
+	[DataType(DataType.MultilineText)]
+	[MaxLength(256)]
+	public string FootScripts { get; set; }
+
+	[Display(Name = "Enable Pingback")]
 	public bool EnablePingback { get; set; } = true;
 
 	[Display(Name = "Enable MetaWeblog API")]

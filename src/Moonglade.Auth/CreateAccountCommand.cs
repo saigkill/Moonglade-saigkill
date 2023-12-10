@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
-using Moonglade.Data.Entities;
+using Moonglade.Data.Generated.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Utils;
 
@@ -22,17 +21,14 @@ public class CreateAccountCommand : IRequest
 	public string Password { get; set; }
 }
 
-public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand>
+public class CreateAccountCommandHandler(IRepository<LocalAccountEntity> repo) : IRequestHandler<CreateAccountCommand>
 {
-	private readonly IRepository<LocalAccountEntity> _repo;
-	public CreateAccountCommandHandler(IRepository<LocalAccountEntity> repo) => _repo = repo;
-
-	public Task Handle(CreateAccountCommand request, CancellationToken ct)
-	{
-		if (string.IsNullOrWhiteSpace(request.Username))
-		{
-			throw new ArgumentNullException(nameof(request.Username), "value must not be empty.");
-		}
+    public Task Handle(CreateAccountCommand request, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(request.Username))
+        {
+            throw new ArgumentNullException(nameof(request.Username), "value must not be empty.");
+        }
 
 		if (string.IsNullOrWhiteSpace(request.Password))
 		{
@@ -52,6 +48,6 @@ public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand>
 			PasswordHash = hash
 		};
 
-		return _repo.AddAsync(account, ct);
-	}
+        return repo.AddAsync(account, ct);
+    }
 }
