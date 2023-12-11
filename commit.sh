@@ -7,7 +7,7 @@ GHPAT=$GHPAT
 git config --global user.email "$AZUSER_EMAIL"
 git config --global user.name "$AZUSERNAME"
 
-git clone https://$GHUSER:$GHPAT@github.com/$GHUSER/Moonglade ./Moonglade-gh
+git clone https://$GHUSER:$GHPAT@github.com/$GHUSER/Moonglade-$GHUSER ./Moonglade-gh
 GIT_CMD_REPOSITORY="https://$AZUSERNAME:$AZUREPAT@dev.azure.com/$AZORG/Moonglade/_git/Moonglade"
 git clone $GIT_CMD_REPOSITORY ./Moonglade-az-develop
 git clone $GIT_CMD_REPOSITORY ./Moonglade-az-master
