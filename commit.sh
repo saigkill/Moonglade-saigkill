@@ -18,13 +18,25 @@ git checkout master
 rm -rf .git
 popd
 
+echo "Checking out develop"
+pushd Moonglade-az-develop
+git checkout develop
+rm -rf .git
+popd
+
 echo "Copying new stuff from Azure dev to Github"
 cp -r Moonglade-az-master/* Moonglade-gh/
 
 pushd Moonglade-gh
 git checkout main
-echo "Copying new stuff from Azure dev to Github"
+echo "Copying new stuff from Azure master to Github"
+git add .
+git commit -m "sync master from azure to github"
+git push
+
+git checkout develop
 cp -r Moonglade-az-master/* .
+echo "Copying new stuff from Azure dev to Github"
 git add .
 git commit -m "sync master from azure to github"
 git push
