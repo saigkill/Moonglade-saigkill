@@ -12,7 +12,7 @@
 @inject Moonglade.Data.Services.MembershipService _membershipService
 @inject Moonglade.Data.Services.PublicationService _publicationService
 @{
-    //var repos = await _repos.GetUserRepositories();
+    var repos = await _repos.GetUserRepositories();
 }
 @section head {
     <environment include="Development">
@@ -145,7 +145,7 @@
     </div>
 </div>
 
-@* <div class="sec">
+<div class="sec">
     <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
     <div style="height: 500px; overflow-y: scroll;">
         @foreach (var repo in await _repos.GetUserRepositories())
@@ -163,4 +163,4 @@
             </div>
         }
     </div>
-</div> *@
+</div>
