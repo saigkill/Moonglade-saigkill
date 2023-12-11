@@ -35,7 +35,7 @@ git commit -m "sync master from azure to github"
 git push
 
 git checkout develop
-cp -r Moonglade-az-master/* .
+cp -r ../Moonglade-az-develop/* .
 echo "Copying new stuff from Azure dev to Github"
 git add .
 git commit -m "sync master from azure to github"
