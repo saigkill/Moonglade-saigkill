@@ -50,8 +50,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Comments", "Moong
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.FriendLink", "Moonglade.FriendLink\Moonglade.FriendLink.csproj", "{C2691740-A964-43C8-8024-DA64FB5DB624}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Email.Client", "Moonglade.Email.Client\Moonglade.Email.Client.csproj", "{DF0D2D74-B9B7-4EB8-956D-E9CBDDF3390E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Auth", "Moonglade.Auth\Moonglade.Auth.csproj", "{5B888FFB-8BF0-4AED-9D1E-91396290BC05}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{FE0F6EA1-5520-4DD9-9CD4-7A2365A03C8C}"
@@ -117,10 +115,6 @@ Global
 		{C2691740-A964-43C8-8024-DA64FB5DB624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2691740-A964-43C8-8024-DA64FB5DB624}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2691740-A964-43C8-8024-DA64FB5DB624}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF0D2D74-B9B7-4EB8-956D-E9CBDDF3390E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF0D2D74-B9B7-4EB8-956D-E9CBDDF3390E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF0D2D74-B9B7-4EB8-956D-E9CBDDF3390E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF0D2D74-B9B7-4EB8-956D-E9CBDDF3390E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B888FFB-8BF0-4AED-9D1E-91396290BC05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B888FFB-8BF0-4AED-9D1E-91396290BC05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B888FFB-8BF0-4AED-9D1E-91396290BC05}.Release|Any CPU.ActiveCfg = Release|Any CPU
