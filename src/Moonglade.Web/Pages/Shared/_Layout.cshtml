@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Localization
 @using System.Globalization
 @using Syncfusion.EJ2
-@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+
 @{
     if (string.IsNullOrEmpty(BlogConfig.GeneralSettings.AvatarUrl))
     {
@@ -77,6 +77,8 @@
         <meta name="keywords" content="@Html.Raw(BlogConfig.GeneralSettings.MetaKeyword)" />
     }
 
+    <meta name="keywords" content="@(ViewBag.Keywords ?? Html.Raw(BlogConfig.GeneralSettings.MetaKeyword))" />
+
     @await RenderSectionAsync("meta", false)
     @if (IsSectionDefined("opengraph"))
     {
@@ -87,14 +89,7 @@
         <partial name="_OpenGraph" />
     }
 
-    @if (IsSectionDefined("metadescription"))
-    {
-        @await RenderSectionAsync("metadescription", false)
-    }
-    else
-    {
-        <metadesc description="@BlogConfig.GeneralSettings.Description" />
-    }
+    <metadesc description="@(ViewBag.MetaDescription ?? BlogConfig.GeneralSettings.Description)" />
 
     <title>
         @(ViewBag.TitlePrefix)@(null == ViewBag.TitlePrefix ? string.Empty : " - ")@BlogConfig.GeneralSettings.SiteTitle
@@ -164,13 +159,13 @@
     <link href="~/theme.css" rel="stylesheet" asp-append-version="true" />
     @if (BlogConfig.CustomStyleSheetSettings.EnableCustomCss)
     {
-        <link href="~/custom.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/custom.css" rel="stylesheet" />
     }
 
     <environment include="Production">
-        @if (!(bool)Context.Items["DNT"])
+        @if (!(bool)Context.Items["DNT"]!)
         {
-            @Html.Raw(JavaScriptSnippet.FullScript)
+            <partial name="_ApplicationInsightsJs" />
         }
     </environment>
     <script src="~/js/3rd/jquery.slim.min.js" asp-append-version="true"></script>
@@ -181,6 +176,8 @@
     }
 </head>
 <body class="@ViewBag.BodyClass">
+    <partial name="_EnvInfo" />
+
     @if (BlogConfig.ContentSettings.ShowCalloutSection)
     {
         <section class="call-out">
@@ -294,7 +291,6 @@
     </div>
     <div class="clearfix"></div>
     <partial name="_Footer" />
-    <partial name="_EnvInfo" />
     <partial name="_Toast" />
 
     <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>

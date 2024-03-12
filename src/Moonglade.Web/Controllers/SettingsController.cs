@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using Edi.PasswordGenerator;
 
 using Microsoft.AspNetCore.Localization;
@@ -58,16 +60,6 @@ public class SettingsController(
 		return NoContent();
 	}
 
-	[HttpPost("content")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> Content(ContentSettings model)
-	{
-		blogConfig.ContentSettings = model;
-
-		await SaveConfigAsync(blogConfig.ContentSettings);
-		return NoContent();
-	}
-
 	[HttpPost("social")]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	public async Task<IActionResult> Social(SocialProfileSettings model)
@@ -78,17 +70,21 @@ public class SettingsController(
 		return NoContent();
 	}
 
-	[HttpPost("notification")]
+	[HttpPost("content")]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> Notification(NotificationSettings model)
+	public async Task<IActionResult> Content(ContentSettings model)
 	{
-		if (model.EnableEmailSending && string.IsNullOrWhiteSpace(model.AzureStorageQueueConnection))
-		{
-			ModelState.AddModelError(nameof(model.AzureStorageQueueConnection), "Azure Storage Queue Connection is required.");
-			return BadRequest(ModelState.CombineErrorMessages());
-		}
+		blogConfig.ContentSettings = model;
 
-		blogConfig.NotificationSettings = model;
+		await SaveConfigAsync(blogConfig.ContentSettings);
+		return NoContent();
+	}
+
+    [HttpPost("notification")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Notification(NotificationSettings model)
+    {
+        blogConfig.NotificationSettings = model;
 
 		await SaveConfigAsync(blogConfig.NotificationSettings);
 		return NoContent();

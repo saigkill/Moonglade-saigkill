@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Moonglade.Data.Generated.Entities;
+
+using Moonglade.Data.Entities;
 using Moonglade.FriendLink;
 
 namespace Moonglade.Web.Pages.Admin;
