@@ -73,12 +73,12 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
 
         if (list.IsFirstPage)
         {
-            return WrapInListItem(first, options, "PagedList-skipToFirst", "disabled");
+            return WrapInListItem(first, options, "paged-list-skip-to-first", "disabled");
         }
 
         first.Attributes.Add("href", generatePageUrl(targetPageNumber));
 
-        return WrapInListItem(first, options, "PagedList-skipToFirst");
+        return WrapInListItem(first, options, "paged-list-skip-to-first");
     }
 
     private TagBuilder Previous(IPagedList list, Func<int, string> generatePageUrl, PagedListRenderOptions options)
@@ -174,12 +174,12 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
 
         if (list.IsLastPage)
         {
-            return WrapInListItem(last, options, "PagedList-skipToLast", "disabled");
+            return WrapInListItem(last, options, "paged-list-skip-to-last", "disabled");
         }
 
         last.Attributes.Add("href", generatePageUrl(targetPageNumber));
 
-        return WrapInListItem(last, options, "PagedList-skipToLast");
+        return WrapInListItem(last, options, "paged-list-skip-to-last");
     }
 
     private TagBuilder PageCountAndLocationText(IPagedList list, PagedListRenderOptions options)
@@ -210,7 +210,7 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
         AppendHtml(previous, options.EllipsesFormat);
 
         previous.Attributes.Add("rel", "prev");
-        previous.AddCssClass("PagedList-skipToPrevious");
+        previous.AddCssClass("paged-list-skip-to-previous");
 
         foreach (var c in options.PageClasses ?? Enumerable.Empty<string>())
         {
@@ -237,7 +237,7 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
         AppendHtml(next, options.EllipsesFormat);
 
         next.Attributes.Add("rel", "next");
-        next.AddCssClass("PagedList-skipToNext");
+        next.AddCssClass("paged-list-skip-to-next");
 
         foreach (var c in options.PageClasses ?? Enumerable.Empty<string>())
         {
@@ -260,9 +260,9 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
 
     public string PagedListPager(IPagedList pagedList, Func<int, string> generatePageUrl, PagedListRenderOptions options)
     {
-        var list = pagedList ?? new StaticPagedList<int>(ImmutableList<int>.Empty, 1, 10, 0);
+        var list = pagedList ?? new BasePagedList<int>(ImmutableList<int>.Empty, 1, 10, 0);
 
-        if (options.Display == PagedListDisplayMode.Never || (options.Display == PagedListDisplayMode.IfNeeded && list.PageCount <= 1))
+        if (list.PageCount <= 1)
         {
             return null;
         }
@@ -296,15 +296,13 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
         }
 
         //first
-        if (options.DisplayLinkToFirstPage == PagedListDisplayMode.Always ||
-            (options.DisplayLinkToFirstPage == PagedListDisplayMode.IfNeeded && firstPageToDisplay > 1))
+        if (firstPageToDisplay > 1)
         {
             listItemLinks.Add(First(list, generatePageUrl, options));
         }
 
         //previous
-        if (options.DisplayLinkToPreviousPage == PagedListDisplayMode.Always ||
-            (options.DisplayLinkToPreviousPage == PagedListDisplayMode.IfNeeded && !list.IsFirstPage))
+        if (!list.IsFirstPage)
         {
             listItemLinks.Add(Previous(list, generatePageUrl, options));
         }
@@ -351,15 +349,13 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
         }
 
         //next
-        if (options.DisplayLinkToNextPage == PagedListDisplayMode.Always ||
-            (options.DisplayLinkToNextPage == PagedListDisplayMode.IfNeeded && !list.IsLastPage))
+        if (!list.IsLastPage)
         {
             listItemLinks.Add(Next(list, generatePageUrl, options));
         }
 
         //last
-        if (options.DisplayLinkToLastPage == PagedListDisplayMode.Always ||
-            (options.DisplayLinkToLastPage == PagedListDisplayMode.IfNeeded && lastPageToDisplay < list.PageCount))
+        if (lastPageToDisplay < list.PageCount)
         {
             listItemLinks.Add(Last(list, generatePageUrl, options));
         }
@@ -372,18 +368,6 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
 
         if (listItemLinks.Any())
         {
-            //append class to first item in list?
-            if (!string.IsNullOrWhiteSpace(options.ClassToApplyToFirstListItemInPager))
-            {
-                listItemLinks.First().AddCssClass(options.ClassToApplyToFirstListItemInPager);
-            }
-
-            //append class to last item in list?
-            if (!string.IsNullOrWhiteSpace(options.ClassToApplyToLastListItemInPager))
-            {
-                listItemLinks.Last().AddCssClass(options.ClassToApplyToLastListItemInPager);
-            }
-
             //append classes to all list item links
             foreach (var li in listItemLinks)
             {
@@ -408,14 +392,6 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
         foreach (var c in options.UlElementClasses ?? Enumerable.Empty<string>())
         {
             ul.AddCssClass(c);
-        }
-
-        if (options.UlElementattributes != null)
-        {
-            foreach (var c in options.UlElementattributes)
-            {
-                ul.MergeAttribute(c.Key, c.Value);
-            }
         }
 
         var outerDiv = tagBuilderFactory

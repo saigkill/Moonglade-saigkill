@@ -1,5 +1,6 @@
 using MediatR;
-using Moonglade.Data.Generated.Entities;
+
+using Moonglade.Data.Entities;
 using Moonglade.Data.Infrastructure;
 using Moonglade.Utils;
 
@@ -7,7 +8,7 @@ namespace Moonglade.FriendLink;
 
 public class UpdateLinkCommand : AddLinkCommand
 {
-	public Guid Id { get; set; }
+    public Guid Id { get; set; }
 }
 
 public class UpdateLinkCommandHandler(IRepository<FriendLinkEntity> repo) : IRequestHandler<UpdateLinkCommand>
@@ -24,6 +25,7 @@ public class UpdateLinkCommandHandler(IRepository<FriendLinkEntity> repo) : IReq
         {
             link.Title = request.Title;
             link.LinkUrl = Helper.SterilizeLink(request.LinkUrl);
+            link.Rank = request.Rank;
 
             await repo.UpdateAsync(link, ct);
         }

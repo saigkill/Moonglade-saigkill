@@ -1,6 +1,6 @@
 @using Moonglade.Web.PagedList
 @using System.Globalization
-@model StaticPagedList<Moonglade.Core.PostFeature.PostDigest>
+@model BasePagedList<Moonglade.Core.PostFeature.PostDigest>
 
 @{
     var culture = CultureInfo.CurrentCulture.Name.ToLower();
@@ -22,13 +22,11 @@ else
             <partial name="_PostListEntry" model="item" />
         }
     }
+}
 
-    @Html.PagedListPager(Model, page => ViewData["sortBy"] == null ? $"?p={page}" : $"?p={page}&sortBy={ViewData["sortBy"]}", new()
+@Html.PagedListPager(Model, page => $"?p={page}", new()
 {
-    LiElementClasses = new[] { "page-item" },
-    PageClasses = new[] { "page-link" },
     UlElementClasses = new[] { "pagination justify-content-end" },
     MaximumPageNumbersToDisplay = 5,
     DisplayEllipsesWhenNotShowingAllPageNumbers = false
 })
-}

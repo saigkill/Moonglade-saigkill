@@ -1,6 +1,7 @@
-﻿using Moonglade.Data.Generated.Entities;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Xml;
+
+using Moonglade.Data.Entities;
 
 namespace Moonglade.Web.Middleware;
 

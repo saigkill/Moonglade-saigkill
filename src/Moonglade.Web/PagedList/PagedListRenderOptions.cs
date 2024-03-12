@@ -11,10 +11,6 @@ public class PagedListRenderOptions
     public PagedListRenderOptions()
     {
         HtmlEncoder = HtmlEncoder.Default;
-        DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded;
-        DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded;
-        DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded;
-        DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded;
         DisplayLinkToIndividualPages = true;
         DisplayPageCountAndCurrentLocation = false;
         MaximumPageNumbersToDisplay = 10;
@@ -29,17 +25,14 @@ public class PagedListRenderOptions
         ItemSliceAndTotalFormat = "Showing items {0} through {1} of {2}.";
         ItemSliceAndTotalPosition = ItemSliceAndTotalPosition.Start;
         FunctionToDisplayEachPageNumber = null;
-        ClassToApplyToFirstListItemInPager = null;
-        ClassToApplyToLastListItemInPager = null;
         ContainerDivClasses = new[] { "pagination-container" };
         UlElementClasses = new[] { "pagination" };
-        LiElementClasses = Enumerable.Empty<string>();
-        PageClasses = Enumerable.Empty<string>();
-        UlElementattributes = null;
+        LiElementClasses = new[] { "page-item" };
+        PageClasses = new[] { "page-link" };
         ActiveLiElementClass = "active";
-        EllipsesElementClass = "PagedList-ellipses";
-        PreviousElementClass = "PagedList-skipToPrevious";
-        NextElementClass = "PagedList-skipToNext";
+        EllipsesElementClass = "paged-list-ellipses";
+        PreviousElementClass = "PagedList-skip-to-previous";
+        NextElementClass = "paged-list-skip-to-next";
     }
 
     /// <summary>
@@ -56,11 +49,6 @@ public class PagedListRenderOptions
     /// CSSClasses to append to the &lt;ul&gt; element in the paging control.
     ///</summary>
     public IEnumerable<string> UlElementClasses { get; set; }
-
-    /// <summary>
-    /// Attrinutes to appendto the &lt;ul&gt; element in the paging control
-    /// </summary>
-    public IDictionary<string, string> UlElementattributes { get; set; }
 
     ///<summary>
     /// CSS Classes to append to every &lt;li&gt; element in the paging control.
@@ -91,41 +79,6 @@ public class PagedListRenderOptions
     /// CSS Classes to append to Ellipses element in the paging control.
     ///</summary>
     public string EllipsesElementClass { get; set; }
-
-    ///<summary>
-    /// Specifies a CSS class to append to the first list item in the pager. If null or whitespace is defined, no additional class is added to first list item in list.
-    ///</summary>
-    public string ClassToApplyToFirstListItemInPager { get; set; }
-
-    ///<summary>
-    /// Specifies a CSS class to append to the last list item in the pager. If null or whitespace is defined, no additional class is added to last list item in list.
-    ///</summary>
-    public string ClassToApplyToLastListItemInPager { get; set; }
-
-    /// <summary>
-    /// If set to Always, always renders the paging control. If set to IfNeeded, render the paging control when there is more than one page.
-    /// </summary>
-    public PagedListDisplayMode Display { get; set; }
-
-    ///<summary>
-    /// If set to Always, render a hyperlink to the first page in the list. If set to IfNeeded, render the hyperlink only when the first page isn't visible in the paging control.
-    ///</summary>
-    public PagedListDisplayMode DisplayLinkToFirstPage { get; set; }
-
-    ///<summary>
-    /// If set to Always, render a hyperlink to the last page in the list. If set to IfNeeded, render the hyperlink only when the last page isn't visible in the paging control.
-    ///</summary>
-    public PagedListDisplayMode DisplayLinkToLastPage { get; set; }
-
-    ///<summary>
-    /// If set to Always, render a hyperlink to the previous page of the list. If set to IfNeeded, render the hyperlink only when there is a previous page in the list.
-    ///</summary>
-    public PagedListDisplayMode DisplayLinkToPreviousPage { get; set; }
-
-    ///<summary>
-    /// If set to Always, render a hyperlink to the next page of the list. If set to IfNeeded, render the hyperlink only when there is a next page in the list.
-    ///</summary>
-    public PagedListDisplayMode DisplayLinkToNextPage { get; set; }
 
     ///<summary>
     /// When true, includes hyperlinks for each page in the list.
