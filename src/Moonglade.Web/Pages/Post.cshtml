@@ -197,6 +197,14 @@
         <partial name="_PostContentRender" model="Model.Post.RawPostContent" />
     </section>
 
+    @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
+    {
+        <a href="@Helper.SterilizeLink(Model.Post.OriginLink)" target="_blank">
+            <i class="bi-link"></i>
+            @SharedLocalizer["Read origin article"]
+        </a>
+    }
+
     @if (BlogConfig.ContentSettings.EnableSharingButtons)
     {
         <hr />
@@ -215,14 +223,6 @@
     }
 
     <partial name="_PostActions" model="Model.Post" />
-
-    @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
-    {
-        <a href="@Helper.SterilizeLink(Model.Post.OriginLink)" target="_blank">
-            <i class="bi-link"></i>
-            @SharedLocalizer["Read origin article"]
-        </a>
-    }
 </article>
 
 @if (BlogConfig.ContentSettings.EnableComments)
