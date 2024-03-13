@@ -181,14 +181,6 @@
         </div>
     </header>
 
-    @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
-    {
-        <a href="@Helper.SterilizeLink(Model.Post.OriginLink)" target="_blank">
-            <i class="bi-link"></i>
-            @SharedLocalizer["Read origin article"]
-        </a>
-    }
-
     @if (Model.Post.IsOutdated)
     {
         <partial name="_PostOutdatedMessage" />
@@ -204,6 +196,14 @@
     <section class="post-content clearfix">
         <partial name="_PostContentRender" model="Model.Post.RawPostContent" />
     </section>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
+    {
+        <a href="@Helper.SterilizeLink(Model.Post.OriginLink)" target="_blank">
+            <i class="bi-link"></i>
+            @SharedLocalizer["Read origin article"]
+        </a>
+    }
 
     @if (BlogConfig.ContentSettings.EnableSharingButtons)
     {
