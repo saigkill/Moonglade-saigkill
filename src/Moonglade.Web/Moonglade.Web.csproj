@@ -39,10 +39,9 @@
     <PackageReference Include="Edi.ImageWatermark" Version="2.11.4" />
     <PackageReference Include="Edi.PasswordGenerator" Version="1.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.3" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="24.2.9" />
     <PackageReference Include="Syncfusion.Licensing" Version="24.2.9" />
-    <PackageReference Include="UAParser" Version="3.1.47" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Moonglade.Auth\Moonglade.Auth.csproj" />
