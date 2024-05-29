@@ -71,15 +71,7 @@
         </section>
     }
 
-    <partial name="_PostActions2" model="Model.Post" />
-    
-    @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
-    {
-        <a href="@Helper.SterilizeLink(Model.Post.OriginLink)" target="_blank">
-            <i class="bi-link"></i>
-            @SharedLocalizer["Read origin article"]
-        </a>
-    }
+    <partial name="_PostActions" model="Model.Post" />
 </article>
 
 <partial name="_LightSwitch" />

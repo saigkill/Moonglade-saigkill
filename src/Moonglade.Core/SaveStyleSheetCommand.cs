@@ -1,6 +1,5 @@
 using Moonglade.Data;
 using System.Security.Cryptography;
-using Moonglade.Data.Generated.Entities;
 
 namespace Moonglade.Core;
 

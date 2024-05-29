@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 
 using Moonglade.Data.Entities;
-using Moonglade.Data.Generated.Entities;
+using Moonglade.Utils;
 
 namespace Moonglade.Data;
 
@@ -13,12 +13,22 @@ public class Seed
 
         try
         {
+            logger.LogDebug("Adding themes data...");
             await dbContext.BlogTheme.AddRangeAsync(GetThemes());
+
+            logger.LogDebug("Adding categories data...");
             await dbContext.Category.AddRangeAsync(GetCategories());
+
+            logger.LogDebug("Adding tags data...");
             await dbContext.Tag.AddRangeAsync(GetTags());
+
+            logger.LogDebug("Adding friend links data...");
             await dbContext.FriendLink.AddRangeAsync(GetFriendLinks());
+
+            logger.LogDebug("Adding pages data...");
             await dbContext.CustomPage.AddRangeAsync(GetPages());
 
+            logger.LogDebug("Adding example post...");
             // Add example post
             var content = "Moonglade is the blog system for https://edi.wang. Powered by .NET 8 and runs on Microsoft Azure, the best cloud on the planet.";
 
@@ -38,11 +48,13 @@ public class Seed
                 LastModifiedUtc = DateTime.UtcNow,
                 PubDateUtc = DateTime.UtcNow,
                 ContentLanguageCode = "en-us",
-                HashCheckSum = -1688639577,
-                IsOriginal = true,
                 Tags = dbContext.Tag.ToList(),
                 PostCategory = dbContext.PostCategory.ToList()
             };
+
+            var input = $"{post.Slug}#{post.PubDateUtc.GetValueOrDefault():yyyyMMdd}";
+            var checkSum = Helper.ComputeCheckSum(input);
+            post.HashCheckSum = checkSum;
 
             await dbContext.Post.AddAsync(post);
 

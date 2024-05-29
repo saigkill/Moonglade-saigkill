@@ -1,7 +1,3 @@
-using System.Globalization;
-using System.Net;
-using System.Text.Json.Serialization;
-
 using Edi.Captcha;
 using Edi.PasswordGenerator;
 
@@ -17,15 +13,16 @@ using Moonglade.Data.PostgreSql;
 using Moonglade.Data.Services;
 using Moonglade.Data.SqlServer;
 using Moonglade.Email.Client;
-using Moonglade.MetaWeblog;
 using Moonglade.Pingback;
 using Moonglade.Syndication;
 using Moonglade.Web.Services;
 
 using SixLabors.Fonts;
+
 using System.Globalization;
 using System.Net;
 using System.Text.Json.Serialization;
+
 using Encoder = Moonglade.Web.Configuration.Encoder;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -34,7 +31,11 @@ var cultures = new[] { "en-US", "de-DE" }.Select(p => new CultureInfo(p)).ToList
 var builder = WebApplication.CreateBuilder(args);
 builder.WriteParameterTable();
 
-builder.Logging.AddAzureWebAppDiagnostics();
+if (Helper.IsRunningOnAzureAppService())
+{
+    builder.Logging.AddAzureWebAppDiagnostics();
+}
+
 builder.Configuration.AddJsonFile("manifesticons.json", false, true);
 
 
@@ -145,7 +146,7 @@ void ConfigureServices(IServiceCollection services)
             .AddImageStorage(builder.Configuration, options => options.ContentRootPath = builder.Environment.ContentRootPath)
             .Configure<List<ManifestIcon>>(builder.Configuration.GetSection("ManifestIcons"));
 
-    services.AddEmailSending();
+    services.AddEmailClient();
     services.AddContentModerator(builder.Configuration);
 
     string dbType = builder.Configuration.GetConnectionString("DatabaseType");
@@ -275,7 +276,7 @@ void UseSmartXFFHeader(WebApplication webApplication)
         // Fix docker deployments on Azure App Service blows up with Azure AD authentication
         // https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-6.0
         // "Outside of using IIS Integration when hosting out-of-process, Forwarded Headers Middleware isn't enabled by default."
-        if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+        if (Helper.IsRunningInDocker())
         {
             // Fix #712
             // Adding KnownProxies will make Azure App Service boom boom with Azure AD redirect URL

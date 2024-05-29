@@ -42,6 +42,16 @@ public static class Helper
         }
     }
 
+    public static bool IsRunningOnAzureAppService()
+    {
+        return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"));
+    }
+
+    public static bool IsRunningInDocker()
+    {
+        return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+    }
+
     public static string GetClientIP(HttpContext context) => context?.Connection.RemoteIpAddress?.ToString();
 
     public static int ComputeCheckSum(string input)
@@ -80,7 +90,7 @@ public static class Helper
             if (currentVersion != null)
             {
                 var name = currentVersion.GetValue("ProductName", "Microsoft Windows NT");
-                var ubr = currentVersion.GetValue("UBR", string.Empty)?.ToString();
+                var ubr = currentVersion.GetValue("UBR", string.Empty).ToString();
                 if (!string.IsNullOrWhiteSpace(ubr))
                 {
                     return $"{name} {osVer.Version.Major}.{osVer.Version.Minor}.{osVer.Version.Build}.{ubr}";
@@ -103,29 +113,9 @@ public static class Helper
         return $"{uri.Scheme}://{uri.Host}/";
     }
 
-    public static string GetMd5Hash(string input)
-    {
-        // Convert the input string to a byte array and compute the hash.
-        var data = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input));
-
-        // Create a new Stringbuilder to collect the bytes
-        // and create a string.
-        var sBuilder = new StringBuilder();
-
-        // Loop through each byte of the hashed data
-        // and format each one as a hexadecimal string.
-        foreach (var t in data)
-        {
-            sBuilder.Append(t.ToString("x2"));
-        }
-
-        // Return the hexadecimal string.
-        return sBuilder.ToString();
-    }
-
     // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-6.0
     // This is not secure, but better than nothing.
-    public static string HashPassword2(string clearPassword, string saltBase64)
+    public static string HashPassword(string clearPassword, string saltBase64)
     {
         var salt = Convert.FromBase64String(saltBase64);
 

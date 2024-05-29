@@ -35,7 +35,8 @@ public class CustomMenuSettings : IBlogSettings
                     IsOpenInNewTab = false,
                     SubMenus = []
                 }
-            };
-        }
-    }
+
+            ]
+
+        };
 }

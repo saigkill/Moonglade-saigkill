@@ -1,4 +1,4 @@
-﻿using Moonglade.Data.Generated.Entities;
+﻿using Moonglade.Data.Entities;
 using System.Linq.Expressions;
 
 namespace Moonglade.Comments;

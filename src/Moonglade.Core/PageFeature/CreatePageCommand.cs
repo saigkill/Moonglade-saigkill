@@ -1,8 +1,14 @@
+using Microsoft.Extensions.Logging;
+using Moonglade.Data;
+
 namespace Moonglade.Core.PageFeature;
 
 public record CreatePageCommand(EditPageRequest Payload) : IRequest<Guid>;
 
-public class CreatePageCommandHandler(MoongladeRepository<PageEntity> repo, IMediator mediator) : IRequestHandler<CreatePageCommand, Guid>
+public class CreatePageCommandHandler(
+    MoongladeRepository<PageEntity> repo,
+    IMediator mediator,
+    ILogger<CreatePageCommandHandler> logger) : IRequestHandler<CreatePageCommand, Guid>
 {
     public async Task<Guid> Handle(CreatePageCommand request, CancellationToken ct)
     {
@@ -31,6 +37,7 @@ public class CreatePageCommandHandler(MoongladeRepository<PageEntity> repo, IMed
 
         await repo.AddAsync(page, ct);
 
+        logger.LogInformation("Created page: {PageId}", uid);
         return uid;
     }
 }

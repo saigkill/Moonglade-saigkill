@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Moonglade.Data.Generated.Entities;
+
+using Moonglade.Data.Entities;
 
 namespace Moonglade.Data.PostgreSql.Configurations;
 

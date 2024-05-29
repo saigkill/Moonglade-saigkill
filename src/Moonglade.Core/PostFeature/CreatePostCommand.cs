@@ -41,8 +41,6 @@ public class CreatePostCommandHandler(
             IsDeleted = false,
             IsPublished = request.Payload.IsPublished,
             IsFeatured = request.Payload.Featured,
-            IsOriginal = string.IsNullOrWhiteSpace(request.Payload.OriginLink),
-            OriginLink = string.IsNullOrWhiteSpace(request.Payload.OriginLink) ? null : Helper.SterilizeLink(request.Payload.OriginLink),
             HeroImageUrl = string.IsNullOrWhiteSpace(request.Payload.HeroImageUrl) ? null : Helper.SterilizeLink(request.Payload.HeroImageUrl),
             IsOutdated = request.Payload.IsOutdated
         };
@@ -92,6 +90,7 @@ public class CreatePostCommandHandler(
 
         await postRepo.AddAsync(post, ct);
 
+        logger.LogInformation($"Created post Id: {post.Id}, Title: '{post.Title}'");
         return post;
     }
 
@@ -104,6 +103,8 @@ public class CreatePostCommandHandler(
         };
 
         var tag = await tagRepo.AddAsync(newTag);
+
+        logger.LogInformation($"Created tag: {tag.DisplayName}");
         return tag;
     }
 }

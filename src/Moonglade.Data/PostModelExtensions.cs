@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using Moonglade.Data.Entities;
 
-using Moonglade.Core.PostFeature;
-
-namespace Moonglade.Web.Helpers
+namespace Moonglade.Data
 {
     public static class PostModelExtensions
     {
@@ -11,9 +9,9 @@ namespace Moonglade.Web.Helpers
         /// </summary>
         /// <param name="story">The story.</param>
         /// <returns>TimeToRead object with calculated reading time.</returns>
-        public static TimeToRead GetTimeToRead(this Post story)
+        public static TimeToRead GetTimeToRead(this PostEntity story)
         {
-            string wordCount = story.RawPostContent; // Get all content of the story
+            string wordCount = story.PostContent; // Get all content of the story
             int counts = wordCount.Count(ch => ch == ' ') + 1;
             int minutes = counts / 200; // Calculate Minutes
             int seconds = counts % 200 / (200 / 60); // Calculate Seconds

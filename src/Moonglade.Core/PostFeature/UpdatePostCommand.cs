@@ -1,6 +1,7 @@
 using Edi.CacheAside.InMemory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Moonglade.Configuration;
 using Moonglade.Data;
 using Moonglade.Data.Specifications;
@@ -18,6 +19,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
     private readonly ICacheAside _cache;
     private readonly IBlogConfig _blogConfig;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<UpdatePostCommandHandler> _logger;
     private readonly bool _useMySqlWorkaround;
 
     public UpdatePostCommandHandler(
@@ -26,7 +28,9 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         MoongladeRepository<TagEntity> tagRepo,
         MoongladeRepository<PostEntity> postRepo,
         ICacheAside cache,
-        IBlogConfig blogConfig, IConfiguration configuration)
+        IBlogConfig blogConfig,
+        IConfiguration configuration,
+        ILogger<UpdatePostCommandHandler> logger)
     {
         _ptRepository = ptRepository;
         _pcRepository = pcRepository;
@@ -35,6 +39,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         _cache = cache;
         _blogConfig = blogConfig;
         _configuration = configuration;
+        _logger = logger;
 
         string dbType = configuration.GetConnectionString("DatabaseType");
         _useMySqlWorkaround = dbType!.ToLower().Trim() == "mysql";
@@ -51,10 +56,18 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
 
         post.CommentEnabled = postEditModel.EnableComment;
         post.PostContent = postEditModel.EditorContent;
-        post.ContentAbstract = ContentProcessor.GetPostAbstract(
-            string.IsNullOrEmpty(postEditModel.Abstract) ? postEditModel.EditorContent : postEditModel.Abstract.Trim(),
-            _blogConfig.ContentSettings.PostAbstractWords,
-            _configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
+
+        if (string.IsNullOrEmpty(postEditModel.Abstract))
+        {
+            post.ContentAbstract = ContentProcessor.GetPostAbstract(
+                postEditModel.EditorContent,
+                _blogConfig.ContentSettings.PostAbstractWords,
+                _configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
+        }
+        else
+        {
+            post.ContentAbstract = postEditModel.Abstract.Trim();
+        }
 
         if (postEditModel.IsPublished && !post.IsPublished)
         {
@@ -77,8 +90,6 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         post.IsFeedIncluded = postEditModel.FeedIncluded;
         post.ContentLanguageCode = postEditModel.LanguageCode;
         post.IsFeatured = postEditModel.Featured;
-        post.IsOriginal = string.IsNullOrWhiteSpace(request.Payload.OriginLink);
-        post.OriginLink = string.IsNullOrWhiteSpace(postEditModel.OriginLink) ? null : Helper.SterilizeLink(postEditModel.OriginLink);
         post.HeroImageUrl = string.IsNullOrWhiteSpace(postEditModel.HeroImageUrl) ? null : Helper.SterilizeLink(postEditModel.HeroImageUrl);
         post.IsOutdated = postEditModel.IsOutdated;
 
@@ -149,7 +160,9 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
 
         await _postRepo.UpdateAsync(post, ct);
 
-        _cache.Remove(BlogCachePartition.Post.ToString(), guid.ToString());
+        _cache.Remove(BlogCachePartition.Post.ToString(), checkSum.ToString());
+
+        _logger.LogInformation($"Post updated: {post.Id}");
         return post;
     }
 }

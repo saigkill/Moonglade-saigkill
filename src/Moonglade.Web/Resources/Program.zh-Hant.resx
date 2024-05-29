@@ -394,8 +394,8 @@
   <data name="Featured Posts" xml:space="preserve">
     <value>精選文章</value>
   </data>
-  <data name="Feed Subscription" xml:space="preserve">
-    <value>加入訂閱</value>
+  <data name="Include in feed and sitemap" xml:space="preserve">
+    <value>加入訂閱及網站地圖</value>
   </data>
   <data name="Fit image to device pixel ratio" xml:space="preserve">
     <value>圖片自動適配設備DPI</value>
@@ -556,12 +556,6 @@
   <data name="Order" xml:space="preserve">
     <value>序號</value>
   </data>
-  <data name="Origin Link" xml:space="preserve">
-    <value>原文網址</value>
-  </data>
-  <data name="Original" xml:space="preserve">
-    <value>原創</value>
-  </data>
   <data name="Owner email" xml:space="preserve">
     <value>博主信箱</value>
   </data>
@@ -597,9 +591,6 @@
   </data>
   <data name="Publish Date" xml:space="preserve">
     <value>發佈日期</value>
-  </data>
-  <data name="Publish Now" xml:space="preserve">
-    <value>立即發佈</value>
   </data>
   <data name="Published" xml:space="preserve">
     <value>已發佈</value>
@@ -643,8 +634,8 @@
   <data name="Route Name" xml:space="preserve">
     <value>路由名稱</value>
   </data>
-  <data name="RSS Items" xml:space="preserve">
-    <value>RSS條目數量</value>
+  <data name="Feed Items" xml:space="preserve">
+    <value>訂閱條目數量</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
@@ -737,7 +728,7 @@
     <value>留空自動選取文章前 {0} 字元作為摘要</value>
   </data>
   <data name="The number of entries to include in RSS feed." xml:space="preserve">
-    <value>RSS中包含的條目數量</value>
+    <value>RSS/ATOM 中包含的條目數量</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>主題</value>

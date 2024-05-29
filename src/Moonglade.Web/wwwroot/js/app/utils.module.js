@@ -24,12 +24,16 @@ export function toMagicJson(value) {
 	return newValue;
 }
 
-export function formatUtcTime() {
-	$('time').each(function (i, e) {
-		var utclabel = $(e).data('utc-label');
-		if (utclabel) {
-			var localTime = new Date(utclabel.replace(/-/g, "/"));
-			$(e).html(localTime.toLocaleString());
-		}
-	});
+export function formatUtcTime(includeTime = true) {
+    $('time').each(function (i, e) {
+        var utclabel = $(e).data('utc-label');
+        if (utclabel) {
+            var localTime = new Date(utclabel.replace(/-/g, "/"));
+            if (includeTime) {
+                $(e).html(localTime.toLocaleString());
+            } else {
+                $(e).html(localTime.toLocaleDateString());
+            }
+        }
+    });
 }

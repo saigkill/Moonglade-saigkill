@@ -1,8 +1,6 @@
 namespace Moonglade.Configuration;
 
-public interface IBlogSettings
-{
-}
+public interface IBlogSettings;
 
 public interface IBlogConfig
 {
@@ -13,33 +11,32 @@ public interface IBlogConfig
     ImageSettings ImageSettings { get; set; }
     AdvancedSettings AdvancedSettings { get; set; }
     CustomStyleSheetSettings CustomStyleSheetSettings { get; set; }
-    CustomMenuSettings CustomMenuSettings { get; set; }
     LocalAccountSettings LocalAccountSettings { get; set; }
     SocialProfileSettings SocialProfileSettings { get; set; }
     CustomMenuSettings CustomMenuSettings { get; set; }
-	IEnumerable<int> LoadFromConfig(IDictionary<string, string> config);
+    IEnumerable<int> LoadFromConfig(IDictionary<string, string> config);
     KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings;
 }
 
 public class BlogConfig : IBlogConfig
 {
-	public GeneralSettings GeneralSettings { get; set; }
+    public GeneralSettings GeneralSettings { get; set; }
 
-	public ContentSettings ContentSettings { get; set; }
+    public ContentSettings ContentSettings { get; set; }
 
-	public NotificationSettings NotificationSettings { get; set; }
+    public NotificationSettings NotificationSettings { get; set; }
 
-	public FeedSettings FeedSettings { get; set; }
+    public FeedSettings FeedSettings { get; set; }
 
-	public ImageSettings ImageSettings { get; set; }
+    public ImageSettings ImageSettings { get; set; }
 
-	public AdvancedSettings AdvancedSettings { get; set; }
+    public AdvancedSettings AdvancedSettings { get; set; }
 
-	public CustomStyleSheetSettings CustomStyleSheetSettings { get; set; }
+    public CustomStyleSheetSettings CustomStyleSheetSettings { get; set; }
 
-	public SocialProfileSettings SocialProfileSettings { get; set; }
+    public SocialProfileSettings SocialProfileSettings { get; set; }
 
-	public CustomMenuSettings CustomMenuSettings { get; set; }
+    public CustomMenuSettings CustomMenuSettings { get; set; }
 
     public LocalAccountSettings LocalAccountSettings { get; set; }
 
@@ -72,15 +69,15 @@ public class BlogConfig : IBlogConfig
         return defaultValue;
     }
 
-	public KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings
-	{
-		var name = typeof(T).Name;
-		var json = blogSettings.ToJson();
+    public KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings
+    {
+        var name = typeof(T).Name;
+        var json = blogSettings.ToJson();
 
-		// update singleton itself
-		var prop = GetType().GetProperty(name);
-		prop?.SetValue(this, blogSettings);
+        // update singleton itself
+        var prop = GetType().GetProperty(name);
+        prop?.SetValue(this, blogSettings);
 
-		return new(name, json);
-	}
+        return new(name, json);
+    }
 }
