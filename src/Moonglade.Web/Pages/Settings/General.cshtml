@@ -69,7 +69,6 @@
                 },
                 async (resp) => {
                     var id = await resp.json();
-                    console.info(id);
 
                     themeModal.hide();
                     $("#ViewModel_SelectedThemeId").append(new Option(document.querySelector('#Name').value, id));

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moonglade.Core.CategoryFeature;
 using Moonglade.Core.PostFeature;
+using Moonglade.Data.Entities;
 using Moonglade.Web.PagedList;
 
 namespace Moonglade.Web.Pages;
@@ -13,14 +14,14 @@ public class CategoryListModel(
     [BindProperty(SupportsGet = true)]
     public int P { get; set; } = 1;
     public BasePagedList<PostDigest> Posts { get; set; }
-    public Category Cat { get; set; }
+    public CategoryEntity Cat { get; set; }
 
-    public async Task<IActionResult> OnGetAsync(string routeName)
+    public async Task<IActionResult> OnGetAsync(string slug)
     {
-        if (string.IsNullOrWhiteSpace(routeName)) return NotFound();
+        if (string.IsNullOrWhiteSpace(slug)) return NotFound();
 
         var pageSize = blogConfig.ContentSettings.PostListPageSize;
-        Cat = await mediator.Send(new GetCategoryByRouteQuery(routeName));
+        Cat = await mediator.Send(new GetCategoryBySlugQuery(slug));
 
         if (Cat is null) return NotFound();
 

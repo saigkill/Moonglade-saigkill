@@ -1,4 +1,4 @@
-﻿using Moonglade.Data.Generated.Entities;
+﻿using Moonglade.Data.Entities;
 using System.Linq.Expressions;
 
 namespace Moonglade.Comments;
@@ -13,7 +13,7 @@ public class Comment
 
     public string CommentContent { get; set; }
 
-    public IReadOnlyList<CommentReplyDigest> CommentReplies { get; set; }
+    public List<CommentReplyDigest> CommentReplies { get; set; }
 }
 
 public class CommentDetailedItem : Comment

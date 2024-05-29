@@ -2,8 +2,8 @@
 @model Moonglade.Web.Pages.PostModel
 @inject DonationService _donationService
 @using Moonglade.Utils
-@using Moonglade.Web.Helpers
 @using System.Globalization
+@using Moonglade.Data.Entities
 @using Moonglade.Web.Services
 
 @Html.AntiForgeryToken()
@@ -27,7 +27,7 @@
     ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
     ViewBag.MetaDescription = Model.Post.ContentAbstract;
 
-    @if (Model.Post.Tags.Length > 0)
+    @if (Model.Post.Tags.Any())
     {
         ViewBag.Keywords = string.Join(", ", Model.Post.Tags.Select(t => t.NormalizedName));
     }
@@ -46,7 +46,7 @@
     <meta property="article:published_time" content="@Model.Post.PubDateUtc.GetValueOrDefault().ToString("u")" />
     <meta property="article:modified_time" content="@Model.Post.LastModifiedUtc.GetValueOrDefault().ToString("u")" />
     <meta property="article:author" content="@(string.IsNullOrWhiteSpace(Model.Post.Author) ? BlogConfig.GeneralSettings.OwnerName : Model.Post.Author)" />
-    <meta property="article:section" content="@string.Join(", ", Model.Post.Categories.Select(t => t.DisplayName))" />
+    <meta property="article:section" content="@string.Join(", ", Model.Post.PostCategory.Select(t => t.Category))" />
     <meta property="article:tag" content="@string.Join(", ", Model.Post.Tags.Select(t => t.DisplayName))" />
     @if (BlogConfig.GeneralSettings.UseDublinCoreMetaData)
     {
@@ -64,7 +64,8 @@
 }
 
 @section opengraph {
-    <meta property="og:title" content="@Model.Post.Title" />
+    <meta property="og:site_name" content="@BlogConfig.GeneralSettings.SiteTitle">
+    <meta property="og:title" content="@Model.Post.Title">
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="@BlogConfig.GeneralSettings.SiteTitle" />
     <meta property="og:locale" content="@Model.Post.ContentLanguageCode" />
@@ -125,7 +126,7 @@
             viewpost.submitComment(pid);
         });
 
-        utils.formatUtcTime();
+        utils.formatUtcTime(false);
     </script>
 }
 @section head {
@@ -137,7 +138,7 @@
 }
 
 <article class="article-post-slug position-relative p-4 rounded-3 shadow-sm border bg-white mb-4" data-postid="@Model.Post.Id" lang="@Model.Post.ContentLanguageCode">
-    @if (Model.Post.Featured)
+    @if (Model.Post.IsFeatured)
     {
         <partial name="_FeaturedTag" />
     }
@@ -148,11 +149,6 @@
         </h1>
 
         <div class="post-publish-info text-muted mb-2">
-            @if (Model.Post.IsOriginal)
-            {
-                <span class="badge bg-secondary me-2 d-none d-sm-inline">@SharedLocalizer["Original"]</span>
-            }
-
             @if (!string.IsNullOrWhiteSpace(Model.Post.Author))
             {
                 <i class="bi-person d-none d-sm-inline"></i>
@@ -161,16 +157,9 @@
 
             <i class="bi-calendar-event"></i>
             <span class="me-2">
-                @if (BlogConfig.ContentSettings.DisplayTimeForPubDate)
-                {
-                    <time data-utc-label="@Model.Post.PubDateUtc.GetValueOrDefault().ToString("u")">@Model.Post.PubDateUtc</time>
-                }
-                else
-                {
-                    <time>
-                        @DateOnly.FromDateTime(Model.Post.PubDateUtc.GetValueOrDefault()) (UTC)
-                    </time>
-                }
+                <time data-utc-label="@Model.Post.PubDateUtc.GetValueOrDefault().ToString("u")">
+                    @DateOnly.FromDateTime(Model.Post.PubDateUtc.GetValueOrDefault()) (UTC)
+                </time>
             </span>
 
             <i class="bi-eye d-none d-sm-inline"></i>
@@ -194,16 +183,8 @@
     }
 
     <section class="post-content clearfix">
-        <partial name="_PostContentRender" model="Model.Post.RawPostContent" />
+        <partial name="_PostContentRender" model="Model.Post.PostContent" />
     </section>
-
-    @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
-    {
-        <a href="@Helper.SterilizeLink(Model.Post.OriginLink)" target="_blank">
-            <i class="bi-link"></i>
-            @SharedLocalizer["Read origin article"]
-        </a>
-    }
 
     @if (BlogConfig.ContentSettings.EnableSharingButtons)
     {

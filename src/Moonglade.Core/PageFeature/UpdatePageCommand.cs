@@ -1,15 +1,19 @@
-﻿using Moonglade.Data.Generated.Entities;
+using Microsoft.Extensions.Logging;
+using Moonglade.Data;
 
 namespace Moonglade.Core.PageFeature;
 
 public record UpdatePageCommand(Guid Id, EditPageRequest Payload) : IRequest<Guid>;
 
-public class UpdatePageCommandHandler(IRepository<PageEntity> repo, IMediator mediator) : IRequestHandler<UpdatePageCommand, Guid>
+public class UpdatePageCommandHandler(
+    MoongladeRepository<PageEntity> repo,
+    IMediator mediator,
+    ILogger<UpdatePageCommandHandler> logger) : IRequestHandler<UpdatePageCommand, Guid>
 {
     public async Task<Guid> Handle(UpdatePageCommand request, CancellationToken ct)
     {
         var (guid, payload) = request;
-        var page = await repo.GetAsync(guid, ct);
+        var page = await repo.GetByIdAsync(guid, ct);
         if (page is null)
         {
             throw new InvalidOperationException($"PageEntity with Id '{guid}' not found.");
@@ -34,6 +38,7 @@ public class UpdatePageCommandHandler(IRepository<PageEntity> repo, IMediator me
 
         await repo.UpdateAsync(page, ct);
 
+        logger.LogInformation("Page updated: {PageId}", page.Id);
         return page.Id;
     }
 }

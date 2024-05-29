@@ -1,31 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Moonglade.Configuration;
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Infrastructure;
-using Moonglade.Data.Spec;
+using Moonglade.Data;
+using Moonglade.Data.Entities;
+using Moonglade.Data.Specifications;
 using Moonglade.Utils;
 
 namespace Moonglade.Syndication;
 
 public interface ISyndicationDataSource
 {
-    Task<IReadOnlyList<FeedEntry>> GetFeedDataAsync(string catRoute = null);
+    Task<List<FeedEntry>> GetFeedDataAsync(string catSlug = null);
 }
 
 public class SyndicationDataSource : ISyndicationDataSource
 {
     private readonly string _baseUrl;
     private readonly IBlogConfig _blogConfig;
-    private readonly IRepository<CategoryEntity> _catRepo;
-    private readonly IRepository<PostEntity> _postRepo;
+    private readonly MoongladeRepository<CategoryEntity> _catRepo;
+    private readonly MoongladeRepository<PostEntity> _postRepo;
     private readonly IConfiguration _configuration;
 
     public SyndicationDataSource(
         IBlogConfig blogConfig,
         IHttpContextAccessor httpContextAccessor,
-        IRepository<CategoryEntity> catRepo,
-        IRepository<PostEntity> postRepo,
+        MoongladeRepository<CategoryEntity> catRepo,
+        MoongladeRepository<PostEntity> postRepo,
         IConfiguration configuration)
     {
         _blogConfig = blogConfig;
@@ -37,12 +37,12 @@ public class SyndicationDataSource : ISyndicationDataSource
         _baseUrl = $"{acc.HttpContext.Request.Scheme}://{acc.HttpContext.Request.Host}";
     }
 
-    public async Task<IReadOnlyList<FeedEntry>> GetFeedDataAsync(string catRoute = null)
+    public async Task<List<FeedEntry>> GetFeedDataAsync(string catSlug = null)
     {
-        IReadOnlyList<FeedEntry> itemCollection;
-        if (!string.IsNullOrWhiteSpace(catRoute))
+        List<FeedEntry> itemCollection;
+        if (!string.IsNullOrWhiteSpace(catSlug))
         {
-            var cat = await _catRepo.GetAsync(c => c.RouteName == catRoute);
+            var cat = await _catRepo.FirstOrDefaultAsync(new CategoryBySlugSpec(catSlug));
             if (cat is null) return null;
 
             itemCollection = await GetFeedEntriesAsync(cat.Id);
@@ -55,15 +55,15 @@ public class SyndicationDataSource : ISyndicationDataSource
         return itemCollection;
     }
 
-    private async Task<IReadOnlyList<FeedEntry>> GetFeedEntriesAsync(Guid? catId = null)
+    private async Task<List<FeedEntry>> GetFeedEntriesAsync(Guid? catId = null)
     {
         int? top = null;
-        if (_blogConfig.FeedSettings.RssItemCount != 0)
+        if (_blogConfig.FeedSettings.FeedItemCount != 0)
         {
-            top = _blogConfig.FeedSettings.RssItemCount;
+            top = _blogConfig.FeedSettings.FeedItemCount;
         }
 
-        var postSpec = new PostSpec(catId, top);
+        var postSpec = new PostByCatSpec(catId, top);
         var list = await _postRepo.SelectAsync(postSpec, p => p.PubDateUtc != null ? new FeedEntry
         {
             Id = p.Id.ToString(),

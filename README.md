@@ -151,10 +151,11 @@ Atom | Subscription | Supported | `/atom`
 OPML | Subscription | Supported | `/opml`
 Open Search | Search | Supported | `/opensearch`
 Pingback | Social | Supported | `/pingback`
+Webmention | Social | Planned | `/webmention` (not live yet)
 Reader View | Reader mode | Supported | N/A
 FOAF | Social | Supported | `/foaf.xml`
-RSD | Service Discovery | Supported | `/rsd` *If MetaWeblog is enabled*
-MetaWeblog | Blogging | Basic Support | `/metaweblog`
+RSD | Service Discovery | Deprecated | N/A
+MetaWeblog | Blogging | Deprecated | N/A
 Dublin Core Metadata | SEO | Basic Support | N/A
 BlogML | Blogging | Not planned | 
 APML | Social | Not planned | 
@@ -162,6 +163,4 @@ Trackback | Social | Not planned |
 
 ## 免责申明
 
-对于中国用户，我们有一份特定的免责申明。请确保你已经阅读并理解其内容：
-
-- [免责申明（仅限中国用户）](./DISCLAIMER_CN.md)
+对于中国访客，我们有一份特定的免责申明。请确保你已经阅读并理解其内容：[免责申明（仅限中国访客）](./DISCLAIMER_CN.md)

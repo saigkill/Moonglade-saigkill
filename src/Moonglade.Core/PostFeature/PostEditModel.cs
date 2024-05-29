@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Core.PostFeature;
 
@@ -31,14 +31,13 @@ public class PostEditModel
     public string EditorContent { get; set; }
 
     [Required]
-    [Display(Name = "Publish Now")]
     public bool IsPublished { get; set; }
 
     [Required]
     [Display(Name = "Featured")]
     public bool Featured { get; set; }
 
-    [Display(Name = "Feed Subscription")]
+    [Display(Name = "Include in feed and sitemap")]
     public bool FeedIncluded { get; set; }
 
     [Display(Name = "Tags")]
@@ -60,10 +59,6 @@ public class PostEditModel
     [Display(Name = "Change Publish Date")]
     public bool ChangePublishDate { get; set; }
 
-    [Display(Name = "Origin Link")]
-    [DataType(DataType.Url)]
-    public string OriginLink { get; set; }
-
     [Display(Name = "Hero Image")]
     [DataType(DataType.Url)]
     public string HeroImageUrl { get; set; }
@@ -71,6 +66,5 @@ public class PostEditModel
     [Display(Name = "Mark as outdated")]
     public bool IsOutdated { get; set; }
 
-    public bool WarnSlugModification => PublishDate.HasValue && (DateTime.UtcNow - PublishDate.Value).Days > 7;
+    public bool WarnSlugModification => PublishDate.HasValue && (DateTime.UtcNow - PublishDate.Value).Days > 3;
 }
-

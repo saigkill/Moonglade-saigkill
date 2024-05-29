@@ -1,17 +1,12 @@
-﻿using Moonglade.Data.Generated.Entities;
+using Moonglade.Data;
+using Moonglade.Data.Specifications;
 
 namespace Moonglade.Core.TagFeature;
 
-public record GetTagCountListQuery : IRequest<IReadOnlyList<KeyValuePair<Tag, int>>>;
+public record GetTagCountListQuery : IRequest<List<(TagEntity Tag, int PostCount)>>;
 
-public class GetTagCountListQueryHandler(IRepository<TagEntity> repo) : IRequestHandler<GetTagCountListQuery, IReadOnlyList<KeyValuePair<Tag, int>>>
+public class GetTagCountListQueryHandler(MoongladeRepository<TagEntity> repo) : IRequestHandler<GetTagCountListQuery, List<(TagEntity Tag, int PostCount)>>
 {
-    public Task<IReadOnlyList<KeyValuePair<Tag, int>>> Handle(GetTagCountListQuery request, CancellationToken ct) =>
-        repo.SelectAsync(t =>
-            new KeyValuePair<Tag, int>(new()
-            {
-                Id = t.Id,
-                DisplayName = t.DisplayName,
-                NormalizedName = t.NormalizedName
-            }, t.Posts.Count), ct);
+    public Task<List<(TagEntity Tag, int PostCount)>> Handle(GetTagCountListQuery request, CancellationToken ct) =>
+        repo.ListAsync(new TagCloudSpec(), ct);
 }

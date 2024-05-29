@@ -1,6 +1,7 @@
 @using Moonglade.Utils
 @using Microsoft.AspNetCore.Localization
 @using System.Globalization
+@inject IConfiguration Configuration
 @using Syncfusion.EJ2
 
 @{
@@ -113,10 +114,6 @@
         <opensearch href="/opensearch" title="@BlogConfig.GeneralSettings.SiteTitle" />
     }
 
-    @if (BlogConfig.AdvancedSettings.EnableMetaWeblog)
-    {
-        <rsd href="/rsd" />
-    }
     @if (BlogConfig.AdvancedSettings.EnableFoaf)
     {
         <foaf href="/foaf.xml" />
@@ -163,7 +160,7 @@
     }
 
     <environment include="Production">
-        @if (!(bool)Context.Items["DNT"]!)
+        @if (bool.Parse(Configuration["RenderApplicationInsightsJs"]!) && !(bool)Context.Items["DNT"]!)
         {
             <partial name="_ApplicationInsightsJs" />
         }

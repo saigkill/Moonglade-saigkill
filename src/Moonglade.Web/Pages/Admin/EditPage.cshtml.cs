@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moonglade.Core.PageFeature;
-using Moonglade.Data.Generated.Entities;
+using Moonglade.Data.Entities;
 
 namespace Moonglade.Web.Pages.Admin;
 
@@ -31,7 +31,7 @@ public class EditPageModel(IMediator mediator) : PageModel
             Slug = page.Slug,
             MetaDescription = page.MetaDescription,
             CssContent = css?.CssContent,
-            RawHtmlContent = page.RawHtmlContent,
+            RawHtmlContent = page.HtmlContent,
             HideSidebar = page.HideSidebar,
             IsPublished = page.IsPublished
         };

@@ -1,26 +1,30 @@
-﻿using Moonglade.Data;
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Spec;
+using Microsoft.Extensions.Logging;
+using Moonglade.Data;
+using Moonglade.Data.Specifications;
 
 namespace Moonglade.Core.TagFeature;
 
 public record DeleteTagCommand(int Id) : IRequest<OperationCode>;
 
-public class DeleteTagCommandHandler(IRepository<TagEntity> tagRepo, IRepository<PostTagEntity> postTagRepo)
+public class DeleteTagCommandHandler(
+    MoongladeRepository<TagEntity> tagRepo,
+    MoongladeRepository<PostTagEntity> postTagRepo,
+    ILogger<DeleteTagCommandHandler> logger)
     : IRequestHandler<DeleteTagCommand, OperationCode>
 {
     public async Task<OperationCode> Handle(DeleteTagCommand request, CancellationToken ct)
     {
-        var exists = await tagRepo.AnyAsync(c => c.Id == request.Id, ct);
-        if (!exists) return OperationCode.ObjectNotFound;
+        var tag = await tagRepo.GetByIdAsync(request.Id, ct);
+        if (null == tag) return OperationCode.ObjectNotFound;
 
         // 1. Delete Post-Tag Association
-        var postTags = await postTagRepo.ListAsync(new PostTagSpec(request.Id));
-        await postTagRepo.DeleteAsync(postTags, ct);
+        var postTags = await postTagRepo.ListAsync(new PostTagByTagIdSpec(request.Id), ct);
+        await postTagRepo.DeleteRangeAsync(postTags, ct);
 
         // 2. Delte Tag itslef
-        await tagRepo.DeleteAsync(request.Id, ct);
+        await tagRepo.DeleteAsync(tag, ct);
 
+        logger.LogInformation("Deleted tag: {TagId}", request.Id);
         return OperationCode.Done;
     }
 }

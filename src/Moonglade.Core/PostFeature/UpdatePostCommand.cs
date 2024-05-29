@@ -1,9 +1,10 @@
 using Edi.CacheAside.InMemory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Moonglade.Configuration;
-using Moonglade.Core.TagFeature;
-using Moonglade.Data.Generated.Entities;
+using Moonglade.Data;
+using Moonglade.Data.Specifications;
 using Moonglade.Utils;
 
 namespace Moonglade.Core.PostFeature;
@@ -11,22 +12,25 @@ namespace Moonglade.Core.PostFeature;
 public record UpdatePostCommand(Guid Id, PostEditModel Payload) : IRequest<PostEntity>;
 public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostEntity>
 {
-    private readonly IRepository<PostCategoryEntity> _pcRepository;
-    private readonly IRepository<PostTagEntity> _ptRepository;
-    private readonly IRepository<TagEntity> _tagRepo;
-    private readonly IRepository<PostEntity> _postRepo;
+    private readonly MoongladeRepository<PostCategoryEntity> _pcRepository;
+    private readonly MoongladeRepository<PostTagEntity> _ptRepository;
+    private readonly MoongladeRepository<TagEntity> _tagRepo;
+    private readonly MoongladeRepository<PostEntity> _postRepo;
     private readonly ICacheAside _cache;
     private readonly IBlogConfig _blogConfig;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<UpdatePostCommandHandler> _logger;
     private readonly bool _useMySqlWorkaround;
 
     public UpdatePostCommandHandler(
-        IRepository<PostCategoryEntity> pcRepository,
-        IRepository<PostTagEntity> ptRepository,
-        IRepository<TagEntity> tagRepo,
-        IRepository<PostEntity> postRepo,
+        MoongladeRepository<PostCategoryEntity> pcRepository,
+        MoongladeRepository<PostTagEntity> ptRepository,
+        MoongladeRepository<TagEntity> tagRepo,
+        MoongladeRepository<PostEntity> postRepo,
         ICacheAside cache,
-        IBlogConfig blogConfig, IConfiguration configuration)
+        IBlogConfig blogConfig,
+        IConfiguration configuration,
+        ILogger<UpdatePostCommandHandler> logger)
     {
         _ptRepository = ptRepository;
         _pcRepository = pcRepository;
@@ -35,6 +39,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         _cache = cache;
         _blogConfig = blogConfig;
         _configuration = configuration;
+        _logger = logger;
 
         string dbType = configuration.GetConnectionString("DatabaseType");
         _useMySqlWorkaround = dbType!.ToLower().Trim() == "mysql";
@@ -43,7 +48,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
     public async Task<PostEntity> Handle(UpdatePostCommand request, CancellationToken ct)
     {
         var (guid, postEditModel) = request;
-        var post = await _postRepo.GetAsync(guid, ct);
+        var post = await _postRepo.GetByIdAsync(guid, ct);
         if (null == post)
         {
             throw new InvalidOperationException($"Post {guid} is not found.");
@@ -51,10 +56,18 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
 
         post.CommentEnabled = postEditModel.EnableComment;
         post.PostContent = postEditModel.EditorContent;
-        post.ContentAbstract = ContentProcessor.GetPostAbstract(
-            string.IsNullOrEmpty(postEditModel.Abstract) ? postEditModel.EditorContent : postEditModel.Abstract.Trim(),
-            _blogConfig.ContentSettings.PostAbstractWords,
-            _configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
+
+        if (string.IsNullOrEmpty(postEditModel.Abstract))
+        {
+            post.ContentAbstract = ContentProcessor.GetPostAbstract(
+                postEditModel.EditorContent,
+                _blogConfig.ContentSettings.PostAbstractWords,
+                _configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
+        }
+        else
+        {
+            post.ContentAbstract = postEditModel.Abstract.Trim();
+        }
 
         if (postEditModel.IsPublished && !post.IsPublished)
         {
@@ -77,8 +90,6 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         post.IsFeedIncluded = postEditModel.FeedIncluded;
         post.ContentLanguageCode = postEditModel.LanguageCode;
         post.IsFeatured = postEditModel.Featured;
-        post.IsOriginal = string.IsNullOrWhiteSpace(request.Payload.OriginLink);
-        post.OriginLink = string.IsNullOrWhiteSpace(postEditModel.OriginLink) ? null : Helper.SterilizeLink(postEditModel.OriginLink);
         post.HeroImageUrl = string.IsNullOrWhiteSpace(postEditModel.HeroImageUrl) ? null : Helper.SterilizeLink(postEditModel.HeroImageUrl);
         post.IsOutdated = postEditModel.IsOutdated;
 
@@ -94,12 +105,12 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
 
         foreach (var item in tags)
         {
-            if (!await _tagRepo.AnyAsync(p => p.DisplayName == item, ct))
+            if (!await _tagRepo.AnyAsync(new TagByDisplayNameSpec(item), ct))
             {
                 await _tagRepo.AddAsync(new()
                 {
                     DisplayName = item,
-                    NormalizedName = Tag.NormalizeName(item, Helper.TagNormalizationDictionary)
+                    NormalizedName = Helper.NormalizeName(item, Helper.TagNormalizationDictionary)
                 }, ct);
             }
         }
@@ -108,7 +119,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         if (_useMySqlWorkaround)
         {
             var oldTags = await _ptRepository.AsQueryable().Where(pc => pc.PostId == post.Id).ToListAsync(cancellationToken: ct);
-            await _ptRepository.DeleteAsync(oldTags, ct);
+            await _ptRepository.DeleteRangeAsync(oldTags, ct);
         }
 
         post.Tags.Clear();
@@ -116,12 +127,12 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         {
             foreach (var tagName in tags)
             {
-                if (!Tag.ValidateName(tagName))
+                if (!Helper.IsValidTagName(tagName))
                 {
                     continue;
                 }
 
-                var tag = await _tagRepo.GetAsync(t => t.DisplayName == tagName);
+                var tag = await _tagRepo.FirstOrDefaultAsync(new TagByDisplayNameSpec(tagName), ct);
                 if (tag is not null) post.Tags.Add(tag);
             }
         }
@@ -131,7 +142,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         {
             var oldpcs = await _pcRepository.AsQueryable().Where(pc => pc.PostId == post.Id)
                 .ToListAsync(cancellationToken: ct);
-            await _pcRepository.DeleteAsync(oldpcs, ct);
+            await _pcRepository.DeleteRangeAsync(oldpcs, ct);
         }
 
         post.PostCategory.Clear();
@@ -149,7 +160,9 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
 
         await _postRepo.UpdateAsync(post, ct);
 
-        _cache.Remove(BlogCachePartition.Post.ToString(), guid.ToString());
+        _cache.Remove(BlogCachePartition.Post.ToString(), checkSum.ToString());
+
+        _logger.LogInformation($"Post updated: {post.Id}");
         return post;
     }
 }

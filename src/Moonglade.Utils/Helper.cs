@@ -42,6 +42,16 @@ public static class Helper
         }
     }
 
+    public static bool IsRunningOnAzureAppService()
+    {
+        return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"));
+    }
+
+    public static bool IsRunningInDocker()
+    {
+        return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
+    }
+
     public static string GetClientIP(HttpContext context) => context?.Connection.RemoteIpAddress?.ToString();
 
     public static int ComputeCheckSum(string input)
@@ -80,7 +90,7 @@ public static class Helper
             if (currentVersion != null)
             {
                 var name = currentVersion.GetValue("ProductName", "Microsoft Windows NT");
-                var ubr = currentVersion.GetValue("UBR", string.Empty)?.ToString();
+                var ubr = currentVersion.GetValue("UBR", string.Empty).ToString();
                 if (!string.IsNullOrWhiteSpace(ubr))
                 {
                     return $"{name} {osVer.Version.Major}.{osVer.Version.Minor}.{osVer.Version.Build}.{ubr}";
@@ -103,39 +113,9 @@ public static class Helper
         return $"{uri.Scheme}://{uri.Host}/";
     }
 
-    public static string GetMd5Hash(string input)
-    {
-        // Convert the input string to a byte array and compute the hash.
-        var data = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input));
-
-        // Create a new Stringbuilder to collect the bytes
-        // and create a string.
-        var sBuilder = new StringBuilder();
-
-        // Loop through each byte of the hashed data
-        // and format each one as a hexadecimal string.
-        foreach (var t in data)
-        {
-            sBuilder.Append(t.ToString("x2"));
-        }
-
-        // Return the hexadecimal string.
-        return sBuilder.ToString();
-    }
-
-    public static string HashPassword(string plainMessage)
-    {
-        if (string.IsNullOrWhiteSpace(plainMessage)) return string.Empty;
-
-        var data = Encoding.UTF8.GetBytes(plainMessage);
-        using var sha = SHA256.Create();
-        sha.TransformFinalBlock(data, 0, data.Length);
-        return Convert.ToBase64String(sha.Hash ?? throw new InvalidOperationException());
-    }
-
     // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-6.0
     // This is not secure, but better than nothing.
-    public static string HashPassword2(string clearPassword, string saltBase64)
+    public static string HashPassword(string clearPassword, string saltBase64)
     {
         var salt = Convert.FromBase64String(saltBase64);
 
@@ -360,23 +340,22 @@ public static class Helper
         return new(pattern, options);
     }
 
-    public static string GenerateSlug(this string phrase)
+    public static bool IsValidTagName(string tagDisplayName)
     {
-        string str = phrase.RemoveAccent().ToLower();
-        // invalid chars
-        str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
-        // convert multiple spaces into one space
-        str = Regex.Replace(str, @"\s+", " ").Trim();
-        // cut and trim
-        str = str[..(str.Length <= 45 ? str.Length : 45)].Trim();
-        str = Regex.Replace(str, @"\s", "-"); // hyphens
-        return str;
-    }
+        if (string.IsNullOrWhiteSpace(tagDisplayName)) return false;
 
-    public static string RemoveAccent(this string txt)
-    {
-        byte[] bytes = Encoding.GetEncoding("Cyrillic").GetBytes(txt);
-        return Encoding.ASCII.GetString(bytes);
+        // Regex performance best practice
+        // See https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices
+
+        const string pattern = @"^[a-zA-Z 0-9\.\-\+\#\s]*$";
+        var isEng = Regex.IsMatch(tagDisplayName, pattern);
+        if (isEng) return true;
+
+        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#supported-named-blocks
+        const string chsPattern = @"\p{IsCJKUnifiedIdeographs}";
+        var isChs = Regex.IsMatch(tagDisplayName, chsPattern);
+
+        return isChs;
     }
 
     public static string CombineErrorMessages(this ModelStateDictionary modelStateDictionary, string sep = ", ")
@@ -418,6 +397,32 @@ public static class Helper
         { " ", "-" },
         { "+", "-plus" }
     };
+
+    public static string NormalizeName(string orgTagName, IDictionary<string, string> normalizations)
+    {
+        var isEnglishName = Regex.IsMatch(orgTagName, @"^[a-zA-Z 0-9\.\-\+\#\s]*$");
+        if (isEnglishName)
+        {
+            // special case
+            if (orgTagName.Equals(".net", StringComparison.OrdinalIgnoreCase))
+            {
+                return "dot-net";
+            }
+
+            var result = new StringBuilder(orgTagName);
+            foreach (var (key, value) in normalizations)
+            {
+                result.Replace(key, value);
+            }
+            return result.ToString().ToLower();
+        }
+
+        var bytes = Encoding.Unicode.GetBytes(orgTagName);
+        var hexArray = bytes.Select(b => $"{b:x2}");
+        var hexName = string.Join('-', hexArray);
+
+        return hexName;
+    }
 
     public static bool IsValidHeaderName(string headerName)
     {

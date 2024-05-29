@@ -1,17 +1,15 @@
 using MediatR;
-using Moonglade.Data.Exporting.Exporters;
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Infrastructure;
+using Moonglade.Data.Entities;
 
 namespace Moonglade.Data.Exporting;
 
 public record ExportPostDataCommand : IRequest<ExportResult>;
 
-public class ExportPostDataCommandHandler(IRepository<PostEntity> repo) : IRequestHandler<ExportPostDataCommand, ExportResult>
+public class ExportPostDataCommandHandler(MoongladeRepository<PostEntity> repo) : IRequestHandler<ExportPostDataCommand, ExportResult>
 {
     public Task<ExportResult> Handle(ExportPostDataCommand request, CancellationToken ct)
     {
-        var poExp = new ZippedJsonExporter<PostEntity>(repo, "moonglade-posts", ExportManager.DataDir);
+        var poExp = new ZippedJsonExporter<PostEntity>(repo, "moonglade-posts", Path.GetTempPath());
         var poExportData = poExp.ExportData(p => new
         {
             p.Title,

@@ -1,29 +1,27 @@
 using MediatR;
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Infrastructure;
-using Moonglade.Data.Spec;
+using Microsoft.Extensions.Logging;
+using Moonglade.Data;
+using Moonglade.Data.Entities;
+using Moonglade.Data.Specifications;
 
 namespace Moonglade.Comments;
 
 public record DeleteCommentsCommand(Guid[] Ids) : IRequest;
 
-public class DeleteCommentsCommandHandler(IRepository<CommentEntity> commentRepo, IRepository<CommentReplyEntity> commentReplyRepo) : IRequestHandler<DeleteCommentsCommand>
+public class DeleteCommentsCommandHandler(
+    MoongladeRepository<CommentEntity> commentRepo,
+    ILogger<DeleteCommentsCommandHandler> logger) : IRequestHandler<DeleteCommentsCommand>
 {
     public async Task Handle(DeleteCommentsCommand request, CancellationToken ct)
     {
-        var spec = new CommentSpec(request.Ids);
-        var comments = await commentRepo.ListAsync(spec);
+        var spec = new CommentByIdsSepc(request.Ids);
+        var comments = await commentRepo.ListAsync(spec, ct);
         foreach (var cmt in comments)
         {
-            // 1. Delete all replies
-            var cReplies = await commentReplyRepo.ListAsync(new CommentReplySpec(cmt.Id));
-            if (cReplies.Any())
-            {
-                await commentReplyRepo.DeleteAsync(cReplies, ct);
-            }
-
-            // 2. Delete comment itself
+            cmt.Replies.Clear();
             await commentRepo.DeleteAsync(cmt, ct);
         }
+
+        logger.LogInformation("Deleted {Count} comment(s)", comments.Count);
     }
 }

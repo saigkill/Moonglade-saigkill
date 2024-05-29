@@ -1,29 +1,34 @@
-using Edi.CacheAside.InMemory;
+﻿using Edi.CacheAside.InMemory;
+
+using Microsoft.Extensions.Logging;
 
 using Moonglade.Data;
-using Moonglade.Data.Generated.Entities;
 
 namespace Moonglade.Core.CategoryFeature;
 
 public class UpdateCategoryCommand : CreateCategoryCommand, IRequest<OperationCode>
 {
-	public Guid Id { get; set; }
+    public Guid Id { get; set; }
 }
 
-public class UpdateCategoryCommandHandler(IRepository<CategoryEntity> repo, ICacheAside cache) : IRequestHandler<UpdateCategoryCommand, OperationCode>
+public class UpdateCategoryCommandHandler(
+    MoongladeRepository<CategoryEntity> repo,
+    ICacheAside cache,
+    ILogger<UpdateCategoryCommandHandler> logger) : IRequestHandler<UpdateCategoryCommand, OperationCode>
 {
     public async Task<OperationCode> Handle(UpdateCategoryCommand request, CancellationToken ct)
     {
-        var cat = await repo.GetAsync(request.Id, ct);
+        var cat = await repo.GetByIdAsync(request.Id, ct);
         if (cat is null) return OperationCode.ObjectNotFound;
 
-		cat.RouteName = request.RouteName.Trim();
-		cat.DisplayName = request.DisplayName.Trim();
-		cat.Note = request.Note?.Trim();
+        cat.Slug = request.Slug.Trim();
+        cat.DisplayName = request.DisplayName.Trim();
+        cat.Note = request.Note?.Trim();
 
         await repo.UpdateAsync(cat, ct);
         cache.Remove(BlogCachePartition.General.ToString(), "allcats");
 
-		return OperationCode.Done;
-	}
+        logger.LogInformation("Category updated: {Category}", cat.Id);
+        return OperationCode.Done;
+    }
 }

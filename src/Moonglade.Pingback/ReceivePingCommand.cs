@@ -1,8 +1,8 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Logging;
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Infrastructure;
-using Moonglade.Data.Spec;
+using Moonglade.Data;
+using Moonglade.Data.Entities;
+using Moonglade.Data.Specifications;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -21,8 +21,8 @@ public class ReceivePingCommand(string requestBody, string ip, Action<PingbackEn
 public class ReceivePingCommandHandler(
         ILogger<ReceivePingCommandHandler> logger,
         IPingSourceInspector pingSourceInspector,
-        IRepository<PingbackEntity> pingbackRepo,
-        IRepository<PostEntity> postRepo) : IRequestHandler<ReceivePingCommand, PingbackResponse>
+        MoongladeRepository<PingbackEntity> pingbackRepo,
+        MoongladeRepository<PostEntity> postRepo) : IRequestHandler<ReceivePingCommand, PingbackResponse>
 {
     private string _sourceUrl;
     private string _targetUrl;
@@ -56,8 +56,8 @@ public class ReceivePingCommandHandler(
             }
 
             var (slug, pubDate) = GetSlugInfoFromUrl(pingRequest.TargetUrl);
-            var spec = new PostSpec(pubDate, slug);
-            var (id, title) = await postRepo.FirstOrDefaultAsync(spec, p => new Tuple<Guid, string>(p.Id, p.Title));
+            var spec = new PostByDateAndSlugForIdTitleSpec(pubDate, slug);
+            var (id, title) = await postRepo.FirstOrDefaultAsync(spec, ct);
             if (id == Guid.Empty)
             {
                 logger.LogError($"Can not get post id and title for url '{pingRequest.TargetUrl}'");
@@ -66,11 +66,7 @@ public class ReceivePingCommandHandler(
 
             logger.LogInformation($"Post '{id}:{title}' is found for ping.");
 
-            var pinged = await pingbackRepo.AnyAsync(p =>
-                p.TargetPostId == id &&
-                p.SourceUrl == pingRequest.SourceUrl &&
-                p.SourceIp.Trim() == request.IP, ct);
-
+            var pinged = await pingbackRepo.AnyAsync(new PingbackSpec(id, pingRequest.SourceUrl, request.IP), ct);
             if (pinged) return PingbackResponse.Error48PingbackAlreadyRegistered;
 
             logger.LogInformation("Adding received pingback...");

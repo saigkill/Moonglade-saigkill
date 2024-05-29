@@ -1,12 +1,11 @@
-﻿using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Spec;
+using Moonglade.Data;
 
 namespace Moonglade.Core.CategoryFeature;
 
-public record GetCategoryQuery(Guid Id) : IRequest<Category>;
+public record GetCategoryQuery(Guid Id) : IRequest<CategoryEntity>;
 
-public class GetCategoryByIdQueryHandler(IRepository<CategoryEntity> repo) : IRequestHandler<GetCategoryQuery, Category>
+public class GetCategoryByIdQueryHandler(MoongladeRepository<CategoryEntity> repo) : IRequestHandler<GetCategoryQuery, CategoryEntity>
 {
-    public Task<Category> Handle(GetCategoryQuery request, CancellationToken ct) =>
-        repo.FirstOrDefaultAsync(new CategorySpec(request.Id), Category.EntitySelector);
+    public async Task<CategoryEntity> Handle(GetCategoryQuery request, CancellationToken ct) =>
+        await repo.GetByIdAsync(request.Id, ct);
 }
