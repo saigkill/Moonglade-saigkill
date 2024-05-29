@@ -1,4 +1,5 @@
 ﻿using Moonglade.Core.TagFeature;
+using Moonglade.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Web.Controllers;
@@ -9,7 +10,7 @@ namespace Moonglade.Web.Controllers;
 public class TagsController(IMediator mediator) : ControllerBase
 {
     [HttpGet("names")]
-    [ProducesResponseType<IReadOnlyList<string>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<List<string>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Names()
     {
         var names = await mediator.Send(new GetTagNamesQuery());
@@ -17,7 +18,7 @@ public class TagsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("list")]
-    [ProducesResponseType<IReadOnlyList<Tag>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<List<TagEntity>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> List()
     {
         var list = await mediator.Send(new GetTagsQuery());
@@ -30,15 +31,14 @@ public class TagsController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([Required][FromBody] string name)
     {
-        if (string.IsNullOrWhiteSpace(name)) return BadRequest();
-        if (!Tag.ValidateName(name)) return Conflict();
+        if (!Helper.IsValidTagName(name)) return Conflict();
 
         await mediator.Send(new CreateTagCommand(name.Trim()));
         return Ok();
     }
 
     [HttpPut("{id:int}")]
-    [TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCacheType.PagingCount })]
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.PagingCount])]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
     public async Task<IActionResult> Update([Range(1, int.MaxValue)] int id, [Required][FromBody] string name)
     {
@@ -49,7 +49,7 @@ public class TagsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    [TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCacheType.PagingCount })]
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.PagingCount])]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
     public async Task<IActionResult> Delete([Range(0, int.MaxValue)] int id)
     {

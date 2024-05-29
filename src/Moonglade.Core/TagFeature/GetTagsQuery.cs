@@ -1,10 +1,10 @@
-﻿using Moonglade.Data.Generated.Entities;
+using Moonglade.Data;
 
 namespace Moonglade.Core.TagFeature;
 
-public record GetTagsQuery : IRequest<IReadOnlyList<Tag>>;
+public record GetTagsQuery : IRequest<List<TagEntity>>;
 
-public class GetTagsQueryHandler(IRepository<TagEntity> repo) : IRequestHandler<GetTagsQuery, IReadOnlyList<Tag>>
+public class GetTagsQueryHandler(MoongladeRepository<TagEntity> repo) : IRequestHandler<GetTagsQuery, List<TagEntity>>
 {
-    public Task<IReadOnlyList<Tag>> Handle(GetTagsQuery request, CancellationToken ct) => repo.SelectAsync(Tag.EntitySelector, ct);
+    public Task<List<TagEntity>> Handle(GetTagsQuery request, CancellationToken ct) => repo.ListAsync(ct);
 }

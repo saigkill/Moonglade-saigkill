@@ -123,16 +123,6 @@ public static class Helper
         return sBuilder.ToString();
     }
 
-    public static string HashPassword(string plainMessage)
-    {
-        if (string.IsNullOrWhiteSpace(plainMessage)) return string.Empty;
-
-        var data = Encoding.UTF8.GetBytes(plainMessage);
-        using var sha = SHA256.Create();
-        sha.TransformFinalBlock(data, 0, data.Length);
-        return Convert.ToBase64String(sha.Hash ?? throw new InvalidOperationException());
-    }
-
     // https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/consumer-apis/password-hashing?view=aspnetcore-6.0
     // This is not secure, but better than nothing.
     public static string HashPassword2(string clearPassword, string saltBase64)
@@ -360,23 +350,22 @@ public static class Helper
         return new(pattern, options);
     }
 
-    public static string GenerateSlug(this string phrase)
+    public static bool IsValidTagName(string tagDisplayName)
     {
-        string str = phrase.RemoveAccent().ToLower();
-        // invalid chars
-        str = Regex.Replace(str, @"[^a-z0-9\s-]", "");
-        // convert multiple spaces into one space
-        str = Regex.Replace(str, @"\s+", " ").Trim();
-        // cut and trim
-        str = str[..(str.Length <= 45 ? str.Length : 45)].Trim();
-        str = Regex.Replace(str, @"\s", "-"); // hyphens
-        return str;
-    }
+        if (string.IsNullOrWhiteSpace(tagDisplayName)) return false;
 
-    public static string RemoveAccent(this string txt)
-    {
-        byte[] bytes = Encoding.GetEncoding("Cyrillic").GetBytes(txt);
-        return Encoding.ASCII.GetString(bytes);
+        // Regex performance best practice
+        // See https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices
+
+        const string pattern = @"^[a-zA-Z 0-9\.\-\+\#\s]*$";
+        var isEng = Regex.IsMatch(tagDisplayName, pattern);
+        if (isEng) return true;
+
+        // https://docs.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions#supported-named-blocks
+        const string chsPattern = @"\p{IsCJKUnifiedIdeographs}";
+        var isChs = Regex.IsMatch(tagDisplayName, chsPattern);
+
+        return isChs;
     }
 
     public static string CombineErrorMessages(this ModelStateDictionary modelStateDictionary, string sep = ", ")
@@ -418,6 +407,32 @@ public static class Helper
         { " ", "-" },
         { "+", "-plus" }
     };
+
+    public static string NormalizeName(string orgTagName, IDictionary<string, string> normalizations)
+    {
+        var isEnglishName = Regex.IsMatch(orgTagName, @"^[a-zA-Z 0-9\.\-\+\#\s]*$");
+        if (isEnglishName)
+        {
+            // special case
+            if (orgTagName.Equals(".net", StringComparison.OrdinalIgnoreCase))
+            {
+                return "dot-net";
+            }
+
+            var result = new StringBuilder(orgTagName);
+            foreach (var (key, value) in normalizations)
+            {
+                result.Replace(key, value);
+            }
+            return result.ToString().ToLower();
+        }
+
+        var bytes = Encoding.Unicode.GetBytes(orgTagName);
+        var hexArray = bytes.Select(b => $"{b:x2}");
+        var hexName = string.Join('-', hexArray);
+
+        return hexName;
+    }
 
     public static bool IsValidHeaderName(string headerName)
     {

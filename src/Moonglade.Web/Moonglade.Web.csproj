@@ -39,6 +39,7 @@
     <PackageReference Include="Edi.ImageWatermark" Version="2.11.4" />
     <PackageReference Include="Edi.PasswordGenerator" Version="1.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.4" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="24.2.9" />
     <PackageReference Include="Syncfusion.Licensing" Version="24.2.9" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.3" />
@@ -55,7 +56,6 @@
     <ProjectReference Include="..\Moonglade.FriendLink\Moonglade.FriendLink.csproj" />
     <ProjectReference Include="..\Moonglade.ImageStorage\Moonglade.ImageStorage.csproj" />
     <ProjectReference Include="..\Moonglade.Email.Client\Moonglade.Email.Client.csproj" />
-    <ProjectReference Include="..\Moonglade.MetaWeblog\Moonglade.MetaWeblog.csproj" />
     <ProjectReference Include="..\Moonglade.Pingback\Moonglade.Pingback.csproj" />
     <ProjectReference Include="..\Moonglade.Syndication\Moonglade.Syndication.csproj" />
     <ProjectReference Include="..\Moonglade.Theme\Moonglade.Theme.csproj" />

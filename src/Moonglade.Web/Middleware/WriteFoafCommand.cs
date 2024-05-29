@@ -5,14 +5,14 @@ using Moonglade.Data.Entities;
 
 namespace Moonglade.Web.Middleware;
 
-public class WriteFoafCommand(FoafDoc doc, string currentRequestUrl, IReadOnlyList<FriendLinkEntity> links)
+public class WriteFoafCommand(FoafDoc doc, string currentRequestUrl, List<FriendLinkEntity> links)
     : IRequest<string>
 {
     public FoafDoc Doc { get; set; } = doc;
 
     public string CurrentRequestUrl { get; set; } = currentRequestUrl;
 
-    public IReadOnlyList<FriendLinkEntity> Links { get; set; } = links;
+    public List<FriendLinkEntity> Links { get; set; } = links;
 
     public static string ContentType => "application/rdf+xml";
 }
@@ -51,7 +51,7 @@ public class WriteFoafCommandHandler : IRequestHandler<WriteFoafCommand, string>
             Blog = request.Doc.BlogUrl,
             Email = request.Doc.Email,
             PhotoUrl = request.Doc.PhotoUrl,
-            Friends = new()
+            Friends = []
         };
 
         foreach (var friend in request.Links)

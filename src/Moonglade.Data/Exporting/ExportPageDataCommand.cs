@@ -1,13 +1,12 @@
-﻿using MediatR;
+using MediatR;
 using Moonglade.Data.Exporting.Exporters;
-using Moonglade.Data.Generated.Entities;
 using Moonglade.Data.Infrastructure;
 
 namespace Moonglade.Data.Exporting;
 
 public record ExportPageDataCommand : IRequest<ExportResult>;
 
-public class ExportPageDataCommandHandler(IRepository<PageEntity> repo) : IRequestHandler<ExportPageDataCommand, ExportResult>
+public class ExportPageDataCommandHandler(MoongladeRepository<PageEntity> repo) : IRequestHandler<ExportPageDataCommand, ExportResult>
 {
     public Task<ExportResult> Handle(ExportPageDataCommand request, CancellationToken ct)
     {

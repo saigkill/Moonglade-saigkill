@@ -144,7 +144,7 @@
   <data name="Account Information" xml:space="preserve">
     <value>账号信息</value>
   </data>
-  <data name="Accounts" xml:space="preserve">
+  <data name="Account" xml:space="preserve">
     <value>账号</value>
   </data>
   <data name="Action" xml:space="preserve">
@@ -378,9 +378,6 @@
   <data name="Enable Gravatar in comment list" xml:space="preserve">
     <value>在评论列表中开启Gravatar头像</value>
   </data>
-  <data name="Enable MetaWeblog API" xml:space="preserve">
-    <value>启用 MetaWeblog API</value>
-  </data>
   <data name="Enable OpenSearch" xml:space="preserve">
     <value>启用 OpenSearch</value>
   </data>
@@ -483,11 +480,11 @@
   <data name="Language" xml:space="preserve">
     <value>语言</value>
   </data>
-  <data name="Last Login IP" xml:space="preserve">
-    <value>最后登录 IP</value>
+  <data name="Login IP" xml:space="preserve">
+    <value>登录 IP</value>
   </data>
-  <data name="Last Login Time (UTC)" xml:space="preserve">
-    <value>最后登录时间 (UTC)</value>
+  <data name="Login Time (UTC)" xml:space="preserve">
+    <value>登录时间 (UTC)</value>
   </data>
   <data name="Latest Posts" xml:space="preserve">
     <value>最新文章</value>
@@ -518,9 +515,6 @@
   </data>
   <data name="Meta keyword" xml:space="preserve">
     <value>网站关键词</value>
-  </data>
-  <data name="MetaWeblog password" xml:space="preserve">
-    <value>MetaWeblog 密码</value>
   </data>
   <data name="Moonglade Configuration" xml:space="preserve">
     <value>Moonglade 配置</value>
@@ -616,7 +610,7 @@
     <value>处理中……</value>
   </data>
   <data name="Providing your email address can enable blog admin to send notifications for replying your comment. Your email address will also be used to show Gravatar if it has one." xml:space="preserve">
-    <value>提供Email地址以让博主回复您评论时发送通知。您的Email地址也会被用来显示Gravatar头像（如果有）。</value>
+    <value>输入您的电子邮件以接收回复通知并显示您的Gravatar头像。</value>
   </data>
   <data name="Publish" xml:space="preserve">
     <value>发布</value>
@@ -779,9 +773,6 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>标题</value>
-  </data>
-  <data name="Try to shutdown and restart the website, this will terminate all current requests." xml:space="preserve">
-    <value>尝试关闭并重新启动网站，该操作会终止所有当前请求</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>更新</value>

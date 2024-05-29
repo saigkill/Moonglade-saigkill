@@ -1,13 +1,19 @@
 using MediatR;
-
+using Moonglade.Data;
 using Moonglade.Data.Entities;
-using Moonglade.Data.Infrastructure;
 
 namespace Moonglade.FriendLink;
 
 public record DeleteLinkCommand(Guid Id) : IRequest;
 
-public class DeleteLinkCommandHandler(IRepository<FriendLinkEntity> repo) : IRequestHandler<DeleteLinkCommand>
+public class DeleteLinkCommandHandler(MoongladeRepository<FriendLinkEntity> repo) : IRequestHandler<DeleteLinkCommand>
 {
-    public Task Handle(DeleteLinkCommand request, CancellationToken ct) => repo.DeleteAsync(request.Id, ct);
+    public async Task Handle(DeleteLinkCommand request, CancellationToken ct)
+    {
+        var link = await repo.GetByIdAsync(request.Id, ct);
+        if (null != link)
+        {
+            await repo.DeleteAsync(link, ct);
+        }
+    }
 }

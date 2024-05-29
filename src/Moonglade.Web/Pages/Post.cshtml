@@ -27,7 +27,7 @@
     ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
     ViewBag.MetaDescription = Model.Post.ContentAbstract;
 
-    @if (Model.Post.Tags.Length > 0)
+    @if (Model.Post.Tags.Any())
     {
         ViewBag.Keywords = string.Join(", ", Model.Post.Tags.Select(t => t.NormalizedName));
     }
@@ -137,7 +137,7 @@
 }
 
 <article class="article-post-slug position-relative p-4 rounded-3 shadow-sm border bg-white mb-4" data-postid="@Model.Post.Id" lang="@Model.Post.ContentLanguageCode">
-    @if (Model.Post.Featured)
+    @if (Model.Post.IsFeatured)
     {
         <partial name="_FeaturedTag" />
     }
@@ -194,7 +194,7 @@
     }
 
     <section class="post-content clearfix">
-        <partial name="_PostContentRender" model="Model.Post.RawPostContent" />
+        <partial name="_PostContentRender" model="Model.Post.PostContent" />
     </section>
 
     @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
@@ -222,7 +222,15 @@
         </section>
     }
 
-    <partial name="_PostActions" model="Model.Post" />
+    <partial name="_PostActions2" model="Model.Post" />
+
+    @if (!string.IsNullOrWhiteSpace(Model.Post.OriginLink))
+    {
+        <a href="@Helper.SterilizeLink(Model.Post.OriginLink)" target="_blank">
+            <i class="bi-link"></i>
+            @SharedLocalizer["Read origin article"]
+        </a>
+    }
 </article>
 
 @if (BlogConfig.ContentSettings.EnableComments)

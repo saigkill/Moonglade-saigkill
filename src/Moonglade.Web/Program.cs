@@ -23,7 +23,9 @@ using Moonglade.Syndication;
 using Moonglade.Web.Services;
 
 using SixLabors.Fonts;
-
+using System.Globalization;
+using System.Net;
+using System.Text.Json.Serialization;
 using Encoder = Moonglade.Web.Configuration.Encoder;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -136,7 +138,6 @@ void ConfigureServices(IServiceCollection services)
     services.AddPingback()
             .AddSyndication()
             .AddInMemoryCacheAside()
-            .AddMetaWeblog<Moonglade.Web.MetaWeblogService>()
             .AddScoped<ValidateCaptcha>()
             .AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
             .AddBlogConfig()
@@ -194,11 +195,6 @@ void ConfigureMiddleware()
     app.UseWhen(
         _ => bc.AdvancedSettings.EnableFoaf,
         appBuilder => appBuilder.UseMiddleware<FoafMiddleware>()
-    );
-
-    app.UseWhen(
-        _ => bc.AdvancedSettings.EnableMetaWeblog,
-        appBuilder => appBuilder.UseMiddleware<RSDMiddleware>().UseMetaWeblog("/metaweblog")
     );
 
     app.UseWhen(

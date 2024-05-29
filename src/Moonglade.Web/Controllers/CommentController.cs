@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Moonglade.Comments.Moderator;
 using Moonglade.Email.Client;
 using Moonglade.Web.Attributes;
 using System.ComponentModel.DataAnnotations;
@@ -11,14 +12,15 @@ namespace Moonglade.Web.Controllers;
 [CommentProviderGate]
 public class CommentController(
         IMediator mediator,
+        IModeratorService moderator,
         IBlogConfig blogConfig,
         ILogger<CommentController> logger) : ControllerBase
 {
     [HttpPost("{postId:guid}")]
     [AllowAnonymous]
     [ServiceFilter(typeof(ValidateCaptcha))]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ModelStateDictionary>(StatusCodes.Status409Conflict)]
@@ -32,17 +34,32 @@ public class CommentController(
 
         if (!blogConfig.ContentSettings.EnableComments) return Forbid();
 
+        if (blogConfig.ContentSettings.EnableWordFilter)
+        {
+            switch (blogConfig.ContentSettings.WordFilterMode)
+            {
+                case WordFilterMode.Mask:
+                    request.Username = await moderator.Mask(request.Username);
+                    request.Content = await moderator.Mask(request.Content);
+                    break;
+                case WordFilterMode.Block:
+                    if (await moderator.Detect(request.Username, request.Content))
+                    {
+                        await Task.CompletedTask;
+                        ModelState.AddModelError(nameof(request.Content), "Your comment contains bad bad word.");
+                        return Conflict(ModelState);
+                    }
+                    break;
+            }
+        }
+
         var ip = (bool)HttpContext.Items["DNT"]! ? "N/A" : Helper.GetClientIP(HttpContext);
         var item = await mediator.Send(new CreateCommentCommand(postId, request, ip));
 
-        switch (item.Status)
+        if (null == item)
         {
-            case -1:
-                ModelState.AddModelError(nameof(request.Content), "Your comment contains bad bad word.");
-                return Conflict(ModelState);
-            case -2:
-                ModelState.AddModelError(nameof(postId), "Comment is closed for this post.");
-                return Conflict(ModelState);
+            ModelState.AddModelError(nameof(postId), "Comment is closed for this post.");
+            return Conflict(ModelState);
         }
 
         if (blogConfig.NotificationSettings.SendEmailOnNewComment)
@@ -50,11 +67,11 @@ public class CommentController(
             try
             {
                 await mediator.Publish(new CommentNotification(
-                    item.Item.Username,
-                    item.Item.Email,
-                    item.Item.IpAddress,
-                    item.Item.PostTitle,
-                    item.Item.CommentContent));
+                    item.Username,
+                    item.Email,
+                    item.IpAddress,
+                    item.PostTitle,
+                    item.CommentContent));
             }
             catch (Exception e)
             {
@@ -67,14 +84,14 @@ public class CommentController(
             return Created("moonglade://empty", item);
         }
 
-        return Ok();
+        return NoContent();
     }
 
     [HttpPut("{commentId:guid}/approval/toggle")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Approval([NotEmpty] Guid commentId)
     {
-        await mediator.Send(new ToggleApprovalCommand(new[] { commentId }));
+        await mediator.Send(new ToggleApprovalCommand([commentId]));
         return Ok(commentId);
     }
 

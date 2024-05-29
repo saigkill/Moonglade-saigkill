@@ -1,12 +1,15 @@
-﻿using MediatR;
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Infrastructure;
+using MediatR;
+using Moonglade.Data;
+using Moonglade.Data.Entities;
+using Moonglade.Data.Specifications;
 
 namespace Moonglade.Pingback;
 
-public record GetPingbacksQuery : IRequest<IReadOnlyList<PingbackEntity>>;
+public record GetPingbacksQuery : IRequest<List<PingbackEntity>>;
 
-public class GetPingbacksQueryHandler(IRepository<PingbackEntity> repo) : IRequestHandler<GetPingbacksQuery, IReadOnlyList<PingbackEntity>>
+public class GetPingbacksQueryHandler(MoongladeRepository<PingbackEntity> repo) :
+    IRequestHandler<GetPingbacksQuery, List<PingbackEntity>>
 {
-    public Task<IReadOnlyList<PingbackEntity>> Handle(GetPingbacksQuery request, CancellationToken ct) => repo.ListAsync(ct);
+    public Task<List<PingbackEntity>> Handle(GetPingbacksQuery request, CancellationToken ct) =>
+        repo.ListAsync(new PingbackReadOnlySpec(), ct);
 }

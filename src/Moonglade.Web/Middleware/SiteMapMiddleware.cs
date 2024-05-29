@@ -1,6 +1,5 @@
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Infrastructure;
-using Moonglade.Data.Spec;
+using Moonglade.Data.Entities;
+using Moonglade.Data.Specifications;
 using System.Globalization;
 using System.Xml;
 
@@ -12,8 +11,8 @@ public class SiteMapMiddleware(RequestDelegate next)
         HttpContext httpContext,
         IBlogConfig blogConfig,
         ICacheAside cache,
-        IRepository<PostEntity> postRepo,
-        IRepository<PageEntity> pageRepo)
+        MoongladeRepository<PostEntity> postRepo,
+        MoongladeRepository<PageEntity> pageRepo)
     {
         var xml = await cache.GetOrCreateAsync(BlogCachePartition.General.ToString(), "sitemap", async _ =>
         {
@@ -28,8 +27,8 @@ public class SiteMapMiddleware(RequestDelegate next)
 
     private static async Task<string> GetSiteMapData(
         string siteRootUrl,
-        IRepository<PostEntity> postRepo,
-        IRepository<PageEntity> pageRepo,
+        MoongladeRepository<PostEntity> postRepo,
+        MoongladeRepository<PageEntity> pageRepo,
         CancellationToken ct)
     {
         var sb = new StringBuilder();
@@ -41,7 +40,7 @@ public class SiteMapMiddleware(RequestDelegate next)
             writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
             // Posts
-            var spec = new PostSitePageSpec();
+            var spec = new PostByStatusSpec(PostStatus.Published);
             var posts = await postRepo
                 .SelectAsync(spec, p => new Tuple<string, DateTime?, DateTime?>(p.Slug, p.PubDateUtc, p.LastModifiedUtc), ct);
 
@@ -57,18 +56,13 @@ public class SiteMapMiddleware(RequestDelegate next)
             }
 
             // Pages
-            var pages = await pageRepo.SelectAsync(page => new Tuple<DateTime, DateTime?, string, bool>(
-                page.CreateTimeUtc,
-                page.UpdateTimeUtc,
-                page.Slug,
-                page.IsPublished), ct);
-
-            foreach (var (createdTimeUtc, updateTimeUtc, slug, isPublished) in pages.Where(p => p.Item4))
+            var pages = await pageRepo.ListAsync(new PageSitemapSpec(), ct);
+            foreach (var page in pages)
             {
                 writer.WriteStartElement("url");
-                writer.WriteElementString("loc", $"{siteRootUrl}/page/{slug.ToLower()}");
-                writer.WriteElementString("lastmod", createdTimeUtc.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
-                writer.WriteElementString("changefreq", GetChangeFreq(createdTimeUtc, updateTimeUtc));
+                writer.WriteElementString("loc", $"{siteRootUrl}/page/{page.Slug.ToLower()}");
+                writer.WriteElementString("lastmod", page.CreateTimeUtc.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+                writer.WriteElementString("changefreq", GetChangeFreq(page.CreateTimeUtc, page.UpdateTimeUtc));
                 await writer.WriteEndElementAsync();
             }
 

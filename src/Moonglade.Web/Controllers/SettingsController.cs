@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Localization;
 
 using Moonglade.Email.Client;
 
-using NUglify;
-
 namespace Moonglade.Web.Controllers;
 
 [Authorize]
@@ -43,12 +41,12 @@ public class SettingsController(
 		}
 	}
 
-	[HttpPost("general")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCachePartition.General, "theme" })]
-	public async Task<IActionResult> General(GeneralSettings model, ITimeZoneResolver timeZoneResolver)
-	{
-		model.AvatarUrl = blogConfig.GeneralSettings.AvatarUrl;
+    [HttpPost("general")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCachePartition.General, "theme"])]
+    public async Task<IActionResult> General(GeneralSettings model, ITimeZoneResolver timeZoneResolver)
+    {
+        model.AvatarUrl = blogConfig.GeneralSettings.AvatarUrl;
 
 		blogConfig.GeneralSettings = model;
 		blogConfig.GeneralSettings.TimeZoneUtcOffset = timeZoneResolver.GetTimeSpanByZoneId(model.TimeZoneId);
@@ -159,34 +157,21 @@ public class SettingsController(
 		return NoContent();
 	}
 
-	[HttpPost("advanced")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> Advanced(AdvancedSettings model)
-	{
-		model.MetaWeblogPasswordHash = !string.IsNullOrWhiteSpace(model.MetaWeblogPassword) ?
-			Helper.HashPassword(model.MetaWeblogPassword) :
-			blogConfig.AdvancedSettings.MetaWeblogPasswordHash;
-
-		blogConfig.AdvancedSettings = model;
+    [HttpPost("advanced")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Advanced(AdvancedSettings model)
+    {
+        blogConfig.AdvancedSettings = model;
 
 		await SaveConfigAsync(blogConfig.AdvancedSettings);
 		return NoContent();
 	}
 
-	[HttpPost("shutdown")]
-	[ProducesResponseType(StatusCodes.Status202Accepted)]
-	public IActionResult Shutdown(IHostApplicationLifetime applicationLifetime)
-	{
-		logger.LogWarning($"Shutdown is requested by '{User.Identity?.Name}'.");
-		applicationLifetime.StopApplication();
-		return Accepted();
-	}
-
-	[HttpPost("reset")]
-	[ProducesResponseType(StatusCodes.Status202Accepted)]
-	public async Task<IActionResult> Reset(BlogDbContext context, IHostApplicationLifetime applicationLifetime)
-	{
-		logger.LogWarning($"System reset is requested by '{User.Identity?.Name}', IP: {Helper.GetClientIP(HttpContext)}.");
+    [HttpPost("reset")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> Reset(BlogDbContext context, IHostApplicationLifetime applicationLifetime)
+    {
+        logger.LogWarning($"System reset is requested by '{User.Identity?.Name}', IP: {Helper.GetClientIP(HttpContext)}.");
 
 		await context.ClearAllData();
 
@@ -205,17 +190,7 @@ public class SettingsController(
 			return BadRequest(ModelState.CombineErrorMessages());
 		}
 
-		var uglifyTest = Uglify.Css(model.CssCode);
-		if (uglifyTest.HasErrors)
-		{
-			foreach (var err in uglifyTest.Errors)
-			{
-				ModelState.AddModelError(model.CssCode, err.ToString());
-			}
-			return BadRequest(ModelState.CombineErrorMessages());
-		}
-
-		blogConfig.CustomStyleSheetSettings = model;
+        blogConfig.CustomStyleSheetSettings = model;
 
 		await SaveConfigAsync(blogConfig.CustomStyleSheetSettings);
 		return NoContent();
@@ -254,9 +229,27 @@ public class SettingsController(
 		});
 	}
 
-	private async Task SaveConfigAsync<T>(T blogSettings) where T : IBlogSettings
-	{
-		var kvp = blogConfig.UpdateAsync(blogSettings);
-		await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
-	}
+    [HttpPut("password/local")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> UpdateLocalAccountPassword(UpdateLocalAccountPasswordRequest request)
+    {
+        var oldPasswordValid = blogConfig.LocalAccountSettings.PasswordHash == Helper.HashPassword2(request.OldPassword.Trim(), blogConfig.LocalAccountSettings.PasswordSalt);
+
+        if (!oldPasswordValid) return Conflict("Old password is incorrect.");
+
+        var newSalt = Helper.GenerateSalt();
+        blogConfig.LocalAccountSettings.Username = request.NewUsername.Trim();
+        blogConfig.LocalAccountSettings.PasswordSalt = newSalt;
+        blogConfig.LocalAccountSettings.PasswordHash = Helper.HashPassword2(request.NewPassword, newSalt);
+
+        await SaveConfigAsync(blogConfig.LocalAccountSettings);
+        return NoContent();
+    }
+
+    private async Task SaveConfigAsync<T>(T blogSettings) where T : IBlogSettings
+    {
+        var kvp = blogConfig.UpdateAsync(blogSettings);
+        await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
+    }
 }

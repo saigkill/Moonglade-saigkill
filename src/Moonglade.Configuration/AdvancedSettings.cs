@@ -83,3 +83,6 @@ public class AdvancedSettings : IBlogSettings
 	[JsonIgnore]
 	public static AdvancedSettings DefaultValue => new();
 }
+    [JsonIgnore]
+    public static AdvancedSettings DefaultValue => new();
+}

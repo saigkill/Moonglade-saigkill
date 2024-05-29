@@ -1,24 +1,18 @@
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Spec;
+using Moonglade.Data;
+using Moonglade.Data.Specifications;
 
 namespace Moonglade.Core.TagFeature;
 
-public record GetHotTagsQuery(int Top) : IRequest<IReadOnlyList<KeyValuePair<Tag, int>>>;
+public record GetHotTagsQuery(int Top) : IRequest<List<(TagEntity Tag, int PostCount)>>;
 
-public class GetHotTagsQueryHandler(IRepository<TagEntity> repo) : IRequestHandler<GetHotTagsQuery, IReadOnlyList<KeyValuePair<Tag, int>>>
+public class GetHotTagsQueryHandler(MoongladeRepository<TagEntity> repo) : IRequestHandler<GetHotTagsQuery, List<(TagEntity Tag, int PostCount)>>
 {
-    public async Task<IReadOnlyList<KeyValuePair<Tag, int>>> Handle(GetHotTagsQuery request, CancellationToken ct)
+    public async Task<List<(TagEntity Tag, int PostCount)>> Handle(GetHotTagsQuery request, CancellationToken ct)
     {
-        if (!await repo.AnyAsync(ct: ct)) return new List<KeyValuePair<Tag, int>>();
+        if (!await repo.AnyAsync(ct)) return [];
 
-        var spec = new TagSpec(request.Top);
-        var tags = await repo.SelectAsync(spec, t =>
-            new KeyValuePair<Tag, int>(new()
-            {
-                Id = t.Id,
-                DisplayName = t.DisplayName,
-                NormalizedName = t.NormalizedName
-            }, t.Posts.Count), ct);
+        var spec = new HotTagSpec(request.Top);
+        var tags = await repo.ListAsync(spec, ct);
 
 		return tags;
 	}

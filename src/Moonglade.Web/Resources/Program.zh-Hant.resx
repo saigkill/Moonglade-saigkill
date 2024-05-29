@@ -124,7 +124,7 @@
   <data name="Account Information" xml:space="preserve">
     <value>帳號資訊</value>
   </data>
-  <data name="Accounts" xml:space="preserve">
+  <data name="Account" xml:space="preserve">
     <value>帳號</value>
   </data>
   <data name="Action" xml:space="preserve">
@@ -358,9 +358,6 @@
   <data name="Enable Gravatar in comment list" xml:space="preserve">
     <value>在評論清單中開啟Gravatar頭像</value>
   </data>
-  <data name="Enable MetaWeblog API" xml:space="preserve">
-    <value>啟用MetaWeblog API</value>
-  </data>
   <data name="Enable OpenSearch" xml:space="preserve">
     <value>啟用OpenSearch</value>
   </data>
@@ -499,9 +496,6 @@
   <data name="Meta keyword" xml:space="preserve">
     <value>網站關鍵字</value>
   </data>
-  <data name="MetaWeblog password" xml:space="preserve">
-    <value>MetaWeblog 密碼</value>
-  </data>
   <data name="Moonglade Configuration" xml:space="preserve">
     <value>Moonglade 設定</value>
   </data>
@@ -596,7 +590,7 @@
     <value>處理中……</value>
   </data>
   <data name="Providing your email address can enable blog admin to send notifications for replying your comment. Your email address will also be used to show Gravatar if it has one." xml:space="preserve">
-    <value>提供Email位址以讓博主回復您評論時發送通知。 您的Email位址也會被用來顯示Gravatar頭像（如果有）。</value>
+    <value>輸入您的電子郵件以接收回覆通知並顯示您的Gravatar頭像。</value>
   </data>
   <data name="Publish" xml:space="preserve">
     <value>發佈</value>
@@ -759,9 +753,6 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>標題</value>
-  </data>
-  <data name="Try to shutdown and restart the website, this will terminate all current requests." xml:space="preserve">
-    <value>嘗試關閉並重新啟動網站，該操作會終止所有當前請求</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>更新</value>

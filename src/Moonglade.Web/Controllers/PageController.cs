@@ -2,8 +2,6 @@ using Moonglade.Core.PageFeature;
 using Moonglade.Email.Client;
 using Moonglade.Web.Attributes;
 
-using NUglify;
-
 namespace Moonglade.Web.Controllers;
 
 [Authorize]
@@ -11,34 +9,35 @@ namespace Moonglade.Web.Controllers;
 [Route("api/[controller]")]
 public class PageController(ICacheAside cache, IMediator mediator) : Controller
 {
-	[HttpPost]
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCacheType.SiteMap })]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public Task<IActionResult> Create(EditPageRequest model) =>
-		CreateOrEdit(model, async request => await mediator.Send(new CreatePageCommand(request)));
+    [HttpPost]
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.SiteMap])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> Create(EditPageRequest model)
+    {
+        var uid = await mediator.Send(new CreatePageCommand(model));
 
-	[HttpPut("{id:guid}")]
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCacheType.SiteMap })]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public Task<IActionResult> Edit([NotEmpty] Guid id, EditPageRequest model) =>
-		CreateOrEdit(model, async request => await mediator.Send(new UpdatePageCommand(id, request)));
+    [HttpPut("{id:guid}")]
+    [TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCacheType.SiteMap })]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<IActionResult> Edit([NotEmpty] Guid id, EditPageRequest model) =>
+        CreateOrEdit(model, async request => await mediator.Send(new UpdatePageCommand(id, request)));
 
-	private async Task<IActionResult> CreateOrEdit(EditPageRequest model, Func<EditPageRequest, Task<Guid>> pageServiceAction)
-	{
-		if (!string.IsNullOrWhiteSpace(model.CssContent))
-		{
-			var uglifyTest = Uglify.Css(model.CssContent);
-			if (uglifyTest.HasErrors)
-			{
-				foreach (var err in uglifyTest.Errors)
-				{
-					ModelState.AddModelError(model.CssContent, err.ToString());
-				}
-				return BadRequest(ModelState.CombineErrorMessages());
-			}
-		}
+    private async Task<IActionResult> CreateOrEdit(EditPageRequest model, Func<EditPageRequest, Task<Guid>> pageServiceAction)
+    {
+        if (!string.IsNullOrWhiteSpace(model.CssContent))
+        {
+            var uglifyTest = Uglify.Css(model.CssContent);
+            if (uglifyTest.HasErrors)
+            {
+                foreach (var err in uglifyTest.Errors)
+                {
+                    ModelState.AddModelError(model.CssContent, err.ToString());
+                }
+                return BadRequest(ModelState.CombineErrorMessages());
+            }
+        }
 
-		var uid = await pageServiceAction(model);
+        var uid = await pageServiceAction(model);
 
 		cache.Remove(BlogCachePartition.Page.ToString(), model.Slug.ToLower());
 		return Ok(new { PageId = uid });

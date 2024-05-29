@@ -17,20 +17,20 @@ public class PostController(
 		IPingbackSender pingbackSender,
 		ILogger<PostController> logger) : ControllerBase
 {
-	[HttpPost("createoredit")]
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[]
-	{
-		BlogCacheType.SiteMap |
-		BlogCacheType.Subscription |
-		BlogCacheType.PagingCount
-	})]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status409Conflict)]
-	public async Task<IActionResult> CreateOrEdit(PostEditModel model, LinkGenerator linkGenerator)
-	{
-		try
-		{
-			if (!ModelState.IsValid) return Conflict(ModelState.CombineErrorMessages());
+    [HttpPost("createoredit")]
+    [TypeFilter(typeof(ClearBlogCache), Arguments =
+    [
+        BlogCacheType.SiteMap |
+        BlogCacheType.Subscription |
+        BlogCacheType.PagingCount
+    ])]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CreateOrEdit(PostEditModel model, LinkGenerator linkGenerator)
+    {
+        try
+        {
+            if (!ModelState.IsValid) return Conflict(ModelState.CombineErrorMessages());
 
 			var tzDate = timeZoneResolver.NowOfTimeZone;
 			if (model.ChangePublishDate &&
@@ -80,51 +80,51 @@ public class PostController(
 		}
 	}
 
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[]
-	{
-		BlogCacheType.SiteMap |
-		BlogCacheType.Subscription |
-		BlogCacheType.PagingCount
-	})]
-	[HttpPost("{postId:guid}/restore")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> Restore([NotEmpty] Guid postId)
-	{
-		await mediator.Send(new RestorePostCommand(postId));
-		return NoContent();
-	}
+    [TypeFilter(typeof(ClearBlogCache), Arguments =
+    [
+        BlogCacheType.SiteMap |
+        BlogCacheType.Subscription |
+        BlogCacheType.PagingCount
+    ])]
+    [HttpPost("{postId:guid}/restore")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Restore([NotEmpty] Guid postId)
+    {
+        await mediator.Send(new RestorePostCommand(postId));
+        return NoContent();
+    }
 
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[]
-	{
-		BlogCacheType.SiteMap |
-		BlogCacheType.Subscription |
-		BlogCacheType.PagingCount
-	})]
-	[HttpDelete("{postId:guid}/recycle")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> Delete([NotEmpty] Guid postId)
-	{
-		await mediator.Send(new DeletePostCommand(postId, true));
-		return NoContent();
-	}
+    [TypeFilter(typeof(ClearBlogCache), Arguments =
+    [
+        BlogCacheType.SiteMap |
+        BlogCacheType.Subscription |
+        BlogCacheType.PagingCount
+    ])]
+    [HttpDelete("{postId:guid}/recycle")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Delete([NotEmpty] Guid postId)
+    {
+        await mediator.Send(new DeletePostCommand(postId, true));
+        return NoContent();
+    }
 
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCacheType.Subscription | BlogCacheType.SiteMap })]
-	[HttpDelete("{postId:guid}/destroy")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> DeleteFromRecycleBin([NotEmpty] Guid postId)
-	{
-		await mediator.Send(new DeletePostCommand(postId));
-		return NoContent();
-	}
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
+    [HttpDelete("{postId:guid}/destroy")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteFromRecycleBin([NotEmpty] Guid postId)
+    {
+        await mediator.Send(new DeletePostCommand(postId));
+        return NoContent();
+    }
 
-	[TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCacheType.Subscription | BlogCacheType.SiteMap })]
-	[HttpDelete("recyclebin")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> EmptyRecycleBin()
-	{
-		await mediator.Send(new PurgeRecycledCommand());
-		return NoContent();
-	}
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
+    [HttpDelete("recyclebin")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> EmptyRecycleBin()
+    {
+        await mediator.Send(new PurgeRecycledCommand());
+        return NoContent();
+    }
 
 	[IgnoreAntiforgeryToken]
 	[HttpPost("keep-alive")]

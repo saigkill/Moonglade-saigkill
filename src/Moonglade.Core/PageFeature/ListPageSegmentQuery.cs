@@ -1,20 +1,12 @@
-﻿using Moonglade.Data.Generated.Entities;
+using Moonglade.Data;
+using Moonglade.Data.Specifications;
 
 namespace Moonglade.Core.PageFeature;
 
-public record ListPageSegmentQuery : IRequest<IReadOnlyList<PageSegment>>;
+public record ListPageSegmentQuery : IRequest<List<PageSegment>>;
 
-public class ListPageSegmentQueryHandler(IRepository<PageEntity> repo) : IRequestHandler<ListPageSegmentQuery, IReadOnlyList<PageSegment>>
+public class ListPageSegmentQueryHandler(MoongladeRepository<PageEntity> repo) : IRequestHandler<ListPageSegmentQuery, List<PageSegment>>
 {
-    public Task<IReadOnlyList<PageSegment>> Handle(ListPageSegmentQuery request, CancellationToken ct)
-    {
-        return repo.SelectAsync(page => new PageSegment
-        {
-            Id = page.Id,
-            CreateTimeUtc = page.CreateTimeUtc,
-            Slug = page.Slug,
-            Title = page.Title,
-            IsPublished = page.IsPublished
-        }, ct);
-    }
+    public Task<List<PageSegment>> Handle(ListPageSegmentQuery request, CancellationToken ct) =>
+        repo.ListAsync(new PageSegmentSpec(), ct);
 }

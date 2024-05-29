@@ -1,14 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
 using MediatR;
-
+using Moonglade.Data;
 using Moonglade.Data.Entities;
-using Moonglade.Data.Infrastructure;
 using Moonglade.Utils;
 
 namespace Moonglade.FriendLink;
 
-public class AddLinkCommand : IRequest, IValidatableObject
+public class EditLinkRequest : IValidatableObject
 {
     [Required]
     [Display(Name = "Title")]
@@ -33,16 +32,18 @@ public class AddLinkCommand : IRequest, IValidatableObject
     }
 }
 
-public class AddLinkCommandHandler(IRepository<FriendLinkEntity> repo) : IRequestHandler<AddLinkCommand>
+public record AddLinkCommand(EditLinkRequest Payload) : IRequest;
+
+public class AddLinkCommandHandler(MoongladeRepository<FriendLinkEntity> repo) : IRequestHandler<AddLinkCommand>
 {
     public async Task Handle(AddLinkCommand request, CancellationToken ct)
     {
         var link = new FriendLinkEntity
         {
             Id = Guid.NewGuid(),
-            LinkUrl = Helper.SterilizeLink(request.LinkUrl),
-            Title = request.Title,
-            Rank = request.Rank
+            LinkUrl = Helper.SterilizeLink(request.Payload.LinkUrl),
+            Title = request.Payload.Title,
+            Rank = request.Payload.Rank
         };
 
         await repo.AddAsync(link, ct);

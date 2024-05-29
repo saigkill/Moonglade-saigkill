@@ -1,5 +1,4 @@
-﻿using NUglify;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Web.Controllers;
 
@@ -10,7 +9,6 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
     [HttpGet("/theme.css")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType<List<UglifyError>>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Css()
     {
         try
@@ -33,10 +31,7 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
 
             if (css == null) return NotFound();
 
-            var uCss = Uglify.Css(css);
-            if (uCss.HasErrors) return Conflict(uCss.Errors);
-
-            return Content(uCss.Code, "text/css; charset=utf-8");
+            return Content(css, "text/css; charset=utf-8");
         }
         catch (InvalidDataException e)
         {
@@ -48,7 +43,7 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
     [HttpPost]
     [ProducesResponseType<string>(StatusCodes.Status409Conflict)]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
-    [TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCachePartition.General, "theme" })]
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCachePartition.General, "theme"])]
     public async Task<IActionResult> Create(CreateThemeRequest request)
     {
         var dic = new Dictionary<string, string>
@@ -59,7 +54,7 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
         };
 
         var id = await mediator.Send(new CreateThemeCommand(request.Name, dic));
-        if (id == 0) return Conflict("Theme with same name already exists");
+        if (id == -1) return Conflict("Theme with same name already exists");
 
         return Ok(id);
     }
@@ -67,7 +62,7 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
     [Authorize]
     [HttpDelete("{id:int}")]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
-    [TypeFilter(typeof(ClearBlogCache), Arguments = new object[] { BlogCachePartition.General, "theme" })]
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCachePartition.General, "theme"])]
     public async Task<IActionResult> Delete([Range(1, int.MaxValue)] int id)
     {
         var oc = await mediator.Send(new DeleteThemeCommand(id));

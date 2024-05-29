@@ -1,18 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moonglade.Configuration;
-using Moonglade.Core.TagFeature;
-using Moonglade.Data.Generated.Entities;
-using Moonglade.Data.Spec;
+using Moonglade.Data;
+using Moonglade.Data.Specifications;
 using Moonglade.Utils;
 
 namespace Moonglade.Core.PostFeature;
 
 public record CreatePostCommand(PostEditModel Payload) : IRequest<PostEntity>;
 
-public class CreatePostCommandHandler(IRepository<PostEntity> postRepo,
+public class CreatePostCommandHandler(
+        MoongladeRepository<PostEntity> postRepo,
+        MoongladeRepository<TagEntity> tagRepo,
         ILogger<CreatePostCommandHandler> logger,
-        IRepository<TagEntity> tagRepo,
         IConfiguration configuration,
         IBlogConfig blogConfig)
     : IRequestHandler<CreatePostCommand, PostEntity>
@@ -49,7 +49,7 @@ public class CreatePostCommandHandler(IRepository<PostEntity> postRepo,
 
         // check if exist same slug under the same day
         var todayUtc = DateTime.UtcNow.Date;
-        if (await postRepo.AnyAsync(new PostSpec(post.Slug, todayUtc), ct))
+        if (await postRepo.AnyAsync(new PostByDateAndSlugSpec(todayUtc, post.Slug, false), ct))
         {
             var uid = Guid.NewGuid();
             post.Slug += $"-{uid.ToString().ToLower()[..8]}";
@@ -83,9 +83,9 @@ public class CreatePostCommandHandler(IRepository<PostEntity> postRepo,
         {
             foreach (var item in tags)
             {
-                if (!Tag.ValidateName(item)) continue;
+                if (!Helper.IsValidTagName(item)) continue;
 
-                var tag = await tagRepo.GetAsync(q => q.DisplayName == item) ?? await CreateTag(item);
+                var tag = await tagRepo.FirstOrDefaultAsync(new TagByDisplayNameSpec(item), ct) ?? await CreateTag(item);
                 post.Tags.Add(tag);
             }
         }
@@ -100,7 +100,7 @@ public class CreatePostCommandHandler(IRepository<PostEntity> postRepo,
         var newTag = new TagEntity
         {
             DisplayName = item,
-            NormalizedName = Tag.NormalizeName(item, Helper.TagNormalizationDictionary)
+            NormalizedName = Helper.NormalizeName(item, Helper.TagNormalizationDictionary)
         };
 
         var tag = await tagRepo.AddAsync(newTag);
