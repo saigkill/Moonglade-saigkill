@@ -3,6 +3,8 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Moonglade.Utils
 @using Moonglade.Web.Models
+@using Moonglade.Web.Services
+inject DonationViewService _donationService
 
 @Html.AntiForgeryToken()
 
@@ -52,6 +54,11 @@
     {
         <link href="~/css/outline.css" rel="stylesheet" />
     }
+    <style>
+        .sharethis-inline-share-buttons {
+            width: 500px;
+        }
+    </style>
 }
 
 @section opengraph {
@@ -161,6 +168,16 @@
         <partial name="_PostContentRender" model="Model.Post.PostContent" />
     </section>
 
+    @if (BlogConfig.ContentSettings.EnableSharingButtons)
+    {
+	    <hr />
+	    <div class="sharethis-inline-reaction-buttons"></div>
+	    <hr />
+	    <div class="sharethis-inline-share-buttons"></div>
+    }
+	
+    <hr />
+
     @if (BlogConfig.ContentSettings.ShowPostFooter)
     {
         <section class="post-footer clearfix">
@@ -226,6 +243,13 @@
                 break;
         }
     }
+}
+
+@if (BlogConfig.ContentSettings.EnableDonationService)
+{
+	<div class="ad-container" style="margin-top: 30px; text-align: center;">
+		@_donationService.InlineAdd()
+	</div>
 }
 
 <partial name="_LightSwitch" />
