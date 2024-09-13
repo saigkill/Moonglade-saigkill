@@ -9,15 +9,15 @@ namespace Moonglade.Web.Services;
 
 public class GithubUserRepositoriesService : IGithubUserRepositoriesService
 {
-	private readonly string _ghProfile;
 	private readonly string _ghUser;
 	private readonly ILogger<GithubUserRepositoriesService> _logger;
 	private readonly IGithubClient _githubClient;
 
 	public GithubUserRepositoriesService(IBlogConfig blogConfig, IGithubClient githubClient, ILogger<GithubUserRepositoriesService> logger)
 	{
-		_ghProfile = blogConfig.SocialProfileSettings.GitHub;
-		_ghUser = _ghProfile.Replace("https://github.com/", "");
+		var ghProfile = Enumerable.FirstOrDefault(blogConfig.CustomLinkSettings.Links, g => g.Url.Contains("github"));
+		var ghProfileLink = ghProfile?.Url;
+		_ghUser = ghProfileLink?.Replace("https://github.com/", "");
 		_githubClient = githubClient;
 		_logger = logger;
 	}

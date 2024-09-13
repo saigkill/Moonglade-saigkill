@@ -56,16 +56,6 @@ public class SettingsController(
 		return NoContent();
 	}
 
-	[HttpPost("social")]
-	[ProducesResponseType(StatusCodes.Status204NoContent)]
-	public async Task<IActionResult> Social(SocialProfileSettings model)
-	{
-		blogConfig.SocialProfileSettings = model;
-
-		await SaveConfigAsync(blogConfig.SocialProfileSettings);
-		return NoContent();
-	}
-
 	[HttpPost("content")]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
 	public async Task<IActionResult> Content(ContentSettings model)
@@ -212,6 +202,27 @@ public class SettingsController(
 		};
 
 		await SaveConfigAsync(blogConfig.CustomMenuSettings);
+		return NoContent();
+	}
+
+	[HttpPost("custom-links")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> CustomLinks(CustomLinkSettingsJsonModel model)
+	{
+		if (model.IsEnabled && string.IsNullOrWhiteSpace(model.LinkJson))
+		{
+			ModelState.AddModelError(nameof(CustomMenuSettingsJsonModel.MenuJson), "Link is required");
+			return BadRequest(ModelState.CombineErrorMessages());
+		}
+
+		blogConfig.CustomLinkSettings = new()
+		{
+			IsEnabled = model.IsEnabled,
+			Links = model.LinkJson.FromJson<Link[]>()
+		};
+
+		await SaveConfigAsync(blogConfig.CustomLinkSettings);
 		return NoContent();
 	}
 
