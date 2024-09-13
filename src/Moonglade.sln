@@ -39,9 +39,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F9400B71-ADCD-4FBE-A88F-F85873FDC60B}"
-	ProjectSection(SolutionItems) = preProject
-		SocialProfileSettings.cs = SocialProfileSettings.cs
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Utils", "Moonglade.Utils\Moonglade.Utils.csproj", "{9C2D082D-39B8-4D51-B532-3274431EA606}"
 EndProject
