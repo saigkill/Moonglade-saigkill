@@ -22,19 +22,19 @@ public class GithubUserRepositoriesService : IGithubUserRepositoriesService
 		_logger = logger;
 	}
 
-	public async Task<List<UserRepository>> GetUserRepositories()
-	{
-		try
-		{
-			var endpoint = $"/users/{_ghUser}/repos";
-			var ghResponse = await _githubClient.SendRequest(Method.Get, endpoint, "");
-			_logger.LogInformation("Github response: {0}", ghResponse.Content);
-			return JsonConvert.DeserializeObject<List<UserRepository>>(ghResponse.Content);
-		}
-		catch (Exception exception)
-		{
-			_logger.LogError(exception, "Error while fetching user repositories from Github. Error: {Message}", exception.Message);
-			throw;
-		}
-	}
+    public async Task<List<UserRepository>> GetUserRepositories()
+    {
+        try
+        {
+            var endpoint = $"/users/{_ghUser}/repos";
+            var ghResponse = await _githubClient.SendRequest(Method.Get, endpoint, "");
+            _logger.LogInformation("Github response: {0}", ghResponse.Content);
+            return JsonConvert.DeserializeObject<List<UserRepository>>(ghResponse.Content);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Error while fetching user repositories from Github. Error: {Message}", exception.Message);
+            throw;
+        }
+    }
 }
