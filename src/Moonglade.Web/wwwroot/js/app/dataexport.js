@@ -1,39 +1,26 @@
-function convertJSONtoCSV(data) {
-    const csvRows = [];
-    const headers = Object.keys(data[0]);
-    csvRows.push(headers.join(','));
-
-    for (const row of data) {
-        const values = headers.map(header => {
-            const escapedValue = ('' + row[header]).replace(/"/g, '\\"');
-            return `"${escapedValue}"`;
-        });
-        csvRows.push(values.join(','));
+function convertJSONtoCSV(e) {
+    var o = [],
+        n = Object.keys(e[0]);
+    o.push(n.join(","));
+    for (let t of e) {
+        var r = n.map((e) => `"${("" + t[e]).replace(/"/g, '\\"')}"`);
+        o.push(r.join(","));
     }
-
-    return csvRows.join('\n');
+    return o.join("\n");
 }
-
-function downloadCSV(csvData, filename) {
-    const blob = new Blob([csvData], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('hidden', '');
-    a.setAttribute('href', url);
-    a.setAttribute('download', filename);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+function downloadCSV(e, t) {
+    var e = new Blob([e], { type: "text/csv" }),
+        e = URL.createObjectURL(e),
+        o = document.createElement("a");
+    o.setAttribute("hidden", ""), o.setAttribute("href", e), o.setAttribute("download", t), document.body.appendChild(o), o.click(), document.body.removeChild(o);
 }
-
-function exportCSV(api, filename) {
-    fetch(api)
-        .then(response => response.json())
-        .then(data => {
-            const csvData = convertJSONtoCSV(data);
-            downloadCSV(csvData, filename);
+function exportCSV(e, t) {
+    fetch(e)
+        .then((e) => e.json())
+        .then((e) => {
+            downloadCSV(convertJSONtoCSV(e), t);
         })
-        .catch(error => {
-            console.error('Error:', error);
+        .catch((e) => {
+            console.error("Error:", e);
         });
 }

@@ -1,105 +1,59 @@
-﻿function ImageUploader(targetName, hw, imgMimeType) {
-    var imgDataUrl = '';
-
-    this.uploadImage = function (uploadUrl) {
-        if (imgDataUrl) {
-            var btnUpload = document.querySelector(`#btn-upload-${targetName}`);
-            btnUpload.classList.add('disabled');
-            btnUpload.setAttribute('disabled', 'disabled');
-
-            var rawData = imgDataUrl.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
-
-            callApi(uploadUrl, 'POST', rawData, function (resp) {
-                var modal = document.getElementById(`${targetName}modal`);
-                if (modal) {
-                    modal.style.display = 'none'; // Assuming you want to hide the modal
-                }
-                blogToast.success('Updated');
-                var d = new Date();
-                document.querySelector(`.blogadmin-${targetName}`).src = `/${targetName}?${d.getTime()}`;
-            }, function (always) {
-                btnUpload.classList.remove('disabled');
-                btnUpload.removeAttribute('disabled');
-            });
-
-        } else {
-            blogToast.error('Please select an image');
-        }
-    }
-
-    this.fileSelect = function (evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var file;
-            if (evt.dataTransfer) {
-                file = evt.dataTransfer.files[0];
-                document.querySelector(`.custom-file-label-${targetName}`).innerText = file.name;
-            } else {
-                file = evt.target.files[0];
-            }
-
-            if (!file.type.match('image.*')) {
-                blogToast.error('Please select an image file.');
-                return;
-            }
-
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                var tempImg = new Image();
-                tempImg.src = reader.result;
-                tempImg.onload = function () {
-                    var maxWidth = hw;
-                    var maxHeight = hw;
-                    var tempW = tempImg.width;
-                    var tempH = tempImg.height;
-                    if (tempW > tempH) {
-                        if (tempW > maxWidth) {
-                            tempH *= maxWidth / tempW;
-                            tempW = maxWidth;
-                        }
-                    } else {
-                        if (tempH > maxHeight) {
-                            tempW *= maxHeight / tempH;
-                            tempH = maxHeight;
-                        }
+function ImageUploader(n, i, o) {
+    var d = "";
+    (this.uploadImage = function (e) {
+        var t, a;
+        d
+            ? ((t = document.querySelector("#btn-upload-" + n)).classList.add("disabled"),
+                t.setAttribute("disabled", "disabled"),
+                (a = d.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")),
+                callApi(
+                    e,
+                    "POST",
+                    a,
+                    function (e) {
+                        var t = document.getElementById(n + "modal"),
+                            t = (t && (t.style.display = "none"), blogToast.success("Updated"), new Date());
+                        document.querySelector(".blogadmin-" + n).src = `/${n}?` + t.getTime();
+                    },
+                    function (e) {
+                        t.classList.remove("disabled"), t.removeAttribute("disabled");
                     }
-
-                    var canvas = document.createElement('canvas');
-                    canvas.width = tempW;
-                    canvas.height = tempH;
-                    var ctx = canvas.getContext('2d');
-                    ctx.drawImage(tempImg, 0, 0, tempW, tempH);
-                    imgDataUrl = canvas.toDataURL(imgMimeType);
-
-                    var div = document.querySelector(`#${targetName}DropTarget`);
-                    div.innerHTML = `<img class="img-fluid" src="${imgDataUrl}" />`;
-                    var btnUpload = document.querySelector(`#btn-upload-${targetName}`);
-                    btnUpload.classList.remove('disabled');
-                    btnUpload.removeAttribute('disabled');
-                }
-            }
-            reader.readAsDataURL(file);
-        } else {
-            blogToast.error('The File APIs are not fully supported in this browser.');
-        }
-    }
-
-    this.dragOver = function (evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        evt.dataTransfer.dropEffect = 'copy';
-    }
-
-    this.bindEvents = function () {
-        document.getElementById(`${targetName}ImageFile`).addEventListener('change', this.fileSelect, false);
-        var dropTarget = document.getElementById(`${targetName}DropTarget`);
-        dropTarget.addEventListener('dragover', this.dragOver, false);
-        dropTarget.addEventListener('drop', this.fileSelect, false);
-    }
-
-    this.getDataUrl = function () {
-        return imgDataUrl;
-    };
+                ))
+            : blogToast.error("Please select an image");
+    }),
+        (this.fileSelect = function (e) {
+            var t, a;
+            e.stopPropagation(),
+                e.preventDefault(),
+                window.File && window.FileReader && window.FileList && window.Blob
+                    ? (e.dataTransfer ? ((t = e.dataTransfer.files[0]), (document.querySelector(".custom-file-label-" + n).innerText = t.name)) : (t = e.target.files[0]),
+                        t.type.match("image.*")
+                            ? (((a = new FileReader()).onloadend = function () {
+                                var r = new Image();
+                                (r.src = a.result),
+                                    (r.onload = function () {
+                                        var e = r.width,
+                                            t = r.height,
+                                            a = (t < e ? i < e && ((t *= i / e), (e = i)) : i < t && ((e *= i / t), (t = i)), document.createElement("canvas"));
+                                        (a.width = e), (a.height = t), a.getContext("2d").drawImage(r, 0, 0, e, t), (d = a.toDataURL(o));
+                                        document.querySelector(`#${n}DropTarget`).innerHTML = `<img class="img-fluid" src="${d}" />`;
+                                        e = document.querySelector("#btn-upload-" + n);
+                                        e.classList.remove("disabled"), e.removeAttribute("disabled");
+                                    });
+                            }),
+                                a.readAsDataURL(t))
+                            : blogToast.error("Please select an image file."))
+                    : blogToast.error("The File APIs are not fully supported in this browser.");
+        }),
+        (this.dragOver = function (e) {
+            e.stopPropagation(), e.preventDefault(), (e.dataTransfer.dropEffect = "copy");
+        }),
+        (this.bindEvents = function () {
+            document.getElementById(n + "ImageFile").addEventListener("change", this.fileSelect, !1);
+            var e = document.getElementById(n + "DropTarget");
+            e.addEventListener("dragover", this.dragOver, !1), e.addEventListener("drop", this.fileSelect, !1);
+        }),
+        (this.getDataUrl = function () {
+            return d;
+        });
 }

@@ -66,6 +66,14 @@
             }
         </section>
     }
+    
+    @if (BlogConfig.AdvancedSettings.EnableSyndication)
+    {
+        <br />
+        <section id="aside-syndication">
+            <partial name="_Syndication" />
+        </section>
+    }
 </aside>
 
 @if (BlogConfig.GeneralSettings.WidgetsSubscriptionButtons)

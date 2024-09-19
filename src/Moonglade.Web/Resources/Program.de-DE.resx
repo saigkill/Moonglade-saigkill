@@ -798,4 +798,176 @@
   <data name="Export" xml:space="preserve">
     <value>Exportieren</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="Enable Pingback" xml:space="preserve">
+    <value>Pingback einschalten.</value>
+  </data>
+  <data name="Friend links" xml:space="preserve">
+    <value>Friedlink</value>
+  </data>
+  <data name="How many tags to show on sidebar" xml:space="preserve">
+    <value>Wieviele Tags sollen in der Sidebar angezeigt werden</value>
+  </data>
+  <data name="Login IP" xml:space="preserve">
+    <value>Login IP</value>
+  </data>
+  <data name="Login Time (UTC)" xml:space="preserve">
+    <value>Login Zeit (UTC)</value>
+  </data>
+  <data name="No comments yet" xml:space="preserve">
+    <value>Noch keine Kommentare</value>
+  </data>
+  <data name="The number of entries to include in RSS/ATOM feed." xml:space="preserve">
+    <value>Anzahl RSS/Atom Artikel in diesem Feed</value>
+  </data>
+  <data name="lower case English letters (a-z) and numbers (0-9) with/out hyphen (-) in middle." xml:space="preserve">
+    <value>Kleingeschriebene Englische Zeichen (a-z) und Nummern (0-9) ohne Trennzeichen "-" in der Mitte</value>
+  </data>
+  <data name="RSS / Atom Feed" xml:space="preserve">
+    <value>RSS / Atom Feed</value>
+  </data>
+  <data name="ASP.NET Core Environment" xml:space="preserve">
+    <value>ASP .NET Core Umgebung</value>
+  </data>
+  <data name="Warning: This blog post is marked as outdated by it's author. Consider finding more recent information on this topic to ensure that you are utilizing the most up-to-date and effective strategies." xml:space="preserve">
+    <value>Dieser Blogpost wurde als nicht mehr aktuell gekennzeichnet</value>
+  </data>
+  <data name="No categories" xml:space="preserve">
+    <value>Keine Kategorien</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="Dark" xml:space="preserve">
+    <value>Dunkel</value>
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value>Hell</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Include in feed and sitemap" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="Clear links" xml:space="preserve">
+    <value>Links löschen</value>
+  </data>
+  <data name="cookie-string" xml:space="preserve">
+    <value>Bitte lesen Sie die Datenschutzvereinbarung, indem Sie auf "Lesen Sie mehr" und anschließend auf "Akzeptieren" klicken.</value>
+  </data>
+  <data name="cookie-button" xml:space="preserve">
+    <value>Erfahren Sie mehr</value>
+  </data>
+  <data name="accept-button" xml:space="preserve">
+    <value>Akzeptieren</value>
+  </data>
+  <data name="Me and the Blog" xml:space="preserve">
+    <value>Ich und mein Blog</value>
+  </data>
+  <data name="about-coat-of-arms" xml:space="preserve">
+    <value>Gräfliches Haus Manns-Potocki</value>
+  </data>
+  <data name="about-connect" xml:space="preserve">
+    <value>Lassen Sie uns in Kontakt treten</value>
+  </data>
+  <data name="about-memberships" xml:space="preserve">
+    <value>Mitgliedschaften</value>
+  </data>
+  <data name="about-mandates" xml:space="preserve">
+    <value>Meine Mandate</value>
+  </data>
+  <data name="about-hpos" xml:space="preserve">
+    <value>Meine Ehrenämter</value>
+  </data>
+  <data name="about-publications" xml:space="preserve">
+    <value>Meine Veröffentlichungen</value>
+  </data>
+  <data name="about-opensource" xml:space="preserve">
+    <value>Meine Opensource Arbeiten</value>
+  </data>
+  <data name="last-updated" xml:space="preserve">
+    <value>Zuletzt aktualisiert</value>
+  </data>
+  <data name="masterhead-lead" xml:space="preserve">
+    <value>Wilkommen zu meinem Curriculum Vitae</value>
+  </data>
+  <data name="about-name" xml:space="preserve">
+    <value>Mein Name ist</value>
+  </data>
+  <data name="about-jobs" xml:space="preserve">
+    <value>Ich bin ein ...</value>
+  </data>
+  <data name="about-year" xml:space="preserve">
+    <value>jähriger</value>
+  </data>
+  <data name="about-program" xml:space="preserve">
+    <value>Ich liebe es zu Programmieren oder Workflows in Lösungen umzusetzen.</value>
+  </data>
+  <data name="about-year1" xml:space="preserve">
+    <value>Jahre</value>
+  </data>
+  <data name="about-experience" xml:space="preserve">
+    <value>Erfahrung</value>
+  </data>
+  <data name="skills-title" xml:space="preserve">
+    <value>Erfahrung</value>
+  </data>
+  <data name="about-other-skills" xml:space="preserve">
+    <value>Andere Erfahrungen:</value>
+  </data>
+  <data name="activity-all" xml:space="preserve">
+    <value>Meine gesamten Programmieraktivitäten (letztes Jahr)</value>
+  </data>
+  <data name="activity-last30" xml:space="preserve">
+    <value>Benutzte Programmiersprachen der letzten 30 Tage</value>
+  </data>
+  <data name="jobs-title" xml:space="preserve">
+    <value>Bisherige berufliche Stationen</value>
+  </data>
+  <data name="education-title" xml:space="preserve">
+    <value>Aus- &amp; Weiterbildung</value>
+  </data>
+  <data name="portfolio-title" xml:space="preserve">
+    <value>Mein Portfolio</value>
+  </data>
+  <data name="imprint-header" xml:space="preserve">
+    <value>Impressum</value>
+  </data>
+  <data name="imprint-service" xml:space="preserve">
+    <value>Dienstanbieter</value>
+  </data>
+  <data name="contact" xml:space="preserve">
+    <value>Kontakt</value>
+  </data>
+  <data name="socialmedia" xml:space="preserve">
+    <value>Social Media und andere Onlinepräsenzen</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>Dieses Impressum gilt auch für die folgenden Social-Media-Präsenzen und Onlineprofile</value>
+  </data>
+  <data name="liability" xml:space="preserve">
+    <value>Haftungs- und Schutzrechtshinweise</value>
+  </data>
+  <data name="disclaimer" xml:space="preserve">
+    <value>Haftungsausschluss</value>
+  </data>
+  <data name="talks" xml:space="preserve">
+    <value>Vorträge</value>
+  </data>
+  <data name="slides" xml:space="preserve">
+    <value>In den letzten Jahren hielt ich einige Vorträge auf Veranstaltungen. Hier einige meiner Folien</value>
+  </data>
+  <data name="held" xml:space="preserve">
+    <value>Gehalten</value>
+  </data>
+  <data name="testimonial-testimonials" xml:space="preserve">
+    <value>Empfehlungen</value>
+  </data>
+  <data name="Videos" xml:space="preserve">
+    <value>Videos</value>
+  </data>
+  <data name="smlinks" xml:space="preserve">
+    <value>SocialMediaLinks</value>
+  </data>
 </root>

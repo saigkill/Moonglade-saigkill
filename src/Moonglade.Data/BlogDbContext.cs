@@ -1,4 +1,4 @@
-﻿using Moonglade.Data.Entities;
+using Moonglade.Data.Entities;
 
 namespace Moonglade.Data;
 
@@ -28,6 +28,17 @@ public class BlogDbContext : DbContext
     public virtual DbSet<StyleSheetEntity> StyleSheet { get; set; }
     public virtual DbSet<BlogAssetEntity> BlogAsset { get; set; }
     public virtual DbSet<BlogConfigurationEntity> BlogConfiguration { get; set; }
+    public virtual DbSet<CalendarEntity> Calendar { get; set; }
+    public virtual DbSet<CertificateEntity> Certificate { get; set; }
+    public virtual DbSet<HonoraryPositionEntity> HonoraryPositon { get; set; }
+    public virtual DbSet<MandateEntity> Mandate { get; set; }
+    public virtual DbSet<MembershipEntity> Membership { get; set; }
+    public virtual DbSet<ProjectEntity> Project { get; set; }
+    public virtual DbSet<PublicationEntity> Publication { get; set; }
+    public virtual DbSet<TalkEntity> Talk { get; set; }
+    public virtual DbSet<TestimonialEntity> Testimonial { get; set; }
+    public virtual DbSet<VideoEntity> Video { get; set; }
+    public virtual DbSet<PagesContentEntity> PagesContent { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,6 +60,7 @@ public class BlogDbContext : DbContext
                     .WithMany()
                     .HasForeignKey(pt => pt.PostId));
     }
+
 }
 
 public static class BlogDbContextExtension
@@ -69,5 +81,16 @@ public static class BlogDbContextExtension
         await context.BlogTheme.ExecuteDeleteAsync();
         await context.StyleSheet.ExecuteDeleteAsync();
         await context.LoginHistory.ExecuteDeleteAsync();
+        await context.Calendar.ExecuteDeleteAsync();
+        await context.Certificate.ExecuteDeleteAsync();
+        await context.HonoraryPositon.ExecuteDeleteAsync();
+        await context.Mandate.ExecuteDeleteAsync();
+        await context.Membership.ExecuteDeleteAsync();
+        await context.Project.ExecuteDeleteAsync();
+        await context.Publication.ExecuteDeleteAsync();
+        await context.Talk.ExecuteDeleteAsync();
+        await context.Testimonial.ExecuteDeleteAsync();
+        await context.Video.ExecuteDeleteAsync();
+        await context.PagesContent.ExecuteDeleteAsync();
     }
 }

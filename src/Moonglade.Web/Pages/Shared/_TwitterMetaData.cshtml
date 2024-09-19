@@ -1,0 +1,15 @@
+﻿@model Moonglade.Web.Pages.PostModel
+
+@{
+    var xUrl = BlogConfig.SocialProfileSettings.Twitter;
+    var user = "@" + xUrl.Replace("https://x.com/", "");
+}
+<meta name="twitter:site" content="@user" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="@Model.Post.Title" />
+<meta name="twitter:description" content="@Model.Post.ContentAbstract" />
+@if (Model.Post.HeroImageUrl != null)
+{
+    <meta name="twitter:image" content="@Model.Post.HeroImageUrl" />
+}
+<meta name="twitter:creator" content="@user" />

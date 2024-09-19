@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
@@ -66,7 +65,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mention", "Mention", "{1AE9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonglade.Setup", "Moonglade.Setup\Moonglade.Setup.csproj", "{648FDD86-E047-49A4-9054-BF041FCD0447}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonglade.Github.Client", "Moonglade.Github.Client\Moonglade.Github.Client.csproj", "{53735B46-0842-43BB-BD4B-FDAB379687E9}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonglade.IndexNow.Client", "Moonglade.IndexNow.Client\Moonglade.IndexNow.Client.csproj", "{EA41D016-0947-4B89-B442-6305FB568213}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B48CE62-8B97-4836-BE51-6ADD800AD087}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +156,10 @@ Global
 		{648FDD86-E047-49A4-9054-BF041FCD0447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{648FDD86-E047-49A4-9054-BF041FCD0447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{648FDD86-E047-49A4-9054-BF041FCD0447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53735B46-0842-43BB-BD4B-FDAB379687E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53735B46-0842-43BB-BD4B-FDAB379687E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53735B46-0842-43BB-BD4B-FDAB379687E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53735B46-0842-43BB-BD4B-FDAB379687E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA41D016-0947-4B89-B442-6305FB568213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA41D016-0947-4B89-B442-6305FB568213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA41D016-0947-4B89-B442-6305FB568213}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -180,6 +190,7 @@ Global
 		{F8E8ECCB-0379-416A-8D34-3F3D8428F2E1} = {1AE9B003-34B0-4F5D-BF84-E1C714A7EE31}
 		{1AE9B003-34B0-4F5D-BF84-E1C714A7EE31} = {97439361-03B4-46C9-BC06-49F76BA57879}
 		{648FDD86-E047-49A4-9054-BF041FCD0447} = {97439361-03B4-46C9-BC06-49F76BA57879}
+		{53735B46-0842-43BB-BD4B-FDAB379687E9} = {F9400B71-ADCD-4FBE-A88F-F85873FDC60B}
 		{EA41D016-0947-4B89-B442-6305FB568213} = {F9400B71-ADCD-4FBE-A88F-F85873FDC60B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

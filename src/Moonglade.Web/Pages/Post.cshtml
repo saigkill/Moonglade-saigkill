@@ -4,7 +4,7 @@
 @using Moonglade.Utils
 @using Moonglade.Web.Models
 @using Moonglade.Web.Services
-inject DonationViewService _donationService
+@inject DonationViewService _donationService
 
 @Html.AntiForgeryToken()
 
@@ -44,6 +44,11 @@ inject DonationViewService _donationService
     @if (BlogConfig.AdvancedSettings.EnableWebmention)
     {
         <link rel="webmention" href="@(Helper.ResolveCanonicalUrl(BlogConfig.GeneralSettings.CanonicalPrefix, "webmention"))">
+    }
+    
+    @if (BlogConfig.SocialProfileSettings.Twitter != null)
+    {
+        <partial name="_TwitterMetaData" model="Model" />
     }
 }
 

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Moonglade.Configuration;
 
-public class GeneralSettings : IBlogSettings
+public partial class GeneralSettings : IBlogSettings
 {
     [Required]
     [Display(Name = "Meta keyword")]
@@ -109,6 +109,9 @@ public class GeneralSettings : IBlogSettings
 
     [Display(Name = "Dublin Core License URL")]
     public string DcLicenseUrl { get; set; }
+
+    [Display(Name = "Github PAT")]
+    public string GithubPat { get; set; }
 
     [JsonIgnore]
     public static GeneralSettings DefaultValue = new()

@@ -1,0 +1,979 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="* Image width and height must be equal" xml:space="preserve">
+    <value />
+  </data>
+  <data name="* Requires restarting application" xml:space="preserve">
+    <value />
+  </data>
+  <data name="* Username: moonglade" xml:space="preserve">
+    <value />
+  </data>
+  <data name=".NET Version" xml:space="preserve">
+    <value />
+  </data>
+  <data name=".png file" xml:space="preserve">
+    <value />
+  </data>
+  <data name=".png or .jpg file" xml:space="preserve">
+    <value />
+  </data>
+  <data name="About" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Abstract" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account Information" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Admin Sign In" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Advanced Settings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="All Posts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="All Tags" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Are you ABSOLUTELY sure? ALL data and configuration will be erased!" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Are you sure to restart website? All current requests will be terminated." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Are you sure?" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Author Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auto Light / Dark theme regarding client system settings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Admin Email" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Block Comment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blocked words" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blocked words will be masked as *** in comment content." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blog Identity" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blog posts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blog posts will use this time zone as date and time display." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blog posts will use this time zone as date display." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Blog title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Call-out" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Call-out section HTML code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Can't read? Click to change another image." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Canonical URL prefix" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Category Information" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Change Avatar" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Change Publish Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Change Site Icon" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Changing publish date will modify the URL of the post, and may cause unexpected results like breaking links on third parties that were pointing to this post. Please check the checkbox below if you confirm." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Check now" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Check online for new Moonglade release." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Clear all" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Clear Now" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Clear Pingback Logs" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Comment of this post is disabled." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Comments require review and approval" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Create Tag" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Create Time (UTC)" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Current Endpoint:" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Custom CSS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Custom Theme" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Data Directory" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Delete cached objects both in memory and on disk" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Delete selected" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Directory" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Display Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Display Order" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Docker Container" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Drafts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Drag and drop image file here" xml:space="preserve">
+    <value />
+  </data>
+  <data name="e.g. Your blog post license information." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Edit on" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Editor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Email address to receive notifications from this blog." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Email Options" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Empty Recycle Bin" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable CDN for images" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable Comment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable comments" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable Custom CSS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable email sending" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable Gravatar in comment list" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable OpenSearch" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable FOAF" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable Site Map" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable word filter" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enabled watermark" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Endpoint" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Environment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Erase all data and configuration." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Export Data" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Featured" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Featured Posts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Fit image to device pixel ratio" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Font size" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Footer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Footer HTML code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Friend Link Information" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Friend Link Options" xml:space="preserve">
+    <value />
+  </data>
+  <data name="General" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Generate password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Get update" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Hide Sidebar" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HTML Pitch" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Icon" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Icon CSS Class" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Invalid Icon CSS Class" xml:space="preserve">
+    <value />
+  </data>
+  <data name="It will show up once blog administrator approved your comment." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Keep origin image" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Latest Posts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Logo text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Machine Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Mask Word" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Memory" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menu Editor" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Menus" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Meta keyword" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Moonglade Configuration" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Moonglade Update" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="New" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No Archive" xml:space="preserve">
+    <value />
+  </data>
+  <data name="no items to show" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No Matching Result" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No Pages" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No Posts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No Posts Found" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No Tags" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Notification Options" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Only letters, numbers, - and [] are allowed." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Only lower case letters and hyphens are allowed." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Open in New Tab" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value />
+  </data>
+  <data name="or override with environment variables." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Owner email" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pingbacks" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Post footer HTML code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Post list page size" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Processing..." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Providing your email address can enable blog admin to send notifications for replying your comment. Your email address will also be used to show Gravatar if it has one." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Publish" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Publish Date" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Read origin article" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Recycle Bin" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Refresh the page to see your comment." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Release time" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Replied at" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Reset Password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Restart Website" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Route Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Scan QR Code on your phone" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Search Result" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Security Settings" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Send email on comment reply" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Send email on new comment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Send Test Email" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Server Information" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Set a primary domain if your website binds to multiple domian names." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Show call-out section" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Show customize footer on each post" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Show warning when clicking external links" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Side Bar" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Side bar display" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Side bar HTML code" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sign In" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Start Time" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sub Menu" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sub Menu Properties" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Subscription" xml:space="preserve">
+    <value />
+  </data>
+  <data name="System" xml:space="preserve">
+    <value />
+  </data>
+  <data name="System Reset" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tag name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Thanks for your comment." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Thanks, your comment is pending approval now." xml:space="preserve">
+    <value />
+  </data>
+  <data name="The call-out section will display on top of every page in the website." xml:space="preserve">
+    <value />
+  </data>
+  <data name="The first {0} character(s) will be used as abstract if you leave this field blank." xml:space="preserve">
+    <value />
+  </data>
+  <data name="The number of entries to include in RSS feed." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value />
+  </data>
+  <data name="This field is required." xml:space="preserve">
+    <value />
+  </data>
+  <data name="This is a preview for draft content." xml:space="preserve">
+    <value />
+  </data>
+  <data name="Time Zone" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Upload Image" xml:space="preserve">
+    <value />
+  </data>
+  <data name="URL" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Url (Relative or Absolute)" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Use full blog post content instead of abstract" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Use [c] for copyright mark: &amp;copy;, [year] for current year." xml:space="preserve">
+    <value />
+  </data>
+  <data name="User Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="User Name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Watermark" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Watermark text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Word filter mode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Worker Process" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Your comments (Markdown supported)" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Your description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Your name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Center" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Enable Pingback" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Friend links" xml:space="preserve">
+    <value />
+  </data>
+  <data name="How many tags to show on sidebar" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login IP" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login Time (UTC)" xml:space="preserve">
+    <value />
+  </data>
+  <data name="No comments yet" xml:space="preserve">
+    <value />
+  </data>
+  <data name="The number of entries to include in RSS/ATOM feed." xml:space="preserve">
+    <value />
+  </data>
+  <data name="lower case English letters (a-z) and numbers (0-9) with/out hyphen (-) in middle." xml:space="preserve">
+    <value />
+  </data>
+  <data name="RSS / Atom Feed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ASP.NET Core Environment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Warning: This blog post is marked as outdated by it's author. Consider finding more recent information on this topic to ensure that you are utilizing the most up-to-date and effective strategies." xml:space="preserve">
+    <value />
+  </data>
+  <data name="No categories" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Dark" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Include in feed and sitemap" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Feed Items" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Clear links" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cookie-string" xml:space="preserve">
+    <value>Please read the Privacy Agreement by clicking on "Learn More", then click on the "Accept" Button below.</value>
+  </data>
+  <data name="cookie-button" xml:space="preserve">
+    <value>Learn More</value>
+  </data>
+  <data name="accept-button" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Me and the Blog" xml:space="preserve">
+    <value>Me and the Blog</value>
+  </data>
+  <data name="about-coat-of-arms" xml:space="preserve">
+    <value />
+  </data>
+  <data name="about-connect" xml:space="preserve">
+    <value>Let's connect</value>
+  </data>
+  <data name="about-memberships" xml:space="preserve">
+    <value>Memberships</value>
+  </data>
+  <data name="about-mandates" xml:space="preserve">
+    <value>My Mandates</value>
+  </data>
+  <data name="about-hpos" xml:space="preserve">
+    <value>My Honorary Positions</value>
+  </data>
+  <data name="about-publications" xml:space="preserve">
+    <value>My Publications</value>
+  </data>
+  <data name="about-opensource" xml:space="preserve">
+    <value>My Opensource Work</value>
+  </data>
+  <data name="last-updated" xml:space="preserve">
+    <value>Last updated</value>
+  </data>
+  <data name="masterhead-lead" xml:space="preserve">
+    <value>Welcome to my Curriculum Vitae</value>
+  </data>
+  <data name="about-name" xml:space="preserve">
+    <value>My Name is</value>
+  </data>
+  <data name="about-jobs" xml:space="preserve">
+    <value>I am a ...</value>
+  </data>
+  <data name="about-year" xml:space="preserve">
+    <value>old</value>
+  </data>
+  <data name="about-program" xml:space="preserve">
+    <value>I love it to program and realize Workflows into Solutions.</value>
+  </data>
+  <data name="about-year1" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="about-experience" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="skills-title" xml:space="preserve">
+    <value>Skills</value>
+  </data>
+  <data name="about-other-skills" xml:space="preserve">
+    <value>Other Skills:</value>
+  </data>
+  <data name="activity-all" xml:space="preserve">
+    <value>My full coding activity (last year)</value>
+  </data>
+  <data name="activity-last30" xml:space="preserve">
+    <value>Used programming languages last 30 days</value>
+  </data>
+  <data name="jobs-title" xml:space="preserve">
+    <value>Previous professional stations</value>
+  </data>
+  <data name="education-title" xml:space="preserve">
+    <value>Education and training</value>
+  </data>
+  <data name="portfolio-title" xml:space="preserve">
+    <value>My Portfolio</value>
+  </data>
+  <data name="imprint-header" xml:space="preserve">
+    <value>Imprint</value>
+  </data>
+  <data name="imprint-service" xml:space="preserve">
+    <value>Service Provider</value>
+  </data>
+  <data name="contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="socialmedia" xml:space="preserve">
+    <value>Social media and other online presences</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>This imprint also applies to the following social media presences and online profiles</value>
+  </data>
+  <data name="liability" xml:space="preserve">
+    <value>Liability and property rights notices</value>
+  </data>
+  <data name="disclaimer" xml:space="preserve">
+    <value>Disclaimer of liability</value>
+  </data>
+  <data name="talks" xml:space="preserve">
+    <value>Talks</value>
+  </data>
+  <data name="slides" xml:space="preserve">
+    <value>In the last years i held some talks on Events. Here some of my slides</value>
+  </data>
+  <data name="held" xml:space="preserve">
+    <value>Held</value>
+  </data>
+  <data name="testimonial-testimonials" xml:space="preserve">
+    <value>Testimonials</value>
+  </data>
+  <data name="Videos" xml:space="preserve">
+    <value>Videos</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Friend Link</value>
+    <comment>Freundschaftslink</comment>
+  </data>
+  <data name="smlinks" xml:space="preserve">
+    <value>Social Media Links</value>
+  </data>
+</root>

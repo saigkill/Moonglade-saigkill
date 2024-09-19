@@ -1,40 +1,23 @@
-﻿export let bsToast = new bootstrap.Toast(document.getElementById('liveToast'));
-export let blogtoastMessage = document.querySelector('#blogtoast-message');
-
-let lt = document.querySelector('#liveToast');
-
-const bgClasses = [
-    'bg-success',
-    'bg-warning',
-    'bg-danger',
-    'bg-info',
-    'bg-primary',
-    'bg-secondary'
-];
-
+let bsToast = new bootstrap.Toast(document.getElementById("liveToast")),
+    blogtoastMessage = document.querySelector("#blogtoast-message"),
+    lt = document.querySelector("#liveToast"),
+    bgClasses = ["bg-success", "bg-warning", "bg-danger", "bg-info", "bg-primary", "bg-secondary"];
 function removeToastBgColor() {
-    bgClasses.forEach(bgClass => lt.classList.remove(bgClass));
+    bgClasses.forEach((s) => lt.classList.remove(s));
 }
-
-function showToast(message, bgClass) {
-    removeToastBgColor();
-    lt.classList.add(bgClass);
-    blogtoastMessage.innerHTML = message;
-    bsToast.show();
+function showToast(s, o) {
+    removeToastBgColor(), lt.classList.add(o), (blogtoastMessage.innerHTML = s), bsToast.show();
 }
-
-export function success(message) {
-    showToast(message, 'bg-success');
+function success(s) {
+    showToast(s, "bg-success");
 }
-
-export function info(message) {
-    showToast(message, 'bg-info');
+function info(s) {
+    showToast(s, "bg-info");
 }
-
-export function warning(message) {
-    showToast(message, 'bg-warning');
+function warning(s) {
+    showToast(s, "bg-warning");
 }
-
-export function error(message) {
-    showToast(message, 'bg-danger');
+function error(s) {
+    showToast(s, "bg-danger");
 }
+export { bsToast, blogtoastMessage, success, info, warning, error };

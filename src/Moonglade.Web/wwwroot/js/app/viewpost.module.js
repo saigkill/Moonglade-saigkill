@@ -1,142 +1,94 @@
-﻿export function resizeImages() {
-    const images = document.querySelectorAll('.post-content img');
-    images.forEach(img => {
-        img.removeAttribute('height');
-        img.removeAttribute('width');
-        img.classList.add('img-fluid', 'img-thumbnail');
+function resizeImages() {
+    document.querySelectorAll(".post-content img").forEach((e) => {
+        e.removeAttribute("height"), e.removeAttribute("width"), e.classList.add("img-fluid", "img-thumbnail");
     });
 }
-
-export function renderCodeHighlighter() {
-    const pres = document.querySelectorAll('pre');
-    pres.forEach(pre => {
-        // Find <pre> that doesn't have a <code> inside it.
-        if (!pre.querySelector('code')) {
-            const code = document.createElement('code');
-            while (pre.firstChild) {
-                code.appendChild(pre.firstChild);
-            }
-            pre.appendChild(code);
+function renderCodeHighlighter() {
+    document.querySelectorAll("pre").forEach((e) => {
+        if (!e.querySelector("code")) {
+            for (var t = document.createElement("code"); e.firstChild;) t.appendChild(e.firstChild);
+            e.appendChild(t);
         }
-
-        // For code that can't be automatically detected, fall back to use XML
-        if (pre.classList.contains('language-markup')) {
-            pre.querySelector('code').classList.add('lang-xml');
-        }
-    });
-
-    const codeBlocks = document.querySelectorAll('pre code');
-    codeBlocks.forEach(block => {
-        hljs.highlightElement(block);
-    });
+        e.classList.contains("language-markup") && e.querySelector("code").classList.add("lang-xml");
+    }),
+        document.querySelectorAll("pre code").forEach((e) => {
+            hljs.highlightElement(e);
+        });
 }
-
-export function RenderLaTeX() {
-    const codeBlocks = document.querySelectorAll('pre.language-latex code');
-    codeBlocks.forEach(block => {
-        const latex = block.textContent.trim();
-        const container = document.createElement('div');
+function RenderLaTeX() {
+    document.querySelectorAll("pre.language-latex code").forEach((e) => {
+        var t = e.textContent.trim(),
+            o = document.createElement("div");
         try {
-            katex.render(latex, container, { output: 'mathml' });
-            block.parentNode.replaceWith(container);
-        } catch (error) {
-            console.error(error);
+            katex.render(t, o, { output: "mathml" }), e.parentNode.replaceWith(o);
+        } catch (e) {
+            console.error(e);
         }
     });
 }
-
-export function warnExtLink() {
-    function isExternalLink(link) {
-        return !link.href.match(/^mailto:/) && (link.hostname !== location.hostname);
-    }
-
-    const links = document.querySelectorAll('.post-content a');
-    links.forEach(link => {
-        if (isExternalLink(link)) {
-            link.classList.add('external');
-        }
+function warnExtLink() {
+    document.querySelectorAll(".post-content a").forEach((e) => {
+        var t;
+        (t = e).href.match(/^mailto:/) || t.hostname === location.hostname || e.classList.add("external");
     });
-
-    const externalLinkModal = new bootstrap.Modal(document.getElementById('externalLinkModal'));
-
-    document.querySelectorAll('a.external').forEach(link => {
-        link.addEventListener('click', function (e) {
+    let t = new bootstrap.Modal(document.getElementById("externalLinkModal"));
+    document.querySelectorAll("a.external").forEach((e) => {
+        e.addEventListener("click", function (e) {
             e.preventDefault();
-            const linkHref = this.getAttribute('href');
-            document.getElementById('extlink-url').innerHTML = linkHref;
-            document.getElementById('extlink-continue').href = linkHref;
-            externalLinkModal.show();
+            e = this.getAttribute("href");
+            (document.getElementById("extlink-url").innerHTML = e), (document.getElementById("extlink-continue").href = e), t.show();
         });
-    });
-    document.getElementById('extlink-continue').addEventListener('click', function () {
-        externalLinkModal.hide();
-    });
+    }),
+        document.getElementById("extlink-continue").addEventListener("click", function () {
+            t.hide();
+        });
 }
-
-export function getImageWidthInDevicePixelRatio(width) {
-    if (width <= 0) return 0;
-    var dpr = window.devicePixelRatio;
-    if (dpr === 1) return width;
-    return width / dpr;
+function getImageWidthInDevicePixelRatio(e) {
+    var t;
+    return e <= 0 ? 0 : 1 === (t = window.devicePixelRatio) ? e : e / t;
 }
-
-export function applyImageZooming() {
-    document.querySelectorAll('.post-content img').forEach(function (img) {
-        img.addEventListener('click', function (e) {
-            var src = img.getAttribute('src');
-
-            document.querySelector('#imgzoom').src = src;
-
-            if (window.fitImageToDevicePixelRatio) {
+function applyImageZooming() {
+    document.querySelectorAll(".post-content img").forEach(function (o) {
+        o.addEventListener("click", function (e) {
+            var t = o.getAttribute("src");
+            (document.querySelector("#imgzoom").src = t),
+                window.fitImageToDevicePixelRatio &&
                 setTimeout(function () {
-                    var w = document.querySelector('#imgzoom').naturalWidth;
-                    document.querySelector('#imgzoom').style.width = getImageWidthInDevicePixelRatio(w) + 'px';
-                }, 100);
-            }
-
-            var imgzoomModal = new bootstrap.Modal(document.querySelector('#imgzoomModal'));
-            imgzoomModal.show();
+                    var e = document.querySelector("#imgzoom").naturalWidth;
+                    document.querySelector("#imgzoom").style.width = getImageWidthInDevicePixelRatio(e) + "px";
+                }, 100),
+                new bootstrap.Modal(document.querySelector("#imgzoomModal")).show();
         });
     });
 }
-
-export function resetCaptchaImage() {
-    const d = new Date();
-    document.querySelector('#img-captcha').src = `/captcha-image?${d.getTime()}`;
+function resetCaptchaImage() {
+    var e = new Date();
+    document.querySelector("#img-captcha").src = "/captcha-image?" + e.getTime();
 }
-
-var btnSubmitComment = '#btn-submit-comment';
-
-export function submitComment(pid) {
-    document.querySelector('#thx-for-comment').style.display = 'none';
-    document.querySelector('#thx-for-comment-non-review').style.display = 'none';
-
-    document.querySelector('#loadingIndicator').style.display = 'block';
-    document.querySelector(btnSubmitComment).classList.add('disabled');
-    document.querySelector(btnSubmitComment).setAttribute('disabled', 'disabled');
-
-    callApi(`/api/comment/${pid}`, 'POST',
-        {
-            username: document.querySelector('#input-comment-name').value,
-            content: document.querySelector('#input-comment-content').value,
-            email: document.querySelector('#input-comment-email').value,
-            captchaCode: document.querySelector('#input-comment-captcha').value
-        },
-        (success) => {
-            document.querySelector('#comment-form').reset();
-            resetCaptchaImage();
-
-            var httpCode = success.status;
-            if (httpCode === 201) {
-                document.querySelector('#thx-for-comment').style.display = 'block';
+var btnSubmitComment = "#btn-submit-comment";
+function submitComment(e) {
+    (document.querySelector("#thx-for-comment").style.display = "none"),
+        (document.querySelector("#thx-for-comment-non-review").style.display = "none"),
+        (document.querySelector("#loadingIndicator").style.display = "block"),
+        document.querySelector(btnSubmitComment).classList.add("disabled"),
+        document.querySelector(btnSubmitComment).setAttribute("disabled", "disabled"),
+        callApi(
+            "/api/comment/" + e,
+            "POST",
+            {
+                username: document.querySelector("#input-comment-name").value,
+                content: document.querySelector("#input-comment-content").value,
+                email: document.querySelector("#input-comment-email").value,
+                captchaCode: document.querySelector("#input-comment-captcha").value,
+            },
+            (e) => {
+                document.querySelector("#comment-form").reset(), resetCaptchaImage();
+                e = e.status;
+                201 === e && (document.querySelector("#thx-for-comment").style.display = "block"), 200 === e && (document.querySelector("#thx-for-comment-non-review").style.display = "block");
+            },
+            (e) => {
+                (document.querySelector("#loadingIndicator").style.display = "none"), document.querySelector(btnSubmitComment).classList.remove("disabled"), document.querySelector(btnSubmitComment).removeAttribute("disabled");
             }
-            if (httpCode === 200) {
-                document.querySelector('#thx-for-comment-non-review').style.display = 'block';
-            }
-        },
-        (always) => {
-            document.querySelector('#loadingIndicator').style.display = 'none';
-            document.querySelector(btnSubmitComment).classList.remove('disabled');
-            document.querySelector(btnSubmitComment).removeAttribute('disabled');
-        });
+        );
 }
+export { resizeImages, renderCodeHighlighter, RenderLaTeX, warnExtLink, getImageWidthInDevicePixelRatio, applyImageZooming, resetCaptchaImage, submitComment };

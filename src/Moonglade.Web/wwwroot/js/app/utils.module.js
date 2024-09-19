@@ -1,38 +1,22 @@
-﻿export function toMagicJson(value) {
-    const newValue = {};
-    for (let item in value) {
-        if (Object.prototype.hasOwnProperty.call(value, item)) {
-            if (!value[item]) {
-                newValue[item.replace('ViewModel.', '')] = null;
-                newValue[item.replace('settings.', '')] = null;
-            }
-            else if (value[item] && !Array.isArray(value[item]) && value[item].toLowerCase() === 'true') {
-                newValue[item.replace('ViewModel.', '')] = true;
-                newValue[item.replace('settings.', '')] = true;
-            }
-            else if (value[item] && !Array.isArray(value[item]) && value[item].toLowerCase() === 'false') {
-                newValue[item.replace('ViewModel.', '')] = false;
-                newValue[item.replace('settings.', '')] = false;
-            }
-            else {
-                newValue[item.replace('ViewModel.', '')] = value[item];
-                newValue[item.replace('settings.', '')] = value[item];
-            }
-        }
-    }
-
-    return newValue;
+function toMagicJson(e) {
+    var t,
+        r = {};
+    for (t in e)
+        Object.prototype.hasOwnProperty.call(e, t) &&
+            (e[t]
+                ? (e[t],
+                    Array.isArray(e[t]) || "true" !== e[t].toLowerCase()
+                        ? e[t] && !Array.isArray(e[t]) && "false" === e[t].toLowerCase()
+                            ? ((r[t.replace("ViewModel.", "")] = !1), (r[t.replace("settings.", "")] = !1))
+                            : ((r[t.replace("ViewModel.", "")] = e[t]), (r[t.replace("settings.", "")] = e[t]))
+                        : ((r[t.replace("ViewModel.", "")] = !0), (r[t.replace("settings.", "")] = !0)))
+                : ((r[t.replace("ViewModel.", "")] = null), (r[t.replace("settings.", "")] = null)));
+    return r;
 }
-
-export function formatUtcTime(includeTime = true) {
-    const timeElements = document.querySelectorAll('time');
-
-    timeElements.forEach(e => {
-        const utclabel = e.getAttribute('data-utc-label');
-        if (utclabel) {
-            const localTime = new Date(utclabel.replace(/-/g, "/"));
-            const formattedTime = includeTime ? localTime.toLocaleString() : localTime.toLocaleDateString();
-            e.innerHTML = formattedTime;
-        }
+function formatUtcTime(r = !0) {
+    document.querySelectorAll("time").forEach((e) => {
+        var t = e.getAttribute("data-utc-label");
+        t && ((t = new Date(t.replace(/-/g, "/"))), (t = r ? t.toLocaleString() : t.toLocaleDateString()), (e.innerHTML = t));
     });
 }
+export { toMagicJson, formatUtcTime };

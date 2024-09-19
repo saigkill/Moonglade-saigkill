@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
 using Moonglade.Data.SqlServer.Configurations;
 
 namespace Moonglade.Data.SqlServer;
@@ -28,6 +29,17 @@ public class SqlServerBlogDbContext : BlogDbContext
         modelBuilder.ApplyConfiguration(new StyleSheetConfiguration());
         modelBuilder.ApplyConfiguration(new BlogConfigurationConfiguration());
         modelBuilder.ApplyConfiguration(new PageConfiguration());
+        modelBuilder.ApplyConfiguration(new CalendarConfiguration());
+        modelBuilder.ApplyConfiguration(new CertificateEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new HonoraryPositionConfiguration());
+        modelBuilder.ApplyConfiguration(new MandateConfiguration());
+        modelBuilder.ApplyConfiguration(new MembershipConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectConfiguration());
+        modelBuilder.ApplyConfiguration(new PublicationConfiguration());
+        modelBuilder.ApplyConfiguration(new TalkConfiguration());
+        modelBuilder.ApplyConfiguration(new TestimonialConfiguration());
+        modelBuilder.ApplyConfiguration(new VideoConfiguration());
+        modelBuilder.ApplyConfiguration(new PagesContentConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

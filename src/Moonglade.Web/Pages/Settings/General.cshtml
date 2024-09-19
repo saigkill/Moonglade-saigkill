@@ -289,227 +289,303 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="mb-3">
-                    <h4 class="admin-subtitle fw-bold mb-2">
-                        @SharedLocalizer["Side Bar"]
-                    </h4>
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+            <div class="mb-3">
+                <h4 class="admin-subtitle fw-bold mb-2">
+                    @SharedLocalizer["Side Bar"]
+                </h4>
+                <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                    <div class="col-auto">
+                        <i class="bi-layout-sidebar-inset settings-entry-icon"></i>
+                    </div>
+                    <div class="col">
+                        <label asp-for="ViewModel.SideBarOption" class="me-4"></label>
+                    </div>
+
+                    <div class="col-md-5 text-end">
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(model => model.ViewModel.SideBarOption, SideBarOption.Right, new { id = SideBarOption.Right.ToString(), @class = "form-check-input" })
+                            <label class="form-check-label" for="@SideBarOption.Right">@SharedLocalizer["Right"]</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(model => model.ViewModel.SideBarOption, SideBarOption.Left, new { id = SideBarOption.Left.ToString(), @class = "form-check-input" })
+                            <label class="form-check-label" for="@SideBarOption.Left">@SharedLocalizer["Left"]</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(model => model.ViewModel.SideBarOption, SideBarOption.Disabled, new { id = SideBarOption.Disabled.ToString(), @class = "form-check-input" })
+                            <label class="form-check-label" for="@SideBarOption.Disabled">@SharedLocalizer["Disabled"]</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3 shadow-sm border bg-white mb-2">
+                    <div class="settings-entry row align-items-center py-3 px-2">
                         <div class="col-auto">
-                            <i class="bi-layout-sidebar-inset settings-entry-icon"></i>
+                            <i class="bi-file-person settings-entry-icon"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.SideBarOption" class="me-4"></label>
+                            <label asp-for="ViewModel.WidgetsProfile" class="form-check-label"></label>
                         </div>
-
                         <div class="col-md-5 text-end">
-                            <div class="form-check form-check-inline">
-                                @Html.RadioButtonFor(model => model.ViewModel.SideBarOption, SideBarOption.Right, new { id = SideBarOption.Right.ToString(), @class = "form-check-input" })
-                                <label class="form-check-label" for="@SideBarOption.Right">@SharedLocalizer["Right"]</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                @Html.RadioButtonFor(model => model.ViewModel.SideBarOption, SideBarOption.Left, new { id = SideBarOption.Left.ToString(), @class = "form-check-input" })
-                                <label class="form-check-label" for="@SideBarOption.Left">@SharedLocalizer["Left"]</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                @Html.RadioButtonFor(model => model.ViewModel.SideBarOption, SideBarOption.Disabled, new { id = SideBarOption.Disabled.ToString(), @class = "form-check-input" })
-                                <label class="form-check-label" for="@SideBarOption.Disabled">@SharedLocalizer["Disabled"]</label>
+                            <div class="form-check form-switch form-control-lg">
+                                <input type="hidden" name="WidgetsProfile" value="false">
+                                <input type="checkbox" name="WidgetsProfile" value="true" class="form-check-input" @(Model.ViewModel.WidgetsProfile ? "checked" : null)>
                             </div>
                         </div>
                     </div>
 
-                    <div class="rounded-3 shadow-sm border bg-white mb-2">
-                        <div class="settings-entry row align-items-center py-3 px-2">
-                            <div class="col-auto">
-                                <i class="bi-file-person settings-entry-icon"></i>
+                    <div class="border-top py-3 px-2">
+                        <div class="row">
+                            <div class="col-md-2 col-sm-4">
+                                <div class="mb-3">
+                                    <img src="@BlogConfig.GeneralSettings.AvatarUrl" class="img-thumbnail img-fluid blogadmin-avatar" />
+                                </div>
+                                <a class="btn w-100 btn-sm btn-outline-accent" href="#" data-bs-toggle="modal" data-bs-target="#avatarmodal">@SharedLocalizer["Change"]</a>
                             </div>
-                            <div class="col">
-                                <label asp-for="ViewModel.WidgetsProfile" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <div class="form-check form-switch form-control-lg">
-                                    <input type="hidden" name="WidgetsProfile" value="false">
-                                    <input type="checkbox" name="WidgetsProfile" value="true" class="form-check-input" @(Model.ViewModel.WidgetsProfile ? "checked" : null)>
+                            <div class="col-md-10 col-sm-8">
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <label class="form-label" asp-for="ViewModel.OwnerName"></label>
+                                        <input asp-for="ViewModel.OwnerName" class="form-control" required />
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label" asp-for="ViewModel.OwnerEmail"></label>
+                                        <input asp-for="ViewModel.OwnerEmail" class="form-control" required title="@SharedLocalizer["Email address to receive notifications from this blog."]" />
+                                    </div>
+                                </div>
+
+                                <div class="form-floating mb-2">
+                                    <input asp-for="ViewModel.Description"
+                                           placeholder="@Html.DisplayNameFor(m => m.ViewModel.Description)"
+                                           class="form-control" required></input>
+                                    <label class="form-label" asp-for="ViewModel.Description"></label>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="border-top py-3 px-2">
-                            <div class="row">
-                                <div class="col-md-2 col-sm-4">
-                                    <div class="mb-3">
-                                        <img src="@BlogConfig.GeneralSettings.AvatarUrl" class="img-thumbnail img-fluid blogadmin-avatar" />
-                                    </div>
-                                    <a class="btn w-100 btn-sm btn-outline-accent" href="#" data-bs-toggle="modal" data-bs-target="#avatarmodal">@SharedLocalizer["Change"]</a>
-                                </div>
-                                <div class="col-md-10 col-sm-8">
-                                    <div class="row mb-2">
-                                        <div class="col">
-                                            <label class="form-label" asp-for="ViewModel.OwnerName"></label>
-                                            <input asp-for="ViewModel.OwnerName" class="form-control" required />
-                                        </div>
-                                        <div class="col">
-                                            <label class="form-label" asp-for="ViewModel.OwnerEmail"></label>
-                                            <input asp-for="ViewModel.OwnerEmail" class="form-control" required title="@SharedLocalizer["Email address to receive notifications from this blog."]" />
-                                        </div>
-                                    </div>
-
-                                    <div class="form-floating mb-2">
-                                        <input asp-for="ViewModel.Description"
-                                               placeholder="@Html.DisplayNameFor(m => m.ViewModel.Description)"
-                                               class="form-control" required></input>
-                                        <label class="form-label" asp-for="ViewModel.Description"></label>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="settings-entry row align-items-center py-3 px-2 border-top">
+                        <div class="col-auto">
+                            <i class="bi-person-heart settings-entry-icon"></i>
                         </div>
-
-                        <div class="settings-entry row align-items-center py-3 px-2 border-top">
-                            <div class="col-auto">
-                                <i class="bi-person-heart settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label for="Pronouns">@SharedLocalizer["Pronouns"]</label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <select class="form-select" asp-for="ViewModel.Pronouns" asp-items="@pronounsList"></select>
-                            </div>
+                        <div class="col">
+                            <label for="Pronouns">@SharedLocalizer["Pronouns"]</label>
                         </div>
+                        <div class="col-md-5 text-end">
+                            <select class="form-select" asp-for="ViewModel.Pronouns" asp-items="@pronounsList"></select>
+                        </div>
+                    </div>
 
-                        <div class="border-top py-3 px-2">
-                            <div class="form-floating">
-                                <textarea asp-for="ViewModel.SideBarCustomizedHtmlPitch"
+                    <div class="border-top py-3 px-2">
+                        <div class="form-floating">
+                            <textarea asp-for="ViewModel.SideBarCustomizedHtmlPitch"
                                           placeholder="@Html.DisplayNameFor(m => m.ViewModel.SideBarCustomizedHtmlPitch)"
                                           class="form-control form-control-sm h-100px textarea-code"
                                           spellcheck="false"
                                           cols="10"
                                           rows="10"></textarea>
-                                <label class="form-label" asp-for="ViewModel.SideBarCustomizedHtmlPitch"></label>
+                            <label class="form-label" asp-for="ViewModel.SideBarCustomizedHtmlPitch"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3 shadow-sm border bg-white mb-2">
+                    <div class="settings-entry row align-items-center py-3 px-2">
+                        <label>Side bar items</label>
+                        <div class="text-muted">Show or hide widgets that display on the side bar</div>
+                    </div>
+
+                    <div class="border-top settings-entry row align-items-center py-3 px-2">
+                        <div class="col-auto">
+                            <i class="bi-tags settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.WidgetsTags" class="form-check-label"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <div class="form-check form-switch form-control-lg">
+                                <input type="hidden" name="WidgetsTags" value="false">
+                                <input type="checkbox" name="WidgetsTags" value="true" class="form-check-input" @(Model.ViewModel.WidgetsTags ? "checked" : null)>
                             </div>
                         </div>
                     </div>
 
-                    <div class="rounded-3 shadow-sm border bg-white mb-2">
-                        <div class="settings-entry row align-items-center py-3 px-2">
-                            <label>Side bar items</label>
-                            <div class="text-muted">Show or hide widgets that display on the side bar</div>
+                    <div class="border-top settings-entry row align-items-center py-3 px-2">
+                        <div class="col-auto">
+                            <i class="bi-8-circle settings-entry-icon"></i>
                         </div>
-
-                        <div class="border-top settings-entry row align-items-center py-3 px-2">
-                            <div class="col-auto">
-                                <i class="bi-tags settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="ViewModel.WidgetsTags" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <div class="form-check form-switch form-control-lg">
-                                    <input type="hidden" name="WidgetsTags" value="false">
-                                    <input type="checkbox" name="WidgetsTags" value="true" class="form-check-input" @(Model.ViewModel.WidgetsTags ? "checked" : null)>
-                                </div>
-                            </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.HotTagAmount"></label>
                         </div>
+                        <div class="col-4">
+                            <input asp-for="ViewModel.HotTagAmount" class="form-control" min="1" max="32" />
+                        </div>
+                    </div>
 
-                        <div class="border-top settings-entry row align-items-center py-3 px-2">
-                            <div class="col-auto">
-                                <i class="bi-8-circle settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="ViewModel.HotTagAmount"></label>
-                            </div>
-                            <div class="col-4">
-                                <input asp-for="ViewModel.HotTagAmount" class="form-control" min="1" max="32" />
+                    <div class="border-top settings-entry row align-items-center py-3 px-2">
+                        <div class="col-auto">
+                            <i class="bi-folder2 settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.WidgetsCategoryList" class="form-check-label"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <div class="form-check form-switch form-control-lg">
+                                <input type="hidden" name="WidgetsCategoryList" value="false">
+                                <input type="checkbox" name="WidgetsCategoryList" value="true" class="form-check-input" @(Model.ViewModel.WidgetsCategoryList ? "checked" : null)>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="border-top settings-entry row align-items-center py-3 px-2">
-                            <div class="col-auto">
-                                <i class="bi-folder2 settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="ViewModel.WidgetsCategoryList" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <div class="form-check form-switch form-control-lg">
-                                    <input type="hidden" name="WidgetsCategoryList" value="false">
-                                    <input type="checkbox" name="WidgetsCategoryList" value="true" class="form-check-input" @(Model.ViewModel.WidgetsCategoryList ? "checked" : null)>
-                                </div>
+                    <div class="border-top settings-entry row align-items-center py-3 px-2">
+                        <div class="col-auto">
+                            <i class="bi-link-45deg settings-entry-icon"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.WidgetsFriendLink" class="form-check-label"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <div class="form-check form-switch form-control-lg">
+                                <input type="hidden" name="WidgetsFriendLink" value="false">
+                                <input type="checkbox" name="WidgetsFriendLink" value="true" class="form-check-input" @(Model.ViewModel.WidgetsFriendLink ? "checked" : null)>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="border-top settings-entry row align-items-center py-3 px-2">
-                            <div class="col-auto">
-                                <i class="bi-link-45deg settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="ViewModel.WidgetsFriendLink" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <div class="form-check form-switch form-control-lg">
-                                    <input type="hidden" name="WidgetsFriendLink" value="false">
-                                    <input type="checkbox" name="WidgetsFriendLink" value="true" class="form-check-input" @(Model.ViewModel.WidgetsFriendLink ? "checked" : null)>
-                                </div>
-                            </div>
+                    <div class="border-top settings-entry row align-items-center py-3 px-2">
+                        <div class="col-auto">
+                            <i class="bi-menu-button settings-entry-icon"></i>
                         </div>
-
-                        <div class="border-top settings-entry row align-items-center py-3 px-2">
-                            <div class="col-auto">
-                                <i class="bi-menu-button settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="ViewModel.WidgetsSubscriptionButtons" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <div class="form-check form-switch form-control-lg">
-                                    <input type="hidden" name="WidgetsSubscriptionButtons" value="false">
-                                    <input type="checkbox" name="WidgetsSubscriptionButtons" value="true" class="form-check-input" @(Model.ViewModel.WidgetsSubscriptionButtons ? "checked" : null)>
-                                </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.WidgetsSubscriptionButtons" class="form-check-label"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <div class="form-check form-switch form-control-lg">
+                                <input type="hidden" name="WidgetsSubscriptionButtons" value="false">
+                                <input type="checkbox" name="WidgetsSubscriptionButtons" value="true" class="form-check-input" @(Model.ViewModel.WidgetsSubscriptionButtons ? "checked" : null)>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div>
+                <h4 class="admin-subtitle fw-bold mb-2">
+                    @SharedLocalizer["Syncfusion Settings"]
+                </h4>
+                <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                    <div class="col-auto">
+                        <i class="bi-1-circle-fill settings-entry-icon"></i>
+                    </div>
+                    <div class="col">
+                        <label asp-for="ViewModel.SyncfusionVersion"></label>
+                    </div>
+                    <div class="col-md-5 text-end">
+                        <input asp-for="ViewModel.SyncfusionVersion" class="form-control" />
+                    </div>
+                </div>
+            </div>
                 <div>
                     <h4 class="admin-subtitle fw-bold mb-2">
-                        @SharedLocalizer["Dublin Core Metadata"]
+                        @SharedLocalizer["APIKeys"]
                     </h4>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
                         <div class="col-auto">
-                            <i class="bi bi-globe settings-entry-icon"></i>
+                            <i class="bi-link settings-entry-icon"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="@BlogConfig.GeneralSettings.UseDublinCoreMetaData" class="form-check-label"></label>
+                            <label asp-for="ViewModel.GithubPat"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <div class="form-check form-switch form-control-lg">
-                                <input type="hidden" name="UseDublinCoreMetaData" value="false">
-                                <input type="checkbox" name="UseDublinCoreMetaData" value="true" class="form-check-input" @(BlogConfig.GeneralSettings.UseDublinCoreMetaData ? "checked" : null)>
-                            </div>
+                            <input asp-for="ViewModel.GithubPat" class="form-control" />
                         </div>
                     </div>
-
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
-	                    <div class="col-auto">
-		                    <i class="bi-link settings-entry-icon"></i>
-	                    </div>
-	                    <div class="col">
-		                    <label asp-for="@BlogConfig.GeneralSettings.DcLicenseUrl"></label>
-	                    </div>
-	                    <div class="col-md-5 text-end">
-		                    <input asp-for="@BlogConfig.GeneralSettings.DcLicenseUrl" class="form-control" />
-	                    </div>
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.IndexNowApiKey"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.IndexNowApiKey" class="form-control" />
+                        </div>
                     </div>
-                    <h4 class="admin-subtitle fw-bold mb-2">
-	                    @SharedLocalizer["APIKeys"]
-                    </h4>
+                    <h4 class="admin-subtitle fw-bold mb-2">Verification</h4>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
-	                    <div class="col-auto">
-		                    <i class="bi-globe"></i>
-	                    </div>
-	                    <div class="col">
-		                    <label asp-for="ViewModel.IndexNowApiKey"></label>
-	                    </div>
-	                    <div class="col-md-5 text-end">
-		                    <input asp-for="ViewModel.IndexNowApiKey" class="form-control" />
-	                    </div>
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.BingSiteVerificationCode"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.BingSiteVerificationCode" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.YandexSiteVerificationCode"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.YandexSiteVerificationCode" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.FacebookAppId"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.FacebookAppId" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.NortonSaveWebVerificationCode"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.NortonSaveWebVerificationCode" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.WorldOfTrustVerificationCode"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.WorldOfTrustVerificationCode" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.GoogleAnalytics"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.GoogleAnalytics" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border bg-white mb-2">
+                        <div class="col-auto">
+                            <i class="bi-globe"></i>
+                        </div>
+                        <div class="col">
+                            <label asp-for="ViewModel.ClarityProjectId"></label>
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <input asp-for="ViewModel.ClarityProjectId" class="form-control" />
+                        </div>
                     </div>
                 </div>
             </div>

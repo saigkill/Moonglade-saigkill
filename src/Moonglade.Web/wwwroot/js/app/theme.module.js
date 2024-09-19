@@ -1,21 +1,10 @@
-﻿const getStoredTheme = () => localStorage.getItem('theme');
-const setStoredTheme = theme => localStorage.setItem('theme', theme);
-
-const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
-export const getPreferredTheme = () => {
-    const storedTheme = getStoredTheme();
-    return storedTheme || getSystemTheme();
-}
-
-export const setTheme = theme => {
-    const rootElement = document.documentElement;
-    if (theme === 'auto') {
-        const systemTheme = getSystemTheme();
-        rootElement.setAttribute('data-bs-theme', systemTheme);
-        localStorage.removeItem('theme');
-    } else {
-        rootElement.setAttribute('data-bs-theme', theme);
-        setStoredTheme(theme);
-    }
-}
+let getStoredTheme = () => localStorage.getItem("theme"),
+    setStoredTheme = (e) => localStorage.setItem("theme", e),
+    getSystemTheme = () => (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"),
+    getPreferredTheme = () => getStoredTheme() || getSystemTheme(),
+    setTheme = (e) => {
+        var t,
+            m = document.documentElement;
+        "auto" === e ? ((t = getSystemTheme()), m.setAttribute("data-bs-theme", t), localStorage.removeItem("theme")) : (m.setAttribute("data-bs-theme", e), setStoredTheme(e));
+    };
+export { getPreferredTheme, setTheme };

@@ -1,0 +1,144 @@
+﻿@page "/pages/about"
+@model Moonglade.Web.Pages.AboutModel
+@{
+}
+@section head {
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/about.css" />
+    </environment>
+}
+
+@section scripts {
+}
+<div class="sec pt-4">
+    <div class="container">
+        <h3>@SharedLocalizer["Me and the Blog"]</h3>
+        <hr />
+        <div class="row">
+            <div class="col-md-5">
+                <div class="center-align">
+                    <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage2024.blob.core.windows.net/moongladeimages2024/Sascha1.jpg" />
+                    <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage2024.blob.core.windows.net/moongladeimages2024/coat-of-arms.png" />
+                    <p>@SharedLocalizer["about-coat-of-arms"]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sec">
+    <h4 class="center-text"><@SharedLocalizer["about-connect"]</h4>
+    <partial name="Shared/_SocialProfiles" />
+</div>
+
+<div class="sec">
+    <h4 class="center-text">@SharedLocalizer["about-memberships"]</h4>
+    @foreach (var membership in Model.Memberships)
+    {
+        @if (membership.Active)
+        {
+            <div tabindex="0" class="e-card" id="@membership.Id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@membership.Link" target="_blank" class="">@membership.Organization</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    @if (!string.IsNullOrWhiteSpace(membership.Summary))
+                    {
+                        <div class="muted"><small>@membership.Summary</small></div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="sec" style="margin-top: 2em">
+    <h4 class="center-text">@SharedLocalizer["about-mandates"]</h4>
+    @foreach (var mandates in Model.Mandates)
+    {
+        <div tabindex="0" class="e-card" id="@mandates.Id">
+            <div class="card-header">
+                <div class="e-card-header-caption">
+                    <h4 class="card-subtitle"><a href="@mandates.Link" target="_blank" class="">@mandates.Summary</a></h4>
+                </div>
+            </div>
+            <div class="e-card-content">
+                <div class="muted"><small>@mandates.Organization - @mandates.Years</small></div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="sec" style="margin-top: 2em">
+    <h4 class="center-text">@SharedLocalizer["about-hpos"]</h4>
+    @foreach (var pos in Model.HonoraryPositions)
+    {
+        @if (pos.Active)
+        {
+            <div tabindex="0" class="e-card" id="@pos.Id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@pos.Link" target="_blank" class="">@pos.Summary</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    @if (!string.IsNullOrWhiteSpace(pos.Organization))
+                    {
+                        <div class="muted"><small>@pos.Organization</small></div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="sec" style="margin-top: 2em">
+    <h4 class="center-text">@SharedLocalizer["about-publications"]</h4>
+    <div style="height: 500px; overflow-y: scroll;">
+        @foreach (var pub in Model.Publications)
+        {
+            <div tabindex="0" class="e-card" id="@pub.Id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@pub.Link" target="_blank" class="">@pub.Title</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+
+                    <div class="card-text"><small>@pub.Authors</small></div>
+                    <div class="card-text"><small>@pub.PublicationName - @pub.Publisher</small></div>
+                    @if (!string.IsNullOrWhiteSpace(pub.Identifier))
+                    {
+                        <div class="muted"><small>@pub.Identifier, @SharedLocalizer["Published"]: <time datetime="@pub.DatePublished">@pub.DatePublished</time></small></div>
+                    }
+                    else
+                    {
+                        <div class="muted"><small>@SharedLocalizer["Published"]: @pub.DatePublished</small></div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="sec">
+    <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
+    <div style="height: 500px; overflow-y: scroll;">
+        @foreach (var repo in Model.Repositories)
+        {
+            <div tabindex="0" class="e-card" id="@repo.Id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@repo.HtmlUrl" target="_blank" class="">@repo.Name</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    <div class="card-text">@repo.Description</div>
+                    <div class="muted"><small>@SharedLocalizer["last-updated"]: <time datetime="@repo.UpdatedAt">@repo.UpdatedAt</time></small></div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
