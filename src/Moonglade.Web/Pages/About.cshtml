@@ -4,11 +4,22 @@
 }
 @section head {
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/about.css" />
+        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="~/css/about.min.css"/>
+    </environment>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.css" />
+        <link rel="stylesheet" href="~/css/about.css"/>
     </environment>
 }
 
 @section scripts {
+    <environment exclude="Development">
+        <script src="~/lib/fortawesome/fontawesome-free/js/all.min.js"/>
+    </environment>
+    <environment include="Development">
+        <script src="~/lib/fortawesome/fontawesome-free/js/all.js"></script>
+    </environment>
 }
 <div class="sec pt-4">
     <div class="container">

@@ -7,9 +7,13 @@
 @section head {
     <environment exclude="Development">
         <link href="~/css/cv.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="~/css/testimonial-test.min.css" />
     </environment>
     <environment include="Development">
         <link href="~/css/cv.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.css" />
+        <link rel="stylesheet" href="~/css/testimonial-test.css" />
     </environment>
 }
 @section scripts {
@@ -20,6 +24,7 @@
         <script src="~/lib/codersrank/skills-chart/codersrank-skills-chart.min.js"></script>
         <script src="~/lib/codersrank/summary/codersrank-summary.min.js"></script>
         <script src="~/lib/codersrank/work-experience/codersrank-work-experience.min.js"></script>
+        <script src="~/js/app/replaceJobs.min.js"></script>
     </environment>
     <environment include="Development">
         <script src="~/lib/codersrank/activity/codersrank-activity.js"></script>
@@ -28,10 +33,10 @@
         <script src="~/lib/codersrank/skills-chart/codersrank-skills-chart.js"></script>
         <script src="~/lib/codersrank/summary/codersrank-summary.js"></script>
         <script src="~/lib/codersrank/work-experience/codersrank-work-experience.js"></script>
+        <script src="~/js/app/replaceJobs.js"></script>
     </environment>
     
     <script src="~/lib/typeit/dist/index.umd.js"></script>
-    <script src="~/js/app/replaceJobs.js"></script>
 }
 
 <section id="intro">
@@ -75,6 +80,16 @@
 
 <hr />
 
+<section id="introtext">
+    <div>
+        <p>@Model.Intro.Value</p>
+        <p>@Model.Intro1.Value</p>
+        <p>@Model.Intro2.Value</p>
+    </div>
+</section>
+
+<hr />
+
 <!-- Skills -->
 <section id="skills" class="section">
     <h1>@SharedLocalizer["skills-title"]</h1>
@@ -108,7 +123,7 @@
                     </div>
                     <h6 class="pt-2">API (SOAP & REST)</h6>
                     <div class="progress mb-5">
-                        <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
                 <p>@SharedLocalizer["about-other-skills"] JSON, XML, Wordpress, SCRUM, Git, Linux, Windows, Apache httpd/Tomcat, Azure (SQL, WebApp, API, Blob), Azure DevOps, OOP, Swagger, Visual Basic, Visual Studio, Syncfusion Controls, DevExpress Controls, Postman, MS Teams, Docker.</p>
@@ -197,6 +212,36 @@
         <div class="container">
             <h1>@SharedLocalizer["portfolio-title"]</h1>
             <codersrank-portfolio username="saigkill" grid dates logos></codersrank-portfolio>
+        </div>
+    </div>
+</section>
+
+                        
+<!-- Testimonials-->
+<section id="testimonials">
+    <h1>@SharedLocalizer["testimonial-testimonials"]</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset2 col-md-8">
+                <div class="control-container">
+                    <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" interval="8000" showIndicators="false">
+                        <e-carousel-items>
+                            @foreach (var test in Model.Testimonials)
+                            {
+                                <e-carousel-item template='<figure class="snip1157">
+    <blockquote>@test.Summary
+        <div class="arrow"></div>
+    </blockquote>
+    <img src="@test.ImagePath" alt="sq-sample3" />
+                                                                                 <div class="author">
+                                                                                     <h5>@test.Recommender <span> @test.RecommenderJob <br /> @test.RecommenderLocation</span></h5>
+                                                                                 </div>
+                                                                             </figure>'></e-carousel-item>
+                            }
+                        </e-carousel-items>
+                    </ejs-carousel>
+                </div>
+            </div>
         </div>
     </div>
 </section>
