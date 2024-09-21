@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Globalization;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+
 using Moonglade.Configuration;
 using Moonglade.Data;
 using Moonglade.Data.Specifications;
@@ -17,99 +20,99 @@ public class CreatePostCommandHandler(
         IBlogConfig blogConfig)
     : IRequestHandler<CreatePostCommand, PostEntity>
 {
-    public async Task<PostEntity> Handle(CreatePostCommand request, CancellationToken ct)
+  public async Task<PostEntity> Handle(CreatePostCommand request, CancellationToken ct)
+  {
+    string abs;
+    if (string.IsNullOrEmpty(request.Payload.Abstract))
     {
-        string abs;
-        if (string.IsNullOrEmpty(request.Payload.Abstract))
-        {
-            abs = ContentProcessor.GetPostAbstract(
-                request.Payload.EditorContent,
-                blogConfig.ContentSettings.PostAbstractWords,
-                configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
-        }
-        else
-        {
-            abs = request.Payload.Abstract.Trim();
-        }
-
-        var post = new PostEntity
-        {
-            CommentEnabled = request.Payload.EnableComment,
-            Id = Guid.NewGuid(),
-            PostContent = request.Payload.EditorContent,
-            ContentAbstract = abs,
-            CreateTimeUtc = DateTime.UtcNow,
-            LastModifiedUtc = DateTime.UtcNow, // Fix draft orders
-            Slug = request.Payload.Slug.ToLower().Trim(),
-            Author = request.Payload.Author?.Trim(),
-            Title = request.Payload.Title.Trim(),
-            ContentLanguageCode = request.Payload.LanguageCode,
-            IsFeedIncluded = request.Payload.FeedIncluded,
-            PubDateUtc = request.Payload.IsPublished ? DateTime.UtcNow : null,
-            IsDeleted = false,
-            IsPublished = request.Payload.IsPublished,
-            IsFeatured = request.Payload.Featured,
-            HeroImageUrl = string.IsNullOrWhiteSpace(request.Payload.HeroImageUrl) ? null : Helper.SterilizeLink(request.Payload.HeroImageUrl),
-            IsOutdated = request.Payload.IsOutdated,
-        };
-
-        post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault():yyyy/M/d}/{request.Payload.Slug}";
-
-        // check if exist same slug under the same day
-        var todayUtc = DateTime.UtcNow.Date;
-        if (await postRepo.AnyAsync(new PostByDateAndSlugSpec(todayUtc, post.Slug, false), ct))
-        {
-            var uid = Guid.NewGuid();
-            post.Slug += $"-{uid.ToString().ToLower()[..8]}";
-            logger.LogInformation($"Found conflict for post slug, generated new slug: {post.Slug}");
-        }
-
-        // add categories
-        if (request.Payload.SelectedCatIds is { Length: > 0 })
-        {
-            foreach (var id in request.Payload.SelectedCatIds)
-            {
-                post.PostCategory.Add(new()
-                {
-                    CategoryId = id,
-                    PostId = post.Id
-                });
-            }
-        }
-
-        // add tags
-        var tags = string.IsNullOrWhiteSpace(request.Payload.Tags) ?
-            [] :
-            request.Payload.Tags.Split(',').ToArray();
-
-        if (tags is { Length: > 0 })
-        {
-            foreach (var item in tags)
-            {
-                if (!Helper.IsValidTagName(item)) continue;
-
-                var tag = await tagRepo.FirstOrDefaultAsync(new TagByDisplayNameSpec(item), ct) ?? await CreateTag(item);
-                post.Tags.Add(tag);
-            }
-        }
-
-        await postRepo.AddAsync(post, ct);
-
-        logger.LogInformation($"Created post Id: {post.Id}, Title: '{post.Title}'");
-        return post;
+      abs = ContentProcessor.GetPostAbstract(
+          request.Payload.EditorContent,
+          blogConfig.ContentSettings.PostAbstractWords,
+          configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
+    }
+    else
+    {
+      abs = request.Payload.Abstract.Trim();
     }
 
-    private async Task<TagEntity> CreateTag(string item)
+    var post = new PostEntity
     {
-        var newTag = new TagEntity
-        {
-            DisplayName = item,
-            NormalizedName = Helper.NormalizeName(item, Helper.TagNormalizationDictionary)
-        };
+      CommentEnabled = request.Payload.EnableComment,
+      Id = Guid.NewGuid(),
+      PostContent = request.Payload.EditorContent,
+      ContentAbstract = abs,
+      CreateTimeUtc = DateTime.UtcNow,
+      LastModifiedUtc = DateTime.UtcNow, // Fix draft orders
+      Slug = request.Payload.Slug.ToLower().Trim(),
+      Author = request.Payload.Author?.Trim(),
+      Title = request.Payload.Title.Trim(),
+      ContentLanguageCode = request.Payload.LanguageCode,
+      IsFeedIncluded = request.Payload.FeedIncluded,
+      PubDateUtc = request.Payload.IsPublished ? DateTime.UtcNow : null,
+      IsDeleted = false,
+      IsPublished = request.Payload.IsPublished,
+      IsFeatured = request.Payload.Featured,
+      HeroImageUrl = string.IsNullOrWhiteSpace(request.Payload.HeroImageUrl) ? null : Helper.SterilizeLink(request.Payload.HeroImageUrl),
+      IsOutdated = request.Payload.IsOutdated,
+    };
 
-        var tag = await tagRepo.AddAsync(newTag);
+    post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{request.Payload.Slug}";
 
-        logger.LogInformation($"Created tag: {tag.DisplayName}");
-        return tag;
+    // check if exist same slug under the same day
+    var todayUtc = DateTime.UtcNow.Date;
+    if (await postRepo.AnyAsync(new PostByDateAndSlugSpec(todayUtc, post.Slug, false), ct))
+    {
+      var uid = Guid.NewGuid();
+      post.Slug += $"-{uid.ToString().ToLower()[..8]}";
+      logger.LogInformation($"Found conflict for post slug, generated new slug: {post.Slug}");
     }
+
+    // add categories
+    if (request.Payload.SelectedCatIds is { Length: > 0 })
+    {
+      foreach (var id in request.Payload.SelectedCatIds)
+      {
+        post.PostCategory.Add(new()
+        {
+          CategoryId = id,
+          PostId = post.Id
+        });
+      }
+    }
+
+    // add tags
+    var tags = string.IsNullOrWhiteSpace(request.Payload.Tags) ?
+        [] :
+        request.Payload.Tags.Split(',').ToArray();
+
+    if (tags is { Length: > 0 })
+    {
+      foreach (var item in tags)
+      {
+        if (!Helper.IsValidTagName(item)) continue;
+
+        var tag = await tagRepo.FirstOrDefaultAsync(new TagByDisplayNameSpec(item), ct) ?? await CreateTag(item);
+        post.Tags.Add(tag);
+      }
+    }
+
+    await postRepo.AddAsync(post, ct);
+
+    logger.LogInformation($"Created post Id: {post.Id}, Title: '{post.Title}'");
+    return post;
+  }
+
+  private async Task<TagEntity> CreateTag(string item)
+  {
+    var newTag = new TagEntity
+    {
+      DisplayName = item,
+      NormalizedName = Helper.NormalizeName(item, Helper.TagNormalizationDictionary)
+    };
+
+    var tag = await tagRepo.AddAsync(newTag);
+
+    logger.LogInformation($"Created tag: {tag.DisplayName}");
+    return tag;
+  }
 }

@@ -23,14 +23,14 @@
 }
 <div class="sec pt-4">
     <div class="container">
-        <h3>@SharedLocalizer["Me and the Blog"]</h3>
+        <h3>@Model.ViewModel.MeAnTheBlog.Value</h3>
         <hr />
         <div class="row">
             <div class="col-md-5">
                 <div class="center-align">
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage2024.blob.core.windows.net/moongladeimages2024/Sascha1.jpg" />
                     <img class="img-fluid img-thumbnail" width="45%" src="https://moongladestorage2024.blob.core.windows.net/moongladeimages2024/coat-of-arms.png" />
-                    <p>@SharedLocalizer["about-coat-of-arms"]</p>
+                    <p>@Model.ViewModel.CoatOfArms.Value</p>
                 </div>
             </div>
         </div>
@@ -38,13 +38,13 @@
 </div>
 
 <div class="sec">
-    <h4 class="center-text"><@SharedLocalizer["about-connect"]</h4>
+    <h4 class="center-text"><@Model.ViewModel.Connect.Value</h4>
     <partial name="Shared/_SocialProfiles" />
 </div>
 
 <div class="sec">
-    <h4 class="center-text">@SharedLocalizer["about-memberships"]</h4>
-    @foreach (var membership in Model.Memberships)
+    <h4 class="center-text">@Model.ViewModel.AboutMemberships.Value</h4>
+    @foreach (var membership in Model.ViewModel.Memberships)
     {
         @if (membership.Active)
         {
@@ -66,8 +66,8 @@
 </div>
 
 <div class="sec" style="margin-top: 2em">
-    <h4 class="center-text">@SharedLocalizer["about-mandates"]</h4>
-    @foreach (var mandates in Model.Mandates)
+    <h4 class="center-text">@Model.ViewModel.AboutMandates.Value</h4>
+    @foreach (var mandates in Model.ViewModel.Mandates)
     {
         <div tabindex="0" class="e-card" id="@mandates.Id">
             <div class="card-header">
@@ -83,8 +83,8 @@
 </div>
 
 <div class="sec" style="margin-top: 2em">
-    <h4 class="center-text">@SharedLocalizer["about-hpos"]</h4>
-    @foreach (var pos in Model.HonoraryPositions)
+    <h4 class="center-text">@Model.ViewModel.AboutHonoraryPositions.Value</h4>
+    @foreach (var pos in Model.ViewModel.HonoraryPositions)
     {
         @if (pos.Active)
         {
@@ -106,9 +106,9 @@
 </div>
 
 <div class="sec" style="margin-top: 2em">
-    <h4 class="center-text">@SharedLocalizer["about-publications"]</h4>
+    <h4 class="center-text">@Model.ViewModel.AboutPublications.Value</h4>
     <div style="height: 500px; overflow-y: scroll;">
-        @foreach (var pub in Model.Publications)
+        @foreach (var pub in Model.ViewModel.Publications)
         {
             <div tabindex="0" class="e-card" id="@pub.Id">
                 <div class="card-header">
@@ -135,9 +135,9 @@
 </div>
 
 <div class="sec">
-    <h4 class="center-text">@SharedLocalizer["about-opensource"]</h4>
+    <h4 class="center-text">@Model.ViewModel.AboutRepositories.Value</h4>
     <div style="height: 500px; overflow-y: scroll;">
-        @foreach (var repo in Model.Repositories)
+        @foreach (var repo in Model.ViewModel.Repositories)
         {
             <div tabindex="0" class="e-card" id="@repo.Id">
                 <div class="card-header">
@@ -147,7 +147,7 @@
                 </div>
                 <div class="e-card-content">
                     <div class="card-text">@repo.Description</div>
-                    <div class="muted"><small>@SharedLocalizer["last-updated"]: <time datetime="@repo.UpdatedAt">@repo.UpdatedAt</time></small></div>
+                    <div class="muted"><small>@Model.ViewModel.LastUpdated.Value: <time datetime="@repo.UpdatedAt">@repo.UpdatedAt</time></small></div>
                 </div>
             </div>
         }

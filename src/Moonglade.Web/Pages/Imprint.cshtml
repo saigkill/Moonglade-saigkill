@@ -31,8 +31,8 @@
     </script>
 }
 
-<h1>@SharedLocalizer["imprint-header"]</h1>
-<h2 id="m46">@SharedLocalizer["imprint-service"]</h2>
+<h1>@Model.ImprintHeader.Value</h1>
+<h2 id="m46">@Model.ImprintService.Value</h2>
 <p>Sascha Manns</p>
 <p>Pfarrer-Kneipp Straße 7</p>
 <p>56727 Mayen</p>
@@ -55,9 +55,9 @@
         </div>
     </div>
 </div>
-<h2 id="m56">@SharedLocalizer["contact"]</h2>
+<h2 id="m56">@Model.Contact.Value</h2>
 <p><a href="mailto:Sascha.Manns@outlook.de" target="_blank" rel="noopener">Email</a></p>
-<h2 id="m172">@SharedLocalizer["socialmedia"]</h2><p><strong>@SharedLocalizer["other"]:</strong> </p>
+<h2 id="m172">@Model.Socialmedia.Value</h2><p><strong>@Model.Other.Value:</strong> </p>
 <p><a href="@BlogConfig.SocialProfileSettings.Mastodon" target="_blank" rel="noopener">Mastodon</a></p>
 <p><a href="@BlogConfig.SocialProfileSettings.Reddit" target="_blank" rel="noopener">Reddit</a></p>
 <p><a href="@BlogConfig.SocialProfileSettings.Codersrank" target="_blank" rel="noopener">Codersrank</a></p>
@@ -83,8 +83,7 @@
 <p><a href="@BlogConfig.SocialProfileSettings.Stackoverflow" target="_blank" rel="noopener">Stackoverflow</a></p>
 <p><a href="@BlogConfig.SocialProfileSettings.DevTo" target="_blank" rel="noopener">Dev.to</a></p>
 <p><a href="@BlogConfig.SocialProfileSettings.LastFm" target="_blank" rel="noopener">Last.fm</a></p>
-<h2 id="m65">@SharedLocalizer["liability"]</h2><p><strong>@SharedLocalizer["disclaimer"]</strong>: @Model.Disclaimer1.Value</p>
+<h2 id="m65">@Model.Liability.Value</h2><p><strong>@Model.Disclaimer.Value</strong>: @Model.Disclaimer1.Value</p>
 <p>@Html.Raw(@Model.Disclaimer2.Value)</p>
 <p>@Html.Raw(@Model.Disclaimer3.Value)</p>
 <p>@Html.Raw(@Model.Disclaimer4.Value)</p>
-<p class="seal"><a href="https://datenschutz-generator.de/?l=de" title="Rechtstext von Dr. Schwenke - für weitere Informationen bitte anklicken." target="_blank" rel="noopener noreferrer nofollow">@SharedLocalizer["seal"]</a></p>
