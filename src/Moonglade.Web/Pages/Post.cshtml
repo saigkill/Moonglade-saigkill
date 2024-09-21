@@ -4,7 +4,6 @@
 @using Moonglade.Utils
 @using Moonglade.Web.Models
 @using Moonglade.Web.Services
-@inject DonationViewService _donationService
 
 @Html.AntiForgeryToken()
 
@@ -183,6 +182,17 @@
     }
 	
     <hr />
+    
+    @if (BlogConfig.ContentSettings.EnableDonationService)
+    {
+        <div class="ad-container">
+            <h5>@SharedLocalizer["Sponsoring"]</h5>
+            @* @_donationService.InlineAdd() *@
+            <partial name="_Sponsoring"/>
+        </div>
+    }
+    
+    <hr />
 
     @if (BlogConfig.ContentSettings.ShowPostFooter)
     {
@@ -249,13 +259,6 @@
                 break;
         }
     }
-}
-
-@if (BlogConfig.ContentSettings.EnableDonationService)
-{
-	<div class="ad-container" style="margin-top: 30px; text-align: center;">
-		@_donationService.InlineAdd()
-	</div>
 }
 
 <partial name="_LightSwitch" />

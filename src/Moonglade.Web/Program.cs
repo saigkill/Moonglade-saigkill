@@ -162,7 +162,6 @@ services.AddScoped<IStartUpInitializer, StartUpInitializer>();
 services.AddScoped<IGithubClient, GithubClient>();
 services.AddScoped<IGithubUserRepositoriesService, GithubUserRepositoriesService>();
 services.AddScoped<IIndexNowClient, IndexNowClient>();
-services.AddScoped<DonationViewService>();
 services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
