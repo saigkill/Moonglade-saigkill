@@ -1,0 +1,67 @@
+﻿@{
+}
+
+@if (BlogConfig.SocialProfileSettings.BuyMeACoffee != null)
+{
+    <li class="list-inline-item">
+        <a rel="me" href="@BlogConfig.SocialProfileSettings.BuyMeACoffee" title="Buy me a coffee">
+            <span class="fa-stack fa-2x fa-hover-spin">
+                <i class="fa-solid fa-square fa-stack-1x"></i>
+                <i class="fa-solid fa-mug-hot fa-stack-1x fa-inverse"></i>
+            </span>
+            Buy me a coffee
+        </a>
+    </li>
+}
+
+@if (BlogConfig.SocialProfileSettings.Liberapay != null)
+{
+    <li class="list-inline-item">
+        <a rel="me" href="@BlogConfig.SocialProfileSettings.Liberapay" title="Liberapay">
+            <span class="fa-stack fa-2x fa-hover-spin">
+                <i class="fa-solid fa-square fa-stack-1x"></i>
+                <i class="fa-solid fa-coins fa-stack-1x fa-inverse"></i>
+            </span>
+            Liberapay
+        </a>
+    </li>
+}
+
+@if (BlogConfig.SocialProfileSettings.Patreon != null)
+{
+    <li class="list-inline-item">
+        <a rel="me" href="@BlogConfig.SocialProfileSettings.Patreon" title="Patreon">
+            <span class="fa-stack fa-2x fa-hover-spin">
+                <i class="fa-solid fa-square fa-stack-1x"></i>
+                <i class="fa-brands fa-patreon fa-stack-1x fa-inverse"></i>
+            </span>
+            Patreon
+        </a>
+    </li>
+}
+
+@if (BlogConfig.SocialProfileSettings.AmazonWishlist != null)
+{
+    <li class="list-inline-item">
+        <a rel="me" href="@BlogConfig.SocialProfileSettings.AmazonWishlist" title="Amazon Wishlist">
+            <span class="fa-stack fa-2x fa-hover-spin">
+                <i class="fa-solid fa-square fa-stack-1x"></i>
+                <i class="fa-brands fa-amazon fa-stack-1x fa-inverse"></i>
+            </span>
+            Amazon Wishlist
+        </a>
+    </li>
+}
+
+@if (BlogConfig.SocialProfileSettings.Paypal != null)
+{
+    <li class="list-inline-item">
+        <a rel="me" href="@BlogConfig.SocialProfileSettings.Paypal" title="Paypal">
+            <span class="fa-stack fa-2x fa-hover-spin">
+                <i class="fa-solid fa-square fa-stack-1x"></i>
+                <i class="fa-brands fa-paypal fa-stack-1x fa-inverse"></i>
+            </span>
+            Paypal
+        </a>
+    </li>
+}
