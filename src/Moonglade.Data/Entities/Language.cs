@@ -1,6 +1,4 @@
 ﻿#nullable disable
-using System.Globalization;
-
 namespace Moonglade.Data.Entities
 {
   [System.ComponentModel.Description("Specified Language Enum")]
@@ -13,16 +11,6 @@ namespace Moonglade.Data.Entities
 
   public static class LanguageExtensions
   {
-    public static string ToFriendlyString(this Language me)
-    {
-      return me switch
-      {
-        Language.English => "English",
-        Language.German => "German",
-        _ => Language.English.ToString(),
-      };
-    }
-
     public static Language FromStringToLanguage(this string language)
     {
       return language switch
@@ -33,30 +21,19 @@ namespace Moonglade.Data.Entities
       };
     }
 
-    public static Language FromLangCodeToLang()
+    public static Language FromLangCodeToLang(string culture)
     {
-      var culture = CultureInfo.CurrentCulture.Name;
       switch (culture)
       {
-        case "en-US":
+        case "en-us":
+        case "en-gb":
           return Language.English;
-        case "de-DE":
+        case "de-de":
           return Language.German;
         default:
           return Language.English;
       }
     }
-
-    public static string ToLangCode(this Language me)
-    {
-      return me switch
-      {
-        Language.English => "en-US",
-        Language.German => "de-DE",
-        _ => Language.English.ToString(),
-      };
-    }
-
   }
 }
 

@@ -48,6 +48,10 @@ public class SettingsController(
 
     blogConfig.GeneralSettings = model;
     blogConfig.GeneralSettings.TimeZoneUtcOffset = timeZoneResolver.GetTimeSpanByZoneId(model.TimeZoneId);
+    if (blogConfig.GeneralSettings.DcLicenseUrl == null)
+    {
+      blogConfig.GeneralSettings.DcLicenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en";
+    }
 
     await SaveConfigAsync(blogConfig.GeneralSettings);
 

@@ -20,8 +20,8 @@ namespace Moonglade.Web.Pages
       Certificates = await mediator.Send(new GetAllCertificatesQuery());
       Testimonials = await mediator.Send(new GetAllTestimonialsQuery());
 
-      var culture = CultureInfo.CurrentCulture.Name;
-      var convertedCulture = culture.FromStringToLanguage();
+      var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
+      var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
       Intro = await mediator.Send(new GetPageContentByKeyValueQuery("cvintro", "curriculum_vitae", convertedCulture));
       Intro1 = await mediator.Send(new GetPageContentByKeyValueQuery("cvintro1", "curriculum_vitae", convertedCulture));
       Intro2 = await mediator.Send(new GetPageContentByKeyValueQuery("cvintro2", "curriculum_vitae", convertedCulture));

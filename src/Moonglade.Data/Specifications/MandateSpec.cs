@@ -1,4 +1,6 @@
-﻿using Moonglade.Data.Entities;
+﻿using System.Globalization;
+
+using Moonglade.Data.Entities;
 
 namespace Moonglade.Data.Specifications;
 
@@ -14,7 +16,8 @@ public sealed class MandateByLanguageSpec : Specification<MandateEntity>
 {
   public MandateByLanguageSpec()
   {
-    var language = LanguageExtensions.FromLangCodeToLang();
+    var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
+    var language = LanguageExtensions.FromLangCodeToLang(langCode);
     Query.Where(p => p.Language == language).OrderByDescending(p => p.Years);
   }
 }

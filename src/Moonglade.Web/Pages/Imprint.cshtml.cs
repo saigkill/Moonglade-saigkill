@@ -16,8 +16,8 @@ namespace Moonglade.Web.Pages
 
     public async Task<IActionResult> OnGetAsync()
     {
-      var culture = CultureInfo.CurrentCulture.Name;
-      var convertedCulture = culture.FromStringToLanguage();
+      var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
+      var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
       Disclaimer1 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer1", "imprint", convertedCulture));
       Disclaimer2 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer2", "imprint", convertedCulture));
       Disclaimer3 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer3", "imprint", convertedCulture));

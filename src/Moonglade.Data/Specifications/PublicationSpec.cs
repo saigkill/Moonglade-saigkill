@@ -1,4 +1,6 @@
-﻿using Moonglade.Data.Entities;
+﻿using System.Globalization;
+
+using Moonglade.Data.Entities;
 
 namespace Moonglade.Data.Specifications;
 
@@ -14,7 +16,16 @@ public sealed class PublicationByLanguageSpec : Specification<PublicationEntity>
 {
   public PublicationByLanguageSpec()
   {
-    var language = LanguageExtensions.FromLangCodeToLang();
-    Query.Where(p => p.Language == language).OrderByDescending(p => p.DatePublished);
+    var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
+    var language = LanguageExtensions.FromLangCodeToLang(langCode);
+    if (language == Language.German)
+    {
+      Query.Where(p => p.Language == Language.German || p.Language == Language.English);
+    }
+    else
+    {
+      Query.Where(p => p.Language == language);
+    }
+    Query.OrderByDescending(p => p.DatePublished);
   }
 }

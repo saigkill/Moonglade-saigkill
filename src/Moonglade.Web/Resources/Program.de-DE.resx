@@ -846,9 +846,11 @@
   <data name="Light" xml:space="preserve">
     <value>Hell</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Include in feed and sitemap" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Include in feed and sitemap" xml:space="preserve">
+    <value>Dem Feed und der Sitepap hinzufügen</value>
+  </data>
+  <data name="Feed Items" xml:space="preserve">
+    <value>Feed Artikel</value>
   </data>
   <data name="Clear links" xml:space="preserve">
     <value>Links löschen</value>
@@ -966,6 +968,9 @@
   </data>
   <data name="Videos" xml:space="preserve">
     <value>Videos</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Freundschaftslink</value>
   </data>
   <data name="smlinks" xml:space="preserve">
     <value>SocialMediaLinks</value>
