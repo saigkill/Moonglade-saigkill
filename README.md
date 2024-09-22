@@ -1,8 +1,10 @@
-# Moonglade Blog
+# Moonglade-saigkill Blog
 
 [![Docker Linux x64](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml/badge.svg)](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml)
 
 A personal blog system that optimized for [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
+
+This is a fork of the original [Moonglade](https://github.com/EdiWang/Moonglade) project by [Edi Wang]. In general it s a customized version, with some personal pages. You can see it in action [there](https://saschamanns.de).
 
 ## 📦 Deployment Notice
 
