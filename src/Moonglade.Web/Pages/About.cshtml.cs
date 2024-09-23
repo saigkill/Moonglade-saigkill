@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
 using Moonglade.Github.Client.Models;
+using Moonglade.Nuget.Client;
 using Moonglade.Web.Services;
 
 namespace Moonglade.Web.Pages
 {
-  public class AboutModel(IMediator mediator, IGithubUserRepositoriesService ghRepositoriesService) : PageModel
+  public class AboutModel(IMediator mediator, IGithubUserRepositoriesService ghRepositoriesService, INugetClient nugetClient) : PageModel
   {
     public AboutViewModel ViewModel { get; set; }
 
@@ -40,6 +41,8 @@ namespace Moonglade.Web.Pages
       ViewModel.AboutRepositories =
         await mediator.Send(new GetPageContentByKeyValueQuery("about-opensource", "about", convertedCulture));
       ViewModel.LastUpdated = await mediator.Send(new GetPageContentByKeyValueQuery("last-updated", "about", convertedCulture));
+      ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
+      ViewModel.NugetPackages = await nugetClient.SendRequestAsync();
       return Page();
     }
   }
@@ -60,5 +63,7 @@ namespace Moonglade.Web.Pages
     public PagesContentEntity AboutPublications { get; set; }
     public PagesContentEntity AboutRepositories { get; set; }
     public PagesContentEntity LastUpdated { get; set; }
+    public PagesContentEntity NugetTitle { get; set; }
+    public List<NugetPackage> NugetPackages { get; set; }
   }
 }
