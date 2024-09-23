@@ -153,3 +153,24 @@
         }
     </div>
 </div>
+
+<div class="sec">
+    <h4 class="center-text">@Model.ViewModel.NugetTitle.Value</h4>
+    <div style="height: 500px; overflow-y: scroll;">
+        @foreach (var repo in Model.ViewModel.NugetPackages)
+        {
+            <div tabindex="0" class="e-card" id="@repo.id">
+                <div class="card-header">
+                    <div class="e-card-header-caption">
+                        <h4 class="card-subtitle"><a href="@repo.projectUrl" target="_blank" class="">@repo.idpackage</a></h4>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    <div class="card-text">@repo.description</div>
+                    <div class="card-text">Version: @repo.version</div>
+                    <div class="muted"><small>Downloads: @repo.totalDownloads </small></div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -14,6 +14,7 @@ using Moonglade.Email.Client;
 using Moonglade.Github.Client;
 using Moonglade.IndexNow.Client;
 using Moonglade.Mention.Common;
+using Moonglade.Nuget.Client;
 using Moonglade.Pingback;
 using Moonglade.Setup;
 using Moonglade.Syndication;
@@ -137,6 +138,7 @@ services.AddSyndication()
 services.AddEmailClient();
 services.AddIndexNowClient(builder.Configuration.GetSection("IndexNow"));
 services.AddContentModerator(builder.Configuration);
+services.AddNugetClient();
 
 services.AddSingleton<CannonService>();
 
