@@ -135,6 +135,7 @@ services.AddSyndication()
     .AddImageStorage(builder.Configuration, options => options.ContentRootPath = builder.Environment.ContentRootPath);
 
 services.AddEmailClient();
+services.AddIndexNowClient(builder.Configuration.GetSection("IndexNow"));
 services.AddContentModerator(builder.Configuration);
 
 services.AddSingleton<CannonService>();
@@ -161,7 +162,6 @@ services.AddScoped<IBlogConfigInitializer, BlogConfigInitializer>();
 services.AddScoped<IStartUpInitializer, StartUpInitializer>();
 services.AddScoped<IGithubClient, GithubClient>();
 services.AddScoped<IGithubUserRepositoriesService, GithubUserRepositoriesService>();
-services.AddScoped<IIndexNowClient, IndexNowClient>();
 services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
@@ -235,6 +235,7 @@ app.MapControllers();
 app.MapRazorPages();
 
 app.MapGet("/robots.txt", RobotsTxtMapHandler.Handler);
+app.MapGet("/indexnowkey.txt", IndexNowMapHandler.Handler);
 app.MapGet("/manifest.webmanifest", WebManifestMapHandler.Handler);
 
 var bc = app.Services.GetRequiredService<IBlogConfig>();

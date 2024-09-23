@@ -56,7 +56,7 @@ public class CreatePostCommandHandler(
       IsOutdated = request.Payload.IsOutdated,
     };
 
-    post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{request.Payload.Slug}";
+        post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{request.Payload.Slug}";
 
     // check if exist same slug under the same day
     var todayUtc = DateTime.UtcNow.Date;

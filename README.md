@@ -1,8 +1,10 @@
-# Moonglade Blog
+# Moonglade-saigkill Blog
 
 [![Docker Linux x64](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml/badge.svg)](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml)
 
 A personal blog system that optimized for [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
+
+This is a fork of the original [Moonglade](https://github.com/EdiWang/Moonglade) project by [Edi Wang]. In general it s a customized version, with some personal pages. You can see it in action [there](https://saschamanns.de).
 
 ## 📦 Deployment Notice
 
@@ -139,7 +141,7 @@ Setup [Moonglade.Email](https://github.com/EdiWang/Moonglade.Email) Azure Functi
 - [System Settings](https://github.com/EdiWang/Moonglade/wiki/System-Settings)
 - [Security HTTP Headers](https://github.com/EdiWang/Moonglade/wiki/Security-Headers)
 
-## 🎉 Blog Protocols or Standards
+## 🎉 Protocols or Standards
 
 Name | Feature | Status | Service Endpoint
 --- | --- | --- | ---
@@ -151,6 +153,7 @@ Pingback | Social | Supported | `/pingback`
 Webmention | Social | Supported | `/webmention`
 Reader View | Reader mode | Supported | N/A
 FOAF | Social | Supported | `/foaf.xml`
+IndexNow | SEO | Supported | N/A
 RSD | Service Discovery | Deprecated | N/A
 MetaWeblog | Blogging | Deprecated | N/A
 Dublin Core Metadata | SEO | Basic Support | N/A

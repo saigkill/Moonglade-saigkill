@@ -33,7 +33,7 @@
         position: relative;
     }
 
-    .card-bkimg-container {
+    .card-background-container {
         height: 105px !important;
     }
 
@@ -87,8 +87,6 @@
     }
 
     .article-post-summary {
-        border-bottom: 1px solid var(--gray-2);
-        margin-bottom: 15px;
         padding-bottom: 15px;
     }
 

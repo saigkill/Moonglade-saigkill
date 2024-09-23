@@ -98,6 +98,9 @@ public partial class GeneralSettings : IBlogSettings
 		[MaxLength(64)]
     public string AvatarUrl { get; set; }
 
+    [Display(Name = "Use my Gravatar as profile picture")]
+    public bool UseGravatarAsProfilePicture { get; set; }
+
     public TimeSpan TimeZoneUtcOffset { get; set; }
 
     [Required]
