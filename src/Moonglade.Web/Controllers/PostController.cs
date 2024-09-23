@@ -61,14 +61,10 @@ public class PostController(
 
         if (blogConfig.AdvancedSettings.EnableWebmention)
         {
-          cannonService.FireAsync<IWebmentionSender>(async sender =>
-            await sender.SendWebmentionAsync(link.ToString(), postEntity.PostContent));
+          cannonService.FireAsync<IWebmentionSender>(async sender => await sender.SendWebmentionAsync(link.ToString(), postEntity.PostContent));
         }
 
-        if (blogConfig.GeneralSettings.IndexNowApiKey is not null)
-        {
-          await indexNowClient.SendRequestAsync(link);
-        }
+        cannonService.FireAsync<IIndexNowClient>(async sender => await sender.SendRequestAsync(link));
       }
 
       return Ok(new { PostId = postEntity.Id });

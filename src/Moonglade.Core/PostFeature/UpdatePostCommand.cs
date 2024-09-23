@@ -10,6 +10,7 @@ using Moonglade.Configuration;
 using Moonglade.Data;
 using Moonglade.Data.Specifications;
 using Moonglade.Utils;
+using System.Globalization;
 
 namespace Moonglade.Core.PostFeature;
 
@@ -87,16 +88,16 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
       post.PubDateUtc = adjustedDate.AddTicks(tod.Ticks);
     }
 
-    post.Author = postEditModel.Author?.Trim();
-    post.Slug = postEditModel.Slug.ToLower().Trim();
-    post.Title = postEditModel.Title.Trim();
-    post.LastModifiedUtc = DateTime.UtcNow;
-    post.IsFeedIncluded = postEditModel.FeedIncluded;
-    post.ContentLanguageCode = postEditModel.LanguageCode;
-    post.IsFeatured = postEditModel.Featured;
-    post.HeroImageUrl = string.IsNullOrWhiteSpace(postEditModel.HeroImageUrl) ? null : Helper.SterilizeLink(postEditModel.HeroImageUrl);
-    post.IsOutdated = postEditModel.IsOutdated;
-    post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{postEditModel.Slug}";
+        post.Author = postEditModel.Author?.Trim();
+        post.Slug = postEditModel.Slug.ToLower().Trim();
+        post.Title = postEditModel.Title.Trim();
+        post.LastModifiedUtc = DateTime.UtcNow;
+        post.IsFeedIncluded = postEditModel.FeedIncluded;
+        post.ContentLanguageCode = postEditModel.LanguageCode;
+        post.IsFeatured = postEditModel.Featured;
+        post.HeroImageUrl = string.IsNullOrWhiteSpace(postEditModel.HeroImageUrl) ? null : Helper.SterilizeLink(postEditModel.HeroImageUrl);
+        post.IsOutdated = postEditModel.IsOutdated;
+        post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{postEditModel.Slug}";
 
     // 1. Add new tags to tag lib
     var tags = string.IsNullOrWhiteSpace(postEditModel.Tags) ?

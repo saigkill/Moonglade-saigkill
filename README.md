@@ -141,7 +141,7 @@ Setup [Moonglade.Email](https://github.com/EdiWang/Moonglade.Email) Azure Functi
 - [System Settings](https://github.com/EdiWang/Moonglade/wiki/System-Settings)
 - [Security HTTP Headers](https://github.com/EdiWang/Moonglade/wiki/Security-Headers)
 
-## 🎉 Blog Protocols or Standards
+## 🎉 Protocols or Standards
 
 Name | Feature | Status | Service Endpoint
 --- | --- | --- | ---
@@ -153,6 +153,7 @@ Pingback | Social | Supported | `/pingback`
 Webmention | Social | Supported | `/webmention`
 Reader View | Reader mode | Supported | N/A
 FOAF | Social | Supported | `/foaf.xml`
+IndexNow | SEO | Supported | N/A
 RSD | Service Discovery | Deprecated | N/A
 MetaWeblog | Blogging | Deprecated | N/A
 Dublin Core Metadata | SEO | Basic Support | N/A

@@ -1,59 +1,89 @@
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Net;
-using Moonglade.Configuration;
-using RestSharp;
+using System.Text;
 
 namespace Moonglade.IndexNow.Client;
 
-/// <summary>
-/// IndexNow Implementation
-/// Docs: https://www.indexnow.org/documentation
-/// </summary>
-public class IndexNowClient : IIndexNowClient
+public class IndexNowClient(ILogger<IndexNowClient> logger, IConfiguration configuration, IHttpClientFactory httpClientFactory) : IIndexNowClient
 {
-	private readonly IBlogConfig _config;
+    private readonly string[] _pingTargets = configuration.GetSection("IndexNow:PingTargets").Get<string[]>();
+    private readonly string _apiKey = configuration["IndexNow:ApiKey"] ?? throw new InvalidOperationException("IndexNow:ApiKey is not configured.");
 
-	public IndexNowClient(IBlogConfig config)
-	{
-		_config = config;
-	}
+    public async Task SendRequestAsync(Uri uri)
+    {
+        if (string.IsNullOrWhiteSpace(_apiKey))
+        {
+            logger.LogWarning("IndexNow:ApiKey is not configured.");
+            return;
+        }
 
-	public async Task<HttpStatusCode> SendRequestAsync(Uri urlToSubmit)
-	{
-		string[] toPing = new[] { "api.indexnow.org", "www.bing.com", "search.seznam.cz", "yandex.com" };
-		var host = urlToSubmit.Host;
-		var apiKey = _config.GeneralSettings.IndexNowApiKey;
+        if (_pingTargets == null || _pingTargets.Length == 0)
+        {
+            throw new InvalidOperationException("IndexNow:PingTargets is not configured.");
+        }
 
-		foreach (var ping in toPing)
-		{
-			var client = new RestClient($"https://{ping}");
-			var request = new RestRequest("/indexnow", Method.Post);
+        foreach (var pingTarget in _pingTargets)
+        {
+            var client = httpClientFactory.CreateClient(pingTarget);
 
-			request.AddHeader("ContentType", "application/json");
-			request.AddHeader("Host", ping);
+            var requestBody = CreateRequestBody(uri);
+            var content = new StringContent(System.Text.Json.JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
 
-			var bodyobject = new
-			{
-				host = host,
-				key = apiKey,
-				keyLocation = $"https://{host}/{apiKey}.txt",
-				urlList = new List<string>
-				{
-					urlToSubmit.ToString()
-				}
-			};
+            try
+            {
+                var response = await client.PostAsync("/indexnow", content);
+                await HandleResponseAsync(pingTarget, response);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Failed to send index request to '{pingTarget}'");
+            }
+        }
+    }
 
-			request.AddBody(bodyobject);
+    private IndexNowRequest CreateRequestBody(Uri uri)
+    {
+        // https://www.indexnow.org/documentation
+        return new IndexNowRequest
+        {
+            Host = uri.Host,
+            Key = _apiKey,
+            KeyLocation = $"https://{uri.Host}/indexnowkey.txt",
+            UrlList = new[] { uri.ToString() }
+        };
+    }
 
-			try
-			{
-				var response = await client.ExecuteAsync(request);
-				return response.StatusCode;
-			}
-			catch
-			{
-				throw new Exception("Request failed. See logs.");
-			}
-		}
-		return HttpStatusCode.BadRequest;
-	}
+    private async Task HandleResponseAsync(string pingTarget, HttpResponseMessage response)
+    {
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        switch (response.StatusCode)
+        {
+            // Success cases
+            case HttpStatusCode.OK:
+                logger.LogInformation($"Index request sent to '{pingTarget}', {response.StatusCode}: {responseBody}. URL submitted successfully.");
+                break;
+            case HttpStatusCode.Accepted:
+                logger.LogWarning($"Index request sent to '{pingTarget}', {response.StatusCode}. URL received. IndexNow key validation pending.");
+                break;
+
+            // Error cases
+            case HttpStatusCode.BadRequest:
+                logger.LogError($"Index request sent to '{pingTarget}', {response.StatusCode}: {responseBody}. Invalid format.");
+                break;
+            case HttpStatusCode.Forbidden:
+                logger.LogError($"Index request sent to '{pingTarget}', {response.StatusCode}: {responseBody}. Key not valid (e.g., key not found, file found but key not in the file).");
+                break;
+            case HttpStatusCode.UnprocessableEntity:
+                logger.LogError($"Index request sent to '{pingTarget}', {response.StatusCode}: {responseBody}. URLs which don’t belong to the host or the key is not matching the schema in the protocol.");
+                break;
+            case HttpStatusCode.TooManyRequests:
+                logger.LogError($"Index request sent to '{pingTarget}', {response.StatusCode}: {responseBody}. Too many requests (potential spam).");
+                break;
+            default:
+                response.EnsureSuccessStatusCode();
+                break;
+        }
+    }
 }

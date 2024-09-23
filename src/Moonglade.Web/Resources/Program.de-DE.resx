@@ -183,9 +183,6 @@
   <data name="Author Name" xml:space="preserve">
     <value>Autorenname</value>
   </data>
-  <data name="Auto Light / Dark theme regarding client system settings" xml:space="preserve">
-    <value>Automatisch hell/dunkel schalten, abhängig von den Systemeinstellungen des Benutzers</value>
-  </data>
   <data name="Admin Email" xml:space="preserve">
     <value>Admin Email</value>
   </data>
@@ -799,55 +796,88 @@
     <value>Konto</value>
   </data>
   <data name="Enable Pingback" xml:space="preserve">
-    <value>Pingback einschalten.</value>
+    <value>Pingback aktivieren</value>
+  </data>
+  <data name="Include in feed and sitemap" xml:space="preserve">
+    <value>Hinzufügen von Abonnements und Sitemaps</value>
   </data>
   <data name="Friend links" xml:space="preserve">
-    <value>Friedlink</value>
+    <value>Verknüpfungen</value>
   </data>
   <data name="How many tags to show on sidebar" xml:space="preserve">
-    <value>Wieviele Tags sollen in der Sidebar angezeigt werden</value>
+    <value>In der Seitenleiste wird die Anzahl der Beschriftungen angezeigt</value>
   </data>
   <data name="Login IP" xml:space="preserve">
     <value>Login IP</value>
   </data>
   <data name="Login Time (UTC)" xml:space="preserve">
-    <value>Login Zeit (UTC)</value>
+    <value>Anmeldezeit (UTC)</value>
   </data>
   <data name="No comments yet" xml:space="preserve">
-    <value>Noch keine Kommentare</value>
+    <value>Es gibt noch keine Bewertungen</value>
+  </data>
+  <data name="Feed Items" xml:space="preserve">
+    <value>Anzahl der Abonnementeinträge</value>
   </data>
   <data name="The number of entries to include in RSS/ATOM feed." xml:space="preserve">
-    <value>Anzahl RSS/Atom Artikel in diesem Feed</value>
+    <value>Die Anzahl der Einträge, die im RSS/ATOM enthalten sind</value>
   </data>
   <data name="lower case English letters (a-z) and numbers (0-9) with/out hyphen (-) in middle." xml:space="preserve">
-    <value>Kleingeschriebene Englische Zeichen (a-z) und Nummern (0-9) ohne Trennzeichen "-" in der Mitte</value>
+    <value>Kleinbuchstaben (a-z) und Ziffern (0-9), mit oder ohne Bindestriche (-)</value>
   </data>
   <data name="RSS / Atom Feed" xml:space="preserve">
-    <value>RSS / Atom Feed</value>
+    <value>RSS / Atom-Feeds</value>
   </data>
   <data name="ASP.NET Core Environment" xml:space="preserve">
-    <value>ASP .NET Core Umgebung</value>
+    <value>ASP.NET Kernumgebung</value>
   </data>
   <data name="Warning: This blog post is marked as outdated by it's author. Consider finding more recent information on this topic to ensure that you are utilizing the most up-to-date and effective strategies." xml:space="preserve">
-    <value>Dieser Blogpost wurde als nicht mehr aktuell gekennzeichnet</value>
+    <value>Warnung: Dieser Blogbeitrag wurde vom Autor als veraltet gekennzeichnet. Erwägen Sie, nach aktuelleren Informationen zu diesem Thema zu suchen, um sicherzustellen, dass Sie die aktuellste und effektivste Strategie verwenden.</value>
   </data>
   <data name="No categories" xml:space="preserve">
-    <value>Keine Kategorien</value>
+    <value>Es gibt keine Klassifizierung</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>Automatisch</value>
   </data>
   <data name="Dark" xml:space="preserve">
-    <value>Dunkel</value>
+    <value>dunkel</value>
   </data>
   <data name="Light" xml:space="preserve">
-    <value>Hell</value>
+    <value>hell</value>
   </data>
-  <data name="Include in feed and sitemap" xml:space="preserve">
-    <value>Dem Feed und der Sitepap hinzufügen</value>
+  <data name="External Links May Pose a Security Risk" xml:space="preserve">
+    <value>Externe Links können ein Sicherheitsrisiko darstellen</value>
   </data>
-  <data name="Feed Items" xml:space="preserve">
-    <value>Feed Artikel</value>
+  <data name="Link URL:" xml:space="preserve">
+    <value>Link-URL:</value>
+  </data>
+  <data name="By clicking &quot;Continue&quot;, you agree that you are aware of the risks and will proceed at your own discretion." xml:space="preserve">
+    <value>Indem Sie auf "Weiter" klicken, erklären Sie sich damit einverstanden, dass Sie die Risiken verstehen und nach eigenem Ermessen fortfahren werden.</value>
+  </data>
+  <data name="You are about to leave this website and go to an external link." xml:space="preserve">
+    <value>Sie sind im Begriff, diese Website zu verlassen und auf einen externen Link zu gelangen.</value>
+  </data>
+  <data name="This link could lead to websites with malicious content, phishing attempts, or other security threats. It is important to exercise caution when clicking on any external link." xml:space="preserve">
+    <value>Dieser Link kann zu bösartigen Inhalten, Phishing-Versuchen oder anderen Sicherheitsbedrohungen führen. Seien Sie immer vorsichtig, wenn Sie auf externe Links klicken.</value>
+  </data>
+  <data name="By continuing to browse this website and accessing any external links, you acknowledge and accept the following:" xml:space="preserve">
+    <value>Durch die weitere Nutzung dieser Website und den Zugriff auf externe Links erkennen Sie Folgendes an und akzeptieren dies:</value>
+  </data>
+  <data name="The website owner and administrators are not responsible for the content or security of external websites." xml:space="preserve">
+    <value>Die Eigentümer und Administratoren der Website sind nicht verantwortlich für den Inhalt oder die Sicherheit externer Websites.</value>
+  </data>
+  <data name="Your personal information and computer system may be at risk when visiting external websites." xml:space="preserve">
+    <value>Beim Besuch externer Websites können Ihre persönlichen Daten und Computersysteme gefährdet sein.</value>
+  </data>
+  <data name="It is your responsibility to ensure the safety and security of your own browsing experience." xml:space="preserve">
+    <value>Es liegt in Ihrer Verantwortung, Ihr Surferlebnis sicher zu halten.</value>
+  </data>
+  <data name="Use my Gravatar as profile picture" xml:space="preserve">
+    <value>Verwende meinen Gravatar als deinen Avatar</value>
+  </data>
+  <data name="Please make sure you have setup Gravatar with your email address" xml:space="preserve">
+    <value>Bitte stellen Sie sicher, dass Sie sich mit Ihrer E-Mail-Adresse für Gravatar angemeldet haben</value>
   </data>
   <data name="Links" xml:space="preserve">
     <value>Freundschaftslink</value>
