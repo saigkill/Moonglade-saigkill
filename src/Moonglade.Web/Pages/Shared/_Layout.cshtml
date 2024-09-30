@@ -153,6 +153,12 @@
     {
 	    <script type="text/javascript" src="@shareThis" async="async"></script>
     }
+    
+    @if (BlogConfig.GeneralSettings.WorldOfTrustVerificationCode != null)
+    {
+        <!-- Kopieren Sie diesen Code und fügen Sie ihn in Ihre Website ein -->
+        <script async src='https://static.mywot.com/website_owners_badges/websiteOwnersBadge.js'></script>
+    }
 </head>
 <body class="@ViewBag.BodyClass">
     @if (BlogConfig.ContentSettings.ShowCalloutSection)
