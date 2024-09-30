@@ -69,9 +69,6 @@
     <ProjectReference Include="..\Moonglade.Webmention\Moonglade.Webmention.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-  <ItemGroup>
     <EditorConfigFiles Remove="C:\Users\sasch\source\repos\Moonglade\src\Moonglade.Web\.editorconfig" />
   </ItemGroup>
 </Project>
