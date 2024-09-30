@@ -5,11 +5,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
 using Moonglade.Github.Client.Models;
-using Moonglade.Nuget.Client;
 
 namespace Moonglade.Web.Pages
 {
-  public class AboutModel(IMediator mediator, INugetClient nugetClient) : PageModel
+  public class AboutModel(IMediator mediator) : PageModel
   {
     public AboutViewModel ViewModel { get; set; }
 
@@ -41,7 +40,7 @@ namespace Moonglade.Web.Pages
         await mediator.Send(new GetPageContentByKeyValueQuery("about-opensource", "about", convertedCulture));
       ViewModel.LastUpdated = await mediator.Send(new GetPageContentByKeyValueQuery("last-updated", "about", convertedCulture));
       ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
-      ViewModel.NugetPackages = await nugetClient.SendRequestAsync();
+      ViewModel.NugetPackages = await mediator.Send(new GetAllNugetPackagesQuery());
       return Page();
     }
   }

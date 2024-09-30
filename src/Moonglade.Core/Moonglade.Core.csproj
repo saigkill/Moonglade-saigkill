@@ -21,5 +21,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Moonglade.Configuration\Moonglade.Configuration.csproj" />
         <ProjectReference Include="..\Moonglade.Github.Client\Moonglade.Github.Client.csproj" />
+        <ProjectReference Include="..\Moonglade.Nuget.Client\Moonglade.Nuget.Client.csproj" />
     </ItemGroup>
 </Project>
