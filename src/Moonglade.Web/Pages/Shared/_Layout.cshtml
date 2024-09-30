@@ -61,6 +61,10 @@
     {
         <meta name='wot-verification' content='@BlogConfig.GeneralSettings.WorldOfTrustVerificationCode' />
     }
+    @if (BlogConfig.AdvancedSettings.BlogaramaID != null)
+    {
+        <meta name="blogarama-site-verification" content="@BlogConfig.AdvancedSettings.BlogaramaID" />
+    }
 
     @await RenderSectionAsync("meta", false)
     @if (IsSectionDefined("opengraph"))
