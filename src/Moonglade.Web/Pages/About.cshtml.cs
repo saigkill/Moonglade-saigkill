@@ -6,11 +6,10 @@ using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
 using Moonglade.Github.Client.Models;
 using Moonglade.Nuget.Client;
-using Moonglade.Web.Services;
 
 namespace Moonglade.Web.Pages
 {
-  public class AboutModel(IMediator mediator, IGithubUserRepositoriesService ghRepositoriesService, INugetClient nugetClient) : PageModel
+  public class AboutModel(IMediator mediator, INugetClient nugetClient) : PageModel
   {
     public AboutViewModel ViewModel { get; set; }
 
@@ -21,7 +20,7 @@ namespace Moonglade.Web.Pages
       ViewModel.Mandates = await mediator.Send(new GetAllMandatesQuery());
       ViewModel.HonoraryPositions = await mediator.Send(new GetHonoraryPositionsByLanguageQuery());
       ViewModel.Publications = await mediator.Send(new GetAllPublicationsQuery());
-      ViewModel.Repositories = await ghRepositoriesService.GetUserRepositories();
+      ViewModel.Repositories = await mediator.Send(new GetAllRepositoriesQuery());
       var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
       var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
       ViewModel.MeAnTheBlog =

@@ -19,7 +19,6 @@ using Moonglade.Pingback;
 using Moonglade.Setup;
 using Moonglade.Syndication;
 using Moonglade.Web.Handlers;
-using Moonglade.Web.Services;
 using Moonglade.Webmention;
 
 using SixLabors.Fonts;
@@ -139,6 +138,7 @@ services.AddEmailClient();
 services.AddIndexNowClient(builder.Configuration.GetSection("IndexNow"));
 services.AddContentModerator(builder.Configuration);
 services.AddNugetClient();
+services.AddGithubClient();
 
 services.AddSingleton<CannonService>();
 
@@ -162,8 +162,6 @@ services.AddTransient<ISiteIconInitializer, SiteIconInitializer>();
 services.AddScoped<IMigrationManager, MigrationManager>();
 services.AddScoped<IBlogConfigInitializer, BlogConfigInitializer>();
 services.AddScoped<IStartUpInitializer, StartUpInitializer>();
-services.AddScoped<IGithubClient, GithubClient>();
-services.AddScoped<IGithubUserRepositoriesService, GithubUserRepositoriesService>();
 services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
