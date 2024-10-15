@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Localization
 @using System.Globalization
 @using Syncfusion.EJ2
+
 @inject IConfiguration Configuration
 
 @{
@@ -32,9 +33,19 @@
     string syncScript = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/dist/ej2.min.js";
     string shareThisPropertyID = BlogConfig.ContentSettings.ShareThisPropertyId;
     string shareThis = "https://platform-api.sharethis.com/js/sharethis.js#property=" + shareThisPropertyID + "&product=inline-share-buttons&source=platform";
+
+    // Get `sec-ch-prefers-color-scheme` header value
+    // This is to enhance user experience by stopping the screen from blinking when switching pages
+    bool useServerSideDarkMode = false;
+    bool usePrefersColorSchemeHeader = Configuration.GetSection("PrefersColorSchemeHeader:Enabled").Get<bool>();
+    var prefersColorScheme = Context.Request.Headers[Configuration["PrefersColorSchemeHeader:HeaderName"]!];
+    if (usePrefersColorSchemeHeader && prefersColorScheme == "dark")
+    {
+        useServerSideDarkMode = true;
+    }
 }
 <!DOCTYPE html>
-<html lang="@langCode">
+<html lang="@langCode" data-bs-theme="@(useServerSideDarkMode ? "dark" : null)">
 <head profile=@(BlogConfig.GeneralSettings.UseDublinCoreMetaData ? "http://dublincore.org/documents/dcq-html/" : null)>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -108,11 +119,13 @@
     <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/bootstrap-icons/bootstrap-icons.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/lib/cookieconsent/src/styles/base.css" rel="stylesheet" />
-    <link href="~/css/font.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap" rel="stylesheet">
-    
+    <link href="~/fonts/font.css" rel="stylesheet" />
+    <link href="~/css/base.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/rwd.css" rel="stylesheet" asp-append-version="true" />
+
     @await RenderSectionAsync("head", false)
     <link href="~/theme.css" rel="stylesheet" asp-append-version="true" />
     
@@ -238,13 +251,13 @@
         {
             <section class="profile-mobile d-block d-sm-none d-print-none">
                 <div class="card-background-container">
-                    @if(BlogConfig.GeneralSettings.UseGravatarAsProfilePicture)
+                    @if (BlogConfig.GeneralSettings.UseGravatarAsProfilePicture)
                     {
                         <gravatar class="card-bkimg" email="@BlogConfig.GeneralSettings.OwnerEmail" size="256" />
                     }
                     else
                     {
-                        <img class="card-bkimg" alt="" aria-hidden="true" src="@BlogConfig.GeneralSettings.AvatarUrl"/>
+                        <img class="card-bkimg" alt="" aria-hidden="true" src="@BlogConfig.GeneralSettings.AvatarUrl" />
                     }
                 </div>
                 <div class="blogger-intro-content">
@@ -254,14 +267,14 @@
                             {
                                 <gravatar class="rounded-circle blogger-head-pic"
                                           size="256"
-                                          alt="@BlogConfig.GeneralSettings.OwnerName" 
+                                          alt="@BlogConfig.GeneralSettings.OwnerName"
                                           email="@BlogConfig.GeneralSettings.OwnerEmail" />
                             }
                             else
                             {
                                 <img src="@BlogConfig.GeneralSettings.AvatarUrl"
                                      alt="@BlogConfig.GeneralSettings.OwnerName"
-                                     class="rounded-circle blogger-head-pic"/>
+                                     class="rounded-circle blogger-head-pic" />
                             }
                         </div>
                         <div class="col-9 position-relative">
@@ -293,6 +306,7 @@
     </div>
     <div class="clearfix"></div>
     <partial name="_Footer" />
+    <partial name="_LightSwitch" />
     <partial name="_Toast" />
 
     <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>

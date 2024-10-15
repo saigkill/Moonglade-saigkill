@@ -1,12 +1,11 @@
-﻿using System.Globalization;
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using Moonglade.Configuration;
 using Moonglade.Data;
 using Moonglade.Data.Specifications;
 using Moonglade.Utils;
+using System.Globalization;
 
 namespace Moonglade.Core.PostFeature;
 
@@ -35,26 +34,27 @@ public class CreatePostCommandHandler(
       abs = request.Payload.Abstract.Trim();
     }
 
-    var post = new PostEntity
-    {
-      CommentEnabled = request.Payload.EnableComment,
-      Id = Guid.NewGuid(),
-      PostContent = request.Payload.EditorContent,
-      ContentAbstract = abs,
-      CreateTimeUtc = DateTime.UtcNow,
-      LastModifiedUtc = DateTime.UtcNow, // Fix draft orders
-      Slug = request.Payload.Slug.ToLower().Trim(),
-      Author = request.Payload.Author?.Trim(),
-      Title = request.Payload.Title.Trim(),
-      ContentLanguageCode = request.Payload.LanguageCode,
-      IsFeedIncluded = request.Payload.FeedIncluded,
-      PubDateUtc = request.Payload.IsPublished ? DateTime.UtcNow : null,
-      IsDeleted = false,
-      IsPublished = request.Payload.IsPublished,
-      IsFeatured = request.Payload.Featured,
-      HeroImageUrl = string.IsNullOrWhiteSpace(request.Payload.HeroImageUrl) ? null : Helper.SterilizeLink(request.Payload.HeroImageUrl),
-      IsOutdated = request.Payload.IsOutdated,
-    };
+        var utcNow = DateTime.UtcNow;
+        var post = new PostEntity
+        {
+            CommentEnabled = request.Payload.EnableComment,
+            Id = Guid.NewGuid(),
+            PostContent = request.Payload.EditorContent,
+            ContentAbstract = abs,
+            CreateTimeUtc = utcNow,
+            LastModifiedUtc = utcNow, // Fix draft orders
+            Slug = request.Payload.Slug.ToLower().Trim(),
+            Author = request.Payload.Author?.Trim(),
+            Title = request.Payload.Title.Trim(),
+            ContentLanguageCode = request.Payload.LanguageCode,
+            IsFeedIncluded = request.Payload.FeedIncluded,
+            PubDateUtc = request.Payload.IsPublished ? utcNow : null,
+            IsDeleted = false,
+            IsPublished = request.Payload.IsPublished,
+            IsFeatured = request.Payload.Featured,
+            HeroImageUrl = string.IsNullOrWhiteSpace(request.Payload.HeroImageUrl) ? null : Helper.SterilizeLink(request.Payload.HeroImageUrl),
+            IsOutdated = request.Payload.IsOutdated,
+        };
 
         post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{request.Payload.Slug}";
 

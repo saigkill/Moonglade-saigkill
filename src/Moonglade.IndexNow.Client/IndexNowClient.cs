@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace Moonglade.IndexNow.Client;
 
@@ -28,7 +29,14 @@ public class IndexNowClient(ILogger<IndexNowClient> logger, IConfiguration confi
             var client = httpClientFactory.CreateClient(pingTarget);
 
             var requestBody = CreateRequestBody(uri);
-            var content = new StringContent(System.Text.Json.JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+
+            var jso = new JsonSerializerOptions
+            {
+                // Fix 422 issue, some search engines is fracking case sensitive!
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(requestBody, jso), Encoding.UTF8, "application/json");
 
             try
             {
@@ -45,12 +53,15 @@ public class IndexNowClient(ILogger<IndexNowClient> logger, IConfiguration confi
     private IndexNowRequest CreateRequestBody(Uri uri)
     {
         // https://www.indexnow.org/documentation
-        return new IndexNowRequest
+        // "In this option 2, the location of a key file determines the set of URLs that can be included with this key. A key file located at http://example.com/catalog/key12457EDd.txt can include any URLs starting with http://example.com/catalog/ but cannot include URLs starting with http://example.com/help/."
+        // "URLs that are not considered valid in option 2 may not be considered for indexing. It is strongly recommended that you use Option 1 and place your file key at the root directory of your web server."
+        // This is why we should not set KeyLocation = $"https://{uri.Host}/xxxx.txt",
+
+        return new()
         {
             Host = uri.Host,
             Key = _apiKey,
-            KeyLocation = $"https://{uri.Host}/indexnowkey.txt",
-            UrlList = new[] { uri.ToString() }
+            UrlList = [uri.ToString()]
         };
     }
 

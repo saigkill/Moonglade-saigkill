@@ -1,12 +1,24 @@
 ﻿@inject IOptions<AuthenticationSettings> AuthOptions
+@inject IConfiguration Configuration
+
 @{
     if (string.IsNullOrEmpty(BlogConfig.GeneralSettings.AvatarUrl))
     {
         BlogConfig.GeneralSettings.AvatarUrl = Url.Action("Avatar", "Assets");
     }
+
+    // Get `sec-ch-prefers-color-scheme` header value
+    // This is to enhance user experience by stopping the screen from blinking when switching pages
+    bool useServerSideDarkMode = false;
+    bool usePrefersColorSchemeHeader = Configuration.GetSection("PrefersColorSchemeHeader:Enabled").Get<bool>();
+    var prefersColorScheme = Context.Request.Headers[Configuration["PrefersColorSchemeHeader:HeaderName"]!];
+    if (usePrefersColorSchemeHeader && prefersColorScheme == "dark")
+    {
+        useServerSideDarkMode = true;
+    }
 }
 <!DOCTYPE html>
-<html lang="@BlogConfig.GeneralSettings.DefaultLanguageCode">
+<html lang="@BlogConfig.GeneralSettings.DefaultLanguageCode" data-bs-theme="@(useServerSideDarkMode ? "dark" : null)">
 
 <head>
     <title>
@@ -93,6 +105,14 @@
     <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script type="module" src="~/js/app/base.js" asp-append-version="true"></script>
     <script src="~/js/app/httpService.js"></script>
+
+    <script type="module">
+        import * as theme from '/js/app/theme.module.js'
+        window.theme = theme;
+
+        theme.setTheme(theme.getPreferredTheme());
+    </script>
+
     @await RenderSectionAsync("scripts", false)
 </body>
 
