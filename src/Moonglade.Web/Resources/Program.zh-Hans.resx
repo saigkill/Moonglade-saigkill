@@ -324,7 +324,7 @@
   <data name="Disabled" xml:space="preserve">
     <value>不显示</value>
   </data>
-  <data name="Display Name" xml:space="preserve">
+  <data name="Display name" xml:space="preserve">
     <value>显示名称</value>
   </data>
   <data name="Display Order" xml:space="preserve">
@@ -651,7 +651,7 @@
   <data name="Route Name" xml:space="preserve">
     <value>路由名称</value>
   </data>
-  <data name="Feed Items" xml:space="preserve">
+  <data name="Feed items" xml:space="preserve">
     <value>订阅条目数量</value>
   </data>
   <data name="Save" xml:space="preserve">
@@ -878,5 +878,164 @@
   </data>
   <data name="Please make sure you have setup Gravatar with your email address" xml:space="preserve">
     <value>请确保你已经使用你的 Email 注册了 Gravatar</value>
+  </data>
+  <data name="Enter your email to receive reply notifications and display your Gravatar. Your email will not be displayed publicly." xml:space="preserve">
+    <value>输入您的电子邮件以接收回复通知并显示您的 Gravatar。您的电子邮件不会公开显示。</value>
+  </data>
+  <data name="Captcha code" xml:space="preserve">
+    <value>验证码</value>
+  </data>
+  <data name="Email (Optional)" xml:space="preserve">
+    <value>Email (可选)</value>
+  </data>
+  <data name="Default language" xml:space="preserve">
+    <value>默认语言</value>
+  </data>
+  <data name="Blog will use this language for SEO by default unless specified in blog post." xml:space="preserve">
+    <value>博客系统将默认使用此语言进行搜索引擎优化，除非在博客文章中指定语言。</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>个人资料</value>
+  </data>
+  <data name="Dublin Core License URL" xml:space="preserve">
+    <value>都柏林核心许可证URL</value>
+  </data>
+  <data name="Dublin Core Metadata" xml:space="preserve">
+    <value>都柏林核心元数据</value>
+  </data>
+  <data name="Use Dublin Core Metadata" xml:space="preserve">
+    <value>使用都柏林核心元数据</value>
+  </data>
+  <data name="Pronouns" xml:space="preserve">
+    <value>性别认同代词</value>
+  </data>
+  <data name="Subscription buttons" xml:space="preserve">
+    <value>订阅按钮</value>
+  </data>
+  <data name="Show or hide widgets that display on the side bar" xml:space="preserve">
+    <value>显示或隐藏显示在侧边栏上的小组件</value>
+  </data>
+  <data name="Side bar items" xml:space="preserve">
+    <value>侧边栏项目</value>
+  </data>
+  <data name="Comment provider" xml:space="preserve">
+    <value>评论模块提供程序</value>
+  </data>
+  <data name="Automatically close comments on posts older than x days" xml:space="preserve">
+    <value>自动关闭超过 x 天的文章的评论</value>
+  </data>
+  <data name="Blocked words will be masked as * in content." xml:space="preserve">
+    <value>被屏蔽的单词将在内容中被替换为"*"</value>
+  </data>
+  <data name="Built in" xml:space="preserve">
+    <value>内置</value>
+  </data>
+  <data name="Comments display order" xml:space="preserve">
+    <value>评论显示顺序</value>
+  </data>
+  <data name="How many words to use for generating abstract when it's absent, change this value will only affect new posts" xml:space="preserve">
+    <value>当摘要不存在时，使用多少个单词来生成摘要，更改此值只会影响新文章</value>
+  </data>
+  <data name="New to old" xml:space="preserve">
+    <value>从新到旧</value>
+  </data>
+  <data name="Old to new" xml:space="preserve">
+    <value>从旧到新</value>
+  </data>
+  <data name="Set to 0 to never close comments after any days" xml:space="preserve">
+    <value>设置为 0 表示在任何日期后从不关闭评论</value>
+  </data>
+  <data name="Third party" xml:space="preserve">
+    <value>三方</value>
+  </data>
+  <data name="Add watermark only when image pixcel (HxW) is greater than this value." xml:space="preserve">
+    <value>仅当图像像素 （HxW） 大于此值时添加水印</value>
+  </data>
+  <data name="CDN endpoint" xml:space="preserve">
+    <value>CDN 终端</value>
+  </data>
+  <data name="Post title alignment" xml:space="preserve">
+    <value>文章标题对齐方式</value>
+  </data>
+  <data name="Save the origin image as a backup while adding watermark" xml:space="preserve">
+    <value>添加水印时将原始图像保存为备份</value>
+  </data>
+  <data name="Show post outline as side navigation" xml:space="preserve">
+    <value>在侧边导航栏显示文章大纲</value>
+  </data>
+  <data name="Transparency value (0-255)." xml:space="preserve">
+    <value>透明度值 （0-255）</value>
+  </data>
+  <data name="Watermark skip pixel threshold" xml:space="preserve">
+    <value>跳过水印像素阈值</value>
+  </data>
+  <data name="Watermark will be placed at the right bottom corner of the image" xml:space="preserve">
+    <value>水印将放置在图像的右下角</value>
+  </data>
+  <data name="Word count in abstract" xml:space="preserve">
+    <value>摘要字数</value>
+  </data>
+  <data name="Azure App Service" xml:space="preserve">
+    <value>Azure 应用服务</value>
+  </data>
+  <data name="Azure Front Door" xml:space="preserve">
+    <value>Azure Front Door</value>
+  </data>
+  <data name="Clear menus" xml:space="preserve">
+    <value>清空菜单</value>
+  </data>
+  <data name="Client IP Address" xml:space="preserve">
+    <value>客户端 IP 地址</value>
+  </data>
+  <data name="Enable custom menus" xml:space="preserve">
+    <value>启用自定义菜单</value>
+  </data>
+  <data name="Enable OPML" xml:space="preserve">
+    <value>启用 OPML</value>
+  </data>
+  <data name="Enable Webmention" xml:space="preserve">
+    <value>启用 Webmention</value>
+  </data>
+  <data name="Example" xml:space="preserve">
+    <value>样例</value>
+  </data>
+  <data name="Example code" xml:space="preserve">
+    <value>样例代码</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="Foot JavaScript" xml:space="preserve">
+    <value>尾部 JavaScript</value>
+  </data>
+  <data name="Forwarded Headers" xml:space="preserve">
+    <value>转发头</value>
+  </data>
+  <data name="Legal Infomation" xml:space="preserve">
+    <value>法律信息</value>
+  </data>
+  <data name="Report an issue" xml:space="preserve">
+    <value>报告问题</value>
+  </data>
+  <data name="Server Time Zone" xml:space="preserve">
+    <value>服务器时区</value>
+  </data>
+  <data name="Using a third party script may cause your website to be blocked by some browsers or ad blockers, it can have security risks too. Please use with caution." xml:space="preserve">
+    <value>使用第三方脚本可能会导致您的网站被某些浏览器或广告拦截器阻止，也可能存在安全风险。请谨慎使用。</value>
+  </data>
+  <data name="Change Password" xml:space="preserve">
+    <value>修改密码</value>
+  </data>
+  <data name="Unpublish this post" xml:space="preserve">
+    <value>取消发布这篇文章</value>
+  </data>
+  <data name="Unpublish Post" xml:space="preserve">
+    <value>取消发布文章</value>
+  </data>
+  <data name="Unpublishing this post will remove it from the public site and turn it into a draft. This will have impact on SEO. Please confirm." xml:space="preserve">
+    <value>取消发布此文章会将其从公共站点中删除，并将其转换为草稿。这将对 SEO 产生影响。请确认。</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
   </data>
 </root>
