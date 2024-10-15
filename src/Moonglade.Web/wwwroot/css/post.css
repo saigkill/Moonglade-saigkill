@@ -1,4 +1,4 @@
-.featured-post-banner {
+﻿.featured-post-banner {
     top: 0;
     right: 0;
     width: 50px;
@@ -34,7 +34,8 @@
     padding: 28px 38px;
 }
 
-.post-content h1, h1.post-title {
+h1.post-title,
+.post-content h1 {
     font-size: 1.6rem;
 }
 
@@ -51,7 +52,7 @@
 }
 
 .post-content p {
-    font-size: .95rem;
+    font-size: 0.95rem;
     line-height: 1.6rem;
     margin-bottom: 15px;
     word-wrap: break-word;
@@ -68,7 +69,7 @@
 }
 
 .post-publish-info {
-    font-size: .75rem;
+    font-size: 0.75rem;
 }
 
 .post-slug-actions {
@@ -87,7 +88,9 @@
     padding: 10px 20px;
 }
 
-    .post-content blockquote ol:last-child, .post-content blockquote p:last-child, .post-content blockquote ul:last-child {
+    .post-content blockquote p:last-child,
+    .post-content blockquote ul:last-child,
+    .post-content blockquote ol:last-child {
         margin-bottom: 0;
     }
 
@@ -95,6 +98,14 @@
     .post-content blockquote small,
     .post-content blockquote .small {
         font-size: 80%;
+    }
+
+.comment-form-containter {
+    padding: 20px 38px;
+}
+
+    .comment-form-containter .card-subtitle {
+        font-size: 1rem;
     }
 
 .comment-list .thumbnail {
@@ -109,8 +120,9 @@ pre {
     display: grid !important;
 }
 
-code, pre {
-    font-family: Cascadia Code, Consolas, SFMono-Regular, Menlo, Monaco, Liberation Mono, Courier New, monospace;
+pre,
+code {
+    font-family: "Cascadia Code", Consolas, SFMono-Regular, Menlo, Monaco, "Liberation Mono", "Courier New", monospace;
     white-space: pre-wrap;
     word-wrap: break-word;
 }
@@ -132,12 +144,42 @@ math {
     visibility: hidden;
 }
 
-@media (max-width:767px) {
-    .post-content h1, h1.post-title {
+.comment-item {
+    background-color: var(--bs-white);
+}
+
+@media (max-width: 767px) {
+    h1.post-title, .post-content h1 {
         font-size: 1.4rem;
     }
 
     .post-content h2 {
         font-size: 1.3rem;
     }
+}
+
+[data-bs-theme=dark] .article-post-slug {
+    background-color: transparent !important;
+    padding: 0;
+    border: 0 none !important;
+}
+
+[data-bs-theme=dark] math {
+    background-color: #2e2e2e;
+    border: 1px solid #454545;
+    color: #e3e3e3;
+}
+
+[data-bs-theme=dark] .comment-item {
+    background-color: var(--bs-body-bg);
+}
+
+[data-bs-theme=dark] .post-content blockquote,
+[data-bs-theme=dark] .post-content .blockquote {
+    border-left: 5px solid var(--bs-border-color);
+    color: var(--bs-secondary-color);
+}
+
+[data-bs-theme=dark] .comment-form-containter {
+    background-color: transparent !important;
 }

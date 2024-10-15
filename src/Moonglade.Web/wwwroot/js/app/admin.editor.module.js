@@ -64,28 +64,26 @@ function warnDirtyForm(e) {
 function loadTinyMCE(e) {
     void 0 !== window.tinyMCE &&
         window.tinyMCE.init({
-            selector: e,
-            themes: "silver",
-            skin: "tinymce-5",
-            height: "calc(100vh - 400px)",
-            relative_urls: !1,
-            browser_spellcheck: !0,
-            branding: !1,
-            promotion: !1,
-            block_formats: "Paragraph=p; Header 2=h2; Header 3=h3; Header 4=h4; Preformatted=pre",
-            plugins:
-                "advlist autolink autosave link image lists charmap preview anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table directionality codesample emoticons",
-            toolbar:
-                "undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | paste pastetext removeformat | hr link image codesample | charmap emoticons table media | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code | fullscreen",
+            selector: textareaSelector,
+            themes: 'silver',
+            skin: (window.theme.getPreferredTheme() == 'dark' ? 'oxide-dark' : 'tinymce-5'),
+            height: 'calc(100vh - 400px)',
+            relative_urls: false, // avoid image upload fuck up
+            browser_spellcheck: true,
+            branding: false,
+            promotion: false,
+            block_formats: 'Paragraph=p; Header 2=h2; Header 3=h3; Header 4=h4; Preformatted=pre',
+            plugins: 'advlist autolink autosave link image lists charmap preview anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table directionality codesample emoticons',
+            toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | paste pastetext removeformat | hr link image codesample | charmap emoticons table media | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code | fullscreen',
             save_onsavecallback: function () {
                 document.querySelector("#btn-save").click();
             },
-            paste_data_images: !0,
-            images_upload_url: "/image",
-            images_upload_credentials: !0,
-            extended_valid_elements: "img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|loading=lazy]",
-            body_class: "post-content",
-            content_css: "/css/tinymce-custom.css",
+            paste_data_images: true,
+            images_upload_url: '/image',
+            images_upload_credentials: true,
+            extended_valid_elements: 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|loading=lazy]',
+            body_class: 'post-content',
+            content_css: (window.theme.getPreferredTheme() == 'dark' ? "/css/tinymce-custom-dark.css" : '/css/tinymce-custom.css'),
             codesample_languages: [
                 { text: "Bash", value: "bash" },
                 { text: "C#", value: "csharp" },
@@ -117,19 +115,45 @@ function loadTinyMCE(e) {
                 { text: "WASM", value: "wasm" },
                 { text: "YAML", value: "yaml" },
             ],
-            setup: function (e) {
-                e.on("NodeChange", function (e) {
-                    "IMG" === e.element.tagName && e.element.setAttribute("loading", "lazy");
+            setup: function (editor) {
+                editor.on('init', () => {
+                    if (window.theme.getPreferredTheme() == 'dark') {
+                        const container = editor.getContainer();
+                        const iframe = container.querySelector('iframe');
+                        const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                        innerDoc.documentElement.setAttribute('data-bs-theme', 'dark');
+                    }
                 });
-            },
+
+                editor.on('NodeChange', function (e) {
+                    if (e.element.tagName === 'IMG') {
+                        e.element.setAttribute('loading', 'lazy');
+                    }
+                });
+            }
         });
+    }
 }
-function keepAlive() {
-    setInterval(function () {
-        var e = Math.random();
-        fetch("/api/post/keep-alive", { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, credentials: "include", body: JSON.stringify({ nonce: e }) }).then(async (e) => {
-            console.info("live");
-        });
-    }, 6e4);
+
+export function keepAlive() {
+    const tid = setInterval(postNonce, 60 * 1000);
+    function postNonce() {
+        const num = Math.random();
+        fetch('/api/post/keep-alive',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ nonce: num })
+            }).then(async (response) => {
+                console.info('live');
+            });
+    }
+    function abortTimer() {
+        clearInterval(tid);
+    }
 }
-export { initEvents, warnDirtyForm, loadTinyMCE, keepAlive };

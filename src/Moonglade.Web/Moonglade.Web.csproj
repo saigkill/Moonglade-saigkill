@@ -35,6 +35,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot\css\tinymce-custom-dark.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Edi.Gravatar" Version="1.1.0" />
@@ -42,11 +46,10 @@
     <PackageReference Include="Edi.PasswordGenerator" Version="2.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="8.0.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="27.1.48" />
     <PackageReference Include="Syncfusion.Licensing" Version="27.1.48" />
     
-    <PackageReference Include="TinyMCE" Version="7.3.0" />
+    <PackageReference Include="TinyMCE" Version="7.4.1" />
     <PackageReference Include="Moonglade.MonacoEditor" Version="0.50.0.1002" />
   </ItemGroup>
   <ItemGroup>

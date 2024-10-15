@@ -50,14 +50,15 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
     _useMySqlWorkaround = dbType!.ToLower().Trim() == "mysql";
   }
 
-  public async Task<PostEntity> Handle(UpdatePostCommand request, CancellationToken ct)
-  {
-    var (guid, postEditModel) = request;
-    var post = await _postRepo.GetByIdAsync(guid, ct);
-    if (null == post)
+    public async Task<PostEntity> Handle(UpdatePostCommand request, CancellationToken ct)
     {
-      throw new InvalidOperationException($"Post {guid} is not found.");
-    }
+        var utcNow = DateTime.UtcNow;
+        var (guid, postEditModel) = request;
+        var post = await _postRepo.GetByIdAsync(guid, ct);
+        if (null == post)
+        {
+            throw new InvalidOperationException($"Post {guid} is not found.");
+        }
 
     post.CommentEnabled = postEditModel.EnableComment;
     post.PostContent = postEditModel.EditorContent;
@@ -74,11 +75,11 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
       post.ContentAbstract = postEditModel.Abstract.Trim();
     }
 
-    if (postEditModel.IsPublished && !post.IsPublished)
-    {
-      post.IsPublished = true;
-      post.PubDateUtc = DateTime.UtcNow;
-    }
+        if (postEditModel.IsPublished && !post.IsPublished)
+        {
+            post.IsPublished = true;
+            post.PubDateUtc = utcNow;
+        }
 
     // #325: Allow changing publish date for published posts
     if (postEditModel.ChangePublishDate && postEditModel.PublishDate is not null && post.PubDateUtc.HasValue)
@@ -91,7 +92,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         post.Author = postEditModel.Author?.Trim();
         post.Slug = postEditModel.Slug.ToLower().Trim();
         post.Title = postEditModel.Title.Trim();
-        post.LastModifiedUtc = DateTime.UtcNow;
+        post.LastModifiedUtc = utcNow;
         post.IsFeedIncluded = postEditModel.FeedIncluded;
         post.ContentLanguageCode = postEditModel.LanguageCode;
         post.IsFeatured = postEditModel.Featured;
