@@ -32,10 +32,3 @@
     font-weight: 400;
     src: local('Segoe UI Light'), local('SegoeUILight'), url('../fonts/segoeuil.ttf') format('ttf');
 }
-
-@font-face {
-    font-family: 'Space Grotesk Light';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Space Grotesk Light'), local('SpaceGroteskLight'), url('../fonts/SpaceGrotesk-VariableFont_wght.ttf') format('ttf');
-}
