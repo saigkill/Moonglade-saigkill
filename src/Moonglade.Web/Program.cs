@@ -96,6 +96,7 @@ public class Program
     {
       builder.Logging.AddAzureWebAppDiagnostics();
     }
+    builder.Services.AddApplicationInsightsTelemetry();
   }
 
   private static void ConfigureSyncfusion(WebApplicationBuilder builder)
