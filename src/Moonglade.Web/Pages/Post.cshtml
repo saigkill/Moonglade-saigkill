@@ -2,7 +2,6 @@
 @model Moonglade.Web.Pages.PostModel
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Moonglade.Utils
-@using Moonglade.Web.Models
 
 @Html.AntiForgeryToken()
 
@@ -20,8 +19,6 @@
     {
         ViewBag.Keywords = string.Join(", ", Model.Post.Tags.Select(t => t.NormalizedName));
     }
-
-    TimeToRead timeToRead = Model.Post.GetTimeToRead();
 }
 
 @section meta {
@@ -154,10 +151,6 @@
             <i class="bi-clock"></i>
             <span id="reading-time"></span>
         </div>
-				
-        <span>&nbsp;</span>
-        <i class="bi-clock d-none d-sm-inline"></i>
-        <span class="d-none d-sm-inline">@timeToRead.Minutes @timeToRead.StrMinutes @timeToRead.Seconds @timeToRead.StrSeconds</span>
     </header>
 
     @if (Model.Post.IsOutdated)

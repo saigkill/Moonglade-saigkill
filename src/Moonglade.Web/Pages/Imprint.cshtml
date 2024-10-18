@@ -5,6 +5,18 @@
 @{
     var urltemplate = "http://a.tile.openstreetmap.org/level/tileX/tileY.png";
 
+    var zoom = new MapsZoomSettings()
+    {
+        Enable = true,
+        ZoomFactor = 15
+    };
+
+    var centerPosition = new MapsCenterPosition()
+    {
+        Latitude = Model.MarkerDataList.FirstOrDefault().latitude,
+        Longitude = Model.MarkerDataList.FirstOrDefault().longitude
+    };
+
     var marker = new List<MapsMarker>()
     {
         new Syncfusion.EJ2.Maps.MapsMarker()
@@ -46,9 +58,7 @@
     <div class="row">
         <div class="col-md-12">
             <div id="control-section">
-                <ejs-maps id="maps" load="window.onMapLoad">
-                    <e-maps-zoomsettings zoomFactor=15></e-maps-zoomsettings>
-                    <e-maps-centerposition latitude=@Model.MarkerDataList.FirstOrDefault().latitude longitude=@Model.MarkerDataList.FirstOrDefault().longitude></e-maps-centerposition>
+                <ejs-maps id="maps" load="window.onMapLoad" zoomSettings="zoom" centerPosition="centerPosition">
                     <e-maps-layers>
                         <e-maps-layer urlTemplate=@urltemplate markerSettings=@marker></e-maps-layer>
                     </e-maps-layers>
@@ -57,6 +67,7 @@
         </div>
     </div>
 </div>
+<br />
 <h2 id="m56">@Model.Contact.Value</h2>
 <p><a href="mailto:Sascha.Manns@outlook.de" target="_blank" rel="noopener">Email</a></p>
 <h2 id="m172">@Model.Socialmedia.Value</h2><p><strong>@Model.Other.Value:</strong> </p>
