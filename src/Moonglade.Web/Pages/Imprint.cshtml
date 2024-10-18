@@ -1,32 +1,37 @@
 ﻿@page "/pages/imprint"
 @model Moonglade.Web.Pages.ImprintModel
+@using Syncfusion.EJ2;
 @using Syncfusion.EJ2.Maps
 @{
-    var TextStyle = new MapsFont { Size = "16px", FontFamily = "inherit" };
-    var CenterPosition = new MapsCenterPosition { Latitude = 50.33, Longitude = 7.26 };
-    var Markers = new List<Syncfusion.EJ2.Maps.MapsMarker>
+    var urltemplate = "http://a.tile.openstreetmap.org/level/tileX/tileY.png";
+
+    var marker = new List<MapsMarker>()
     {
-        new Syncfusion.EJ2.Maps.MapsMarker
+        new Syncfusion.EJ2.Maps.MapsMarker()
         {
             Visible = true,
-            Template = "<div><img src='images/marker-pen.png' alt='Marker for a location' style='height:50px;width:40px;'></img></div>",
-            TooltipSettings = new MapsTooltipSettings { Visible = true, ValuePath="name" },
-            DataSource = new[]
-            {
-                new
-                {
-                    name="Mayen, Rhinleland Palatinate, Germany",
-                    latitude=50.32715,
-                    longitude=7.21777
-                }
-
-            }
+            Template =
+                "<div><img src='https://moongladestorage2024.blob.core.windows.net/moongladeimages2024/marker-pen.png' alt='Mayen' style='height:50px;width:40px;'></img></div>",
+            TooltipSettings = new MapsTooltipSettings { Visible = true, ValuePath = "name" },
+            DataSource = Model.MarkerDataList,
+            Height = 25,
+            Width = 25
         }
     };
+    
 }
 @section Scripts {
     <script>
         function onMapLoad(args) {
+            // args.maps.layers[0].navigationLineSettings = [
+            //     {
+            //         visible: true,
+            //         latitude: [40.724546, 34.060620],
+            //         longitude: [-73.850344, -118.330491],
+            //         color: 'blue',
+            //         angle: 0.1
+            //     }
+            // ];
         }
     </script>
 }
@@ -40,17 +45,14 @@
 <div class="control-section">
     <div class="row">
         <div class="col-md-12">
-            @* <ejs-maps id="maps" load="window.onMapLoad" centerPosition="CenterPosition">
-                <e-maps-titlesettings alignment="@Syncfusion.EJ2.Maps.Alignment.Center" text="Headquarter of Sascha Manns" textStyle="@TextStyle">
-                </e-maps-titlesettings>
-                <e-maps-zoomsettings zoomFactor="10" enable="false"></e-maps-zoomsettings>
-                <e-maps-layers>
-                    <e-maps-layer layerType="@Syncfusion.EJ2.Maps.ShapeLayerType.OSM" markerSettings="@Markers">
-                    </e-maps-layer>
-                </e-maps-layers>
-            </ejs-maps> *@
-            <div style="float: right">
-                <a href="https://www.openstreetmap.org/copyright" rel="noopener" target="_blank">© OpenStreetMap contributors</a>
+            <div id="control-section">
+                <ejs-maps id="maps" load="window.onMapLoad">
+                    <e-maps-zoomsettings zoomFactor=15></e-maps-zoomsettings>
+                    <e-maps-centerposition latitude=@Model.MarkerDataList.FirstOrDefault().latitude longitude=@Model.MarkerDataList.FirstOrDefault().longitude></e-maps-centerposition>
+                    <e-maps-layers>
+                        <e-maps-layer urlTemplate=@urltemplate markerSettings=@marker></e-maps-layer>
+                    </e-maps-layers>
+                </ejs-maps>
             </div>
         </div>
     </div>

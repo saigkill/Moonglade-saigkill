@@ -20,9 +20,18 @@ namespace Moonglade.Web.Pages
     public PagesContentEntity Other { get; set; }
     public PagesContentEntity Liability { get; set; }
     public PagesContentEntity Disclaimer { get; set; }
+    public List<MarkerData> MarkerDataList { get; set; }
+    public string AzureMapsKey { get; set; }
 
     public async Task<IActionResult> OnGetAsync()
     {
+      MarkerDataList = new List<MarkerData>
+      {
+        new MarkerData() { latitude = 50.328794700, longitude = 7.2172333, city = "Mayen" }
+      };
+
+      AzureMapsKey = "4cYIJcSke6yULAsAwErczd4rMJxmSikjMhnd1FnBznUL2FKLQvSBJQQJ99AJAC5RqLJlEuHRAAAgAZMP2M0Y";
+
       var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
       var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
       Disclaimer1 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer1", "imprint", convertedCulture));
@@ -38,6 +47,13 @@ namespace Moonglade.Web.Pages
       Disclaimer = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer", "imprint", convertedCulture));
 
       return Page();
+    }
+
+    public class MarkerData
+    {
+      public double latitude { get; set; }
+      public double longitude { get; set; }
+      public string city { get; set; }
     }
   }
 }
