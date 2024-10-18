@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+
 using Moonglade.Core.PostFeature;
 using Moonglade.Web.PagedList;
 
@@ -6,17 +7,18 @@ namespace Moonglade.Web.Pages;
 
 public class IndexModel(IBlogConfig blogConfig, IMediator mediator) : PageModel
 {
-    public BasePagedList<PostDigest> Posts { get; set; }
+  public BasePagedList<PostDigest> Posts { get; set; }
 
-    public async Task OnGet(int p = 1)
-    {
-        var pagesize = blogConfig.ContentSettings.PostListPageSize;
+  public async Task OnGet(int p = 1)
+  {
 
-        var posts = await mediator.Send(new ListPostsQuery(pagesize, p));
-        var totalPostsCount = await mediator.Send(new CountPostQuery(CountType.Public));
+    var pagesize = blogConfig.ContentSettings.PostListPageSize;
 
-        var list = new BasePagedList<PostDigest>(posts, p, pagesize, totalPostsCount);
+    var posts = await mediator.Send(new ListPostsQuery(pagesize, p));
+    var totalPostsCount = await mediator.Send(new CountPostQuery(CountType.Public));
 
-        Posts = list;
-    }
+    var list = new BasePagedList<PostDigest>(posts, p, pagesize, totalPostsCount);
+
+    Posts = list;
+  }
 }

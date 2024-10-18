@@ -34,6 +34,17 @@ namespace Moonglade.Data.Entities
           return Language.English;
       }
     }
+
+    public static string CheckLanguage(string culture)
+    {
+      switch (culture)
+      {
+        case "de-de":
+          return "de-de";
+        default:
+          return "en-us";
+      }
+    }
   }
 }
 
