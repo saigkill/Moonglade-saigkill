@@ -10,7 +10,6 @@ namespace Moonglade.Web.Pages
   public class CurriculumVitaeModel(IMediator mediator) : PageModel
   {
     public List<CertificateEntity> Certificates { get; set; }
-    public List<TestimonialEntity> Testimonials { get; set; }
     public PagesContentEntity Intro { get; set; }
     public PagesContentEntity Intro1 { get; set; }
     public PagesContentEntity Intro2 { get; set; }
@@ -32,7 +31,6 @@ namespace Moonglade.Web.Pages
     public async Task<IActionResult> OnGetAsync()
     {
       Certificates = await mediator.Send(new GetAllCertificatesQuery());
-      Testimonials = await mediator.Send(new GetAllTestimonialsQuery());
 
       var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
       var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);

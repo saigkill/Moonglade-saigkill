@@ -1038,4 +1038,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>確認する</value>
   </data>
+  <data name="testimonials" xml:space="preserve">
+    <value>Testimonials</value>
+  </data>
 </root>

@@ -8,12 +8,10 @@
     <environment exclude="Development">
         <link href="~/css/cv.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
-        @* <link rel="stylesheet" href="~/css/testimonial-test.min.css" /> *@
     </environment>
     <environment include="Development">
         <link href="~/css/cv.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.css" />
-        @* <link rel="stylesheet" href="~/css/testimonial-test.css" /> *@
     </environment>
 }
 @section scripts {
@@ -37,6 +35,7 @@
     </environment>
     
     <script src="~/lib/typeit/dist/index.umd.js"></script>
+    <script src="~/js/app/replaceJobs.js"></script>
 }
 
 <section id="intro">
@@ -56,7 +55,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-5">
-                    <h3 class="text-uppercase">@Model.AboutName.Value <span class="text-primary">Sascha Manns.</span> @Model.AboutJob.Value @age @Model.AboutYear.Value <br /> Software & Data Engineer @* <span id="replaceJobs"></span> *@</h3>
+                    <h3 class="text-uppercase">@Model.AboutName.Value <span class="text-primary">Sascha Manns.</span> @Model.AboutJob.Value @age @Model.AboutYear.Value <br /> @*Software & Data Engineer*@ <span id="replaceJobs"></span></h3>
                     <div class="mt-5 pt-2">
                         <p>@Model.AboutProgram.Value</p>
                         <div class="">
@@ -215,33 +214,3 @@
         </div>
     </div>
 </section>
-
-                        
-<!-- Testimonials-->
-@* <section id="testimonials">
-    <h1>@SharedLocalizer["testimonial-testimonials"]</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-offset2 col-md-8">
-                <div class="control-container">
-                    <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" interval="8000" showIndicators="false">
-                        <e-carousel-items>
-                            @foreach (var test in Model.Testimonials)
-                            {
-                                <e-carousel-item template='<figure class="snip1157">
-    <blockquote>@test.Summary
-        <div class="arrow"></div>
-    </blockquote>
-    <img src="@test.ImagePath" alt="sq-sample3" />
-                                                                                 <div class="author">
-                                                                                     <h5>@test.Recommender <span> @test.RecommenderJob <br /> @test.RecommenderLocation</span></h5>
-                                                                                 </div>
-                                                                             </figure>'></e-carousel-item>
-                            }
-                        </e-carousel-items>
-                    </ejs-carousel>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> *@
