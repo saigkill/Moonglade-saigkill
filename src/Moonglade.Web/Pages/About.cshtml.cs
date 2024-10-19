@@ -41,6 +41,7 @@ namespace Moonglade.Web.Pages
       ViewModel.LastUpdated = await mediator.Send(new GetPageContentByKeyValueQuery("last-updated", "about", convertedCulture));
       ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
       ViewModel.NugetPackages = await mediator.Send(new GetAllNugetPackagesQuery());
+      ViewModel.Testimonials = await mediator.Send(new GetAllTestimonialsQuery());
       return Page();
     }
   }
@@ -49,6 +50,7 @@ namespace Moonglade.Web.Pages
   {
     public List<MembershipEntity> Memberships { get; set; }
     public List<MandateEntity> Mandates { get; set; }
+    public List<TestimonialEntity> Testimonials { get; set; }
     public List<HonoraryPositionEntity> HonoraryPositions { get; set; }
     public List<PublicationEntity> Publications { get; set; }
     public List<UserRepository> Repositories { get; set; }

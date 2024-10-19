@@ -6,10 +6,12 @@
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
         <link rel="stylesheet" href="~/css/about.min.css"/>
+        <link rel="stylesheet" href="~/css/testimonial-test.css" />
     </environment>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.css" />
         <link rel="stylesheet" href="~/css/about.css"/>
+        <link rel="stylesheet" href="~/css/testimonial-test.css" />
     </environment>
 }
 
@@ -175,3 +177,31 @@
         }
     </div>
 </div>
+<br />
+
+<!-- Testimonials-->
+<section id="testimonials">
+    <h1>@SharedLocalizer["testimonials"]</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset2 col-md-8">
+                <div class="control-container">
+                    <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" interval="8000" showIndicators="false">
+                        <e-carousel-items>
+                            @foreach (var test in Model.ViewModel.Testimonials)
+                            {
+                                <e-carousel-item template='<figure class="snip1157">
+                                    <blockquote>@test.Summary
+                                        <div class="arrow"></div>
+                                    </blockquote>
+                                    <img src="@test.ImagePath" alt="sq-sample3" />
+                                    <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
+                                    </figure>'></e-carousel-item>
+                            }
+                        </e-carousel-items>
+                    </ejs-carousel>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
