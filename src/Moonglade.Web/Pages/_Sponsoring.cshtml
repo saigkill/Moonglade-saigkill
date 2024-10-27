@@ -1,67 +1,68 @@
-﻿@{
+﻿@model PostModel
+@{
 }
 
-@if (BlogConfig.SocialProfileSettings.BuyMeACoffee != null)
+@if (Model.BuyMeACoffee.Url != null)
 {
     <li class="list-inline-item">
-        <a rel="me" href="@BlogConfig.SocialProfileSettings.BuyMeACoffee" title="Buy me a coffee">
+        <a rel="me" href="@Model.BuyMeACoffee.Url" title="@Model.BuyMeACoffee.Name">
             <span class="fa-stack fa-2x fa-hover-spin">
                 <i class="fa-solid fa-square fa-stack-1x"></i>
-                <i class="fa-solid fa-mug-hot fa-stack-1x fa-inverse"></i>
+                <i class="@Model.BuyMeACoffee.Icon fa-stack-1x fa-inverse"></i>
             </span>
-            Buy me a coffee
+            @Model.BuyMeACoffee.Name
         </a>
     </li>
 }
 
-@if (BlogConfig.SocialProfileSettings.Liberapay != null)
+@if (Model.Liberapay.Url != null)
 {
     <li class="list-inline-item">
-        <a rel="me" href="@BlogConfig.SocialProfileSettings.Liberapay" title="Liberapay">
+        <a rel="me" href="@Model.Liberapay.Url" title="@Model.Liberapay.Name">
             <span class="fa-stack fa-2x fa-hover-spin">
                 <i class="fa-solid fa-square fa-stack-1x"></i>
-                <i class="fa-solid fa-coins fa-stack-1x fa-inverse"></i>
+                <i class="@Model.Liberapay.Icon fa-stack-1x fa-inverse"></i>
             </span>
-            Liberapay
+            @Model.Liberapay.Name
         </a>
     </li>
 }
 
-@if (BlogConfig.SocialProfileSettings.Patreon != null)
+@if (Model.Patreon.Url != null)
 {
     <li class="list-inline-item">
-        <a rel="me" href="@BlogConfig.SocialProfileSettings.Patreon" title="Patreon">
+        <a rel="me" href="@Model.Patreon.Url" title="@Model.Patreon.Name">
             <span class="fa-stack fa-2x fa-hover-spin">
                 <i class="fa-solid fa-square fa-stack-1x"></i>
-                <i class="fa-brands fa-patreon fa-stack-1x fa-inverse"></i>
+                <i class="@Model.Patreon.Icon fa-stack-1x fa-inverse"></i>
             </span>
-            Patreon
+            @Model.Patreon.Name
         </a>
     </li>
 }
 
-@if (BlogConfig.SocialProfileSettings.AmazonWishlist != null)
+@if (Model.AmazonWishlist.Url != null)
 {
     <li class="list-inline-item">
-        <a rel="me" href="@BlogConfig.SocialProfileSettings.AmazonWishlist" title="Amazon Wishlist">
+        <a rel="me" href="@Model.AmazonWishlist.Url" title="@Model.AmazonWishlist.Name">
             <span class="fa-stack fa-2x fa-hover-spin">
                 <i class="fa-solid fa-square fa-stack-1x"></i>
-                <i class="fa-brands fa-amazon fa-stack-1x fa-inverse"></i>
+                <i class="@Model.AmazonWishlist.Icon fa-stack-1x fa-inverse"></i>
             </span>
-            Amazon Wishlist
+            @Model.AmazonWishlist.Name
         </a>
     </li>
 }
 
-@if (BlogConfig.SocialProfileSettings.Paypal != null)
+@if (Model.Paypal.Url != null)
 {
     <li class="list-inline-item">
-        <a rel="me" href="@BlogConfig.SocialProfileSettings.Paypal" title="Paypal">
+        <a rel="me" href="@Model.Paypal.Url" title="@Model.Paypal.Name">
             <span class="fa-stack fa-2x fa-hover-spin">
                 <i class="fa-solid fa-square fa-stack-1x"></i>
-                <i class="fa-brands fa-paypal fa-stack-1x fa-inverse"></i>
+                <i class="@Model.Paypal.Icon fa-stack-1x fa-inverse"></i>
             </span>
-            Paypal
+            @Model.Paypal.Name
         </a>
     </li>
 }

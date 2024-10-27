@@ -15,7 +15,7 @@ public class GetSocialLinkQueryHandler(IBlogConfig blogConfig) : IRequestHandler
       return Task.FromResult(new SocialLink { });
     }
 
-    var links = blogConfig.SocialLinkSettings.Links.FirstOrDefault(l => l.Name == request.name);
-    return Task.FromResult(links);
+    var link = Array.Find(blogConfig.SocialLinkSettings.Links, e => e.Name == request.name);
+    return Task.FromResult(link);
   }
 }

@@ -16,7 +16,6 @@ public interface IBlogConfig
   LocalAccountSettings LocalAccountSettings { get; set; }
   SocialLinkSettings SocialLinkSettings { get; set; }
   SystemManifestSettings SystemManifestSettings { get; set; }
-  SocialProfileSettings SocialProfileSettings { get; set; }
   IEnumerable<int> LoadFromConfig(IDictionary<string, string> config);
   KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings;
 }
@@ -35,7 +34,6 @@ public class BlogConfig : IBlogConfig
 
   public AdvancedSettings AdvancedSettings { get; set; }
   public CustomStyleSheetSettings CustomStyleSheetSettings { get; set; }
-  public SocialProfileSettings SocialProfileSettings { get; set; }
   public CustomMenuSettings CustomMenuSettings { get; set; }
   public LocalAccountSettings LocalAccountSettings { get; set; }
 
@@ -55,7 +53,6 @@ public class BlogConfig : IBlogConfig
     CustomMenuSettings = AssignValueForConfigItem(10, CustomMenuSettings.DefaultValue, config);
     LocalAccountSettings = AssignValueForConfigItem(11, LocalAccountSettings.DefaultValue, config);
     SocialLinkSettings = AssignValueForConfigItem(12, SocialLinkSettings.DefaultValue, config);
-    SocialProfileSettings = AssignValueForConfigItem(13, SocialProfileSettings.DefaultValue, config);
 
     // Special case
     SystemManifestSettings = AssignValueForConfigItem(99, SystemManifestSettings.DefaultValue, config);

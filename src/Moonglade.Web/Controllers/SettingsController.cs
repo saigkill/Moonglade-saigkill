@@ -60,16 +60,6 @@ public class SettingsController(
     return NoContent();
   }
 
-  [HttpPost("social")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  public async Task<IActionResult> Social(SocialProfileSettings model)
-  {
-    blogConfig.SocialProfileSettings = model;
-
-    await SaveConfigAsync(blogConfig.SocialProfileSettings);
-    return NoContent();
-  }
-
   [HttpPost("content")]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
   public async Task<IActionResult> Content(ContentSettings model)
@@ -169,31 +159,31 @@ public class SettingsController(
     return NoContent();
   }
 
-    [HttpPost("social-link")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> SocialLink(SocialLinkSettingsJsonModel model)
+  [HttpPost("social-link")]
+  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  public async Task<IActionResult> SocialLink(SocialLinkSettingsJsonModel model)
+  {
+    if (model.IsEnabled && string.IsNullOrWhiteSpace(model.JsonData))
     {
-        if (model.IsEnabled && string.IsNullOrWhiteSpace(model.JsonData))
-        {
-            ModelState.AddModelError(nameof(SocialLinkSettingsJsonModel.JsonData), "JsonData is required");
-            return BadRequest(ModelState.CombineErrorMessages());
-        }
-
-        blogConfig.SocialLinkSettings = new()
-        {
-            IsEnabled = model.IsEnabled,
-            Links = model.JsonData.FromJson<SocialLink[]>()
-        };
-
-        await SaveConfigAsync(blogConfig.SocialLinkSettings);
-        return NoContent();
+      ModelState.AddModelError(nameof(SocialLinkSettingsJsonModel.JsonData), "JsonData is required");
+      return BadRequest(ModelState.CombineErrorMessages());
     }
 
-    [HttpPost("reset")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> Reset(BlogDbContext context, IHostApplicationLifetime applicationLifetime)
+    blogConfig.SocialLinkSettings = new()
     {
-        logger.LogWarning($"System reset is requested by '{User.Identity?.Name}', IP: {Helper.GetClientIP(HttpContext)}.");
+      IsEnabled = model.IsEnabled,
+      Links = model.JsonData.FromJson<SocialLink[]>()
+    };
+
+    await SaveConfigAsync(blogConfig.SocialLinkSettings);
+    return NoContent();
+  }
+
+  [HttpPost("reset")]
+  [ProducesResponseType(StatusCodes.Status202Accepted)]
+  public async Task<IActionResult> Reset(BlogDbContext context, IHostApplicationLifetime applicationLifetime)
+  {
+    logger.LogWarning($"System reset is requested by '{User.Identity?.Name}', IP: {Helper.GetClientIP(HttpContext)}.");
 
     await context.ClearAllData();
 

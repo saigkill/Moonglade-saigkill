@@ -11,23 +11,21 @@ namespace Moonglade.Github.Client.Services;
 
 public class GithubUserRepositoriesService : IGithubUserRepositoriesService
 {
-  private readonly string _ghUser;
   private readonly ILogger<GithubUserRepositoriesService> _logger;
   private readonly IGithubClient _githubClient;
 
   public GithubUserRepositoriesService(IBlogConfig blogConfig, IGithubClient githubClient, ILogger<GithubUserRepositoriesService> logger)
   {
-    var ghProfileLink = blogConfig.SocialProfileSettings.GitHub;
-    _ghUser = ghProfileLink?.Replace("https://github.com/", "");
     _githubClient = githubClient;
     _logger = logger;
   }
 
-  public async Task<List<UserRepository>> GetUserRepositories()
+  public async Task<List<UserRepository>> GetUserRepositories(SocialLink githubSocialLink)
   {
     try
     {
-      var endpoint = $"/users/{_ghUser}/repos";
+      var ghUser = githubSocialLink.Url?.Replace("https://github.com/", "");
+      var endpoint = $"/users/{ghUser}/repos";
       var ghResponse = await _githubClient.SendRequest(Method.Get, endpoint, "");
       _logger.LogInformation("Github response: {0}", ghResponse.Content);
       var repositories = JsonConvert.DeserializeObject<List<UserRepository>>(ghResponse.Content);
@@ -35,7 +33,7 @@ public class GithubUserRepositoriesService : IGithubUserRepositoriesService
       {
         if (string.IsNullOrEmpty(repo.HtmlUrl))
         {
-          repo.HtmlUrl = $"https://github.com/{_ghUser}/{repo.Name}";
+          repo.HtmlUrl = $"https://github.com/{ghUser}/{repo.Name}";
         }
       }
       return repositories;
