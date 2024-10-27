@@ -41,7 +41,7 @@
         <link rel="webmention" href="@(Helper.ResolveCanonicalUrl(BlogConfig.GeneralSettings.CanonicalPrefix, "webmention"))">
     }
     
-    @if (BlogConfig.SocialProfileSettings.Twitter != null)
+    @if (Model.Twitter != null)
     {
         <partial name="_TwitterMetaData" model="Model" />
     }

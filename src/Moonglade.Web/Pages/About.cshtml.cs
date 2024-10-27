@@ -19,7 +19,8 @@ namespace Moonglade.Web.Pages
       ViewModel.Mandates = await mediator.Send(new GetAllMandatesQuery());
       ViewModel.HonoraryPositions = await mediator.Send(new GetHonoraryPositionsByLanguageQuery());
       ViewModel.Publications = await mediator.Send(new GetAllPublicationsQuery());
-      ViewModel.Repositories = await mediator.Send(new GetAllRepositoriesQuery());
+      var ghUserLink = await mediator.Send(new GetSocialLinkQuery("Github"));
+      ViewModel.Repositories = await mediator.Send(new GetAllRepositoriesQuery(ghUserLink));
       var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
       var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
       ViewModel.MeAnTheBlog =
@@ -42,6 +43,7 @@ namespace Moonglade.Web.Pages
       ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
       ViewModel.NugetPackages = await mediator.Send(new GetAllNugetPackagesQuery());
       ViewModel.Testimonials = await mediator.Send(new GetAllTestimonialsQuery());
+      ViewModel.SocialLinks = await mediator.Send(new GetAllSocialLinksQuery());
       return Page();
     }
   }
@@ -65,5 +67,6 @@ namespace Moonglade.Web.Pages
     public PagesContentEntity LastUpdated { get; set; }
     public PagesContentEntity NugetTitle { get; set; }
     public List<NugetPackage> NugetPackages { get; set; }
+    public SocialLink[] SocialLinks { get; set; }
   }
 }

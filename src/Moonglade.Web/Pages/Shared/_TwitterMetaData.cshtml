@@ -1,7 +1,7 @@
 ﻿@model Moonglade.Web.Pages.PostModel
 
 @{
-    var xUrl = BlogConfig.SocialProfileSettings.Twitter;
+    var xUrl = Model.Twitter.Url;
     var user = "@" + xUrl.Replace("https://x.com/", "");
 }
 <meta name="twitter:site" content="@user" />

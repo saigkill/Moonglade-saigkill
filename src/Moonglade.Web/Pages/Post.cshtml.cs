@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+
 using Moonglade.Core.PostFeature;
 using Moonglade.Data.Entities;
 using Moonglade.Pingback;
@@ -8,19 +9,34 @@ namespace Moonglade.Web.Pages;
 [AddPingbackHeader("pingback")]
 public class PostModel(IMediator mediator) : PageModel
 {
-    public PostEntity Post { get; set; }
+  public PostEntity Post { get; set; }
 
-    public async Task<IActionResult> OnGetAsync(int year, int month, int day, string slug)
-    {
-        if (year > DateTime.UtcNow.Year || string.IsNullOrWhiteSpace(slug)) return NotFound();
+  public SocialLink Twitter { get; set; }
+  public SocialLink BuyMeACoffee { get; set; }
+  public SocialLink Liberapay { get; set; }
+  public SocialLink Patreon { get; set; }
+  public SocialLink AmazonWishlist { get; set; }
+  public SocialLink Paypal { get; set; }
 
-        var post = await mediator.Send(new GetPostBySlugQuery(year, month, day, slug));
+  public async Task<IActionResult> OnGetAsync(int year, int month, int day, string slug)
+  {
 
-        if (post is null) return NotFound();
+    Twitter = await mediator.Send(new GetSocialLinkQuery("Twitter"));
+    BuyMeACoffee = await mediator.Send(new GetSocialLinkQuery("BuyMeACoffee"));
+    Liberapay = await mediator.Send(new GetSocialLinkQuery("Liberapay"));
+    Patreon = await mediator.Send(new GetSocialLinkQuery("Patreon"));
+    AmazonWishlist = await mediator.Send(new GetSocialLinkQuery("AmazonWishlist"));
+    Paypal = await mediator.Send(new GetSocialLinkQuery("Paypal"));
 
-        ViewData["TitlePrefix"] = $"{post.Title}";
+    if (year > DateTime.UtcNow.Year || string.IsNullOrWhiteSpace(slug)) return NotFound();
 
-        Post = post;
-        return Page();
-    }
+    var post = await mediator.Send(new GetPostBySlugQuery(year, month, day, slug));
+
+    if (post is null) return NotFound();
+
+    ViewData["TitlePrefix"] = $"{post.Title}";
+
+    Post = post;
+    return Page();
+  }
 }
