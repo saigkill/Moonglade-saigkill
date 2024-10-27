@@ -26,6 +26,7 @@ public class PostModel(IMediator mediator) : PageModel
     Liberapay = await mediator.Send(new GetSocialLinkQuery("Liberapay"));
     Patreon = await mediator.Send(new GetSocialLinkQuery("Patreon"));
     AmazonWishlist = await mediator.Send(new GetSocialLinkQuery("AmazonWishlist"));
+    Paypal = await mediator.Send(new GetSocialLinkQuery("Paypal"));
 
     if (year > DateTime.UtcNow.Year || string.IsNullOrWhiteSpace(slug)) return NotFound();
 
