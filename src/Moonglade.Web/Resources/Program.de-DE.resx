@@ -1038,11 +1038,11 @@
   <data name="Confirm" xml:space="preserve">
     <value>Bestätigen</value>
   </data>
-  <data name="Links" xml:space="preserve">
-    <value>Freundschaftslink</value>
+  <data name="Enable Social Links" xml:space="preserve">
+    <value>Social Linking aktivieren</value>
   </data>
-  <data name="Sponsoring" xml:space="preserve">
-    <value>Sponsor werden</value>
+  <data name="Social Links" xml:space="preserve">
+    <value>Soziale Verknüpfungen</value>
   </data>
   <data name="testimonials" xml:space="preserve">
     <value>Empfehlungen</value>

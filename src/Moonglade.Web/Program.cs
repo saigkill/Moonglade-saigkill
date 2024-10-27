@@ -1,8 +1,4 @@
-﻿using System.Globalization;
-using System.Net;
-using System.Text.Json.Serialization;
-
-using Edi.Captcha;
+﻿using Edi.Captcha;
 using Edi.PasswordGenerator;
 
 using Microsoft.AspNetCore.Rewrite;
@@ -23,7 +19,9 @@ using Moonglade.Web.Handlers;
 using Moonglade.Webmention;
 
 using SixLabors.Fonts;
-
+using System.Globalization;
+using System.Net;
+using System.Text.Json.Serialization;
 using Encoder = Moonglade.Web.Configuration.Encoder;
 
 namespace Moonglade.Web;
