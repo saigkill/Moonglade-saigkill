@@ -55,6 +55,15 @@
             </cache>
         </section>
     }
+    
+    @if (BlogConfig.AdvancedSettings.EnableSyndication)
+    {
+        <section id="aside-syndication">
+            @await Component.InvokeAsync("Syndication")
+        </section>
+    }
+    
+    <br />
 
     @if (BlogConfig.GeneralSettings.WidgetsSubscriptionButtons)
     {
@@ -71,14 +80,6 @@
                     OPML
                 </a>
             }
-        </section>
-    }
-    
-    @if (BlogConfig.AdvancedSettings.EnableSyndication)
-    {
-        <br />
-        <section id="aside-syndication">
-            <partial name="_Syndication" />
         </section>
     }
 </aside>
