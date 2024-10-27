@@ -42,6 +42,7 @@ namespace Moonglade.Web.Pages
       ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
       ViewModel.NugetPackages = await mediator.Send(new GetAllNugetPackagesQuery());
       ViewModel.Testimonials = await mediator.Send(new GetAllTestimonialsQuery());
+      ViewModel.SocialLinks = await mediator.Send(new GetAllSocialLinksQuery());
       return Page();
     }
   }
@@ -65,5 +66,6 @@ namespace Moonglade.Web.Pages
     public PagesContentEntity LastUpdated { get; set; }
     public PagesContentEntity NugetTitle { get; set; }
     public List<NugetPackage> NugetPackages { get; set; }
+    public SocialLink[] SocialLinks { get; set; }
   }
 }
