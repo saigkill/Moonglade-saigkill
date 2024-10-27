@@ -982,7 +982,7 @@
     <value>Aktivieren von OPML</value>
   </data>
   <data name="Foot JavaScript" xml:space="preserve">
-    <value>Schwanz JavaScript</value>
+    <value>Fussbereich JavaScript</value>
   </data>
   <data name="Using a third party script may cause your website to be blocked by some browsers or ad blockers, it can have security risks too. Please use with caution." xml:space="preserve">
     <value>Die Verwendung von Skripten von Drittanbietern kann dazu führen, dass Ihre Website von bestimmten Browsern oder Werbeblockern blockiert wird, und dies kann auch ein Sicherheitsrisiko darstellen. Mit Vorsicht verwenden.</value>
@@ -1042,9 +1042,12 @@
     <value>Social Linking aktivieren</value>
   </data>
   <data name="Social Links" xml:space="preserve">
-    <value>Soziale Verknüpfungen</value>
+    <value>Soziale Netwerke</value>
   </data>
   <data name="testimonials" xml:space="preserve">
     <value>Empfehlungen</value>
+  </data>
+  <data name="Links To Friends" xml:space="preserve">
+    <value>Links zu Freunden</value>
   </data>
 </root>

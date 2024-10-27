@@ -1038,16 +1038,16 @@
   <data name="Confirm" xml:space="preserve">
     <value />
   </data>
-  <data name="Links" xml:space="preserve">
+  <data name="Enable Social Links" xml:space="preserve">
     <value />
   </data>
-  <data name="Sponsoring" xml:space="preserve">
-    <value />
-  </data>
-  <data name="The number of entries to include in RSS feed." xml:space="preserve">
+  <data name="Social Links" xml:space="preserve">
     <value />
   </data>
   <data name="testimonials" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Links To Friends" xml:space="preserve">
     <value />
   </data>
 </root>
