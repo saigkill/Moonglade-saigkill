@@ -1038,10 +1038,13 @@
   <data name="Confirm" xml:space="preserve">
     <value>確認</value>
   </data>
-  <data name="The number of entries to include in RSS feed." xml:space="preserve">
-    <value>RSS/ATOM 中包含的條目數量</value>
+  <data name="Enable Social Links" xml:space="preserve">
+    <value>啟用社交連結</value>
+  </data>
+  <data name="Social Links" xml:space="preserve">
+    <value>社交連結</value>
   </data>
   <data name="testimonials" xml:space="preserve">
-    <value>testimonials</value>
+    <value>Empfehlungen</value>
   </data>
 </root>

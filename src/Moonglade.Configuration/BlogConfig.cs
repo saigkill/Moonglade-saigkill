@@ -12,10 +12,11 @@ public interface IBlogConfig
   ImageSettings ImageSettings { get; set; }
   AdvancedSettings AdvancedSettings { get; set; }
   CustomStyleSheetSettings CustomStyleSheetSettings { get; set; }
-  SocialProfileSettings SocialProfileSettings { get; set; }
   CustomMenuSettings CustomMenuSettings { get; set; }
   LocalAccountSettings LocalAccountSettings { get; set; }
+  SocialLinkSettings SocialLinkSettings { get; set; }
   SystemManifestSettings SystemManifestSettings { get; set; }
+  SocialProfileSettings SocialProfileSettings { get; set; }
   IEnumerable<int> LoadFromConfig(IDictionary<string, string> config);
   KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings;
 }
@@ -38,6 +39,8 @@ public class BlogConfig : IBlogConfig
   public CustomMenuSettings CustomMenuSettings { get; set; }
   public LocalAccountSettings LocalAccountSettings { get; set; }
 
+  public SocialLinkSettings SocialLinkSettings { get; set; }
+
   public SystemManifestSettings SystemManifestSettings { get; set; }
 
   public IEnumerable<int> LoadFromConfig(IDictionary<string, string> config)
@@ -51,7 +54,8 @@ public class BlogConfig : IBlogConfig
     CustomStyleSheetSettings = AssignValueForConfigItem(7, CustomStyleSheetSettings.DefaultValue, config);
     CustomMenuSettings = AssignValueForConfigItem(10, CustomMenuSettings.DefaultValue, config);
     LocalAccountSettings = AssignValueForConfigItem(11, LocalAccountSettings.DefaultValue, config);
-    SocialProfileSettings = AssignValueForConfigItem(12, SocialProfileSettings.DefaultValue, config);
+    SocialLinkSettings = AssignValueForConfigItem(12, SocialLinkSettings.DefaultValue, config);
+    SocialProfileSettings = AssignValueForConfigItem(13, SocialProfileSettings.DefaultValue, config);
 
     // Special case
     SystemManifestSettings = AssignValueForConfigItem(99, SystemManifestSettings.DefaultValue, config);
