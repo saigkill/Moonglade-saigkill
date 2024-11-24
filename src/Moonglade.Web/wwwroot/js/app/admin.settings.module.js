@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as utils from "./utils.module.js";
 function handleSettingsSubmit(e) {
     e.preventDefault();
@@ -8,6 +9,37 @@ function handleSettingsSubmit(e) {
     callApi(e.currentTarget.action, "POST", r, (e) => {
         blogToast.success("Settings Updated"), document.querySelector(t).classList.remove("disabled"), document.querySelector(t).removeAttribute("disabled");
     });
+=======
+﻿import * as utils from './utils.module.js'
+
+export function handleSettingsSubmit(event) {
+    event.preventDefault();
+
+    const btnSaveSettingsSelector = '#btn-save-settings';
+    const btnSaveSettings = document.querySelector(btnSaveSettingsSelector);
+
+    const disableButton = () => {
+        btnSaveSettings.classList.add('disabled');
+        btnSaveSettings.setAttribute('disabled', 'disabled');
+    };
+
+    const enableButton = () => {
+        btnSaveSettings.classList.remove('disabled');
+        btnSaveSettings.removeAttribute('disabled');
+    };
+
+    disableButton();
+
+    const formData = new FormData(event.target);
+    const formValues = Object.fromEntries(formData.entries());
+    const formattedValues = utils.toMagicJson(formValues);
+
+    callApi(event.currentTarget.action, 'POST', formattedValues,
+        (resp) => {
+            blogToast.success('Settings Updated');
+            enableButton();
+        });
+>>>>>>> 5ee94ef815de12abcb06c41ff08a48036064184b
 }
 function compareVersionNumbers(e, t) {
     var r = e.split("."),

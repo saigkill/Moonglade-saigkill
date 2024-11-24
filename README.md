@@ -1,8 +1,6 @@
 # Moonglade-saigkill Blog
 
-[![Docker Linux x64](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml/badge.svg)](https://github.com/EdiWang/Moonglade/actions/workflows/docker.yml)
-
-A personal blog system that optimized for [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling most common blogging features including posts, comments, categories, archive, tags and pages.
+A personal blog system that optimized for [**Microsoft Azure**](https://azure.microsoft.com/en-us/). Designed for developers, enabling common blogging features including posts, comments, categories, archive, tags and pages.
 
 This is a fork of the original [Moonglade](https://github.com/EdiWang/Moonglade) project by [Edi Wang]. In general it s a customized version, with some personal pages. You can see it in action [there](https://saschamanns.de).
 
@@ -35,11 +33,11 @@ Tools | Alternative
 
 > Free version of SQL Server Express would be sufficient for production use.
 
-Database | `DatabaseType` | `appsettings.json/ConnectionStrings/MoongladeDatabase` Example
---- | --- | ---
-Microsoft SQL Server | `SqlServer` | `Server=(local);Database=moonglade;Trusted_Connection=True;`
-MySQL | `MySql` | `Server=localhost;Port=3306;Database=moonglade;Uid=root;Pwd=***;`
-PostgreSQL | `PostgreSql` | `User ID=***;Password=***;Host=localhost;Port=5432;Database=moonglade;Pooling=true;`
+Database | `appsettings.json/ConnectionStrings/MoongladeDatabase` Example
+--- | ---
+Microsoft SQL Server | `Server=(local);Database=moonglade;Trusted_Connection=True;`
+MySQL | `Server=localhost;Port=3306;Database=moonglade;Uid=root;Pwd=***;`
+PostgreSQL | `User ID=***;Password=***;Host=localhost;Port=5432;Database=moonglade;Pooling=true;`
 
 ### Build Source
 
@@ -51,7 +49,7 @@ Build and run `./src/Moonglade.sln`
 
 ## ⚙ Configuration
 
-> This section discuss environment settings in **appsettings.json**. For blog settings, please use "/admin/settings" UI.
+> This section is for **appsettings.json**. For other blog settings, please use "/admin/settings" UI.
 
 ### Authentication
 

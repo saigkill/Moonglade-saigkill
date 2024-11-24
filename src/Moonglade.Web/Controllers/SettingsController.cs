@@ -169,38 +169,59 @@ public class SettingsController(
       return BadRequest(ModelState.CombineErrorMessages());
     }
 
-    blogConfig.SocialLinkSettings = new()
-    {
-      IsEnabled = model.IsEnabled,
-      Links = model.JsonData.FromJson<SocialLink[]>()
-    };
+        var links = model.JsonData.FromJson<SocialLink[]>();
+
+        // Check each link, if any link is invalid, return BadRequest
+        foreach (var link in links)
+        {
+            if (string.IsNullOrWhiteSpace(link.Name))
+            {
+                ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Name)}", "Name is required");
+                return BadRequest(ModelState.CombineErrorMessages());
+            }
+
+            if (string.IsNullOrWhiteSpace(link.Icon))
+            {
+                ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Icon)}", "Icon is required");
+                return BadRequest(ModelState.CombineErrorMessages());
+            }
+
+            if (string.IsNullOrWhiteSpace(link.Url))
+            {
+                ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Url)}", "Url is required");
+                return BadRequest(ModelState.CombineErrorMessages());
+            }
+
+            if (!Uri.TryCreate(link.Url, UriKind.Absolute, out _))
+            {
+                ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Url)}", "Url is invalid");
+                return BadRequest(ModelState.CombineErrorMessages());
+            }
+
+            // Sterilize
+            link.Url = Helper.SterilizeLink(link.Url);
+        }
+
+        blogConfig.SocialLinkSettings = new()
+        {
+            IsEnabled = model.IsEnabled,
+            Links = links
+        };
 
     await SaveConfigAsync(blogConfig.SocialLinkSettings);
     return NoContent();
   }
 
-  [HttpPost("reset")]
-  [ProducesResponseType(StatusCodes.Status202Accepted)]
-  public async Task<IActionResult> Reset(BlogDbContext context, IHostApplicationLifetime applicationLifetime)
-  {
-    logger.LogWarning($"System reset is requested by '{User.Identity?.Name}', IP: {Helper.GetClientIP(HttpContext)}.");
-
-    await context.ClearAllData();
-
-    applicationLifetime.StopApplication();
-    return Accepted();
-  }
-
-  [HttpPost("custom-css")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IActionResult> CustomStyleSheet(CustomStyleSheetSettings model)
-  {
-    if (model.EnableCustomCss && string.IsNullOrWhiteSpace(model.CssCode))
+    [HttpPost("custom-css")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CustomStyleSheet(CustomStyleSheetSettings model)
     {
-      ModelState.AddModelError(nameof(CustomStyleSheetSettings.CssCode), "CSS Code is required");
-      return BadRequest(ModelState.CombineErrorMessages());
-    }
+        if (model.EnableCustomCss && string.IsNullOrWhiteSpace(model.CssCode))
+        {
+            ModelState.AddModelError(nameof(CustomStyleSheetSettings.CssCode), "CSS Code is required");
+            return BadRequest(ModelState.CombineErrorMessages());
+        }
 
     blogConfig.CustomStyleSheetSettings = model;
 

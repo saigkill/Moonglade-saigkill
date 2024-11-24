@@ -47,39 +47,37 @@ public class PostController(
           await mediator.Send(new CreatePostCommand(model)) :
           await mediator.Send(new UpdatePostCommand(model.PostId, model));
 
-      if (model.IsPublished)
-      {
-        logger.LogInformation($"Trying to Ping URL for post: {postEntity.Id}");
+            if (!model.IsPublished) return Ok(new { PostId = postEntity.Id });
 
-        var baseUri = new Uri(Helper.ResolveRootUrl(HttpContext, null, removeTailSlash: true));
-        var link = new Uri(baseUri, $"post/{postEntity.RouteLink.ToLower()}");
+            logger.LogInformation($"Trying to Ping URL for post: {postEntity.Id}");
 
-        if (blogConfig.AdvancedSettings.EnablePingback)
-        {
-          cannonService.FireAsync<IPingbackSender>(async sender =>
-            await sender.TrySendPingAsync(link.ToString(), postEntity.PostContent));
-        }
+            var baseUri = new Uri(Helper.ResolveRootUrl(HttpContext, null, removeTailSlash: true));
+            var link = new Uri(baseUri, $"post/{postEntity.RouteLink.ToLower()}");
 
-        if (blogConfig.AdvancedSettings.EnableWebmention)
-        {
-          cannonService.FireAsync<IWebmentionSender>(async sender => await sender.SendWebmentionAsync(link.ToString(), postEntity.PostContent));
-        }
+            if (blogConfig.AdvancedSettings.EnablePingback)
+            {
+                cannonService.FireAsync<IPingbackSender>(async sender => await sender.TrySendPingAsync(link.ToString(), postEntity.PostContent));
+            }
 
-        var isNewPublish = postEntity.LastModifiedUtc == postEntity.PubDateUtc;
+            if (blogConfig.AdvancedSettings.EnableWebmention)
+            {
+                cannonService.FireAsync<IWebmentionSender>(async sender => await sender.SendWebmentionAsync(link.ToString(), postEntity.PostContent));
+            }
 
-        bool indexCoolDown = true;
-        var minimalIntervalMinutes = int.Parse(configuration["IndexNow:MinimalIntervalMinutes"]!);
-        if (!string.IsNullOrWhiteSpace(model.LastModifiedUtc))
-        {
-          var lastSavedInterval = DateTime.Parse(model.LastModifiedUtc) - DateTime.UtcNow;
-          indexCoolDown = lastSavedInterval.TotalMinutes > minimalIntervalMinutes;
-        }
+            var isNewPublish = postEntity.LastModifiedUtc == postEntity.PubDateUtc;
 
-        if (isNewPublish || indexCoolDown)
-        {
-          cannonService.FireAsync<IIndexNowClient>(async sender => await sender.SendRequestAsync(link));
-        }
-      }
+            bool indexCoolDown = true;
+            var minimalIntervalMinutes = int.Parse(configuration["IndexNow:MinimalIntervalMinutes"]!);
+            if (!string.IsNullOrWhiteSpace(model.LastModifiedUtc))
+            {
+                var lastSavedInterval = DateTime.Parse(model.LastModifiedUtc) - DateTime.UtcNow;
+                indexCoolDown = lastSavedInterval.TotalMinutes > minimalIntervalMinutes;
+            }
+
+            if (isNewPublish || indexCoolDown)
+            {
+                cannonService.FireAsync<IIndexNowClient>(async sender => await sender.SendRequestAsync(link));
+            }
 
       return Ok(new { PostId = postEntity.Id });
     }

@@ -36,7 +36,7 @@
 
     // Get `sec-ch-prefers-color-scheme` header value
     // This is to enhance user experience by stopping the screen from blinking when switching pages
-    bool useServerSideDarkMode = false;
+    bool useServerSideDarkMode = Helper.UseServerSideDarkMode(Configuration, Context);
     bool usePrefersColorSchemeHeader = Configuration.GetSection("PrefersColorSchemeHeader:Enabled").Get<bool>();
     var prefersColorScheme = Context.Request.Headers[Configuration["PrefersColorSchemeHeader:HeaderName"]!];
     if (usePrefersColorSchemeHeader && prefersColorScheme == "dark")

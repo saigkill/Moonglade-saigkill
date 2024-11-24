@@ -1,4 +1,10 @@
-﻿using System.Net;
+﻿using Edi.ChinaDetector;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Win32;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -53,9 +59,24 @@ public static class Helper
         return !string.IsNullOrWhiteSpace(gitHashShort) ? $"{prefix} ({gitHashShort})" : fileVersion;
       }
 
-      return version ?? fileVersion;
+            return version ?? fileVersion;
+        }
     }
-  }
+
+    // Get `sec-ch-prefers-color-scheme` header value
+    // This is to enhance user experience by stopping the screen from blinking when switching pages
+    public static bool UseServerSideDarkMode(IConfiguration configuration, HttpContext context)
+    {
+        bool useServerSideDarkMode = false;
+        bool usePrefersColorSchemeHeader = configuration.GetSection("PrefersColorSchemeHeader:Enabled").Get<bool>();
+        var prefersColorScheme = context.Request.Headers[configuration["PrefersColorSchemeHeader:HeaderName"]!];
+        if (usePrefersColorSchemeHeader && prefersColorScheme == "dark")
+        {
+            useServerSideDarkMode = true;
+        }
+
+        return useServerSideDarkMode;
+    }
 
   public static async Task<bool> IsRunningInChina()
   {

@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 
 namespace Moonglade.Web.PagedList;
 
-public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
+public class HtmlHelper
 {
     #region Private methods
 
@@ -31,7 +31,7 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
 
     private TagBuilder WrapInListItem(TagBuilder inner, params string[] classes)
     {
-        var li = tagBuilderFactory.Create("li");
+        var li = new TagBuilder("li");
 
         foreach (var @class in classes)
         {
@@ -46,12 +46,11 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
     private TagBuilder First(IPagedList list, Func<int, string> generatePageUrl, PagedListRenderOptions options)
     {
         const int targetPageNumber = 1;
-        var first = tagBuilderFactory
-            .Create("a");
+        var first = new TagBuilder("a");
 
         AppendHtml(first, string.Format(options.LinkToFirstPageFormat, targetPageNumber));
 
-        foreach (var c in options.PageClasses ?? Enumerable.Empty<string>())
+        foreach (var c in options.PageClasses ?? [])
         {
             first.AddCssClass(c);
         }
@@ -69,14 +68,13 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
     private TagBuilder Previous(IPagedList list, Func<int, string> generatePageUrl, PagedListRenderOptions options)
     {
         var targetPageNumber = list.PageNumber - 1;
-        var previous = tagBuilderFactory
-            .Create("a");
+        var previous = new TagBuilder("a");
 
         AppendHtml(previous, string.Format(options.LinkToPreviousPageFormat, targetPageNumber));
 
         previous.Attributes.Add("rel", "prev");
 
-        foreach (var c in options.PageClasses ?? Enumerable.Empty<string>())
+        foreach (var c in options.PageClasses ?? [])
         {
             previous.AddCssClass(c);
         }
@@ -93,18 +91,15 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
 
     private TagBuilder Page(int i, IPagedList list, Func<int, string> generatePageUrl, PagedListRenderOptions options)
     {
-        var format = options.FunctionToDisplayEachPageNumber
-                     ?? (pageNumber => string.Format(options.LinkToIndividualPageFormat, pageNumber));
+        string Format(int pageNumber) => string.Format(options.LinkToIndividualPageFormat, pageNumber);
         var targetPageNumber = i;
         var page = i == list.PageNumber
-            ? tagBuilderFactory
-                .Create("span")
-            : tagBuilderFactory
-                .Create("a");
+            ? new TagBuilder("span")
+            : new TagBuilder("a");
 
-        SetInnerText(page, format(targetPageNumber));
+        SetInnerText(page, Format(targetPageNumber));
 
-        foreach (var c in options.PageClasses ?? Enumerable.Empty<string>())
+        foreach (var c in options.PageClasses ?? [])
         {
             page.AddCssClass(c);
         }
@@ -122,14 +117,13 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
     private TagBuilder Next(IPagedList list, Func<int, string> generatePageUrl, PagedListRenderOptions options)
     {
         var targetPageNumber = list.PageNumber + 1;
-        var next = tagBuilderFactory
-            .Create("a");
+        var next = new TagBuilder("a");
 
         AppendHtml(next, string.Format(options.LinkToNextPageFormat, targetPageNumber));
 
         next.Attributes.Add("rel", "next");
 
-        foreach (var c in options.PageClasses ?? Enumerable.Empty<string>())
+        foreach (var c in options.PageClasses ?? [])
         {
             next.AddCssClass(c);
         }
@@ -147,12 +141,11 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
     private TagBuilder Last(IPagedList list, Func<int, string> generatePageUrl, PagedListRenderOptions options)
     {
         var targetPageNumber = list.PageCount;
-        var last = tagBuilderFactory
-            .Create("a");
+        var last = new TagBuilder("a");
 
         AppendHtml(last, string.Format(options.LinkToLastPageFormat, targetPageNumber));
 
-        foreach (var c in options.PageClasses ?? Enumerable.Empty<string>())
+        foreach (var c in options.PageClasses ?? [])
         {
             last.AddCssClass(c);
         }
@@ -169,8 +162,7 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
 
     private TagBuilder PageCountAndLocationText(IPagedList list, PagedListRenderOptions options)
     {
-        var text = tagBuilderFactory
-            .Create("a");
+        var text = new TagBuilder("a");
 
         SetInnerText(text, string.Format(options.PageCountAndCurrentLocationFormat, list.PageNumber, list.PageCount));
 
@@ -264,18 +256,16 @@ public class HtmlHelper(TagBuilderFactory tagBuilderFactory)
             (sb, listItem) => sb.Append(TagBuilderToString(listItem)),
             sb => sb.ToString());
 
-        var ul = tagBuilderFactory
-            .Create("ul");
+        var ul = new TagBuilder("ul");
 
         AppendHtml(ul, listItemLinksString);
 
-        foreach (var c in options.UlElementClasses ?? Enumerable.Empty<string>())
+        foreach (var c in options.UlElementClasses ?? [])
         {
             ul.AddCssClass(c);
         }
 
-        var outerDiv = tagBuilderFactory
-            .Create("div");
+        var outerDiv = new TagBuilder("div");
 
         outerDiv.AddCssClass("pagination-container");
 
