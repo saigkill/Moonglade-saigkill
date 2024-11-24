@@ -83,24 +83,24 @@ public class MigrationManager(
 
       await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
 
-            logger.LogInformation("Database migration completed.");
+      logger.LogInformation("Database migration completed.");
 
-            await MigrateTheme(mfv);
-        }
+      await MigrateTheme(mfv);
     }
+  }
 
-    private async Task MigrateTheme(Version mfv)
+  private async Task MigrateTheme(System.Version mfv)
+  {
+    // Migrate theme
+    if (mfv <= System.Version.Parse("14.12.0"))
     {
-        // Migrate theme
-        if (mfv <= Version.Parse("14.12.0"))
-        {
-            logger.LogInformation("Migrating theme...");
+      logger.LogInformation("Migrating theme...");
 
-            await mediator.Send(new CleanupLegacySystemThemeCommand());
+      await mediator.Send(new CleanupLegacySystemThemeCommand());
 
-            logger.LogInformation("Theme migration completed.");
-        }
+      logger.LogInformation("Theme migration completed.");
     }
+  }
 
   private async Task ExecuteMigrationScript(DbContext context, string scriptUrl)
   {

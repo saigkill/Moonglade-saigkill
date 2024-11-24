@@ -1,4 +1,8 @@
-﻿using Edi.Captcha;
+﻿using System.Globalization;
+using System.Net;
+using System.Text.Json.Serialization;
+
+using Edi.Captcha;
 using Edi.PasswordGenerator;
 
 using Microsoft.AspNetCore.Rewrite;
@@ -19,9 +23,7 @@ using Moonglade.Web.Handlers;
 using Moonglade.Webmention;
 
 using SixLabors.Fonts;
-using System.Globalization;
-using System.Net;
-using System.Text.Json.Serialization;
+
 using Encoder = Moonglade.Web.Configuration.Encoder;
 
 namespace Moonglade.Web;
@@ -95,7 +97,7 @@ public class Program
     {
       builder.Logging.AddAzureWebAppDiagnostics();
     }
-    builder.Services.AddApplicationInsightsTelemetry();
+    //builder.Services.AddApplicationInsightsTelemetry();
   }
 
   private static void ConfigureSyncfusion(WebApplicationBuilder builder)
@@ -150,17 +152,17 @@ public class Program
                 Helper.GetMagic(0x1499E, 10, 14)
         };
 
-            if (bool.Parse(configuration["BlockPRCFuryCode"]!))
-            {
-                magics.AddRange([
-                    Helper.GetMagic(0x7DB14, 21, 25),
+      if (bool.Parse(configuration["BlockPRCFuryCode"]!))
+      {
+        magics.AddRange([
+            Helper.GetMagic(0x7DB14, 21, 25),
                     Helper.GetMagic(0x78E10, 13, 17),
                     Helper.GetMagic(0x17808, 34, 38),
                     Helper.GetMagic(0x1B5ED, 4, 8),
                     Helper.GetMagic(0x9CFB, 25, 29),
                     "NMSL", "CNMB", "MDZZ", "TNND"
-                ]);
-            }
+        ]);
+      }
 
       options.FontStyle = FontStyle.Bold;
       options.BlockedCodes = magics.ToArray();
@@ -243,27 +245,27 @@ public class Program
     services.AddGithubClient();
   }
 
-    private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
-    {
-        var connStr = configuration.GetConnectionString("MoongladeDatabase");
-        var dbType = DatabaseTypeHelper.DetermineDatabaseType(connStr!);
+  private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
+  {
+    var connStr = configuration.GetConnectionString("MoongladeDatabase");
+    var dbType = DatabaseTypeHelper.DetermineDatabaseType(connStr!);
 
-        switch (dbType)
-        {
-            case DatabaseType.MySQL:
-                services.AddMySqlStorage(connStr!);
-                break;
-            case DatabaseType.PostgreSQL:
-                services.AddPostgreSqlStorage(connStr!);
-                break;
-            case DatabaseType.SQLServer:
-                services.AddSqlServerStorage(connStr!);
-                break;
-            case DatabaseType.Unknown:
-            default:
-                throw new NotSupportedException("Unknown database type, please check connection string.");
-        }
+    switch (dbType)
+    {
+      case DatabaseType.MySQL:
+        services.AddMySqlStorage(connStr!);
+        break;
+      case DatabaseType.PostgreSQL:
+        services.AddPostgreSqlStorage(connStr!);
+        break;
+      case DatabaseType.SQLServer:
+        services.AddSqlServerStorage(connStr!);
+        break;
+      case DatabaseType.Unknown:
+      default:
+        throw new NotSupportedException("Unknown database type, please check connection string.");
     }
+  }
 
   private static void ConfigureInitializers(IServiceCollection services)
   {
@@ -323,13 +325,13 @@ public class Program
     app.UseRouting();
     app.UseAuthentication().UseAuthorization();
 
-        app.MapHealthChecks("/ping", new()
-        {
-            ResponseWriter = PingEndpoint.WriteResponse
-        });
-        app.MapControllers();
-        app.MapRazorPages();
-        app.MapGet("/robots.txt", RobotsTxtMapHandler.Handler);
+    app.MapHealthChecks("/ping", new()
+    {
+      ResponseWriter = PingEndpoint.WriteResponse
+    });
+    app.MapControllers();
+    app.MapRazorPages();
+    app.MapGet("/robots.txt", RobotsTxtMapHandler.Handler);
 
     if (!string.IsNullOrWhiteSpace(app.Configuration["IndexNow:ApiKey"]))
     {
