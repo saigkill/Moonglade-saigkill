@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace Moonglade.Web.PagedList;
+﻿namespace Moonglade.Web.PagedList;
 
 /// <summary>
 /// Represents a subset of a collection of objects that can be individually accessed by index and containing
@@ -13,16 +11,25 @@ namespace Moonglade.Web.PagedList;
 /// <typeparam name = "T">The type of object the collection should contain.</typeparam>
 /// <seealso cref = "IPagedList{T}" />
 /// <seealso cref = "List{T}" />
-public class BasePagedList<T> : PagedListMetaData, IPagedList<T>
+public class BasePagedList<T> : IPagedList<T>
 {
-    protected readonly List<T> Subset = [];
+    public int PageCount { get; protected set; }
 
-    /// <summary>
-    /// Parameterless constructor.
-    /// </summary>
-    protected internal BasePagedList()
-    {
-    }
+    public int TotalItemCount { get; protected set; }
+
+    public int PageNumber { get; protected set; }
+
+    public int PageSize { get; protected set; }
+
+    public bool HasPreviousPage { get; protected set; }
+
+    public bool HasNextPage { get; protected set; }
+
+    public bool IsFirstPage { get; protected set; }
+
+    public bool IsLastPage { get; protected set; }
+
+    protected readonly List<T> Subset = [];
 
     /// <summary>
     /// Initializes a new instance of a type deriving from <see cref = "BasePagedList{T}" /> and sets properties
@@ -65,22 +72,8 @@ public class BasePagedList<T> : PagedListMetaData, IPagedList<T>
         IsFirstPage = pageNumberIsGood && PageNumber == 1;
         IsLastPage = pageNumberIsGood && PageNumber == PageCount;
 
-        var numberOfFirstItemOnPage = (PageNumber - 1) * PageSize + 1;
-
-        FirstItemOnPage = pageNumberIsGood ? numberOfFirstItemOnPage : 0;
-
-        var numberOfLastItemOnPage = numberOfFirstItemOnPage + PageSize - 1;
-
-        LastItemOnPage = pageNumberIsGood
-            ? numberOfLastItemOnPage > TotalItemCount
-                ? TotalItemCount
-                : numberOfLastItemOnPage
-            : 0;
-
         Subset.AddRange(subset);
     }
-
-    #region IPagedList<T> Members
 
     /// <summary>
     /// 	Returns an enumerator that iterates through the BasePagedList&lt;T&gt;.
@@ -92,24 +85,7 @@ public class BasePagedList<T> : PagedListMetaData, IPagedList<T>
     }
 
     /// <summary>
-    /// 	Returns an enumerator that iterates through the BasePagedList&lt;T&gt;.
-    /// </summary>
-    /// <returns>A BasePagedList&lt;T&gt;.Enumerator for the BasePagedList&lt;T&gt;.</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    ///<summary>
-    ///	Gets the element at the specified index.
-    ///</summary>
-    ///<param name = "index">The zero-based index of the element to get.</param>
-    public T this[int index] => Subset[index];
-
-    /// <summary>
     /// 	Gets the number of elements contained on this page.
     /// </summary>
     public virtual int Count => Subset.Count;
-
-    #endregion
 }

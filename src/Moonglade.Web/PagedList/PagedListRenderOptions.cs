@@ -16,31 +16,15 @@ public class PagedListRenderOptions
         LinkToLastPageFormat = ">>";
         PageCountAndCurrentLocationFormat = "Page {0} of {1}.";
         ItemSliceAndTotalFormat = "Showing items {0} through {1} of {2}.";
-        FunctionToDisplayEachPageNumber = null;
         UlElementClasses = ["pagination"];
         PageClasses = ["page-link"];
         PreviousElementClass = "PagedList-skip-to-previous";
         NextElementClass = "paged-list-skip-to-next";
     }
 
-    ///<summary>
-    /// CSSClasses to append to the &lt;ul&gt; element in the paging control.
-    ///</summary>
     public IEnumerable<string> UlElementClasses { get; set; }
-
-    ///<summary>
-    /// CSS Classes to append to every &lt;a&gt; or &lt;span&gt; element that represent each page in the paging control.
-    ///</summary>
     public IEnumerable<string> PageClasses { get; set; }
-
-    ///<summary>
-    /// CSS Classes to append to previous element in the paging control.
-    ///</summary>
     public string PreviousElementClass { get; set; }
-
-    ///<summary>
-    /// CSS Classes to append to next element in the paging control.
-    ///</summary>
     public string NextElementClass { get; set; }
 
     ///<summary>
@@ -111,9 +95,4 @@ public class PagedListRenderOptions
     /// "Showing items {0} through {1} of {2}."
     ///</example>
     public string ItemSliceAndTotalFormat { get; set; }
-
-    /// <summary>
-    /// A function that will render each page number when specified (and DisplayLinkToIndividualPages is true). If no function is specified, the LinkToIndividualPageFormat value will be used instead.
-    /// </summary>
-    public Func<int, string> FunctionToDisplayEachPageNumber { get; set; }
 }

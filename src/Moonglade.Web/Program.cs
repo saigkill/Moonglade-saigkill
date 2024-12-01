@@ -62,6 +62,7 @@ public class Program
             "Moonglade.Core",
             "Moonglade.Email.Client",
             "Moonglade.FriendLink",
+            "Moonglade.IndexNow.Client",
             "Moonglade.Syndication",
             "Moonglade.Theme",
             // Data
@@ -136,15 +137,14 @@ public class Program
 
             if (bool.Parse(configuration["BlockPRCFuryCode"]!))
             {
-                magics.AddRange(new[]
-                {
+                magics.AddRange([
                     Helper.GetMagic(0x7DB14, 21, 25),
                     Helper.GetMagic(0x78E10, 13, 17),
                     Helper.GetMagic(0x17808, 34, 38),
                     Helper.GetMagic(0x1B5ED, 4, 8),
                     Helper.GetMagic(0x9CFB, 25, 29),
                     "NMSL", "CNMB", "MDZZ", "TNND"
-                });
+                ]);
             }
 
             options.FontStyle = FontStyle.Bold;
@@ -228,21 +228,23 @@ public class Program
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
     {
-        var dbType = configuration.GetConnectionString("DatabaseType")!.ToLower();
         var connStr = configuration.GetConnectionString("MoongladeDatabase");
+        var dbType = DatabaseTypeHelper.DetermineDatabaseType(connStr!);
 
         switch (dbType)
         {
-            case "mysql":
+            case DatabaseType.MySQL:
                 services.AddMySqlStorage(connStr!);
                 break;
-            case "postgresql":
+            case DatabaseType.PostgreSQL:
                 services.AddPostgreSqlStorage(connStr!);
                 break;
-            case "sqlserver":
-            default:
+            case DatabaseType.SQLServer:
                 services.AddSqlServerStorage(connStr!);
                 break;
+            case DatabaseType.Unknown:
+            default:
+                throw new NotSupportedException("Unknown database type, please check connection string.");
         }
     }
 
@@ -305,7 +307,7 @@ public class Program
 
         app.MapHealthChecks("/ping", new()
         {
-            ResponseWriter = ConfigureEndpoints.WriteResponse
+            ResponseWriter = PingEndpoint.WriteResponse
         });
         app.MapControllers();
         app.MapRazorPages();

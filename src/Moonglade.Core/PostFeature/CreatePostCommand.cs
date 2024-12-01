@@ -26,7 +26,7 @@ public class CreatePostCommandHandler(
             abs = ContentProcessor.GetPostAbstract(
                 request.Payload.EditorContent,
                 blogConfig.ContentSettings.PostAbstractWords,
-                configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
+                configuration.GetSection("Post:Editor").Get<EditorChoice>() == EditorChoice.Markdown);
         }
         else
         {
@@ -57,7 +57,21 @@ public class CreatePostCommandHandler(
 
         post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{request.Payload.Slug}";
 
-        // check if exist same slug under the same day
+        await CheckSlugConflict(post, ct);
+
+        AddCategories(request.Payload.SelectedCatIds, post);
+
+        await AddTags(request.Payload.Tags, post, ct);
+
+        await postRepo.AddAsync(post, ct);
+
+        logger.LogInformation($"Created post Id: {post.Id}, Title: '{post.Title}'");
+        return post;
+    }
+
+    // check if exist same slug under the same day
+    private async Task CheckSlugConflict(PostEntity post, CancellationToken ct)
+    {
         var todayUtc = DateTime.UtcNow.Date;
         if (await postRepo.AnyAsync(new PostByDateAndSlugSpec(todayUtc, post.Slug, false), ct))
         {
@@ -65,11 +79,13 @@ public class CreatePostCommandHandler(
             post.Slug += $"-{uid.ToString().ToLower()[..8]}";
             logger.LogInformation($"Found conflict for post slug, generated new slug: {post.Slug}");
         }
+    }
 
-        // add categories
-        if (request.Payload.SelectedCatIds is { Length: > 0 })
+    private static void AddCategories(Guid[] selectedCatIds, PostEntity post)
+    {
+        if (selectedCatIds is { Length: > 0 })
         {
-            foreach (var id in request.Payload.SelectedCatIds)
+            foreach (var id in selectedCatIds)
             {
                 post.PostCategory.Add(new()
                 {
@@ -78,11 +94,13 @@ public class CreatePostCommandHandler(
                 });
             }
         }
+    }
 
-        // add tags
-        var tags = string.IsNullOrWhiteSpace(request.Payload.Tags) ?
+    private async Task AddTags(string tagString, PostEntity post, CancellationToken ct)
+    {
+        var tags = string.IsNullOrWhiteSpace(tagString) ?
             [] :
-            request.Payload.Tags.Split(',').ToArray();
+            tagString.Split(',').ToArray();
 
         if (tags is { Length: > 0 })
         {
@@ -94,11 +112,6 @@ public class CreatePostCommandHandler(
                 post.Tags.Add(tag);
             }
         }
-
-        await postRepo.AddAsync(post, ct);
-
-        logger.LogInformation($"Created post Id: {post.Id}, Title: '{post.Title}'");
-        return post;
     }
 
     private async Task<TagEntity> CreateTag(string item)

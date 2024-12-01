@@ -42,64 +42,36 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         _configuration = configuration;
         _logger = logger;
 
-        string dbType = configuration.GetConnectionString("DatabaseType");
-        _useMySqlWorkaround = dbType!.ToLower().Trim() == "mysql";
+        var connStr = configuration.GetConnectionString("MoongladeDatabase");
+        var dbType = DatabaseTypeHelper.DetermineDatabaseType(connStr!);
+        _useMySqlWorkaround = dbType == DatabaseType.MySQL;
     }
 
     public async Task<PostEntity> Handle(UpdatePostCommand request, CancellationToken ct)
     {
         var utcNow = DateTime.UtcNow;
         var (guid, postEditModel) = request;
-        var post = await _postRepo.GetByIdAsync(guid, ct);
-        if (null == post)
-        {
-            throw new InvalidOperationException($"Post {guid} is not found.");
-        }
+        var post = await _postRepo.GetByIdAsync(guid, ct) ?? throw new InvalidOperationException($"Post {guid} is not found.");
 
-        post.CommentEnabled = postEditModel.EnableComment;
-        post.PostContent = postEditModel.EditorContent;
+        UpdatePostDetails(post, postEditModel, utcNow);
 
-        if (string.IsNullOrEmpty(postEditModel.Abstract))
-        {
-            post.ContentAbstract = ContentProcessor.GetPostAbstract(
-                postEditModel.EditorContent,
-                _blogConfig.ContentSettings.PostAbstractWords,
-                _configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
-        }
-        else
-        {
-            post.ContentAbstract = postEditModel.Abstract.Trim();
-        }
+        await UpdateTags(post, postEditModel.Tags, ct);
+        await UpdateCats(post, postEditModel.SelectedCatIds, ct);
 
-        if (postEditModel.IsPublished && !post.IsPublished)
-        {
-            post.IsPublished = true;
-            post.PubDateUtc = utcNow;
-        }
+        await _postRepo.UpdateAsync(post, ct);
 
-        // #325: Allow changing publish date for published posts
-        if (postEditModel.ChangePublishDate && postEditModel.PublishDate is not null && post.PubDateUtc.HasValue)
-        {
-            var tod = post.PubDateUtc.Value.TimeOfDay;
-            var adjustedDate = postEditModel.PublishDate.Value;
-            post.PubDateUtc = adjustedDate.AddTicks(tod.Ticks);
-        }
+        _cache.Remove(BlogCachePartition.Post.ToString(), post.RouteLink);
 
-        post.Author = postEditModel.Author?.Trim();
-        post.Slug = postEditModel.Slug.ToLower().Trim();
-        post.Title = postEditModel.Title.Trim();
-        post.LastModifiedUtc = utcNow;
-        post.IsFeedIncluded = postEditModel.FeedIncluded;
-        post.ContentLanguageCode = postEditModel.LanguageCode;
-        post.IsFeatured = postEditModel.Featured;
-        post.HeroImageUrl = string.IsNullOrWhiteSpace(postEditModel.HeroImageUrl) ? null : Helper.SterilizeLink(postEditModel.HeroImageUrl);
-        post.IsOutdated = postEditModel.IsOutdated;
-        post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{postEditModel.Slug}";
+        _logger.LogInformation($"Post updated: {post.Id}");
+        return post;
+    }
 
+    private async Task UpdateTags(PostEntity post, string tagString, CancellationToken ct)
+    {
         // 1. Add new tags to tag lib
-        var tags = string.IsNullOrWhiteSpace(postEditModel.Tags) ?
+        var tags = string.IsNullOrWhiteSpace(tagString) ?
             [] :
-            postEditModel.Tags.Split(',').ToArray();
+            tagString.Split(',').ToArray();
 
         foreach (var item in tags)
         {
@@ -134,7 +106,47 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
                 if (tag is not null) post.Tags.Add(tag);
             }
         }
+    }
 
+    private void UpdatePostDetails(PostEntity post, PostEditModel postEditModel, DateTime utcNow)
+    {
+        post.CommentEnabled = postEditModel.EnableComment;
+        post.PostContent = postEditModel.EditorContent;
+        post.ContentAbstract = string.IsNullOrEmpty(postEditModel.Abstract)
+            ? ContentProcessor.GetPostAbstract(
+                postEditModel.EditorContent,
+                _blogConfig.ContentSettings.PostAbstractWords,
+                _configuration.GetSection("Post:Editor").Get<EditorChoice>() == EditorChoice.Markdown)
+            : postEditModel.Abstract.Trim();
+
+        if (postEditModel.IsPublished && !post.IsPublished)
+        {
+            post.IsPublished = true;
+            post.PubDateUtc = utcNow;
+        }
+
+        // #325: Allow changing publish date for published posts
+        if (postEditModel.ChangePublishDate && postEditModel.PublishDate is not null && post.PubDateUtc.HasValue)
+        {
+            var tod = post.PubDateUtc.Value.TimeOfDay;
+            var adjustedDate = postEditModel.PublishDate.Value;
+            post.PubDateUtc = adjustedDate.AddTicks(tod.Ticks);
+        }
+
+        post.Author = postEditModel.Author?.Trim();
+        post.Slug = postEditModel.Slug.ToLower().Trim();
+        post.Title = postEditModel.Title.Trim();
+        post.LastModifiedUtc = utcNow;
+        post.IsFeedIncluded = postEditModel.FeedIncluded;
+        post.ContentLanguageCode = postEditModel.LanguageCode;
+        post.IsFeatured = postEditModel.Featured;
+        post.HeroImageUrl = string.IsNullOrWhiteSpace(postEditModel.HeroImageUrl) ? null : Helper.SterilizeLink(postEditModel.HeroImageUrl);
+        post.IsOutdated = postEditModel.IsOutdated;
+        post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{postEditModel.Slug}";
+    }
+
+    private async Task UpdateCats(PostEntity post, Guid[] catIds, CancellationToken ct)
+    {
         // 3. update categories
         if (_useMySqlWorkaround)
         {
@@ -144,9 +156,9 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
         }
 
         post.PostCategory.Clear();
-        if (postEditModel.SelectedCatIds.Any())
+        if (catIds.Any())
         {
-            foreach (var cid in postEditModel.SelectedCatIds)
+            foreach (var cid in catIds)
             {
                 post.PostCategory.Add(new()
                 {
@@ -155,12 +167,5 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, PostE
                 });
             }
         }
-
-        await _postRepo.UpdateAsync(post, ct);
-
-        _cache.Remove(BlogCachePartition.Post.ToString(), post.RouteLink);
-
-        _logger.LogInformation($"Post updated: {post.Id}");
-        return post;
     }
 }

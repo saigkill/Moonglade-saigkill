@@ -10,33 +10,26 @@
 }
 
 @section scripts {
-    <partial name="_MonacoLoaderScript" />
+    <script src="~/js/app/admin.settings.socaillinks.js" asp-append-version="true"></script>
     <script>
-        var jsonContentEditor = null;
-
-        require(['vs/editor/editor.main'], function () {
-            jsonContentEditor = initEditor('JsonContentEditor', "#settings_JsonData", 'json');
-        });
+        renderTable();
     </script>
     <script type="module">
         import * as settings from '/js/app/admin.settings.module.js';
 
-        function handleSubmit(event) {
-            assignEditorValues(jsonContentEditor, "#settings_JsonData");
-            settings.handleSettingsSubmit(event);
-        }
-
         const form = document.querySelector('#form-settings');
-        form.addEventListener('submit', handleSubmit);
+        form.addEventListener('submit', settings.handleSettingsSubmit);
     </script>
 }
 
 @section head {
     <style>
-        .monaco-target {
-            border: 1px solid var(--bs-border-color);
-            width: 100%;
-            min-height: calc(100vh - 440px);
+        .th-actions {
+            width: 120px;
+        }
+
+        .form-control-url {
+            width: 300px;
         }
     </style>
 }
@@ -47,11 +40,6 @@
 
 <form id="form-settings" asp-controller="Settings" asp-action="SocialLink">
     <div class="admin-settings-entry-container">
-        
-        <div class="alert alert-warning">
-            <i class="bi-exclamation-triangle"></i> This feature is under development. It is currently in preview. A GUI editor will be available in the future.
-        </div>
-
         <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
             <div class="col-auto">
                 <i class="bi-menu-app settings-entry-icon"></i>
@@ -62,14 +50,51 @@
             <div class="col-md-5 text-end">
                 <div class="form-check form-switch form-control-lg">
                     <input type="hidden" name="IsEnabled" value="false">
-                    <input type="checkbox" name="IsEnabled" value="true" class="form-check-input" @(@settings.IsEnabled
-                                                                                                      ? "checked"
-                                                                                                      : null)/>
+                    <input type="checkbox" name="IsEnabled" value="true" class="form-check-input" @(@settings.IsEnabled ? "checked" : null) />
                 </div>
             </div>
         </div>
 
-        <div id="JsonContentEditor" class="monaco-target p-3 rounded-3 shadow-sm border">
+        <table id="linksTable" class="table table-bordered p-3 rounded-3 shadow-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Icon</th>
+                    <th class="th-url">URL</th>
+                    <th class="th-actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <div id="form" class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label for="name">Name</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" id="name" class="form-control form-control-sm">
+            </div>
+            <div class="col-auto">
+                <label for="icon">Icon Class</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" id="icon" class="form-control form-control-sm">
+            </div>
+            <div class="col-auto">
+                <label for="url">URL</label>
+            </div>
+            <div class="col-auto">
+                <input type="text" id="url" class="form-control form-control-sm form-control-url">
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-outline-accent" onclick="addOrUpdateLink()">Add / Update</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearForm()">Cancel</button>
+            </div>
+
+            <span id="error" class="text-danger"></span>
         </div>
     </div>
 
