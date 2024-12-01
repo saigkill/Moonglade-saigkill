@@ -20,20 +20,20 @@ public class CreatePostCommandHandler(
         IBlogConfig blogConfig)
     : IRequestHandler<CreatePostCommand, PostEntity>
 {
-  public async Task<PostEntity> Handle(CreatePostCommand request, CancellationToken ct)
-  {
-    string abs;
-    if (string.IsNullOrEmpty(request.Payload.Abstract))
+    public async Task<PostEntity> Handle(CreatePostCommand request, CancellationToken ct)
     {
-      abs = ContentProcessor.GetPostAbstract(
-          request.Payload.EditorContent,
-          blogConfig.ContentSettings.PostAbstractWords,
-          configuration.GetSection("Editor").Get<EditorChoice>() == EditorChoice.Markdown);
-    }
-    else
-    {
-      abs = request.Payload.Abstract.Trim();
-    }
+        string abs;
+        if (string.IsNullOrEmpty(request.Payload.Abstract))
+        {
+            abs = ContentProcessor.GetPostAbstract(
+                request.Payload.EditorContent,
+                blogConfig.ContentSettings.PostAbstractWords,
+                configuration.GetSection("Post:Editor").Get<EditorChoice>() == EditorChoice.Markdown);
+        }
+        else
+        {
+            abs = request.Payload.Abstract.Trim();
+        }
 
     var utcNow = DateTime.UtcNow;
     var post = new PostEntity
@@ -59,32 +59,50 @@ public class CreatePostCommandHandler(
 
     post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{request.Payload.Slug}";
 
+        await CheckSlugConflict(post, ct);
+
+        AddCategories(request.Payload.SelectedCatIds, post);
+
+        await AddTags(request.Payload.Tags, post, ct);
+
+        await postRepo.AddAsync(post, ct);
+
+        logger.LogInformation($"Created post Id: {post.Id}, Title: '{post.Title}'");
+        return post;
+    }
+
     // check if exist same slug under the same day
-    var todayUtc = DateTime.UtcNow.Date;
-    if (await postRepo.AnyAsync(new PostByDateAndSlugSpec(todayUtc, post.Slug, false), ct))
+    private async Task CheckSlugConflict(PostEntity post, CancellationToken ct)
     {
-      var uid = Guid.NewGuid();
-      post.Slug += $"-{uid.ToString().ToLower()[..8]}";
-      logger.LogInformation($"Found conflict for post slug, generated new slug: {post.Slug}");
-    }
-
-    // add categories
-    if (request.Payload.SelectedCatIds is { Length: > 0 })
-    {
-      foreach (var id in request.Payload.SelectedCatIds)
-      {
-        post.PostCategory.Add(new()
+        var todayUtc = DateTime.UtcNow.Date;
+        if (await postRepo.AnyAsync(new PostByDateAndSlugSpec(todayUtc, post.Slug, false), ct))
         {
-          CategoryId = id,
-          PostId = post.Id
-        });
-      }
+            var uid = Guid.NewGuid();
+            post.Slug += $"-{uid.ToString().ToLower()[..8]}";
+            logger.LogInformation($"Found conflict for post slug, generated new slug: {post.Slug}");
+        }
     }
 
-    // add tags
-    var tags = string.IsNullOrWhiteSpace(request.Payload.Tags) ?
-        [] :
-        request.Payload.Tags.Split(',').ToArray();
+    private static void AddCategories(Guid[] selectedCatIds, PostEntity post)
+    {
+        if (selectedCatIds is { Length: > 0 })
+        {
+            foreach (var id in selectedCatIds)
+            {
+                post.PostCategory.Add(new()
+                {
+                    CategoryId = id,
+                    PostId = post.Id
+                });
+            }
+        }
+    }
+
+    private async Task AddTags(string tagString, PostEntity post, CancellationToken ct)
+    {
+        var tags = string.IsNullOrWhiteSpace(tagString) ?
+            [] :
+            tagString.Split(',').ToArray();
 
     if (tags is { Length: > 0 })
     {
@@ -92,16 +110,11 @@ public class CreatePostCommandHandler(
       {
         if (!Helper.IsValidTagName(item)) continue;
 
-        var tag = await tagRepo.FirstOrDefaultAsync(new TagByDisplayNameSpec(item), ct) ?? await CreateTag(item);
-        post.Tags.Add(tag);
-      }
+                var tag = await tagRepo.FirstOrDefaultAsync(new TagByDisplayNameSpec(item), ct) ?? await CreateTag(item);
+                post.Tags.Add(tag);
+            }
+        }
     }
-
-    await postRepo.AddAsync(post, ct);
-
-    logger.LogInformation($"Created post Id: {post.Id}, Title: '{post.Title}'");
-    return post;
-  }
 
   private async Task<TagEntity> CreateTag(string item)
   {

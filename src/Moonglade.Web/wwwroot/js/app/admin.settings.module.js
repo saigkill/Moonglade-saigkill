@@ -1,29 +1,73 @@
-import * as utils from "./utils.module.js";
-function handleSettingsSubmit(e) {
-    e.preventDefault();
-    var t = "#btn-save-settings",
-        r = (document.querySelector(t).classList.add("disabled"), document.querySelector(t).setAttribute("disabled", "disabled"), new FormData(e.target)),
-        r = Object.fromEntries(r.entries()),
-        r = utils.toMagicJson(r);
-    callApi(e.currentTarget.action, "POST", r, (e) => {
-        blogToast.success("Settings Updated"), document.querySelector(t).classList.remove("disabled"), document.querySelector(t).removeAttribute("disabled");
-    });
+import * as utils from './utils.module.js'
+
+export function handleSettingsSubmit(event) {
+    event.preventDefault();
+
+    const btnSaveSettingsSelector = '#btn-save-settings';
+    const btnSaveSettings = document.querySelector(btnSaveSettingsSelector);
+
+    const disableButton = () => {
+        btnSaveSettings.classList.add('disabled');
+        btnSaveSettings.setAttribute('disabled', 'disabled');
+    };
+
+    const enableButton = () => {
+        btnSaveSettings.classList.remove('disabled');
+        btnSaveSettings.removeAttribute('disabled');
+    };
+
+    disableButton();
+
+    const formData = new FormData(event.target);
+    const formValues = Object.fromEntries(formData.entries());
+    const formattedValues = utils.toMagicJson(formValues);
+
+    callApi(event.currentTarget.action, 'POST', formattedValues,
+        (resp) => {
+            blogToast.success('Settings Updated');
+            enableButton();
+        });
 }
-function compareVersionNumbers(e, t) {
-    var r = e.split("."),
-        i = t.split(".");
-    function n(e) {
-        for (var t = 0; t < e.length; ++t) if (!isPositiveInteger(e[t])) return;
-        return 1;
+
+export function compareVersionNumbers(v1, v2) {
+    var v1parts = v1.split('.');
+    var v2parts = v2.split('.');
+
+    // First, validate both numbers are true version numbers
+    function validateParts(parts) {
+        for (var i = 0; i < parts.length; ++i) {
+            if (!isPositiveInteger(parts[i])) {
+                return false;
+            }
+        }
+        return true;
     }
-    if (!n(r) || !n(i)) return NaN;
-    for (var s = 0; s < r.length; ++s) {
-        if (i.length === s) return 1;
-        if (r[s] !== i[s]) return r[s] > i[s] ? 1 : -1;
+    if (!validateParts(v1parts) || !validateParts(v2parts)) {
+        return NaN;
     }
-    return r.length != i.length ? -1 : 0;
+
+    for (var i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length === i) {
+            return 1;
+        }
+
+        if (v1parts[i] === v2parts[i]) {
+            continue;
+        }
+        if (v1parts[i] > v2parts[i]) {
+            return 1;
+        }
+        return -1;
+    }
+
+    if (v1parts.length != v2parts.length) {
+        return -1;
+    }
+
+    return 0;
 }
-function isPositiveInteger(e) {
-    return /^\d+$/.test(e);
+
+function isPositiveInteger(x) {
+    // http://stackoverflow.com/a/1019526/11236
+    return /^\d+$/.test(x);
 }
-export { handleSettingsSubmit, compareVersionNumbers };

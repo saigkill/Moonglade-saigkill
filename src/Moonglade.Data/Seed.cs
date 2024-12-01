@@ -13,13 +13,10 @@ public class Seed
   {
     var retryForAvailability = retry;
 
-    try
-    {
-      logger.LogDebug("Adding themes data...");
-      await dbContext.BlogTheme.AddRangeAsync(GetThemes());
-
-      logger.LogDebug("Adding categories data...");
-      await dbContext.Category.AddRangeAsync(GetCategories());
+        try
+        {
+            logger.LogDebug("Adding categories data...");
+            await dbContext.Category.AddRangeAsync(GetCategories());
 
       logger.LogDebug("Adding tags data...");
       await dbContext.Tag.AddRangeAsync(GetTags());
@@ -64,40 +61,11 @@ public class Seed
 
       retryForAvailability++;
 
-      logger.LogError(e.Message);
-      await SeedAsync(dbContext, logger, retryForAvailability);
-      throw;
+            logger.LogError(e.Message);
+            await SeedAsync(dbContext, logger, retryForAvailability);
+            throw;
+        }
     }
-  }
-
-  private static IEnumerable<BlogThemeEntity> GetThemes() =>
-      new List<BlogThemeEntity>
-      {
-            new ()
-            {
-                ThemeName = "Word Blue", CssRules = "{\"--accent-color1\": \"#2a579a\",\"--accent-color2\": \"#1a365f\",\"--accent-color3\": \"#3e6db5\"}", ThemeType = 0
-            },
-            new ()
-            {
-                ThemeName = "Excel Green", CssRules = "{\"--accent-color1\": \"#165331\",\"--accent-color2\": \"#0E351F\",\"--accent-color3\": \"#0E703A\"}", ThemeType = 0
-            },
-            new ()
-            {
-                ThemeName = "PowerPoint Orange", CssRules = "{\"--accent-color1\": \"#983B22\",\"--accent-color2\": \"#622616\",\"--accent-color3\": \"#C43E1C\"}", ThemeType = 0
-            },
-            new ()
-            {
-                ThemeName = "OneNote Purple", CssRules = "{\"--accent-color1\": \"#663276\",\"--accent-color2\": \"#52285E\",\"--accent-color3\": \"#7719AA\"}", ThemeType = 0
-            },
-            new ()
-            {
-                ThemeName = "Outlook Blue", CssRules = "{\"--accent-color1\": \"#035AA6\",\"--accent-color2\": \"#032B51\",\"--accent-color3\": \"#006CBF\"}", ThemeType = 0
-            },
-            new ()
-            {
-                ThemeName = "Metal Blue", CssRules = "{\"--accent-color1\": \"#4E5967\",\"--accent-color2\": \"#333942\",\"--accent-color3\": \"#6e7c8e\"}", ThemeType = 0
-            }
-      };
 
   private static IEnumerable<CategoryEntity> GetCategories() =>
       new List<CategoryEntity>
