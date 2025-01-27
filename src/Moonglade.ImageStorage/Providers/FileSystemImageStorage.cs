@@ -1,8 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using Microsoft.Extensions.Logging;
+using System.Runtime.InteropServices;
 
 namespace Moonglade.ImageStorage.Providers;
 
-public class FileSystemImageStorage(FileSystemImageConfiguration imgConfig) : IBlogImageStorage
+public class FileSystemImageStorage(FileSystemImageConfiguration imgConfig, ILogger<FileSystemImageStorage> logger) : IBlogImageStorage
 {
     public string Name => nameof(FileSystemImageStorage);
 
@@ -41,6 +42,7 @@ public class FileSystemImageStorage(FileSystemImageConfiguration imgConfig) : IB
         if (File.Exists(imagePath))
         {
             File.Delete(imagePath);
+            logger.LogInformation("Deleted image: {FileName}", fileName);
         }
     }
 
@@ -60,8 +62,12 @@ public class FileSystemImageStorage(FileSystemImageConfiguration imgConfig) : IB
             4096, true);
         await sourceStream.WriteAsync(imageBytes.AsMemory(0, imageBytes.Length));
 
+        logger.LogInformation("Saved image: {FileName}", fileName);
+
         return fileName;
     }
+
+    public Task<string> InsertSecondaryAsync(string fileName, byte[] imageBytes) => InsertAsync(fileName, imageBytes);
 
     public static string ResolveImageStoragePath(string path)
     {

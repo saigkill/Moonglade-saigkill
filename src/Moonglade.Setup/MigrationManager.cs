@@ -26,10 +26,17 @@ public class MigrationManager(
         if (!bool.Parse(configuration["Setup:AutoDatabaseMigration"]!))
         {
             logger.LogWarning("Automatic database migration is disabled, if you need, please enable the flag in `Setup:AutoDatabaseMigration`.");
+            return;
         }
 
         var mfv = Version.Parse(blogConfig.SystemManifestSettings.VersionString);
         var cuv = Version.Parse(Helper.AppVersionBasic);
+
+        if (Helper.IsNonStableVersion())
+        {
+            logger.LogWarning("Database migration is not supported on non-stable version. Skipped.");
+            return;
+        }
 
         if (mfv < cuv)
         {
@@ -82,21 +89,6 @@ public class MigrationManager(
             await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
 
             logger.LogInformation("Database migration completed.");
-
-            await MigrateTheme(mfv);
-        }
-    }
-
-    private async Task MigrateTheme(Version mfv)
-    {
-        // Migrate theme
-        if (mfv <= Version.Parse("14.12.0"))
-        {
-            logger.LogInformation("Migrating theme...");
-
-            await mediator.Send(new CleanupLegacySystemThemeCommand());
-
-            logger.LogInformation("Theme migration completed.");
         }
     }
 

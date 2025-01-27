@@ -16,6 +16,7 @@ public class MentionController(
     IMediator mediator) : ControllerBase
 {
     [HttpPost("/webmention")]
+    [ReadonlyMode]
     [IgnoreAntiforgeryToken]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -30,26 +31,32 @@ public class MentionController(
 
         var ip = Helper.GetClientIP(HttpContext);
         var response = await mediator.Send(new ReceiveWebmentionCommand(source, target, ip));
+
         if (response.Status == WebmentionStatus.Success)
         {
             SendMentionEmailAction(response.MentionEntity);
             return Ok("Webmention received and verified.");
         }
 
-        return response.Status switch
+        return HandleWebmentionFailure(response.Status);
+    }
+
+    private IActionResult HandleWebmentionFailure(WebmentionStatus status)
+    {
+        return status switch
         {
             WebmentionStatus.InvalidWebmentionRequest => BadRequest("Invalid webmention request."),
-            WebmentionStatus.ErrorSourceNotContainTargetUri => Conflict(
-                "The source URI does not contain a link to the target URI."),
-            WebmentionStatus.SpamDetectedFakeNotFound => NotFound(),
-            WebmentionStatus.ErrorTargetUriNotExist => Conflict("Can not get post id and title for the target URL."),
+            WebmentionStatus.ErrorSourceNotContainTargetUri => Conflict("The source URI does not contain a link to the target URI."),
+            WebmentionStatus.SpamDetectedFakeNotFound => NotFound("The requested resource was not found."),
+            WebmentionStatus.ErrorTargetUriNotExist => Conflict("Cannot retrieve post ID and title for the target URL."),
             WebmentionStatus.ErrorWebmentionAlreadyRegistered => Conflict("Webmention already registered."),
-            WebmentionStatus.GenericError => StatusCode(StatusCodes.Status500InternalServerError),
-            _ => StatusCode(StatusCodes.Status500InternalServerError)
+            WebmentionStatus.GenericError => StatusCode(StatusCodes.Status500InternalServerError, "An internal server error occurred."),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred.")
         };
     }
 
     [HttpPost("/pingback")]
+    [ReadonlyMode]
     [IgnoreAntiforgeryToken]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -82,6 +89,7 @@ public class MentionController(
     }
 
     [Authorize]
+    [ReadonlyMode]
     [HttpDelete("{pingbackId:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete([NotEmpty] Guid pingbackId)
@@ -91,6 +99,7 @@ public class MentionController(
     }
 
     [Authorize]
+    [ReadonlyMode]
     [HttpDelete("clear")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Clear()
