@@ -88,8 +88,8 @@
             text-align: center;
             top: 24px;
             width: 35px;
-            z-index: 1;
-            border: 3px solid var(--accent-color3);
+            z-index: 100;
+            border: 3px solid var(--accent-color1);
             background-color: var(--bs-white);
             color: var(--accent-color1);
         }

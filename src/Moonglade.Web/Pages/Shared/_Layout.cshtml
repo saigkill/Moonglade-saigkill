@@ -4,6 +4,7 @@
 @using Syncfusion.EJ2
 
 @inject IConfiguration Configuration
+@inject IOptions<AnalyticsSettings> AnalyticsSettings
 
 @{
     if (string.IsNullOrEmpty(BlogConfig.GeneralSettings.AvatarUrl))
@@ -148,10 +149,6 @@
         <script src="@syncScript"></script>
     }
 
-    @if (BlogConfig.CustomStyleSheetSettings.EnableCustomCss)
-    {
-        <link href="~/custom.css" rel="stylesheet" />
-    }
     <environment exclude="Production">
 	    @inject IWebHostEnvironment WebHostEnvironment
 	    <script>
@@ -169,7 +166,11 @@
         <!-- Kopieren Sie diesen Code und fügen Sie ihn in Ihre Website ein -->
         <script async src='https://static.mywot.com/website_owners_badges/websiteOwnersBadge.js'></script>
     }
-</head>
+    @if (AnalyticsSettings.Value.GoogleAnalytics.Enabled)
+    {
+        <partial name="_GoogleAnalytics" model="AnalyticsSettings.Value.GoogleAnalytics.GTagId" />
+    }
+    </head>
 <body class="@ViewBag.BodyClass">
     @if (BlogConfig.ContentSettings.ShowCalloutSection)
     {
@@ -307,8 +308,7 @@
     <partial name="_Toast" />
 
     <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-    <script type="module" src="~/js/app/base.js" asp-append-version="true"></script>
-    <script src="~/js/app/httpService.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/app/base.mjs" asp-append-version="true"></script>
 
     <script type="module">
         import * as theme from '/js/app/theme.module.js'
@@ -328,6 +328,11 @@
     </environment>
 
     @await RenderSectionAsync("scripts", false)
+    
+    @if (AnalyticsSettings.Value.MicrosoftClarity.Enabled)
+    {
+        <partial name="_MicrosoftClarity" model="AnalyticsSettings.Value.MicrosoftClarity.ProjectId" />
+    }
 
     @if (!string.IsNullOrWhiteSpace(BlogConfig.AdvancedSettings.FootScripts))
     {

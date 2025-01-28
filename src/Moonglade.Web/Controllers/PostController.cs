@@ -20,10 +20,11 @@ public class PostController(
         IIndexNowClient indexNowClient,
         CannonService cannonService) : ControllerBase
 {
-  [HttpPost("createoredit")]
-  [TypeFilter(typeof(ClearBlogCache), Arguments =
-  [
-      BlogCacheType.SiteMap |
+    [HttpPost("createoredit")]
+    [ReadonlyMode]
+    [TypeFilter(typeof(ClearBlogCache), Arguments =
+    [
+        BlogCacheType.SiteMap |
         BlogCacheType.Subscription
   ])]
   [ProducesResponseType(StatusCodes.Status200OK)]
@@ -92,54 +93,59 @@ public class PostController(
   [
       BlogCacheType.SiteMap |
         BlogCacheType.Subscription
-  ])]
-  [HttpPost("{postId:guid}/restore")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  public async Task<IActionResult> Restore([NotEmpty] Guid postId)
-  {
-    await mediator.Send(new RestorePostCommand(postId));
-    return NoContent();
-  }
+    ])]
+    [HttpPost("{postId:guid}/restore")]
+    [ReadonlyMode]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Restore([NotEmpty] Guid postId)
+    {
+        await mediator.Send(new RestorePostCommand(postId));
+        return NoContent();
+    }
 
   [TypeFilter(typeof(ClearBlogCache), Arguments =
   [
       BlogCacheType.SiteMap |
         BlogCacheType.Subscription
-  ])]
-  [HttpDelete("{postId:guid}/recycle")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  public async Task<IActionResult> Delete([NotEmpty] Guid postId)
-  {
-    await mediator.Send(new DeletePostCommand(postId, true));
-    return NoContent();
-  }
+    ])]
+    [HttpDelete("{postId:guid}/recycle")]
+    [ReadonlyMode]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Delete([NotEmpty] Guid postId)
+    {
+        await mediator.Send(new DeletePostCommand(postId, true));
+        return NoContent();
+    }
 
-  [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
-  [HttpDelete("{postId:guid}/destroy")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  public async Task<IActionResult> DeleteFromRecycleBin([NotEmpty] Guid postId)
-  {
-    await mediator.Send(new DeletePostCommand(postId));
-    return NoContent();
-  }
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
+    [HttpDelete("{postId:guid}/destroy")]
+    [ReadonlyMode]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteFromRecycleBin([NotEmpty] Guid postId)
+    {
+        await mediator.Send(new DeletePostCommand(postId));
+        return NoContent();
+    }
 
-  [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
-  [HttpDelete("recyclebin")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  public async Task<IActionResult> EmptyRecycleBin()
-  {
-    await mediator.Send(new PurgeRecycledCommand());
-    return NoContent();
-  }
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
+    [HttpDelete("recyclebin")]
+    [ReadonlyMode]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> EmptyRecycleBin()
+    {
+        await mediator.Send(new EmptyRecycleBinCommand());
+        return NoContent();
+    }
 
-  [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
-  [HttpPut("{postId:guid}/unpublish")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  public async Task<IActionResult> Unpublish([NotEmpty] Guid postId)
-  {
-    await mediator.Send(new UnpublishPostCommand(postId));
-    return NoContent();
-  }
+    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
+    [HttpPut("{postId:guid}/unpublish")]
+    [ReadonlyMode]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Unpublish([NotEmpty] Guid postId)
+    {
+        await mediator.Send(new UnpublishPostCommand(postId));
+        return NoContent();
+    }
 
   [IgnoreAntiforgeryToken]
   [HttpPost("keep-alive")]

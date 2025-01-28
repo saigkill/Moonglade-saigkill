@@ -17,7 +17,7 @@
     <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/base.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/theme.css" rel="stylesheet" asp-append-version="true" />
-    @if (BlogConfig.CustomStyleSheetSettings.EnableCustomCss)
+    @if (BlogConfig.AppearanceSettings.EnableCustomCss)
     {
         <link href="~/custom.css" rel="stylesheet" asp-append-version="true" />
     }
@@ -51,7 +51,7 @@
                                 <label asp-for="Username"></label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input asp-for="Password" class="form-control" required pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9._~!@@#$^&*]{8,}$" placeholder="@Html.DisplayNameFor(m => m.Password)" minlength="8" maxlength="32" onfocus="showCaptcha()" />
+                                <input asp-for="Password" class="form-control" required pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9._~!@@#$^&*]{8,}$" placeholder="@Html.DisplayNameFor(m => m.Password)" minlength="8" maxlength="32" />
                                 <label asp-for="Password"></label>
                             </div>
 
@@ -63,7 +63,7 @@
                                            placeholder="@SharedLocalizer["Captcha code"]"
                                            autocomplete="off"
                                            class="form-control" required />
-                                    <img id="img-captcha" onclick="getNewCaptcha()" data-bs-toggle="tooltip" data-placement="top" title="@SharedLocalizer["Can't read? Click to change another image."]" />
+                                    <img id="img-captcha" title="@SharedLocalizer["Can't read? Click to change another image."]" />
                                 </div>
                             </div>
 
@@ -77,25 +77,17 @@
             </div>
         </main>
     </div>
+    <script type="module" src="~/js/app/base.mjs" asp-append-version="true"></script>
     <script type="module">
-        import * as theme from '/js/app/theme.module.js'
-        window.theme = theme;
+        import { resetCaptchaImage, showCaptcha } from '/js/app/captchaService.mjs';
 
-        theme.setTheme(theme.getPreferredTheme());
-    </script>
-    <script>
-        function getNewCaptcha() {
-            d = new Date();
-            document.querySelector('#img-captcha').src = `/captcha-image?${d.getTime()}`;
-        };
+        document.getElementById('img-captcha')?.addEventListener('click', function () {
+            resetCaptchaImage();
+        });
 
-        function showCaptcha() {
-            var captchaContainer = document.getElementById('captcha-container');
-            if (captchaContainer.style.display === 'none') {
-                captchaContainer.style.display = 'block';
-                getNewCaptcha();
-            }
-        }
+        document.getElementById('Password')?.addEventListener('focus', function () {
+            showCaptcha();
+        });
     </script>
 </body>
 </html>

@@ -25,22 +25,29 @@ public class MigrationManager(
   {
     logger.LogInformation($"Found manifest, VersionString: {blogConfig.SystemManifestSettings.VersionString}, installed on {blogConfig.SystemManifestSettings.InstallTimeUtc} UTC");
 
-    if (!bool.Parse(configuration["Setup:AutoDatabaseMigration"]!))
-    {
-      logger.LogWarning("Automatic database migration is disabled, if you need, please enable the flag in `Setup:AutoDatabaseMigration`.");
-    }
+        if (!bool.Parse(configuration["Setup:AutoDatabaseMigration"]!))
+        {
+            logger.LogWarning("Automatic database migration is disabled, if you need, please enable the flag in `Setup:AutoDatabaseMigration`.");
+            return;
+        }
 
     var mfv = System.Version.Parse(blogConfig.SystemManifestSettings.VersionString);
     var cuv = System.Version.Parse(Helper.AppVersionBasic);
 
-    if (mfv < cuv)
-    {
-      // do not migrate revision
-      if (mfv.Major == cuv.Major && mfv.Minor == cuv.Minor)
-      {
-        logger.LogInformation("No database migration required.");
-        return;
-      }
+        if (Helper.IsNonStableVersion())
+        {
+            logger.LogWarning("Database migration is not supported on non-stable version. Skipped.");
+            return;
+        }
+
+        if (mfv < cuv)
+        {
+            // do not migrate revision
+            if (mfv.Major == cuv.Major && mfv.Minor == cuv.Minor)
+            {
+                logger.LogInformation("No database migration required.");
+                return;
+            }
 
       logger.LogInformation("Starting database migration...");
 
@@ -83,24 +90,9 @@ public class MigrationManager(
 
       await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
 
-      logger.LogInformation("Database migration completed.");
-
-      await MigrateTheme(mfv);
+            logger.LogInformation("Database migration completed.");
+        }
     }
-  }
-
-  private async Task MigrateTheme(System.Version mfv)
-  {
-    // Migrate theme
-    if (mfv <= System.Version.Parse("14.12.0"))
-    {
-      logger.LogInformation("Migrating theme...");
-
-      await mediator.Send(new CleanupLegacySystemThemeCommand());
-
-      logger.LogInformation("Theme migration completed.");
-    }
-  }
 
   private async Task ExecuteMigrationScript(DbContext context, string scriptUrl)
   {

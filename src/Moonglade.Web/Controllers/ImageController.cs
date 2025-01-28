@@ -32,6 +32,13 @@ public class ImageController(IBlogImageStorage imageStorage,
             return BadRequest("invalid filename");
         }
 
+        // Prevent access to origin images
+        if (filename.Contains("-origin.", StringComparison.OrdinalIgnoreCase))
+        {
+            logger.LogWarning($"Attempt to access origin image: `{filename}` is blocked. Client IP: {HttpContext.Connection.RemoteIpAddress}");
+            return Forbid();
+        }
+
         // Fallback method for legacy "/image/..." references (e.g. from third party websites)
         if (blogConfig.ImageSettings.EnableCDNRedirect)
         {
@@ -52,6 +59,7 @@ public class ImageController(IBlogImageStorage imageStorage,
     }
 
     [Authorize]
+    [ReadonlyMode]
     [HttpPost, IgnoreAntiforgeryToken]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,12 +67,7 @@ public class ImageController(IBlogImageStorage imageStorage,
     {
         var name = Path.GetFileName(file.FileName);
         var ext = Path.GetExtension(name).ToLower();
-        var allowedExts = _imageStorageSettings.AllowedExtensions;
-
-        if (allowedExts == null || allowedExts.Length == 0)
-        {
-            throw new InvalidDataException($"{nameof(ImageStorageSettings.AllowedExtensions)} is empty.");
-        }
+        string[] allowedExts = [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"];
 
         if (!allowedExts.Contains(ext))
         {
@@ -126,6 +129,6 @@ public class ImageController(IBlogImageStorage imageStorage,
     {
         var originalImageData = stream.ToArray();
         cannonService.FireAsync<IBlogImageStorage>(async storage =>
-            await storage.InsertAsync(fileName, originalImageData));
+            await storage.InsertSecondaryAsync(fileName, originalImageData));
     }
 }
