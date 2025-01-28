@@ -144,6 +144,9 @@
   <data name="Account Information" xml:space="preserve">
     <value>帳號資訊</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>帳號</value>
+  </data>
   <data name="Action" xml:space="preserve">
     <value>操作</value>
   </data>
@@ -375,6 +378,9 @@
   <data name="Enable FOAF" xml:space="preserve">
     <value>啟用</value>
   </data>
+  <data name="Enable Pingback" xml:space="preserve">
+    <value>啟用Pingback</value>
+  </data>
   <data name="Enable Site Map" xml:space="preserve">
     <value>啟用網站地圖</value>
   </data>
@@ -402,6 +408,9 @@
   <data name="Featured Posts" xml:space="preserve">
     <value>精選文章</value>
   </data>
+  <data name="Include in feed and sitemap" xml:space="preserve">
+    <value>加入訂閱及網站地圖</value>
+  </data>
   <data name="Fit image to device pixel ratio" xml:space="preserve">
     <value>圖片自動適配設備DPI</value>
   </data>
@@ -420,6 +429,9 @@
   <data name="Friend Link Options" xml:space="preserve">
     <value>友情連結選項</value>
   </data>
+  <data name="Friend links" xml:space="preserve">
+    <value>友情鏈結</value>
+  </data>
   <data name="General" xml:space="preserve">
     <value>一般</value>
   </data>
@@ -434,6 +446,9 @@
   </data>
   <data name="Home" xml:space="preserve">
     <value>主頁</value>
+  </data>
+  <data name="How many tags to show on sidebar" xml:space="preserve">
+    <value>側邊欄顯示標籤數量</value>
   </data>
   <data name="HTML Pitch" xml:space="preserve">
     <value>HTML區域</value>
@@ -503,6 +518,9 @@
   </data>
   <data name="No Archive" xml:space="preserve">
     <value>暫無歸檔</value>
+  </data>
+  <data name="No comments yet" xml:space="preserve">
+    <value>暫無評論</value>
   </data>
   <data name="no items to show" xml:space="preserve">
     <value>無條目需要顯示</value>
@@ -621,6 +639,9 @@
   <data name="Route Name" xml:space="preserve">
     <value>路由名稱</value>
   </data>
+  <data name="Feed items" xml:space="preserve">
+    <value>訂閱條目數量</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -708,6 +729,9 @@
   <data name="The first {0} character(s) will be used as abstract if you leave this field blank." xml:space="preserve">
     <value>留空自動選取文章前 {0} 字元作為摘要</value>
   </data>
+  <data name="The number of entries to include in RSS feed." xml:space="preserve">
+    <value>RSS/ATOM 中包含的條目數量</value>
+  </data>
   <data name="Theme" xml:space="preserve">
     <value>主題</value>
   </data>
@@ -783,36 +807,6 @@
   <data name="Export" xml:space="preserve">
     <value>匯出</value>
   </data>
-  <data name="Account" xml:space="preserve">
-    <value>帳號</value>
-  </data>
-  <data name="Enable Pingback" xml:space="preserve">
-    <value>啟用Pingback</value>
-  </data>
-  <data name="Include in feed and sitemap" xml:space="preserve">
-    <value>加入訂閱及網站地圖</value>
-  </data>
-  <data name="Friend links" xml:space="preserve">
-    <value>友情鏈結</value>
-  </data>
-  <data name="How many tags to show on sidebar" xml:space="preserve">
-    <value>側邊欄顯示標籤數量</value>
-  </data>
-  <data name="Login IP" xml:space="preserve">
-    <value>登錄IP</value>
-  </data>
-  <data name="Login Time (UTC)" xml:space="preserve">
-    <value>登入時間 （UTC）</value>
-  </data>
-  <data name="No comments yet" xml:space="preserve">
-    <value>暫無評論</value>
-  </data>
-  <data name="Feed items" xml:space="preserve">
-    <value>訂閱條目數量</value>
-  </data>
-  <data name="The number of entries to include in RSS/ATOM feed." xml:space="preserve">
-    <value>RSS/ATOM 中包含的條目數量</value>
-  </data>
   <data name="lower case English letters (a-z) and numbers (0-9) with/out hyphen (-) in middle." xml:space="preserve">
     <value>小寫英文字母（a-z）和數位（0-9），可以帶或不帶連符（-）</value>
   </data>
@@ -827,6 +821,15 @@
   </data>
   <data name="No categories" xml:space="preserve">
     <value>沒有分類</value>
+  </data>
+  <data name="Login IP" xml:space="preserve">
+    <value>登錄IP</value>
+  </data>
+  <data name="Login Time (UTC)" xml:space="preserve">
+    <value>登入時間 （UTC）</value>
+  </data>
+  <data name="The number of entries to include in RSS/ATOM feed." xml:space="preserve">
+    <value>RSS/ATOM 中包含的條目數量</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>自動</value>
@@ -1035,7 +1038,22 @@
   <data name="Social Links" xml:space="preserve">
     <value>社交連結</value>
   </data>
-  <data name="testimonials" xml:space="preserve">
-    <value>Empfehlungen</value>
+  <data name="System Themes" xml:space="preserve">
+    <value>系統主題</value>
+  </data>
+  <data name="User Themes" xml:space="preserve">
+    <value>用戶主題</value>
+  </data>
+  <data name="No user themes found, create one to get started." xml:space="preserve">
+    <value>未找到使用者主題，請創建一個以開始使用。</value>
+  </data>
+  <data name="You have reached the maximum number of user themes." xml:space="preserve">
+    <value>您已達到使用者主題的最大數量。</value>
+  </data>
+  <data name="Appearance" xml:space="preserve">
+    <value>外觀</value>
+  </data>
+  <data name="Accent Color" xml:space="preserve">
+    <value>主題色</value>
   </data>
 </root>

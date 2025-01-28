@@ -63,6 +63,30 @@ public static class Helper
         }
     }
 
+    public static void SetAppDomainData(string key, object value)
+    {
+        AppDomain.CurrentDomain.SetData(key, value);
+    }
+
+    public static T GetAppDomainData<T>(string key, T defaultValue = default(T))
+    {
+        object data = AppDomain.CurrentDomain.GetData(key);
+        if (data == null)
+        {
+            return defaultValue;
+        }
+
+        return (T)data;
+    }
+
+    public static bool IsNonStableVersion()
+    {
+        string pattern = @"\b(preview|beta|rc|debug|alpha|test|canary|nightly)\b";
+        Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+
+        return regex.IsMatch(AppVersion);
+    }
+
     // Get `sec-ch-prefers-color-scheme` header value
     // This is to enhance user experience by stopping the screen from blinking when switching pages
     public static bool UseServerSideDarkMode(IConfiguration configuration, HttpContext context)

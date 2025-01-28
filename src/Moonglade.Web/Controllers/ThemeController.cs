@@ -17,15 +17,7 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
             {
                 entry.SlidingExpiration = TimeSpan.FromMinutes(20);
 
-                // Fall back to default theme for migration
-                if (blogConfig.GeneralSettings.ThemeId == 0)
-                {
-                    blogConfig.GeneralSettings.ThemeId = 1;
-                    var kvp = blogConfig.UpdateAsync(blogConfig.GeneralSettings);
-                    await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
-                }
-
-                var data = await mediator.Send(new GetSiteThemeStyleSheetQuery(blogConfig.GeneralSettings.ThemeId));
+                var data = await mediator.Send(new GetSiteThemeStyleSheetQuery(blogConfig.AppearanceSettings.ThemeId));
                 return data;
             });
 
@@ -41,16 +33,20 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
 
     [Authorize]
     [HttpPost]
+    [ReadonlyMode]
     [ProducesResponseType<string>(StatusCodes.Status409Conflict)]
     [ProducesResponseType<int>(StatusCodes.Status200OK)]
     [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCachePartition.General, "theme"])]
     public async Task<IActionResult> Create(CreateThemeRequest request)
     {
+        // AccentColor2 = AccentColor Lighten by 20%
+        double percentage = 0.2;
+        string accentColor2 = ThemeFactory.LightenColor(request.AccentColor, percentage);
+
         var dic = new Dictionary<string, string>
         {
-            { "--accent-color1", request.AccentColor1 },
-            { "--accent-color2", request.AccentColor2 },
-            { "--accent-color3", request.AccentColor3 }
+            { "--accent-color1", request.AccentColor },
+            { "--accent-color2", accentColor2 }
         };
 
         var id = await mediator.Send(new CreateThemeCommand(request.Name, dic));
@@ -61,6 +57,7 @@ public class ThemeController(IMediator mediator, ICacheAside cache, IBlogConfig 
 
     [Authorize]
     [HttpDelete("{id:int}")]
+    [ReadonlyMode]
     [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
     [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCachePartition.General, "theme"])]
     public async Task<IActionResult> Delete([Range(1, int.MaxValue)] int id)

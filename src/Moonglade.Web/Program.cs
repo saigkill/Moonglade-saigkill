@@ -43,12 +43,12 @@ public class Program
     ConfigureSyncfusion(builder);
     ConfigureServices(builder.Services, builder.Configuration, cultures);
 
-    var app = builder.Build();
-    if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
-    {
-      app.Logger.LogCritical("Positive China detection, application stopped.");
-      await app.StopAsync();
-    }
+        var app = builder.Build();
+        if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
+        {
+            Helper.SetAppDomainData("IsReadonlyMode", true);
+            app.Logger.LogWarning("Positive China detection, Moonglade is now in readonly mode.");
+        }
 
     await app.InitStartUp();
     ConfigureMiddleware(app, cultures);
@@ -152,22 +152,12 @@ public class Program
                 Helper.GetMagic(0x1499E, 10, 14)
         };
 
-      if (bool.Parse(configuration["BlockPRCFuryCode"]!))
-      {
-        magics.AddRange([
-            Helper.GetMagic(0x7DB14, 21, 25),
-                    Helper.GetMagic(0x78E10, 13, 17),
-                    Helper.GetMagic(0x17808, 34, 38),
-                    Helper.GetMagic(0x1B5ED, 4, 8),
-                    Helper.GetMagic(0x9CFB, 25, 29),
-                    "NMSL", "CNMB", "MDZZ", "TNND"
-        ]);
-      }
+            options.FontStyle = FontStyle.Bold;
+            options.BlockedCodes = magics.ToArray();
+        });
 
-      options.FontStyle = FontStyle.Bold;
-      options.BlockedCodes = magics.ToArray();
-    });
-  }
+        services.AddScoped<ValidateCaptcha>();
+    }
 
   private static void ConfigureLocalization(IServiceCollection services)
   {
@@ -224,18 +214,19 @@ public class Program
     });
   }
 
-  private static void ConfigureMoongladeServices(IServiceCollection services, IConfiguration configuration)
-  {
-    services.AddMentionCommon()
-        .AddPingback()
-        .AddWebmention()
-        .AddSyndication()
-        .AddInMemoryCacheAside()
-        .AddScoped<ValidateCaptcha>()
-        .AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
-        .AddBlogConfig()
-        .AddBlogAuthenticaton(configuration)
-        .AddImageStorage(configuration);
+    private static void ConfigureMoongladeServices(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMentionCommon()
+                .AddPingback()
+                .AddWebmention();
+
+        services.AddSyndication()
+                .AddInMemoryCacheAside()
+                .AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
+                .AddBlogConfig()
+                .AddAnalytics(configuration)
+                .AddBlogAuthenticaton(configuration)
+                .AddImageStorage(configuration);
 
     services.AddEmailClient();
     services.AddIndexNowClient(configuration.GetSection("IndexNow"));
