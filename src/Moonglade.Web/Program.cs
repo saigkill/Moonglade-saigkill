@@ -153,7 +153,7 @@ public class Program
         };
 
             options.FontStyle = FontStyle.Bold;
-            options.BlockedCodes = magics.ToArray();
+            options.BlockedCodes = [.. magics];
         });
 
         services.AddScoped<ValidateCaptcha>();
@@ -266,11 +266,10 @@ public class Program
     services.AddScoped<IStartUpInitializer, StartUpInitializer>();
   }
 
-
-  private static void ConfigureMiddleware(WebApplication app, List<CultureInfo> cultures)
-  {
-    bool useXFFHeaders = app.Configuration.GetSection("ForwardedHeaders:Enabled").Get<bool>();
-    if (useXFFHeaders) app.UseSmartXFFHeader();
+    private static void ConfigureMiddleware(WebApplication app, List<CultureInfo> cultures)
+    {
+        bool useXFFHeaders = app.Configuration.GetValue<bool>("ForwardedHeaders:Enabled");
+        if (useXFFHeaders) app.UseSmartXFFHeader();
 
     app.UseCustomCss(options => options.MaxContentLength = 10240);
     app.UseOpenSearch(options =>
@@ -280,8 +279,8 @@ public class Program
       options.IconFilePath = "/favicon-16x16.png";
     });
 
-    bool usePrefersColorSchemeHeader = app.Configuration.GetSection("PrefersColorSchemeHeader:Enabled").Get<bool>();
-    if (usePrefersColorSchemeHeader) app.UseMiddleware<PrefersColorSchemeMiddleware>();
+        bool usePrefersColorSchemeHeader = app.Configuration.GetValue<bool>("PrefersColorSchemeHeader:Enabled");
+        if (usePrefersColorSchemeHeader) app.UseMiddleware<PrefersColorSchemeMiddleware>();
 
     app.UseMiddleware<PoweredByMiddleware>();
     app.UseMiddleware<DNTMiddleware>();
