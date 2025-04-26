@@ -65,8 +65,8 @@ namespace Moonglade.Web.Pages
     public PagesContentEntity AboutPublications { get; set; }
     public PagesContentEntity AboutRepositories { get; set; }
     public PagesContentEntity LastUpdated { get; set; }
-    public PagesContentEntity NugetTitle { get; set; }
-    public List<NugetPackage> NugetPackages { get; set; }
+    //public PagesContentEntity NugetTitle { get; set; }
+    //public List<NugetPackage> NugetPackages { get; set; }
     public SocialLink[] SocialLinks { get; set; }
   }
 }
