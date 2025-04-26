@@ -40,8 +40,8 @@ namespace Moonglade.Web.Pages
       ViewModel.AboutRepositories =
         await mediator.Send(new GetPageContentByKeyValueQuery("about-opensource", "about", convertedCulture));
       ViewModel.LastUpdated = await mediator.Send(new GetPageContentByKeyValueQuery("last-updated", "about", convertedCulture));
-      ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
-      ViewModel.NugetPackages = await mediator.Send(new GetAllNugetPackagesQuery());
+      //ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
+      //ViewModel.NugetPackages = await mediator.Send(new GetAllNugetPackagesQuery());
       ViewModel.Testimonials = await mediator.Send(new GetAllTestimonialsQuery());
       ViewModel.SocialLinks = await mediator.Send(new GetAllSocialLinksQuery());
       return Page();
