@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using Moonglade.Core.PostFeature;
+using Moonglade.Data.Entities;
 using Moonglade.IndexNow.Client;
 using Moonglade.Pingback;
 using Moonglade.Web.Attributes;
@@ -55,39 +56,46 @@ public class PostController(
             var baseUri = new Uri(Helper.ResolveRootUrl(HttpContext, null, removeTailSlash: true));
             var link = new Uri(baseUri, $"post/{postEntity.RouteLink.ToLower()}");
 
-            if (blogConfig.AdvancedSettings.EnablePingback)
-            {
-                cannonService.FireAsync<IPingbackSender>(async sender => await sender.TrySendPingAsync(link.ToString(), postEntity.PostContent));
-            }
+            NotifyExternalServices(postEntity.PostContent, link);
+            ProcessIndexing(model.LastModifiedUtc, postEntity.LastModifiedUtc == postEntity.PubDateUtc, link);
 
-            if (blogConfig.AdvancedSettings.EnableWebmention)
-            {
-                cannonService.FireAsync<IWebmentionSender>(async sender => await sender.SendWebmentionAsync(link.ToString(), postEntity.PostContent));
-            }
-
-            var isNewPublish = postEntity.LastModifiedUtc == postEntity.PubDateUtc;
-
-            bool indexCoolDown = true;
-            var minimalIntervalMinutes = int.Parse(configuration["IndexNow:MinimalIntervalMinutes"]!);
-            if (!string.IsNullOrWhiteSpace(model.LastModifiedUtc))
-            {
-                var lastSavedInterval = DateTime.Parse(model.LastModifiedUtc) - DateTime.UtcNow;
-                indexCoolDown = lastSavedInterval.TotalMinutes > minimalIntervalMinutes;
-            }
-
-            if (isNewPublish || indexCoolDown)
-            {
-                cannonService.FireAsync<IIndexNowClient>(async sender => await sender.SendRequestAsync(link));
-            }
-
-      return Ok(new { PostId = postEntity.Id });
+            return Ok(new { PostId = postEntity.Id });
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error Creating New Post.");
+            return Conflict(ex.Message);
+        }
     }
-    catch (Exception ex)
+
+    private void NotifyExternalServices(string postContent, Uri link)
     {
-      logger.LogError(ex, "Error Creating New Post.");
-      return Conflict(ex.Message);
+        if (blogConfig.AdvancedSettings.EnablePingback)
+        {
+            cannonService.FireAsync<IPingbackSender>(async sender => await sender.TrySendPingAsync(link.ToString(), postContent));
+        }
+
+        if (blogConfig.AdvancedSettings.EnableWebmention)
+        {
+            cannonService.FireAsync<IWebmentionSender>(async sender => await sender.SendWebmentionAsync(link.ToString(), postContent));
+        }
     }
-  }
+
+    private void ProcessIndexing(string lastModifiedUtc, bool isNewPublish, Uri link)
+    {
+        bool indexCoolDown = true;
+        var minimalIntervalMinutes = int.Parse(configuration["IndexNow:MinimalIntervalMinutes"]!);
+        if (!string.IsNullOrWhiteSpace(lastModifiedUtc))
+        {
+            var lastSavedInterval = DateTime.Parse(lastModifiedUtc) - DateTime.UtcNow;
+            indexCoolDown = lastSavedInterval.TotalMinutes > minimalIntervalMinutes;
+        }
+
+        if (isNewPublish || indexCoolDown)
+        {
+            cannonService.FireAsync<IIndexNowClient>(async sender => await sender.SendRequestAsync(link));
+        }
+    }
 
   [TypeFilter(typeof(ClearBlogCache), Arguments =
   [

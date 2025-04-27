@@ -19,6 +19,7 @@ public class BlogDbContext : DbContext
     public virtual DbSet<PostEntity> Post { get; set; }
     public virtual DbSet<PostCategoryEntity> PostCategory { get; set; }
     public virtual DbSet<PostTagEntity> PostTag { get; set; }
+    public virtual DbSet<PostViewEntity> PostView { get; set; }
     public virtual DbSet<TagEntity> Tag { get; set; }
     public virtual DbSet<FriendLinkEntity> FriendLink { get; set; }
     public virtual DbSet<PageEntity> CustomPage { get; set; }
@@ -30,7 +31,7 @@ public class BlogDbContext : DbContext
     public virtual DbSet<BlogConfigurationEntity> BlogConfiguration { get; set; }
     public virtual DbSet<CalendarEntity> Calendar { get; set; }
     public virtual DbSet<CertificateEntity> Certificate { get; set; }
-    public virtual DbSet<HonoraryPositionEntity> HonoraryPositon { get; set; }
+    public virtual DbSet<HonoraryPositionEntity> HonoraryPosition { get; set; }
     public virtual DbSet<MandateEntity> Mandate { get; set; }
     public virtual DbSet<MembershipEntity> Membership { get; set; }
     public virtual DbSet<ProjectEntity> Project { get; set; }
@@ -67,6 +68,7 @@ public static class BlogDbContextExtension
 {
     public static async Task ClearAllData(this BlogDbContext context)
     {
+        await context.PostView.ExecuteDeleteAsync();
         await context.PostTag.ExecuteDeleteAsync();
         await context.PostCategory.ExecuteDeleteAsync();
         await context.CommentReply.ExecuteDeleteAsync();
@@ -83,7 +85,7 @@ public static class BlogDbContextExtension
         await context.LoginHistory.ExecuteDeleteAsync();
         await context.Calendar.ExecuteDeleteAsync();
         await context.Certificate.ExecuteDeleteAsync();
-        await context.HonoraryPositon.ExecuteDeleteAsync();
+        await context.HonoraryPosition.ExecuteDeleteAsync();
         await context.Mandate.ExecuteDeleteAsync();
         await context.Membership.ExecuteDeleteAsync();
         await context.Project.ExecuteDeleteAsync();
