@@ -34,7 +34,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 	ProjectSection(SolutionItems) = preProject
 		..\Deployment\AzureQuickDeploy.ps1 = ..\Deployment\AzureQuickDeploy.ps1
 		..\Deployment\mssql-migration.sql = ..\Deployment\mssql-migration.sql
-		mysql-migration.sql = mysql-migration.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F9400B71-ADCD-4FBE-A88F-F85873FDC60B}"
