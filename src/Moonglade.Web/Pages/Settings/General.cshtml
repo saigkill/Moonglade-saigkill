@@ -317,7 +317,7 @@
                             </div>
                         </div>
                         <div class="col-md-5 text-end">
-                            <select class="form-select" asp-for="ViewModel.Pronouns" asp-items="@pronounsList"></select>
+                            <select class="form-select" asp-for="@ViewModel.Pronouns" asp-items="@pronounsList"></select>
                         </div>
                     </div>
 
@@ -402,7 +402,7 @@
                             <i class="bi-menu-button settings-entry-icon"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.WidgetsSubscriptionButtons" class="form-check-label"></label>
+                            <label asp-for="@ViewModel.WidgetsSubscriptionButtons" class="form-check-label"></label>
                         </div>
                         <div class="col-md-5 text-end">
                             <div class="form-check form-switch form-control-lg">
@@ -422,10 +422,10 @@
                         <i class="bi-1-circle-fill settings-entry-icon"></i>
                     </div>
                     <div class="col">
-                        <label asp-for="ViewModel.SyncfusionVersion"></label>
+                        <label asp-for="@ViewModel.SyncfusionVersion"></label>
                     </div>
                     <div class="col-md-5 text-end">
-                        <input asp-for="ViewModel.SyncfusionVersion" class="form-control" />
+                        <input asp-for="@ViewModel.SyncfusionVersion" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -438,21 +438,10 @@
                             <i class="bi-link settings-entry-icon"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.GithubPat"></label>
+                            <label asp-for="@ViewModel.GithubPat"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.GithubPat" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
-                        <div class="col-auto">
-                            <i class="bi-globe"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="ViewModel.IndexNowApiKey"></label>
-                        </div>
-                        <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.IndexNowApiKey" class="form-control" />
+                            <input asp-for="@ViewModel.GithubPat" class="form-control" />
                         </div>
                     </div>
                     <h4 class="admin-subtitle fw-bold mb-2">Verification</h4>
@@ -461,10 +450,10 @@
                             <i class="bi-globe"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.BingSiteVerificationCode"></label>
+                            <label asp-for="@ViewModel.BingSiteVerificationCode"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.BingSiteVerificationCode" class="form-control" />
+                            <input asp-for="@ViewModel.BingSiteVerificationCode" class="form-control" />
                         </div>
                     </div>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
@@ -472,10 +461,10 @@
                             <i class="bi-globe"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.YandexSiteVerificationCode"></label>
+                            <label asp-for="@ViewModel.YandexSiteVerificationCode"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.YandexSiteVerificationCode" class="form-control" />
+                            <input asp-for="@ViewModel.YandexSiteVerificationCode" class="form-control" />
                         </div>
                     </div>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
@@ -483,10 +472,10 @@
                             <i class="bi-globe"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.FacebookAppId"></label>
+                            <label asp-for="@ViewModel.FacebookAppId"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.FacebookAppId" class="form-control" />
+                            <input asp-for="@ViewModel.FacebookAppId" class="form-control" />
                         </div>
                     </div>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
@@ -494,10 +483,10 @@
                             <i class="bi-globe"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.NortonSaveWebVerificationCode"></label>
+                            <label asp-for="@ViewModel.NortonSaveWebVerificationCode"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.NortonSaveWebVerificationCode" class="form-control" />
+                            <input asp-for="@ViewModel.NortonSaveWebVerificationCode" class="form-control" />
                         </div>
                     </div>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
@@ -505,32 +494,10 @@
                             <i class="bi-globe"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.WorldOfTrustVerificationCode"></label>
+                            <label asp-for="@ViewModel.WorldOfTrustVerificationCode"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.WorldOfTrustVerificationCode" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
-                        <div class="col-auto">
-                            <i class="bi-globe"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="ViewModel.GoogleAnalytics"></label>
-                        </div>
-                        <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.GoogleAnalytics" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
-                        <div class="col-auto">
-                            <i class="bi-globe"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="ViewModel.ClarityProjectId"></label>
-                        </div>
-                        <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.ClarityProjectId" class="form-control" />
+                            <input asp-for="@ViewModel.WorldOfTrustVerificationCode" class="form-control" />
                         </div>
                     </div>
                     <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
@@ -538,10 +505,10 @@
                             <i class="bi bi-box"></i>
                         </div>
                         <div class="col">
-                            <label asp-for="ViewModel.NugetUser"></label>
+                            <label asp-for="@ViewModel.NugetUser"></label>
                         </div>
                         <div class="col-md-5 text-end">
-                            <input asp-for="ViewModel.NugetUser" class="form-control" />
+                            <input asp-for="@ViewModel.NugetUser" class="form-control" />
                         </div>
                     </div>
                 </div>

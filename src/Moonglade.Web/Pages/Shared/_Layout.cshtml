@@ -5,6 +5,7 @@
 
 @inject IConfiguration Configuration
 @inject IOptions<AnalyticsSettings> AnalyticsSettings
+@inject IOptions<SyndicationSettings> SyndicationSettings
 
 @{
     if (string.IsNullOrEmpty(BlogConfig.GeneralSettings.AvatarUrl))
@@ -73,9 +74,9 @@
     {
         <meta name='wot-verification' content='@BlogConfig.GeneralSettings.WorldOfTrustVerificationCode' />
     }
-    @if (BlogConfig.AdvancedSettings.BlogaramaID != null)
+    @if (SyndicationSettings.Value.Blogarama.Enabled)
     {
-        <meta name="blogarama-site-verification" content="@BlogConfig.AdvancedSettings.BlogaramaID" />
+        <meta name="blogarama-site-verification" content="@SyndicationSettings.Value.Blogarama.ID" />
     }
 
     @await RenderSectionAsync("meta", false)
@@ -337,39 +338,6 @@
     @if (!string.IsNullOrWhiteSpace(BlogConfig.AdvancedSettings.FootScripts))
     {
         @Html.Raw(BlogConfig.AdvancedSettings.FootScripts)
-    }
-    
-    @if (BlogConfig.GeneralSettings.ClarityProjectId != null)
-    {
-        <script type="text/javascript">
-            (function (c, l, a, r, i, t, y) {
-                c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-                t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-                y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-            })(window, document, "clarity", "script", "@(BlogConfig.GeneralSettings.ClarityProjectId)");
-        </script>
-    }
-    
-    @if (BlogConfig.GeneralSettings.GoogleAnalytics != null)
-    {
-        @* <script type="text/javascript">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "https://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-    var pageTracker = _gat._getTracker("@(BlogConfig.GeneralSettings.GoogleAnalytics)");
-    pageTracker._initData();
-    pageTracker._trackPageview();
-    </script> *@
-
-        <script async src="https://www.googletagmanager.com/gtag/js?id=@BlogConfig.GeneralSettings.GoogleAnalytics"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-
-            gtag('config', '@BlogConfig.GeneralSettings.GoogleAnalytics');
-        </script>
     }
     
     <!-- Syncfusion ASP.NET Core Script Manager -->

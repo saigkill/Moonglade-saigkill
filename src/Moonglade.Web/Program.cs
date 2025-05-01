@@ -225,6 +225,7 @@ public class Program
                 .AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
                 .AddBlogConfig()
                 .AddAnalytics(configuration)
+                .AddSyndication(configuration)
                 .AddBlogAuthenticaton(configuration)
                 .AddImageStorage(configuration);
 
