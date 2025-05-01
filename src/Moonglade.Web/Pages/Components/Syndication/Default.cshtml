@@ -1,25 +1,26 @@
-﻿@{
+﻿@inject IOptions<SyndicationSettings> SyndicationSettings
+@{
     string ontoplistPrefix = "https://www.ontoplist.com/images/ontoplist31.png?id="; //63e50902a62dd
-    string ontoplistLink = ontoplistPrefix + BlogConfig.AdvancedSettings.OntoplistID;
+    string ontoplistLink = ontoplistPrefix + SyndicationSettings.Value.Ontoplist.ID;
     string topblogsPrefix = "https://www.topblogs.de/tracker.php?do=in&id="; // 11089
-    string topblogsLink = topblogsPrefix + BlogConfig.AdvancedSettings.TopblogsTrackerID;
+    string topblogsLink = topblogsPrefix + SyndicationSettings.Value.Topblogs.ID;
 }
 
 <div class="aside-widget p-3 rounded-3 shadow-sm border">
     <h6 class="card-subtitle mb-3 text-secondary">Syndication</h6>
 
     <div role="list">
-        @if (BlogConfig.AdvancedSettings.YahooUrl != null)
+        @if (SyndicationSettings.Value.Yahoo.Enabled)
         {
-            <li><a href="@BlogConfig.AdvancedSettings.YahooUrl" rel="noopener" target="_blank"><img border="0" alt="add2yahoo" src="~/images/addyahoo.gif" width="33%"/></a></li>
+            <li><a href="@SyndicationSettings.Value.Yahoo.AddToYahoo" rel="noopener" target="_blank"><img border="0" alt="add2yahoo" src="~/images/addyahoo.gif" width="33%"/></a></li>
         }
-        @if (BlogConfig.AdvancedSettings.NetvibesUrl != null)
+        @if (SyndicationSettings.Value.Netvibes.Enabled)
         {
-            <li><a href="@BlogConfig.AdvancedSettings.NetvibesUrl" rel="noopener" target="_blank"><img border="0" alt="add2netvibes" src="~/images/add2netvibes.gif" /></a></li>
+            <li><a href="@SyndicationSettings.Value.Netvibes.Url" rel="noopener" target="_blank"><img border="0" alt="add2netvibes" src="~/images/add2netvibes.gif" /></a></li>
         }
-        @if (BlogConfig.AdvancedSettings.BlogaramaUrl != null)
+        @if (SyndicationSettings.Value.Blogarama.Enabled)
         {
-            <li><a href="@BlogConfig.AdvancedSettings.BlogaramaUrl" rel="noopener" target="_blank"><img src="~/images/Blogarama.jpg" width="33%" alt="Blogarama.com - Follow me on Blogarama" /></a></li>
+            <li><a href="@SyndicationSettings.Value.Blogarama.ID" rel="noopener" target="_blank"><img src="~/images/Blogarama.jpg" width="33%" alt="Blogarama.com - Follow me on Blogarama" /></a></li>
         }
         @if (BlogConfig.AdvancedSettings.BloggereiEnabled)
         {

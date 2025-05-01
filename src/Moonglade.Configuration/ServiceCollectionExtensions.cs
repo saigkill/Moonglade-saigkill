@@ -18,4 +18,11 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddSyndication(this IServiceCollection services, IConfiguration configuration)
+    {
+        var section = configuration.GetSection("Syndication");
+        services.Configure<SyndicationSettings>(section);
+        return services;
+    }
 }

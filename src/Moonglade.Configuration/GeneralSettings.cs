@@ -90,9 +90,6 @@ public partial class GeneralSettings : IBlogSettings
   [Display(Name = "Subscription buttons")]
   public bool WidgetsSubscriptionButtons { get; set; } = true;
 
-  [Display(Name = "IndexNow API Key")]
-  public string IndexNowApiKey { get; set; }
-
   [MaxLength(64)]
   public string AvatarUrl { get; set; }
 
