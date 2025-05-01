@@ -209,10 +209,11 @@
                             </a>
                         </div>
                     </div>
+                    <br/>
                     <h4 class="admin-subtitle fw-bold mb-2">
                         @SharedLocalizer["Syndication"]
                     </h4>
-                    <div class="settings-entry2 row align-items-center py-3 px-2 rounded-3 shadow-sm border">
+                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb2">
 
                         <div class="row g-3 align-items-center settings-entry mb-4">
                             <div class="col-auto">
@@ -226,83 +227,6 @@
                                     <input type="hidden" name="EnableSyndication" value="false">
                                     <input type="checkbox" name="EnableSyndication" value="true" class="form-check-input" @(settings.EnableSyndication ? "checked" : null)>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.NetvibesUrl"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.NetvibesUrl" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.BlogaramaUrl"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.BlogaramaUrl" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.BlogaramaID"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.BlogaramaID" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.YahooUrl"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.YahooUrl" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.BloglovinUrl"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.BloglovinUrl" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.OntoplistUrl"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.OntoplistUrl" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.OntoplistID"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.OntoplistID" class="form-control" />
                             </div>
                         </div>
                         <div class="row g-3 align-items-center settings-entry mb-4">
@@ -360,17 +284,6 @@
                                     <input type="hidden" name="TopblogsEnabled" value="false">
                                     <input type="checkbox" name="TopblogsEnabled" value="true" class="form-check-input" @(settings.TopblogsEnabled ? "checked" : null)>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mt-1 mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.TopblogsTrackerID"></label>
-                            </div>
-                            <div class="col-md-5 text-end">
-                                <input asp-for="@settings.TopblogsTrackerID" class="form-control" />
                             </div>
                         </div>
                 </div>
