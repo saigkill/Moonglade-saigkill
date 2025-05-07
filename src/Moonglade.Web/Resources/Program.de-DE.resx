@@ -1056,4 +1056,19 @@
   <data name="Accent Color" xml:space="preserve">
     <value>Farbe der Akzente</value>
   </data>
+  <data name="Erase all data and configuration." xml:space="preserve">
+    <value>Lösche alle Daten und stelle den Anfangszustand her</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Zurücksetzen</value>
+  </data>
+  <data name="System Reset" xml:space="preserve">
+    <value>System zurücksetzen</value>
+  </data>
+  <data name="The number of entries to include in RSS feed." xml:space="preserve">
+    <value>RSS/ATOM Anzahl Einträge</value>
+  </data>
+  <data name="Are you ABSOLUTELY sure? ALL data and configuration will be erased!" xml:space="preserve">
+    <value>Sind Sie ABSOLUT sicher? Alle Daten und Konfigurationen werden gelöscht.</value>
+  </data>
 </root>
