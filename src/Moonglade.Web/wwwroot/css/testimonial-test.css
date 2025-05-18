@@ -36,7 +36,7 @@ figure.snip1157 {
         position: relative;
         background-color: #fafafa;
         padding: 25px 50px 30px 50px;
-        font-size: 0.8em;
+        font-size: 1.0em;
         font-weight: 500;
         margin: 0;
         line-height: 1.6em;
@@ -81,7 +81,7 @@ figure.snip1157 {
         padding: 0 10px 0 120px;
         margin: 0;
         text-transform: uppercase;
-        color: #ffffff;
+        color: #000000;
         -webkit-transform: translateY(50%);
         transform: translateY(50%);
     }
@@ -105,7 +105,7 @@ html {
 }
 
 body {
-    background-color: #212121;
+    /*background-color: #212121;*/
     display: flex;
     justify-content: center;
     align-items: center;

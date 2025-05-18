@@ -4,20 +4,20 @@
 }
 @section head {
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
-        <link rel="stylesheet" href="~/css/about.min.css"/>
+        @* <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" /> *@
+        <link rel="stylesheet" href="~/css/about.min.css" />
         <link rel="stylesheet" href="~/css/testimonial-test.css" />
     </environment>
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.css" />
-        <link rel="stylesheet" href="~/css/about.css"/>
+        @* <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.css" /> *@
+        <link rel="stylesheet" href="~/css/about.css" />
         <link rel="stylesheet" href="~/css/testimonial-test.css" />
     </environment>
 }
 
 @section scripts {
     <environment exclude="Development">
-        <script src="~/lib/fortawesome/fontawesome-free/js/all.min.js"/>
+        <script src="~/lib/fortawesome/fontawesome-free/js/all.min.js" />
     </environment>
     <environment include="Development">
         <script src="~/lib/fortawesome/fontawesome-free/js/all.js"></script>
@@ -172,7 +172,7 @@
     </div>
 </div>
 <br />
-
+<br />
 <!-- Testimonials-->
 <section id="testimonials">
     <h1>@SharedLocalizer["testimonials"]</h1>
@@ -185,12 +185,12 @@
                             @foreach (var test in Model.ViewModel.Testimonials)
                             {
                                 <e-carousel-item template='<figure class="snip1157">
-                                    <blockquote>@test.Summary
-                                        <div class="arrow"></div>
-                                    </blockquote>
-                                    <img src="@test.ImagePath" alt="sq-sample3" />
-                                    <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
-                                    </figure>'></e-carousel-item>
+                                            <blockquote>@test.Summary
+                                                <div class="arrow"></div>
+                                            </blockquote>
+                                            <img src="@test.ImagePath" alt="sq-sample3" />
+                                            <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
+                                            </figure>'></e-carousel-item>
                             }
                         </e-carousel-items>
                     </ejs-carousel>
