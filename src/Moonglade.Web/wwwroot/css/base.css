@@ -15,7 +15,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 0.9rem;
 }
 
@@ -439,6 +439,15 @@ div.animbrand a:hover {
 
 .lightswitch {
     background-color: var(--bs-white);
+}
+
+.archive-post-count-badge {
+    color: var(--accent-color1);
+    border: 1px solid var(--accent-color1);
+    height: 23px;
+    width: 23px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 /* iPad Pro 1024*1366 */
