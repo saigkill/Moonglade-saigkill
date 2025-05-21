@@ -72,4 +72,7 @@
 	<ItemGroup>
 		<EditorConfigFiles Remove="C:\Users\sasch\source\repos\Moonglade\src\Moonglade.Web\.editorconfig" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Pages\NewFolder\" />
+	</ItemGroup>
 </Project>

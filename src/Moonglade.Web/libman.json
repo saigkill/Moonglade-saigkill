@@ -48,6 +48,11 @@
       "provider": "unpkg",
       "library": "tinymce@7.4.1",
       "destination": "wwwroot/lib/tinymce/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@syncfusion/ej2@29.2.4",
+      "destination": "wwwroot/lib/syncfusion/ej2/"
     }
   ]
 }

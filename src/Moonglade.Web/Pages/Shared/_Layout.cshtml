@@ -30,21 +30,10 @@
         }
     }
 
-    string syncVersion = BlogConfig.GeneralSettings.SyncfusionVersion;
-    string syncStyle = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/bootstrap5.css";
-    string syncScript = "https://cdn.syncfusion.com/ej2/" + syncVersion + "/dist/ej2.min.js";
     string shareThisPropertyID = BlogConfig.ContentSettings.ShareThisPropertyId;
     string shareThis = "https://platform-api.sharethis.com/js/sharethis.js#property=" + shareThisPropertyID + "&product=inline-share-buttons&source=platform";
 
-    // Get `sec-ch-prefers-color-scheme` header value
-    // This is to enhance user experience by stopping the screen from blinking when switching pages
     bool useServerSideDarkMode = Helper.UseServerSideDarkMode(Configuration, Context);
-    bool usePrefersColorSchemeHeader = Configuration.GetSection("PrefersColorSchemeHeader:Enabled").Get<bool>();
-    var prefersColorScheme = Context.Request.Headers[Configuration["PrefersColorSchemeHeader:HeaderName"]!];
-    if (usePrefersColorSchemeHeader && prefersColorScheme == "dark")
-    {
-        useServerSideDarkMode = true;
-    }
 }
 <!DOCTYPE html>
 <html lang="@langCode" data-bs-theme="@(useServerSideDarkMode ? "dark" : null)">
@@ -96,7 +85,7 @@
     </title>
 
     @if (BlogConfig.ImageSettings.EnableCDNRedirect &&
-    !string.IsNullOrWhiteSpace(BlogConfig.ImageSettings.CDNEndpoint))
+        !string.IsNullOrWhiteSpace(BlogConfig.ImageSettings.CDNEndpoint))
     {
         <link rel="dns-prefetch" href="@Helper.GetDNSPrefetchUrl(BlogConfig.ImageSettings.CDNEndpoint)" />
     }
@@ -129,49 +118,46 @@
 
     @await RenderSectionAsync("head", false)
     <link href="~/theme.css" rel="stylesheet" asp-append-version="true" />
-    
+
     <environment include="Development">
         <link href="~/css/base.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/rwd.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/css/darkmode.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
         <link href="~/css/base.min.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/rwd.min.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/css/darkmode.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
     <!-- Syncfusion Essential JS 2 Styles -->
-    @if (BlogConfig.GeneralSettings.SyncfusionVersion != null)
+    @if (BlogConfig.GeneralSettings.SyncfusionVersion != null) // TODO: Remove SyncfusionVersion from BlogConfig
     {
-        <link rel="stylesheet" href="@syncStyle" />
+        @* <link rel="stylesheet" href="@syncStyle" /> *@
 
         <!-- Syncfusion ASP.NET Core controls scripts -->
-        <script src="@syncScript"></script>
+        @* <script src="@syncScript"></script> *@
     }
 
     <environment exclude="Production">
-	    @inject IWebHostEnvironment WebHostEnvironment
-	    <script>
+        @inject IWebHostEnvironment WebHostEnvironment
+        <script>
             console.warn('Moonglade is running in @(WebHostEnvironment.EnvironmentName) environment');
         </script>
     </environment>
-	
+
     @if (BlogConfig.ContentSettings.EnableSharingButtons)
     {
-	    <script type="text/javascript" src="@shareThis" async="async"></script>
+        <script type="text/javascript" src="@shareThis" async="async"></script>
     }
-    
+
     @if (BlogConfig.GeneralSettings.WorldOfTrustVerificationCode != null)
     {
-        <!-- Kopieren Sie diesen Code und fügen Sie ihn in Ihre Website ein -->
         <script async src='https://static.mywot.com/website_owners_badges/websiteOwnersBadge.js'></script>
     }
     @if (AnalyticsSettings.Value.GoogleAnalytics.Enabled)
     {
         <partial name="_GoogleAnalytics" model="AnalyticsSettings.Value.GoogleAnalytics.GTagId" />
     }
-    </head>
+</head>
 <body class="@ViewBag.BodyClass">
     @if (BlogConfig.ContentSettings.ShowCalloutSection)
     {
@@ -236,7 +222,7 @@
             </div>
         </nav>
     </header>
-    
+
     <partial name="_CookieConsentPartial" />
 
     <div id="page-content" class="content">
@@ -317,19 +303,19 @@
 
         theme.setTheme(theme.getPreferredTheme());
     </script>
-    
+
     <environment include="Development">
         @* <script src="~/lib/cookieconsent/build/cookieconsent.js"></script> *@
         <script src="~/lib/fortawesome/fontawesome-free/js/all.js"></script>
     </environment>
-    
+
     <environment exclude="Development">
         @* <script src="~/lib/cookieconsent/src/cookieconsent.min.js"></script> *@
         <script src="~/lib/fortawesome/fontawesome-free/js/all.min.js"></script>
     </environment>
 
     @await RenderSectionAsync("scripts", false)
-    
+
     @if (AnalyticsSettings.Value.MicrosoftClarity.Enabled)
     {
         <partial name="_MicrosoftClarity" model="AnalyticsSettings.Value.MicrosoftClarity.ProjectId" />
@@ -339,8 +325,8 @@
     {
         @Html.Raw(BlogConfig.AdvancedSettings.FootScripts)
     }
-    
+
     <!-- Syncfusion ASP.NET Core Script Manager -->
     <ejs-scripts></ejs-scripts>
-    </body>
+</body>
 </html>

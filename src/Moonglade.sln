@@ -200,7 +200,7 @@ Global
 		{C5B9FE4C-6001-4BED-B538-545C44DC6CEC} = {F9400B71-ADCD-4FBE-A88F-F85873FDC60B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EBD14882-9899-4C4B-B9BC-22C0B93BD559}
 		RESX_CultureCountyOverrides = zh=zh-Hant
+		SolutionGuid = {EBD14882-9899-4C4B-B9BC-22C0B93BD559}
 	EndGlobalSection
 EndGlobal

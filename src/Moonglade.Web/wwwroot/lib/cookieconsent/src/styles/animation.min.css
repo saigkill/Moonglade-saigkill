@@ -1,7 +1,7 @@
 /**
- * Minified by jsDelivr using clean-css v4.2.1.
+ * Minified by jsDelivr using clean-css v5.3.2.
  * Original file: /npm/cookieconsent@3.1.1/src/styles/animation.css
- * 
+ *
  * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
  */
 .cc-window{opacity:1;-webkit-transition:opacity 1s ease;-moz-transition:opacity 1s ease;-ms-transition:opacity 1s ease;-o-transition:opacity 1s ease;transition:opacity 1s ease}.cc-window.cc-invisible{opacity:0}.cc-animate.cc-revoke{-webkit-transition:transform 1s ease;-moz-transition:transform 1s ease;-ms-transition:transform 1s ease;-o-transition:transform 1s ease;transition:transform 1s ease}.cc-animate.cc-revoke.cc-top{transform:translateY(-2em)}.cc-animate.cc-revoke.cc-bottom{transform:translateY(2em)}.cc-animate.cc-revoke.cc-active.cc-top{transform:translateY(0)}.cc-animate.cc-revoke.cc-active.cc-bottom{transform:translateY(0)}.cc-revoke:hover{transform:translateY(0)}.cc-grower{max-height:0;overflow:hidden;-webkit-transition:max-height 1s;-moz-transition:max-height 1s;-ms-transition:max-height 1s;-o-transition:max-height 1s;transition:max-height 1s}

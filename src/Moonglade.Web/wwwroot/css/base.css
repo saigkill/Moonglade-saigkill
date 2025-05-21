@@ -36,18 +36,20 @@ a {
 
 footer {
     color: var(--transparent-light-60);
+    a
 
-    a {
-        color: var(--bs-gray-200);
-    }
+{
+    color: var(--bs-gray-200);
+}
 
-    a:hover {
-        color: var(--bs-white);
-    }
+a:hover {
+    color: var(--bs-white);
+}
 
-    .language-selection button {
-        color: var(--transparent-light-60);
-    }
+.language-selection button {
+    color: var(--transparent-light-60);
+}
+
 }
 
 .moonglade-footer {
@@ -66,7 +68,7 @@ footer {
     font-size: 60%;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: "Space Grotesk"
 }
 
