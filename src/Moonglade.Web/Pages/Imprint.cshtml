@@ -68,9 +68,15 @@
 </div>
 <br />
 <h2 id="m56">@Model.Contact.Value</h2>
-<p><a href="mailto:Sascha.Manns@outlook.de" target="_blank" rel="noopener">Email</a></p>
+<p><a href="mailto:himself@saschamanns.de" target="_blank" rel="noopener">Email me</a></p>
 
-<h2 id="m65">@Model.Liability.Value</h2><p><strong>@Model.Disclaimer.Value</strong>: @Model.Disclaimer1.Value</p>
+<h2 id="m65">@Model.Liability.Value</h2>
+<p><strong>@Model.Disclaimer.Value</strong>: @Model.Disclaimer1.Value</p>
 <p>@Html.Raw(@Model.Disclaimer2.Value)</p>
 <p>@Html.Raw(@Model.Disclaimer3.Value)</p>
 <p>@Html.Raw(@Model.Disclaimer4.Value)</p>
+
+<h2>@Model.Privacy.Value</h2>
+<div>
+    @Html.Raw(@Model.PrivacyLink.Value)
+</div>

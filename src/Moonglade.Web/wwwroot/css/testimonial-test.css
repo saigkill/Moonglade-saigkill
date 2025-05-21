@@ -7,9 +7,9 @@ figure.snip1157 {
     overflow: hidden;
     margin: 10px;
     min-width: 220px;
-    max-width: 310px;
+    max-width: 500px;
     width: 100%;
-    color: #333;
+    /*color: #333;*/
     text-align: left;
     box-shadow: none !important;
 }
@@ -34,7 +34,7 @@ figure.snip1157 {
         display: block;
         border-radius: 8px;
         position: relative;
-        background-color: #fafafa;
+        /*background-color: #fafafa;*/
         padding: 25px 50px 30px 50px;
         font-size: 1.0em;
         font-weight: 500;
@@ -42,6 +42,8 @@ figure.snip1157 {
         line-height: 1.6em;
         font-style: italic;
     }
+
+
 
         figure.snip1157 blockquote:before,
         figure.snip1157 blockquote:after {
@@ -81,7 +83,7 @@ figure.snip1157 {
         padding: 0 10px 0 120px;
         margin: 0;
         text-transform: uppercase;
-        color: #000000;
+        /*color: #000000;*/
         -webkit-transform: translateY(50%);
         transform: translateY(50%);
     }
