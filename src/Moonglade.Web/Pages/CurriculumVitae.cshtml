@@ -37,8 +37,14 @@
     <script src="~/lib/typeit/dist/index.umd.js"></script>
     <script src="~/js/app/replaceJobs.js"></script>
     <script src="~/lib/syncfusion/ej2/dist/ej2.min.js" type="text/javascript"></script>
-    <script src="~/js/app/apply-syncfusion.js" type="text/javascript"></script>
-    <script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+    <script src="~/js/app/apply-syncfusion.js" type="text/javascript"></script>0
+
+    <script>
+        document.getElementById('cv-download').onclick = function() {
+            window.open("https://nextcloud.saschamanns.de/index.php/s/WebsiteCVDownload");
+        };
+
+    </script>
 }
 
 <section id="intro">
@@ -172,8 +178,7 @@
         </div>
     </div>
 </section>
-
-<a href="https://nextcloud.saschamanns.de/index.php/s/WebsiteCVDownload" class="btn btn-primary">Download CV</a>
+<ejs-button id="cv-download" cssClass="e-info" content="@Model.DownloadCV.Value"></ejs-button>
 
 <hr />
 
@@ -195,13 +200,13 @@
                             cssClass = "certificate portrait";
                         }
                         <e-carousel-item template='<div style="text-align: center" class="certificate">
-                                          <div class="pic">
-                                           <a href="@cert.Link"><img class="@cssClass" src="@cert.Image" alt=""></img></a>
-                                          </div>
-                                          <p class="description">
-                                           @cert.Content
-                                          </p>
-                                         </div>'></e-carousel-item>
+                                                                          <div class="pic">
+                                                                           <a href="@cert.Link"><img class="@cssClass" src="@cert.Image" alt=""></img></a>
+                                                                          </div>
+                                                                          <p class="description">
+                                                                           @cert.Content
+                                                                          </p>
+                                                                         </div>'></e-carousel-item>
                     }
                 </e-carousel-items>
             </ejs-carousel>
