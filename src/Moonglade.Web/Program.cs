@@ -23,6 +23,7 @@ using SixLabors.Fonts;
 
 using System.Globalization;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json.Serialization;
 
 using Encoder = Moonglade.Web.Configuration.Encoder;
@@ -238,7 +239,7 @@ public class Program
         services.AddGithubClient();
         services.AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
-            .ProtectKeysWithCertificate("thumbprint");
+            .ProtectKeysWithCertificate(new X509Certificate2("saschamanns_de.p12", "pioneers"));
     }
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
