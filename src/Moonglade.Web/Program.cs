@@ -44,19 +44,13 @@ public class Program
         ConfigureLogging(builder);
         ConfigureSyncfusion(builder);
         ConfigureServices(builder.Services, builder.Configuration, cultures);
+        ConfigureDataProtection(builder);
 
         var app = builder.Build();
         if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
         {
             Helper.SetAppDomainData("IsReadonlyMode", true);
             app.Logger.LogWarning("Positive China detection, Moonglade is now in readonly mode.");
-        }
-
-        if (!app.Environment.IsDevelopment())
-        {
-            builder.Services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
-                .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
         }
 
         await app.InitStartUp();
@@ -114,6 +108,16 @@ public class Program
         if (builder.Configuration["SyncfusionLicenseKey"] is not null)
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
+        }
+    }
+
+    private static void ConfigureDataProtection(WebApplicationBuilder builder)
+    {
+        if (!builder.Environment.IsDevelopment())
+        {
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
+                .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
         }
     }
 
