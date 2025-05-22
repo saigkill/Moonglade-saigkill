@@ -48,6 +48,9 @@ public class Program
         var app = builder.Build();
         if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
         {
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
+                .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
             Helper.SetAppDomainData("IsReadonlyMode", true);
             app.Logger.LogWarning("Positive China detection, Moonglade is now in readonly mode.");
         }
@@ -237,9 +240,6 @@ public class Program
         services.AddSingleton<CannonService>();
         services.AddNugetClient();
         services.AddGithubClient();
-        services.AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
-            .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
     }
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
