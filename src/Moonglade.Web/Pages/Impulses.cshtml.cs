@@ -19,6 +19,7 @@ namespace Moonglade.Web.Pages
         public PagesContentEntity ImpulsesPsychological { get; set; }
         public PagesContentEntity ImpulsesLang { get; set; }
         public PagesContentEntity ImpulsesBookPastoral { get; set; }
+        public PagesContentEntity ImpulsesBookBiblestudy { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -34,6 +35,7 @@ namespace Moonglade.Web.Pages
             ImpulsesPsychological = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-psychological", "impulse", convertedCulture));
             ImpulsesLang = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-lang", "impulse", convertedCulture));
             ImpulsesBookPastoral = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-book-pastoral", "impulse", convertedCulture));
+            ImpulsesBookBiblestudy = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-book-bible", "impulse", convertedCulture));
 
             return Page();
         }
