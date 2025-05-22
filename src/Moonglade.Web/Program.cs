@@ -239,7 +239,7 @@ public class Program
         services.AddGithubClient();
         services.AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
-            .ProtectKeysWithCertificate(new X509Certificate2("saschamanns_de.p12", "pioneers"));
+            .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
     }
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
