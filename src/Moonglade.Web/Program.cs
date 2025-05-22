@@ -1,6 +1,7 @@
 ﻿using Edi.Captcha;
 using Edi.PasswordGenerator;
 
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 
 using Moonglade.Comments.Moderator;
@@ -235,6 +236,9 @@ public class Program
         services.AddSingleton<CannonService>();
         services.AddNugetClient();
         services.AddGithubClient();
+        services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
+            .ProtectKeysWithCertificate("thumbprint");
     }
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
