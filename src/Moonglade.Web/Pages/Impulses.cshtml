@@ -19,22 +19,23 @@
 <h2>@Model.ImpulsesSlogan.Value</h2>
 
 <!-- Seelsorge-->
-<h2 style="margin-top: 1em;">@Model.ImpulsesSeelsorgeTitle.Value</h2>
-
-<div class="pastoral-service">@Html.Raw(@Model.ImpulsesSeelsorge.Value)</div>
+<h2 style="margin-top: 1em; text-align: center;">@Model.ImpulsesSeelsorgeTitle.Value</h2>
+<img src="https://saschamanns.de/images/store/seelsorge.png" alt="Seelsorge" style="display: block; margin-left: auto; margin-right: auto;" width="20%" />
+<div class="pastoral-service" style="margin-top: 1em;">@Html.Raw(@Model.ImpulsesSeelsorge.Value)</div>
 <div class="lang"><span class="border">@Model.ImpulsesLang.Value</span></div>
 <div style="margin-top: 1em;"></div>
 <ejs-button id="book-pastoral" cssClass="e-info" content="@Model.ImpulsesBookPastoral.Value"></ejs-button>
 
 
 <!-- Bibelstudium -->
-<h2 style="margin-top: 1em;">@Model.ImpulsesBibleTitle.Value</h2>
-
-<div class="bible-study">@Html.Raw(@Model.ImpulsesBible.Value)</div>
+<h2 style="margin-top: 1em; text-align: center;">@Model.ImpulsesBibleTitle.Value</h2>
+<img src="https://saschamanns.de/images/store/book.png" alt="Bibelstudium" style="display: block; margin-left: auto; margin-right: auto;" width="20%" />
+<div class="bible-study" style="margin-top: 1em;">@Html.Raw(@Model.ImpulsesBible.Value)</div>
 <div class="lang"><span class="border">@Model.ImpulsesLang.Value</span></div>
 <div style="margin-top: 1em;"></div>
 <ejs-button id="book-bible" cssClass="e-info" content="@Model.ImpulsesBookBiblestudy.Value"></ejs-button>
 
 <!-- Psychologische Beratung -->
-<h2 style="margin-top: 1em;">@Model.ImpulsesPsychologicalTitle.Value</h2>
-<div class="psychological-counseling">@Html.Raw(@Model.ImpulsesPsychological.Value)</div>
+<h2 style="margin-top: 1em; text-align: center;">@Model.ImpulsesPsychologicalTitle.Value</h2>
+<img src="https://saschamanns.de/images/store/consultation.png" alt="Beratung" style="display: block; margin-left: auto; margin-right: auto;" width="20%" />
+<div style="margin-top: 1em;" class="psychological-counseling">@Html.Raw(@Model.ImpulsesPsychological.Value)</div>
