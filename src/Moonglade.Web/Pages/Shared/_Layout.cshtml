@@ -128,15 +128,6 @@
         <link href="~/css/rwd.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
-    <!-- Syncfusion Essential JS 2 Styles -->
-    @if (BlogConfig.GeneralSettings.SyncfusionVersion != null) // TODO: Remove SyncfusionVersion from BlogConfig
-    {
-        @* <link rel="stylesheet" href="@syncStyle" /> *@
-
-        <!-- Syncfusion ASP.NET Core controls scripts -->
-        @* <script src="@syncScript"></script> *@
-    }
-
     <environment exclude="Production">
         @inject IWebHostEnvironment WebHostEnvironment
         <script>
