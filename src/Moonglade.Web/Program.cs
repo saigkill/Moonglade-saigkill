@@ -117,7 +117,7 @@ public class Program
         {
             builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
-                .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
+                .ProtectKeysWithCertificate(new X509Certificate2(builder.Configuration["ASPNETCORE_Kestrel__Certificates__Default__Path"], builder.Configuration["ASPNETCORE_Kestrel__Certificates__Default__Password"]));
         }
     }
 
