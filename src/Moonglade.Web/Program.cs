@@ -48,11 +48,15 @@ public class Program
         var app = builder.Build();
         if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
         {
+            Helper.SetAppDomainData("IsReadonlyMode", true);
+            app.Logger.LogWarning("Positive China detection, Moonglade is now in readonly mode.");
+        }
+
+        if (!app.Environment.IsDevelopment())
+        {
             builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
                 .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
-            Helper.SetAppDomainData("IsReadonlyMode", true);
-            app.Logger.LogWarning("Positive China detection, Moonglade is now in readonly mode.");
         }
 
         await app.InitStartUp();
