@@ -44,6 +44,7 @@ public class Program
         ConfigureLogging(builder);
         ConfigureSyncfusion(builder);
         ConfigureServices(builder.Services, builder.Configuration, cultures);
+        ConfigureDataProtection(builder);
 
         var app = builder.Build();
         if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
@@ -107,6 +108,16 @@ public class Program
         if (builder.Configuration["SyncfusionLicenseKey"] is not null)
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
+        }
+    }
+
+    private static void ConfigureDataProtection(WebApplicationBuilder builder)
+    {
+        if (!builder.Environment.IsDevelopment() && builder.Configuration["DataProtection:DirectoryPath"] is not null && builder.Configuration["DataProtection:CertificatePath"] is not null)
+        {
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["DataProtection:DirectoryPath"]))
+                .ProtectKeysWithCertificate(new X509Certificate2(builder.Configuration["DataProtection:CertificatePath"], builder.Configuration["DataProtection:CertificatePassword"]));
         }
     }
 
@@ -237,9 +248,6 @@ public class Program
         services.AddSingleton<CannonService>();
         services.AddNugetClient();
         services.AddGithubClient();
-        services.AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
-            .ProtectKeysWithCertificate(new X509Certificate2("/home/app/.aspnet/https/saschamanns_de.p12", "pioneers"));
     }
 
     private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
