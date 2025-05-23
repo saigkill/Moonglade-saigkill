@@ -113,11 +113,11 @@ public class Program
 
     private static void ConfigureDataProtection(WebApplicationBuilder builder)
     {
-        if (!builder.Environment.IsDevelopment())
+        if (!builder.Environment.IsDevelopment() && builder.Configuration["DataProtection:DirectoryPath"] is not null && builder.Configuration["DataProtection:CertificatePath"] is not null)
         {
             builder.Services.AddDataProtection()
-                .PersistKeysToFileSystem(new DirectoryInfo("/home/app/.aspnet/dataprotection-keys"))
-                .ProtectKeysWithCertificate(new X509Certificate2(builder.Configuration["ASPNETCORE_Kestrel__Certificates__Default__Path"], builder.Configuration["ASPNETCORE_Kestrel__Certificates__Default__Password"]));
+                .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["DataProtection:DirectoryPath"]))
+                .ProtectKeysWithCertificate(new X509Certificate2(builder.Configuration["DataProtection:CertificatePath"], builder.Configuration["DataProtection:CertificatePassword"]));
         }
     }
 
