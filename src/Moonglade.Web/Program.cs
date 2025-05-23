@@ -19,6 +19,8 @@ using Moonglade.Syndication;
 using Moonglade.Web.Handlers;
 using Moonglade.Webmention;
 
+using NLog.Web;
+
 using SixLabors.Fonts;
 
 using System.Globalization;
@@ -101,6 +103,7 @@ public class Program
             builder.Logging.AddAzureWebAppDiagnostics();
         }
         //builder.Services.AddApplicationInsightsTelemetry();
+        builder.Host.UseNLog();
     }
 
     private static void ConfigureSyncfusion(WebApplicationBuilder builder)
