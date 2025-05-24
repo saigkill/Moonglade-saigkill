@@ -19,6 +19,7 @@ using Moonglade.Syndication;
 using Moonglade.Web.Handlers;
 using Moonglade.Webmention;
 
+using NLog;
 using NLog.Web;
 
 using SixLabors.Fonts;
@@ -39,6 +40,8 @@ public class Program
         LoadAssemblies();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+        var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        logger.Debug("init main");
         var cultures = GetSupportedCultures();
         var builder = WebApplication.CreateBuilder(args);
         builder.WriteParameterTable();
