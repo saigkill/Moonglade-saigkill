@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using Moonglade.Core.PostFeature;
-using Moonglade.Data.Entities;
+﻿using Moonglade.Core.PostFeature;
 using Moonglade.IndexNow.Client;
 using Moonglade.Pingback;
 using Moonglade.Web.Attributes;
 using Moonglade.Webmention;
+
+using System.ComponentModel.DataAnnotations;
 
 namespace Moonglade.Web.Controllers;
 
@@ -18,7 +17,7 @@ public class PostController(
         IBlogConfig blogConfig,
         ITimeZoneResolver timeZoneResolver,
         ILogger<PostController> logger,
-        IIndexNowClient indexNowClient,
+        //IIndexNowClient indexNowClient,
         CannonService cannonService) : ControllerBase
 {
     [HttpPost("createoredit")]
@@ -28,26 +27,26 @@ public class PostController(
         BlogCacheType.SiteMap |
         BlogCacheType.Subscription
   ])]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status409Conflict)]
-  public async Task<IActionResult> CreateOrEdit(PostEditModel model)
-  {
-    try
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CreateOrEdit(PostEditModel model)
     {
-      if (!ModelState.IsValid) return Conflict(ModelState.CombineErrorMessages());
+        try
+        {
+            if (!ModelState.IsValid) return Conflict(ModelState.CombineErrorMessages());
 
-      var tzDate = timeZoneResolver.NowInTimeZone;
-      if (model.ChangePublishDate &&
-          model.PublishDate.HasValue &&
-          model.PublishDate <= tzDate &&
-          model.PublishDate.GetValueOrDefault().Year >= 1975)
-      {
-        model.PublishDate = timeZoneResolver.ToUtc(model.PublishDate.Value);
-      }
+            var tzDate = timeZoneResolver.NowInTimeZone;
+            if (model.ChangePublishDate &&
+                model.PublishDate.HasValue &&
+                model.PublishDate <= tzDate &&
+                model.PublishDate.GetValueOrDefault().Year >= 1975)
+            {
+                model.PublishDate = timeZoneResolver.ToUtc(model.PublishDate.Value);
+            }
 
-      var postEntity = model.PostId == Guid.Empty ?
-          await mediator.Send(new CreatePostCommand(model)) :
-          await mediator.Send(new UpdatePostCommand(model.PostId, model));
+            var postEntity = model.PostId == Guid.Empty ?
+                await mediator.Send(new CreatePostCommand(model)) :
+                await mediator.Send(new UpdatePostCommand(model.PostId, model));
 
             if (!model.IsPublished) return Ok(new { PostId = postEntity.Id });
 
@@ -97,11 +96,11 @@ public class PostController(
         }
     }
 
-  [TypeFilter(typeof(ClearBlogCache), Arguments =
-  [
-      BlogCacheType.SiteMap |
+    [TypeFilter(typeof(ClearBlogCache), Arguments =
+    [
+        BlogCacheType.SiteMap |
         BlogCacheType.Subscription
-    ])]
+      ])]
     [HttpPost("{postId:guid}/restore")]
     [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -111,11 +110,11 @@ public class PostController(
         return NoContent();
     }
 
-  [TypeFilter(typeof(ClearBlogCache), Arguments =
-  [
-      BlogCacheType.SiteMap |
+    [TypeFilter(typeof(ClearBlogCache), Arguments =
+    [
+        BlogCacheType.SiteMap |
         BlogCacheType.Subscription
-    ])]
+      ])]
     [HttpDelete("{postId:guid}/recycle")]
     [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -155,15 +154,15 @@ public class PostController(
         return NoContent();
     }
 
-  [IgnoreAntiforgeryToken]
-  [HttpPost("keep-alive")]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  public IActionResult KeepAlive([MaxLength(16)] string nonce)
-  {
-    return Ok(new
+    [IgnoreAntiforgeryToken]
+    [HttpPost("keep-alive")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult KeepAlive([MaxLength(16)] string nonce)
     {
-      ServerTime = DateTime.UtcNow,
-      Nonce = nonce
-    });
-  }
+        return Ok(new
+        {
+            ServerTime = DateTime.UtcNow,
+            Nonce = nonce
+        });
+    }
 }
