@@ -105,7 +105,7 @@ public class Program
         {
             builder.Logging.AddAzureWebAppDiagnostics();
         }
-        //builder.Services.AddApplicationInsightsTelemetry();
+        builder.Services.AddApplicationInsightsTelemetry();
         builder.Host.UseNLog();
     }
 
