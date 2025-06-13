@@ -10,10 +10,6 @@
     <h6 class="card-subtitle mb-3 text-secondary">Syndication</h6>
 
     <div role="list">
-        @if (SyndicationSettings.Value.Yahoo.Enabled)
-        {
-            <li><a href="@SyndicationSettings.Value.Yahoo.AddToYahoo" rel="noopener" target="_blank"><img border="0" alt="add2yahoo" src="~/images/addyahoo.gif" width="33%"/></a></li>
-        }
         @if (SyndicationSettings.Value.Netvibes.Enabled)
         {
             <li><a href="@SyndicationSettings.Value.Netvibes.Url" rel="noopener" target="_blank"><img border="0" alt="add2netvibes" src="~/images/add2netvibes.gif" /></a></li>
