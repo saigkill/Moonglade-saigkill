@@ -1,43 +1,37 @@
-#nullable disable
+﻿#nullable disable
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Moonglade.Data.Entities
+namespace Moonglade.Data.Entities;
+
+[System.ComponentModel.Description("Table with my Projects")]
+public class ProjectEntity
 {
-  [System.ComponentModel.Description("Table with my Projects")]
-  public class ProjectEntity
-  {
+  [Required]
+  public int Id { get; set; }
 
-	[Description("Authors of the project. Max. length 50")]
-	public string Authors { get; set; }
+  [Required]
+  [Description("Date of completion")]
+  [DataType(DataType.Date)]
+  public DateTime Completion { get; set; }
 
-	[Description("Client of the project. Max. length 50")]
-	public string Client { get; set; }
+  [Description("Language of the project")]
+  [StringLength(50)]
+  public Language Language { get; set; }
 
-	[Description("Date of completion")]
-	public DateTime Completion { get; set; }
+  [Required]
+  [Description("Link to the project")]
+  [StringLength(150)]
+  public string ProjectLink { get; set; }
 
-	[Required]
-	public int Id { get; set; }
+  [Required]
+  [Description("Name of the project")]
+  [StringLength(100)]
+  public string ProjectName { get; set; }
 
-	[Description("Language of the project")]
-	public Language Language { get; set; }
-
-	[Description("Link to the portfolio")]
-	public string PortfolioLink { get; set; }
-
-	[Description("Link to the project")]
-	public string ProjectLink { get; set; }
-
-	[Description("Name of the project")]
-	public string ProjectName { get; set; }
-
-	[Description("Summary of the project")]
-	public string ProjectSummary { get; set; }
-
-	[Description("Type of the project")]
-	public string ProjectType { get; set; }
-  }
+  [Required]
+  [Description("Summary of the project")]
+  [StringLength(500)]
+  public string ProjectSummary { get; set; }
 }
-

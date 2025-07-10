@@ -181,17 +181,17 @@
         <div class="row">
             <div class="col-md-offset2 col-md-8">
                 <div class="control-container">
-                    <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" interval="8000" showIndicators="false">
+                    <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" interval="12000" showIndicators="false">
                         <e-carousel-items>
                             @foreach (var test in Model.ViewModel.Testimonials)
                             {
                                 <e-carousel-item template='<figure class="snip1157">
-                                                                <blockquote>@test.Summary
-                                                                <div class="arrow"></div>
-                                                                </blockquote>
-                                                                <img src="@test.ImagePath" alt="sq-sample3" />
-                                                                <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
-                                                            </figure>'></e-carousel-item>
+                                                                            <blockquote>@test.Summary
+                                                                            <div class="arrow"></div>
+                                                                            </blockquote>
+                                                                            <img src="@test.ImagePath" alt="sq-sample3" />
+                                                                            <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
+                                                                        </figure>'></e-carousel-item>
                             }
                         </e-carousel-items>
                     </ejs-carousel>

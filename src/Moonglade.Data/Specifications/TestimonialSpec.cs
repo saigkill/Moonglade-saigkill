@@ -14,10 +14,10 @@ public sealed class TestimonialByIdSpec : SingleResultSpecification<TestimonialE
 
 public sealed class TestimonialByLanguageSpec : Specification<TestimonialEntity>
 {
-  public TestimonialByLanguageSpec()
+  public TestimonialByLanguageSpec(Audience audience)
   {
     var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
     var language = LanguageExtensions.FromLangCodeToLang(langCode);
-    Query.Where(p => p.Language == language);
+    Query.Where(p => p.Language == language && p.Audience == audience);
   }
 }
