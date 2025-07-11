@@ -7,7 +7,7 @@ using Moonglade.Data.Entities;
 
 namespace Moonglade.Web.Pages;
 
-public class ImprintModel(IMediator mediator) : PageModel
+public class ImprintModel(IMediator mediator, IConfiguration configuration) : PageModel
 {
   public PagesContentEntity Disclaimer1 { get; set; }
   public PagesContentEntity Disclaimer2 { get; set; }
@@ -32,7 +32,7 @@ public class ImprintModel(IMediator mediator) : PageModel
       new MarkerData() { latitude = 50.328794700, longitude = 7.2172333, city = "Mayen" }
     };
 
-    AzureMapsKey = "4cYIJcSke6yULAsAwErczd4rMJxmSikjMhnd1FnBznUL2FKLQvSBJQQJ99AJAC5RqLJlEuHRAAAgAZMP2M0Y";
+    AzureMapsKey = configuration.GetValue<string>("AzureMapsKey");
 
     var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
     var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
