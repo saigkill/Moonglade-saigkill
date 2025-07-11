@@ -11,6 +11,11 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/css/testimonial-test.css" />
     </environment>
+    <style>
+        .sharethis-inline-share-buttons {
+            width: 500px;
+        }
+    </style>
 }
 
 @section Scripts {
@@ -112,6 +117,14 @@
 
 <hr />
 
+@if (BlogConfig.ContentSettings.ShowPostFooter)
+{
+    <section class="post-footer clearfix">
+        @Html.Raw(BlogConfig.ContentSettings.PostFooterHtmlPitch)
+    </section>
+}
+
+<hr />
 <section id="testimonials" style="margin-top: 2em;">
     <h1>Stimmen aus den Politikwissenschaften</h1>
     <div class="container">
@@ -123,13 +136,13 @@
                             @foreach (var test in Model.Testimonials)
                             {
                                 <e-carousel-item template='
-                                                <figure class="snip1157">
-                                                    <blockquote>@test.Summary
-                                                       <div class="arrow"></div>
-                                                    </blockquote>
-                                                    <img src="@test.ImagePath" alt="sq-sample3" />
-                                                     <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
-                                                </figure>'></e-carousel-item>
+                                                        <figure class="snip1157">
+                                                            <blockquote>@test.Summary
+                                                               <div class="arrow"></div>
+                                                            </blockquote>
+                                                            <img src="@test.ImagePath" alt="sq-sample3" />
+                                                                                                              <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
+                                                                                                         </figure>'></e-carousel-item>
                             }
                         </e-carousel-items>
                     </ejs-carousel>
@@ -137,4 +150,15 @@
             </div>
         </div>
     </div>
+</section>
+
+<hr />
+<section id="action">
+    @if (BlogConfig.ContentSettings.EnableSharingButtons)
+    {
+        <hr />
+        <div class="sharethis-inline-reaction-buttons"></div>
+        <hr />
+        <div class="sharethis-inline-share-buttons"></div>
+    }
 </section>
