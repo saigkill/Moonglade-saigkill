@@ -31,33 +31,33 @@ public class Seed
       // Add example post
       var content = "Moonglade is the blog system for https://edi.wang. Powered by .NET 8 and runs on Microsoft Azure, the best cloud on the planet.";
 
-      var post = new PostEntity
-      {
-        Id = Guid.NewGuid(),
-        Title = "Welcome to Moonglade",
-        Slug = "welcome-to-moonglade",
-        Author = "admin",
-        PostContent = content,
-        CommentEnabled = true,
-        CreateTimeUtc = DateTime.UtcNow,
-        ContentAbstract = content,
-        IsPublished = true,
-        IsFeatured = true,
-        IsFeedIncluded = true,
-        LastModifiedUtc = DateTime.UtcNow,
-        PubDateUtc = DateTime.UtcNow,
-        ContentLanguageCode = "en-us",
-        Tags = dbContext.Tag.ToList(),
-        PostCategory = dbContext.PostCategory.ToList(),
-        RouteLink = $"{DateTime.UtcNow.ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/welcome-to-moonglade"
-      };
+            var post = new PostEntity
+            {
+                Id = Guid.NewGuid(),
+                Title = "Welcome to Moonglade",
+                Slug = "welcome-to-moonglade",
+                Author = "admin",
+                PostContent = content,
+                CommentEnabled = true,
+                CreateTimeUtc = DateTime.UtcNow,
+                ContentAbstract = content,
+                PostStatus = PostStatusConstants.Published,
+                IsFeatured = true,
+                IsFeedIncluded = true,
+                LastModifiedUtc = DateTime.UtcNow,
+                PubDateUtc = DateTime.UtcNow,
+                ContentLanguageCode = "en-us",
+                Tags = [.. dbContext.Tag],
+                PostCategory = [.. dbContext.PostCategory],
+                RouteLink = $"{DateTime.UtcNow.ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/welcome-to-moonglade"
+            };
 
-      await dbContext.Post.AddAsync(post);
-      await dbContext.SaveChangesAsync();
-    }
-    catch (Exception e)
-    {
-      if (retryForAvailability >= 10) throw;
+            await dbContext.Post.AddAsync(post);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            if (retryForAvailability >= 5) throw;
 
       retryForAvailability++;
 
@@ -67,9 +67,8 @@ public class Seed
         }
     }
 
-  private static IEnumerable<CategoryEntity> GetCategories() =>
-      new List<CategoryEntity>
-      {
+    private static IEnumerable<CategoryEntity> GetCategories() =>
+        [
             new()
             {
                 Id = Guid.Parse("b0c15707-dfc8-4b09-9aa0-5bfca744c50b"),
@@ -77,29 +76,26 @@ public class Seed
                 Note = "Default Category",
                 Slug = "default"
             }
-      };
+        ];
 
-  private static IEnumerable<TagEntity> GetTags() =>
-      new List<TagEntity>
-      {
+    private static IEnumerable<TagEntity> GetTags() =>
+        [
             new() { DisplayName = "Moonglade", NormalizedName = "moonglade" },
             new() { DisplayName = ".NET", NormalizedName = "dot-net" }
-      };
+        ];
 
-  private static IEnumerable<FriendLinkEntity> GetFriendLinks() =>
-      new List<FriendLinkEntity>
-      {
+    private static IEnumerable<FriendLinkEntity> GetFriendLinks() =>
+        [
             new()
             {
                 Id = Guid.NewGuid(),
                 Title = "Edi.Wang",
                 LinkUrl = "https://edi.wang"
             }
-      };
+        ];
 
-  private static IEnumerable<PageEntity> GetPages() =>
-      new List<PageEntity>
-      {
+    private static IEnumerable<PageEntity> GetPages() =>
+        [
             new()
             {
                 Id = Guid.NewGuid(),
@@ -112,5 +108,5 @@ public class Seed
                 CreateTimeUtc = DateTime.UtcNow,
                 UpdateTimeUtc = DateTime.UtcNow
             }
-      };
+        ];
 }

@@ -35,29 +35,33 @@ public class CreatePostCommandHandler(
             abs = request.Payload.Abstract.Trim();
         }
 
-    var utcNow = DateTime.UtcNow;
-    var post = new PostEntity
-    {
-      CommentEnabled = request.Payload.EnableComment,
-      Id = Guid.NewGuid(),
-      PostContent = request.Payload.EditorContent,
-      ContentAbstract = abs,
-      CreateTimeUtc = utcNow,
-      LastModifiedUtc = utcNow, // Fix draft orders
-      Slug = request.Payload.Slug.ToLower().Trim(),
-      Author = request.Payload.Author?.Trim(),
-      Title = request.Payload.Title.Trim(),
-      ContentLanguageCode = request.Payload.LanguageCode,
-      IsFeedIncluded = request.Payload.FeedIncluded,
-      PubDateUtc = request.Payload.IsPublished ? utcNow : null,
-      IsDeleted = false,
-      IsPublished = request.Payload.IsPublished,
-      IsFeatured = request.Payload.Featured,
-      HeroImageUrl = string.IsNullOrWhiteSpace(request.Payload.HeroImageUrl) ? null : Helper.SterilizeLink(request.Payload.HeroImageUrl),
-      IsOutdated = request.Payload.IsOutdated,
-    };
+        var utcNow = DateTime.UtcNow;
+        var post = new PostEntity
+        {
+            CommentEnabled = request.Payload.EnableComment,
+            Id = Guid.NewGuid(),
+            PostContent = request.Payload.EditorContent,
+            ContentAbstract = abs,
+            CreateTimeUtc = utcNow,
+            LastModifiedUtc = utcNow, // Fix draft orders
+            Slug = request.Payload.Slug.ToLower().Trim(),
+            Author = request.Payload.Author?.Trim(),
+            Title = request.Payload.Title.Trim(),
+            ContentLanguageCode = request.Payload.LanguageCode,
+            IsFeedIncluded = request.Payload.FeedIncluded,
+            PubDateUtc = request.Payload.PostStatus == PostStatusConstants.Published ? utcNow : null,
+            ScheduledPublishTimeUtc =
+                request.Payload.PostStatus == PostStatusConstants.Scheduled ?
+                request.Payload.ScheduledPublishTime :
+                null,
+            IsDeleted = false,
+            PostStatus = request.Payload.PostStatus ?? PostStatusConstants.Draft,
+            IsFeatured = request.Payload.Featured,
+            HeroImageUrl = string.IsNullOrWhiteSpace(request.Payload.HeroImageUrl) ? null : Helper.SterilizeLink(request.Payload.HeroImageUrl),
+            IsOutdated = request.Payload.IsOutdated,
+        };
 
-    post.RouteLink = $"{post.PubDateUtc.GetValueOrDefault().ToString("yyyy/M/d", CultureInfo.InvariantCulture)}/{request.Payload.Slug}";
+        post.RouteLink = Helper.GenerateRouteLink(post.PubDateUtc.GetValueOrDefault(), request.Payload.Slug);
 
         await CheckSlugConflict(post, ct);
 

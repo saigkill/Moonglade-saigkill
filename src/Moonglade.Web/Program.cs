@@ -19,6 +19,7 @@ using Moonglade.Nuget.Client;
 using Moonglade.Pingback;
 using Moonglade.Setup;
 using Moonglade.Syndication;
+using Moonglade.Web.BackgroundServices;
 using Moonglade.Web.Handlers;
 using Moonglade.Webmention;
 
@@ -28,6 +29,7 @@ using NLog.Web;
 using SixLabors.Fonts;
 
 using Encoder = Moonglade.Web.Configuration.Encoder;
+
 
 namespace Moonglade.Web;
 
@@ -47,7 +49,6 @@ public class Program
     ConfigureLogging(builder);
     ConfigureSyncfusion(builder);
     ConfigureServices(builder.Services, builder.Configuration, cultures);
-    ConfigureDataProtection(builder);
 
     var app = builder.Build();
     if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
@@ -106,7 +107,6 @@ public class Program
     builder.Services.AddApplicationInsightsTelemetry();
     builder.Host.UseNLog();
   }
-
   private static void ConfigureSyncfusion(WebApplicationBuilder builder)
   {
     if (builder.Configuration["SyncfusionLicenseKey"] is not null)
@@ -114,22 +114,12 @@ public class Program
       Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
     }
   }
-
-  private static void ConfigureDataProtection(WebApplicationBuilder builder)
-  {
-    //if (!builder.Environment.IsDevelopment() && builder.Configuration["DataProtection:DirectoryPath"] is not null && builder.Configuration["DataProtection:CertificatePath"] is not null)
-    //{
-    //    builder.Services.AddDataProtection()
-    //        .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["DataProtection:DirectoryPath"]))
-    //        .ProtectKeysWithCertificate(new X509Certificate2(builder.Configuration["DataProtection:CertificatePath"], builder.Configuration["DataProtection:CertificatePassword"]));
-    //}
-  }
-
   private static void ConfigureServices(IServiceCollection services, IConfiguration configuration, List<CultureInfo> cultures)
   {
     var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-    assemblies = assemblies.Where(x => x.FullName!.StartsWith("Moonglade")).ToArray();
+    assemblies = [.. assemblies.Where(x => x.FullName!.StartsWith("Moonglade"))];
 
+    services.AddHttpClient();
     services.AddMediatR(config => config.RegisterServicesFromAssemblies(assemblies));
     services.AddOptions().AddHttpContextAccessor();
     ConfigureSession(services);
@@ -239,19 +229,23 @@ public class Program
 
     services.AddSyndication()
             .AddInMemoryCacheAside()
-            .AddScoped<ITimeZoneResolver, BlogTimeZoneResolver>()
             .AddBlogConfig()
             .AddAnalytics(configuration)
-            .AddSyndication(configuration)
             .AddBlogAuthenticaton(configuration)
             .AddImageStorage(configuration);
 
     services.AddEmailClient();
     services.AddIndexNowClient(configuration.GetSection("IndexNow"));
     services.AddContentModerator(configuration);
-    services.AddSingleton<CannonService>();
     services.AddNugetClient();
     services.AddGithubClient();
+
+    if (configuration.GetValue<bool>("PostScheduler:Enabled"))
+    {
+      services.AddHostedService<ScheduledPublishService>();
+    }
+
+    services.AddSingleton<CannonService>();
   }
 
   private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
@@ -301,7 +295,6 @@ public class Program
     if (usePrefersColorSchemeHeader) app.UseMiddleware<PrefersColorSchemeMiddleware>();
 
     app.UseMiddleware<PoweredByMiddleware>();
-    app.UseMiddleware<DNTMiddleware>();
 
     if (app.Environment.IsDevelopment())
     {

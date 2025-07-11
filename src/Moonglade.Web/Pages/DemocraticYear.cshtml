@@ -1,0 +1,140 @@
+﻿@page "/pages/projects/petitiones/democratic_year"
+@model Moonglade.Web.Pages.DemocraticYearModel
+@{
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/css/demoyear.css" />
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/testimonial-test.css" />
+    </environment>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/testimonial-test.css" />
+    </environment>
+}
+
+@section Scripts {
+    <script src="~/lib/syncfusion/ej2/dist/ej2.min.js" type="text/javascript"></script>
+    <script src="~/js/app/apply-syncfusion.js" type="text/javascript"></script>
+    <script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+
+    <script>
+        document.getElementById('konzept-download-pdf').onclick = function() {
+            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Konzeptpapier.pdf");
+        };
+        document.getElementById('download-faz').onclick = function() {
+            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Mehr%20Realit%C3%A4tssinn%20wagen%20%20Warum%20ein%20(Bl%C3%A4tterFAZ).pdf");
+        };
+        document.getElementById('download-tagesspiegel').onclick = function() {
+            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Zw%C3%B6lf%20Monate%20f%C3%BCr%20mehr%20Vertrauen%20(Tagesspiegel).pdf");
+        };
+        document.getElementById('download-taz').onclick = function() {
+            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Ein%20Jahr%20bevor%20ihr%20regiert%20(TAZ).pdf");
+        };
+    </script>
+}
+
+<div class="post-hero-image-container mb-3 text-center">
+    <img src="https://moongladesm.blob.core.windows.net/images/blogheaderimages/Demoyear-Header.png" width="50%" class="post-hero-image img-fluid rounded-3 shadow-sm" />
+</div>
+
+<section id="konzept">
+    <h1><strong>Demokratisches Grundjahr f&uuml;r Bundestagsabgeordnete</strong></h1>
+    <p class="Normal"><strong><span class="tm5">Ein Reformvorschlag zur St&auml;rkung politischer Verantwortung und gesellschaftlicher N&auml;he  </span></strong></p>
+    <p class="Normal">Autor: Sascha Manns. &#8211; Rheinland-Pfalz  </p>
+    <p class="Normal">Stand: Juli 2025</p>
+    <h2><strong>1. Ausgangslage  </strong></h2>
+    <p class="Normal">- Wachsende Entfremdung zwischen politischen Entscheidungstr&auml;gern und Alltagserfahrung.</p>
+    <p class="Normal">- Vertrauensverlust in parlamentarischen Institutionen laut Studien und Umfragen. </p>
+    <p class="Normal">- Demokratische Legitimit&auml;t braucht mehr als Verfahren - sie braucht gelebte Erfahrung.</p>
+    <h2><strong>2. Ziel des Reformvorschlags  </strong></h2>
+    <p class="Normal">- St&auml;rkung erfahrungsnaher politischer Repr&auml;sentation.</p>
+    <p class="Normal">- Vertiefung von Empathie, Urteilskraft und Bodenhaftung bei Abgeordneten.</p>
+    <p class="Normal">- Institutionalisierung gesellschaftlicher Lernprozesse vor Amts&uuml;bernahme</p>
+    <h2><strong>3. Struktur des demokratischen Grundjahres  </strong></h2>
+    <p class="Normal">- Das Grundjahr besteht aus vier Modulen &agrave; 2&#8211;3 Monate in: </p>
+    <p class="Normal">&#160; 1. Pflege- oder Gesundheitseinrichtung  </p>
+    <p class="Normal">&#160; 2. &Ouml;ffentliche Schule im sozialen Brennpunkt  </p>
+    <p class="Normal">&#160; 3. Verwaltungseinheit (z.&#8239;B. B&uuml;rgeramt, Jobcenter) </p>
+    <p class="Normal">&#160; 4. Gemeinn&uuml;tzige Organisation / NGO  wie zB. Tafel</p>
+    <p class="Normal">- Organisation &uuml;ber eine Bundeskoordinationseinheit, z.&#8239;B. beim Bundesamt f&uuml;r politische Bildung  </p>
+    <p class="Normal">- Anrechnung beruflicher Vorerfahrung in den Bereichen auf Antrag m&ouml;glich  </p>
+    <p class="Normal">- H&auml;rtefallregelung bei Pflegeverantwortung, gesundheitlichen Einschr&auml;nkungen etc.</p>
+    <h2><strong>4. Verfassungsrechtliche Grundlage</strong></h2>
+    <p class="Normal">Vorschlag zur Erg&auml;nzung von Artikel 38 GG (neu): </p>
+    <p class="Normal">&#160;</p>
+    <p class="Normal">
+        <span class="tm6">
+            (4) Mitglieder des Deutschen Bundestages treten ihr Mandat erst nach erfolgreichem Abschluss eines demokratischen Grundjahres gem&auml;&szlig; bundesgesetzlicher Regelung an. Dieses dient
+            dem Erwerb praktischer Erfahrungen in gesellschaftlich relevanten Bereichen und der Herstellung erfahrungsbasierter Repr&auml;sentationsverantwortung.
+        </span>
+    </p>
+    <h2><strong>5. Entwurf eines Begleitgesetzes (DemGrundG)</strong></h2>
+    <p class="Normal tm7"><span class="tm6">&#160;</span></p>
+    <p class="Normal tm7"><span class="tm6">&sect;1 Zweck und Ziel  </span></p>
+    <p class="Normal tm7">
+        <span class="tm6">
+            Das demokratische Grundjahr soll k&uuml;nftigen Abgeordneten des Deutschen Bundestages praktische Erfahrungen in zentralen gesellschaftlichen Bereichen vermitteln und zur St&auml;rkung
+            der politischen Urteilsf&auml;higkeit beitragen.
+        </span>
+    </p>
+    <p class="Normal tm7"><span class="tm6">&#160;</span></p>
+    <p class="Normal tm7"><span class="tm6">&sect;2 Teilnahme und Durchf&uuml;hrung  </span></p>
+    <p class="Normal tm7"><span class="tm6">(1) Das Grundjahr ist von allen neuen Abgeordneten zum 1.1.2029 vor Amts&uuml;bernahme zu absolvieren, wobei es freiwillig ist.</span></p>
+    <p class="Normal tm7"><span class="tm6">(2) Sollte ein Abgeordneter dieses Grundjahr absolvieren, erh&auml;lt er mehr Einfluss bei der Gesetzgebung und mediale Anerkennung.</span></p>
+    <p class="Normal tm7"><span class="tm6">(3) Es besteht aus vier Praxismodulen &agrave; mindestens zwei Monaten Dauer in den Bereichen: Pflege, Bildung, Verwaltung, Zivilgesellschaft.</span></p>
+    <p class="Normal tm7"><span class="tm6">(4) Die Durchf&uuml;hrung erfolgt in Kooperation mit anerkannten Tr&auml;gern und wird vom Bundesamt f&uuml;r politische Bildung koordiniert.</span></p>
+    <p class="Normal tm7"><span class="tm6">&#160;</span></p>
+    <p class="Normal tm7"><span class="tm6">&sect;3 Ausnahmen und Anrechnung  </span></p>
+    <p class="Normal tm7">
+        <span class="tm6">(1) Nachgewiesene einschl&auml;gige Berufserfahrung kann teilweise angerechnet werden. </span><span class="tm6">Bereits&nbsp;geleisteten&nbsp;Verpflichtungen wie FSJ, BuFD, THW werden f&uuml;r das jeweilige Modul anerkannt.</span>
+    </p>
+    <p class="Normal tm7"><span class="tm6">(2) H&auml;rtef&auml;lle werden durch eine unabh&auml;ngige Pr&uuml;fungskommission anerkannt.</span></p>
+    <p class="Normal tm7"><span class="tm6">(3) Das Grundjahr kann gestreckt oder verdichtet werden, sofern p&auml;dagogische Qualit&auml;t und Wirksamkeit gewahrt bleiben.</span></p>
+    <p class="Normal tm7"><span class="tm6">&#160;</span></p>
+    <p class="Normal tm7"><span class="tm6">&sect;4 Evaluation  </span></p>
+    <p class="Normal tm7"><span class="tm6">Alle zwei Jahre erfolgt eine unabh&auml;ngige Evaluation des Programms und seiner Wirkungen durch eine vom Bundestag beauftragte wissenschaftliche Einrichtung.</span></p>
+    <h2><strong>6. Reformnutzen  </strong></h2>
+    <p class="Normal">- H&ouml;here Empathief&auml;higkeit und Urteilsst&auml;rke  </p>
+    <p class="Normal">- Gesellschaftliche Akzeptanz von Politik steigern</p>
+    <p class="Normal">- Demokratische Bildung institutionell verankern</p>
+    <ejs-button id="konzept-download-pdf" cssClass="e-info" content="@Model.ButtonPdf.Value"></ejs-button>
+</section>
+
+<hr />
+
+<section id="gastbeiträge" style="margin-top: 2em;">
+    <h1>Folgende Gastbeiträge wurden eingereicht</h1>
+    <ejs-button id="download-faz" cssClass="e-info" content="@Model.DownloadFaz.Value"></ejs-button>
+    <ejs-button id="download-tagesspiegel" cssClass="e-info" content="@Model.DownloadTagesspiegel.Value"></ejs-button>
+    <ejs-button id="download-taz" cssClass="e-info" content="@Model.DownloadTaz.Value"></ejs-button>
+</section>
+
+<hr />
+
+<section id="testimonials" style="margin-top: 2em;">
+    <h1>Stimmen aus den Politikwissenschaften</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset2 col-md-8">
+                <div class="control-container">
+                    <ejs-carousel id="defaultCarousel" animationEffect="Fade" ´buttonsVisibility="Hidden" interval="16000" showIndicators="false">
+                        <e-carousel-items>
+                            @foreach (var test in Model.Testimonials)
+                            {
+                                <e-carousel-item template='
+                                                <figure class="snip1157">
+                                                    <blockquote>@test.Summary
+                                                       <div class="arrow"></div>
+                                                    </blockquote>
+                                                    <img src="@test.ImagePath" alt="sq-sample3" />
+                                                     <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
+                                                </figure>'></e-carousel-item>
+                            }
+                        </e-carousel-items>
+                    </ejs-carousel>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

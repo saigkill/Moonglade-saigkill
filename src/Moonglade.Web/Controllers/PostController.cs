@@ -15,7 +15,6 @@ public class PostController(
         IConfiguration configuration,
         IMediator mediator,
         IBlogConfig blogConfig,
-        ITimeZoneResolver timeZoneResolver,
         ILogger<PostController> logger,
         //IIndexNowClient indexNowClient,
         CannonService cannonService) : ControllerBase
@@ -35,20 +34,44 @@ public class PostController(
         {
             if (!ModelState.IsValid) return Conflict(ModelState.CombineErrorMessages());
 
-            var tzDate = timeZoneResolver.NowInTimeZone;
             if (model.ChangePublishDate &&
                 model.PublishDate.HasValue &&
-                model.PublishDate <= tzDate &&
+                model.PublishDate <= DateTime.UtcNow &&
                 model.PublishDate.GetValueOrDefault().Year >= 1975)
             {
-                model.PublishDate = timeZoneResolver.ToUtc(model.PublishDate.Value);
+                model.PublishDate = model.PublishDate.Value;
+            }
+
+            if (model.PostStatus == PostStatusConstants.Scheduled && model.ScheduledPublishTime.HasValue)
+            {
+                if (string.IsNullOrWhiteSpace(model.ClientTimeZoneId))
+                {
+                    return Conflict("Client time zone ID is required for scheduled posts.");
+                }
+
+                var clientTimeZone = TimeZoneInfo.FindSystemTimeZoneById(model.ClientTimeZoneId);
+                var clientLocalTime = model.ScheduledPublishTime.Value;
+                var clientUtcTime = TimeZoneInfo.ConvertTimeToUtc(clientLocalTime, clientTimeZone);
+
+                model.ScheduledPublishTime = clientUtcTime;
+                if (model.ScheduledPublishTime < DateTime.UtcNow)
+                {
+                    // return Conflict("Scheduled publish time must be in the future.");
+
+                    // Instead of throwing error, just publish the post right away!
+                    model.PostStatus = PostStatusConstants.Published;
+                    model.ScheduledPublishTime = null;
+                }
             }
 
             var postEntity = model.PostId == Guid.Empty ?
                 await mediator.Send(new CreatePostCommand(model)) :
                 await mediator.Send(new UpdatePostCommand(model.PostId, model));
 
-            if (!model.IsPublished) return Ok(new { PostId = postEntity.Id });
+            if (model.PostStatus != PostStatusConstants.Published)
+            {
+                return Ok(new { PostId = postEntity.Id });
+            }
 
             logger.LogInformation($"Trying to Ping URL for post: {postEntity.Id}");
 
@@ -101,20 +124,6 @@ public class PostController(
         BlogCacheType.SiteMap |
         BlogCacheType.Subscription
       ])]
-    [HttpPost("{postId:guid}/restore")]
-    [ReadonlyMode]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Restore([NotEmpty] Guid postId)
-    {
-        await mediator.Send(new RestorePostCommand(postId));
-        return NoContent();
-    }
-
-    [TypeFilter(typeof(ClearBlogCache), Arguments =
-    [
-        BlogCacheType.SiteMap |
-        BlogCacheType.Subscription
-      ])]
     [HttpDelete("{postId:guid}/recycle")]
     [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -125,22 +134,12 @@ public class PostController(
     }
 
     [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
-    [HttpDelete("{postId:guid}/destroy")]
+    [HttpPut("{postId:guid}/publish")]
     [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteFromRecycleBin([NotEmpty] Guid postId)
+    public async Task<IActionResult> Publish([NotEmpty] Guid postId)
     {
-        await mediator.Send(new DeletePostCommand(postId));
-        return NoContent();
-    }
-
-    [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
-    [HttpDelete("recyclebin")]
-    [ReadonlyMode]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> EmptyRecycleBin()
-    {
-        await mediator.Send(new EmptyRecycleBinCommand());
+        await mediator.Send(new PublishPostCommand(postId));
         return NoContent();
     }
 
@@ -151,6 +150,15 @@ public class PostController(
     public async Task<IActionResult> Unpublish([NotEmpty] Guid postId)
     {
         await mediator.Send(new UnpublishPostCommand(postId));
+        return NoContent();
+    }
+
+    [HttpPut("{postId:guid}/postpone")]
+    [ReadonlyMode]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Postpone([NotEmpty] Guid postId, [FromQuery][Range(1, 24)] int hours = 24)
+    {
+        await mediator.Send(new PostponePostCommand(postId, hours));
         return NoContent();
     }
 

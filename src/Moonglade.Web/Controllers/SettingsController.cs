@@ -42,16 +42,10 @@ public class SettingsController(
     [HttpPost("general")]
     [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> General(GeneralSettings model, ITimeZoneResolver timeZoneResolver)
+    public async Task<IActionResult> General(GeneralSettings model)
     {
         model.AvatarUrl = blogConfig.GeneralSettings.AvatarUrl;
-
-    blogConfig.GeneralSettings = model;
-    blogConfig.GeneralSettings.TimeZoneUtcOffset = timeZoneResolver.GetTimeSpanByZoneId(model.TimeZoneId);
-    if (blogConfig.GeneralSettings.DcLicenseUrl == null)
-    {
-      blogConfig.GeneralSettings.DcLicenseUrl = "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en";
-    }
+        blogConfig.GeneralSettings = model;
 
     await SaveConfigAsync(blogConfig.GeneralSettings);
 

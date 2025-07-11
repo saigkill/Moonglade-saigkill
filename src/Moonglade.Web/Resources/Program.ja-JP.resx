@@ -198,12 +198,6 @@
   <data name="Blog posts" xml:space="preserve">
     <value>ブログ記事</value>
   </data>
-  <data name="Blog posts will use this time zone as date and time display." xml:space="preserve">
-    <value>ブログでは、そのタイムゾーンを使用して投稿の日時が表示されます</value>
-  </data>
-  <data name="Blog posts will use this time zone as date display." xml:space="preserve">
-    <value>ブログ投稿では、そのタイム ゾーンを日時として使用します</value>
-  </data>
   <data name="Blog title" xml:space="preserve">
     <value>ブログタイトル</value>
   </data>
@@ -714,9 +708,6 @@
   <data name="This is a preview for draft content." xml:space="preserve">
     <value>このページはドラフトプレビューです</value>
   </data>
-  <data name="Time Zone" xml:space="preserve">
-    <value>時間帯</value>
-  </data>
   <data name="Title" xml:space="preserve">
     <value>タイトル</value>
   </data>
@@ -1055,5 +1046,29 @@
   </data>
   <data name="Reading posts" xml:space="preserve">
     <value>記事を読む</value>
+  </data>
+  <data name="This post is scheduled to be published. Are you sure you want to publish it now?" xml:space="preserve">
+    <value>この投稿は公開される予定です。 今すぐ公開してもよろしいですか?</value>
+  </data>
+  <data name="Scheduled" xml:space="preserve">
+    <value>計画</value>
+  </data>
+  <data name="Postpone" xml:space="preserve">
+    <value>延期する</value>
+  </data>
+  <data name="Publish Now" xml:space="preserve">
+    <value>今すぐ公開</value>
+  </data>
+  <data name="Scheduled for" xml:space="preserve">
+    <value>予定日</value>
+  </data>
+  <data name="Publish Post" xml:space="preserve">
+    <value>記事を公開する</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>じゃない</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>いる</value>
   </data>
 </root>
