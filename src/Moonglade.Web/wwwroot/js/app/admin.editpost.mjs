@@ -1,4 +1,4 @@
-import { callApi } from './httpService.mjs'
+import { moongladeFetch } from './httpService.mjs'
 import { parseMetaContent, toMagicJson } from './utils.module.mjs'
 import { success, error } from './toastService.mjs'
 import { initEvents, loadTinyMCE, keepAlive, warnDirtyForm } from './admin.editor.module.mjs'
@@ -73,7 +73,7 @@ const handlePostSubmit = async (event) => {
     btnSubmitPost.classList.add('disabled');
     btnSubmitPost.setAttribute('disabled', 'disabled');
 
-    callApi(event.currentTarget.action,
+    moongladeFetch(event.currentTarget.action,
         'POST',
         requestData,
         async (resp) => {
@@ -94,7 +94,7 @@ const handlePostSubmit = async (event) => {
 };
 
 function UnpublishPost(postId) {
-    callApi(
+    moongladeFetch(
         `/api/post/${postId}/unpublish`,
         'PUT',
         {},
@@ -102,6 +102,25 @@ function UnpublishPost(postId) {
             success('Post unpublished');
             location.reload();
         });
+}
+
+function setMinScheduleDate() {
+    const now = new Date();
+    const minDate = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+    document.querySelector('input[name="ViewModel.ScheduledPublishTime"]').setAttribute('min', minDate);
+}
+
+function updateScheduleInfo() {
+    const postStatus = document.querySelector('input[name="ViewModel.PostStatus"]').value;
+
+    const scheduleInfoDiv = document.querySelector('.schedule-info');
+    const scheduledTime = document.querySelector('input[name="ViewModel.ScheduledPublishTime"]').value;
+
+    if (postStatus === 'scheduled') {
+        scheduleInfoDiv.innerHTML = `<i class="bi-clock"></i> <span>Scheduled for: ${new Date(scheduledTime).toLocaleString()}</span>`;
+    } else {
+        scheduleInfoDiv.innerHTML = '';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -148,6 +167,25 @@ document.getElementById('btn-unpublish-post').addEventListener('click', function
     const postId = document.querySelector('input[name="ViewModel.PostId"]').value;
     UnpublishPost(postId);
 });
+
+document.getElementById('btn-cancel-schedule').addEventListener('click', function () {
+    document.querySelector('input[name="ViewModel.ScheduledPublishTime"]').value = '';
+    document.querySelector('input[name="ViewModel.PostStatus"]').value = 'draft';
+
+    updateScheduleInfo();
+});
+
+document.getElementById('btn-schedule-publish').addEventListener('click', function () {
+    document.querySelector('input[name="ViewModel.PostStatus"]').value = 'scheduled';
+
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.querySelector('input[name="ViewModel.ClientTimeZoneId"]').value = timeZone;
+
+    updateScheduleInfo();
+});
+
+setMinScheduleDate();
+updateScheduleInfo();
 
 const postEditForm = document.querySelector(postEditFormSelector);
 postEditForm.addEventListener('submit', handlePostSubmit);

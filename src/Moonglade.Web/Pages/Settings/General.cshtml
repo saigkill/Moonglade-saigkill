@@ -1,15 +1,7 @@
 @page "/admin/settings/general"
-@inject ITimeZoneResolver TimeZoneResolver
-@inject ITimeZoneResolver ZoneResolver
 @inject IOptions<RequestLocalizationOptions> LocOptions
 
 @{
-    var tzList = ZoneResolver.ListTimeZones().Select(t => new SelectListItem
-    {
-        Text = t.DisplayName,
-        Value = t.Id
-    });
-
     var cultureItems = LocOptions.Value.SupportedUICultures
         .Select(c => new { Value = c.Name, c.NativeName });
 
@@ -106,19 +98,6 @@
                         </div>
                         <div class="col-md-5 text-end">
                             <input asp-for="@ViewModel.CanonicalPrefix" class="form-control" />
-                        </div>
-                    </div>
-
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
-                        <div class="col-auto">
-                            <i class="bi-clock settings-entry-icon"></i>
-                        </div>
-                        <div class="col">
-                            <label for="SelectedUtcOffset">@SharedLocalizer["Time Zone"]</label>
-                            <div class="form-text">@SharedLocalizer["Blog posts will use this time zone as date and time display."]</div>
-                        </div>
-                        <div class="col-md-5 text-end">
-                            <select class="form-select" asp-for="@ViewModel.TimeZoneId" asp-items="@tzList"></select>
                         </div>
                     </div>
 
@@ -282,7 +261,7 @@
                                     <div class="form-floating mb-2">
                                         <input asp-for="@ViewModel.Description"
                                                placeholder="@Html.DisplayName(ViewModel.Description)"
-                                               class="form-control" required></input>
+                                               class="form-control" required>
                                         <label class="form-label" asp-for="@ViewModel.Description"></label>
                                     </div>
                                 </div>
@@ -512,6 +491,5 @@
     public void OnGet()
     {
         ViewModel = BlogConfig.GeneralSettings;
-        ViewModel.SelectedUtcOffset = TimeZoneResolver.GetTimeSpanByZoneId(BlogConfig.GeneralSettings.TimeZoneId);
     }
 }
