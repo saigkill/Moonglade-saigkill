@@ -108,21 +108,33 @@
 
 <hr />
 
-<section id="gastbeiträge" style="margin-top: 2em;">
-    <h1>Folgende Gastbeiträge wurden eingereicht</h1>
-    <ejs-button id="download-faz" cssClass="e-info" content="@Model.DownloadFaz.Value"></ejs-button>
-    <ejs-button id="download-tagesspiegel" cssClass="e-info" content="@Model.DownloadTagesspiegel.Value"></ejs-button>
-    <ejs-button id="download-taz" cssClass="e-info" content="@Model.DownloadTaz.Value"></ejs-button>
-</section>
-
-<hr />
-
 @if (BlogConfig.ContentSettings.ShowPostFooter)
 {
     <section class="post-footer clearfix">
         @Html.Raw(BlogConfig.ContentSettings.PostFooterHtmlPitch)
     </section>
 }
+
+<hr />
+<section id="action">
+    @if (BlogConfig.ContentSettings.EnableSharingButtons)
+    {
+        <h1>Gefällt dir die Petition?</h1>
+        <div class="sharethis-inline-reaction-buttons"></div>
+        <hr />
+        <h1>Teile die Petition</h1>
+        <div class="sharethis-inline-share-buttons"></div>
+    }
+</section>
+
+<hr />
+
+<section id="gastbeiträge" style="margin-top: 2em;">
+    <h1>Folgende Gastbeiträge wurden eingereicht</h1>
+    <ejs-button id="download-faz" cssClass="e-info" content="@Model.DownloadFaz.Value"></ejs-button>
+    <ejs-button id="download-tagesspiegel" cssClass="e-info" content="@Model.DownloadTagesspiegel.Value"></ejs-button>
+    <ejs-button id="download-taz" cssClass="e-info" content="@Model.DownloadTaz.Value"></ejs-button>
+</section>
 
 <hr />
 <section id="testimonials" style="margin-top: 2em;">
@@ -136,13 +148,13 @@
                             @foreach (var test in Model.Testimonials)
                             {
                                 <e-carousel-item template='
-                                                        <figure class="snip1157">
-                                                            <blockquote>@test.Summary
-                                                               <div class="arrow"></div>
-                                                            </blockquote>
-                                                            <img src="@test.ImagePath" alt="sq-sample3" />
-                                                                                                              <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
-                                                                                                         </figure>'></e-carousel-item>
+                                                            <figure class="snip1157">
+                                                                <blockquote>@test.Summary
+                                                                   <div class="arrow"></div>
+                                                                </blockquote>
+                                                                <img src="@test.ImagePath" alt="sq-sample3" />
+                                                                                                                  <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
+                                                                                                             </figure>'></e-carousel-item>
                             }
                         </e-carousel-items>
                     </ejs-carousel>
@@ -150,14 +162,4 @@
             </div>
         </div>
     </div>
-</section>
-
-<hr />
-<section id="action">
-    @if (BlogConfig.ContentSettings.EnableSharingButtons)
-    {
-        <div class="sharethis-inline-reaction-buttons"></div>
-        <hr />
-        <div class="sharethis-inline-share-buttons"></div>
-    }
 </section>
