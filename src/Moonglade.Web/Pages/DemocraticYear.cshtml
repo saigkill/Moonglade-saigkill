@@ -1,4 +1,4 @@
-﻿@page "/pages/projects/petitiones/democratic_year"
+﻿@page "/pages/projects/petitions/democratic_year"
 @model Moonglade.Web.Pages.DemocraticYearModel
 @{
 }
@@ -21,7 +21,6 @@
 @section Scripts {
     <script src="~/lib/syncfusion/ej2/dist/ej2.min.js" type="text/javascript"></script>
     <script src="~/js/app/apply-syncfusion.js" type="text/javascript"></script>
-    <script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
 
     <script>
         document.getElementById('konzept-download-pdf').onclick = function() {
@@ -148,13 +147,13 @@
                             @foreach (var test in Model.Testimonials)
                             {
                                 <e-carousel-item template='
-                                                            <figure class="snip1157">
-                                                                <blockquote>@test.Summary
-                                                                   <div class="arrow"></div>
-                                                                </blockquote>
-                                                                <img src="@test.ImagePath" alt="sq-sample3" />
-                                                                                                                  <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
-                                                                                                             </figure>'></e-carousel-item>
+                                                                    <figure class="snip1157">
+                                                                        <blockquote>@test.Summary
+                                                                           <div class="arrow"></div>
+                                                                        </blockquote>
+                                                                        <img src="@test.ImagePath" alt="sq-sample3" />
+                                                                                                                          <div class="author"><h5>@test.Recommender <span> @test.RecommenderJob</span></h5></div>
+                                                                                                                     </figure>'></e-carousel-item>
                             }
                         </e-carousel-items>
                     </ejs-carousel>
