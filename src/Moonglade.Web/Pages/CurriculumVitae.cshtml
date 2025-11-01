@@ -1,4 +1,4 @@
-﻿@page "/pages/curriculum_vitae"
+@page "/pages/curriculum_vitae"
 @model Moonglade.Web.Pages.CurriculumVitaeModel
 @{
     int age = DateTime.Now.Year - 1979;
@@ -41,7 +41,7 @@
 
     <script>
         document.getElementById('cv-download').onclick = function() {
-            window.open("https://nextcloud.saschamanns.de/index.php/s/WebsiteCVDownload");
+            window.open("https://moongladesm.blob.core.windows.net/download/sascha-manns-cv.pdf");
         };
 
     </script>
