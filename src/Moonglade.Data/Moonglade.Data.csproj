@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>net8.0</TargetFramework>
@@ -14,10 +14,11 @@
     </ItemGroup>
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Ardalis.Specification" Version="9.2.0" />
-        <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="9.2.0" />
-        <PackageReference Include="MediatR" Version="12.5.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.18" />
+        <PackageReference Include="Ardalis.Specification" Version="9.3.1" />
+        <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="9.3.1" />
+        <PackageReference Include="LiteBus" Version="4.0.0" />
+        <PackageReference Include="LiteBus.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.10" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Moonglade.Utils\Moonglade.Utils.csproj" />

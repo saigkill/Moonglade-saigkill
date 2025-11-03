@@ -1,50 +1,49 @@
-﻿using System.Globalization;
-
+using System.Globalization;
+using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
 using Moonglade.Data.Specifications;
+using Moonglade.Features.SaschaFeature;
 using Moonglade.Github.Client.Models;
 
 namespace Moonglade.Web.Pages;
 
-public class AboutModel(IMediator mediator) : PageModel
+public class AboutModel(IQueryMediator mediator) : PageModel
 {
   public AboutViewModel ViewModel { get; set; }
 
   public async Task<IActionResult> OnGetAsync()
   {
     ViewModel = new AboutViewModel();
-    ViewModel.Memberships = await mediator.Send(new GetAllMembershipQuery());
-    ViewModel.Mandates = await mediator.Send(new GetAllMandatesQuery());
-    ViewModel.HonoraryPositions = await mediator.Send(new GetHonoraryPositionsByLanguageQuery());
-    ViewModel.Publications = await mediator.Send(new GetAllPublicationsQuery());
-    var ghUserLink = await mediator.Send(new GetSocialLinkQuery("Github"));
-    ViewModel.Repositories = await mediator.Send(new GetAllRepositoriesQuery(ghUserLink));
+    ViewModel.Memberships = await mediator.QueryAsync(new GetAllMembershipQuery());
+    ViewModel.Mandates = await mediator.QueryAsync(new GetAllMandatesQuery());
+    ViewModel.HonoraryPositions = await mediator.QueryAsync(new GetHonoraryPositionsByLanguageQuery());
+    ViewModel.Publications = await mediator.QueryAsync(new GetAllPublicationsQuery());
+    var ghUserLink = await mediator.QueryAsync(new GetSocialLinkQuery("Github"));
+    ViewModel.Repositories = await mediator.QueryAsync(new GetAllRepositoriesQuery(ghUserLink));
     var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
     var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
     ViewModel.MeAnTheBlog =
-      await mediator.Send(new GetPageContentByKeyValueQuery("me-and-blog", "about", convertedCulture));
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("me-and-blog", "about", convertedCulture));
     ViewModel.CoatOfArms =
-      await mediator.Send(new GetPageContentByKeyValueQuery("about-coat-of-arms", "about", convertedCulture));
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-coat-of-arms", "about", convertedCulture));
     ViewModel.Connect =
-      await mediator.Send(new GetPageContentByKeyValueQuery("about-connect", "about", convertedCulture));
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-connect", "about", convertedCulture));
     ViewModel.AboutMemberships =
-      await mediator.Send(new GetPageContentByKeyValueQuery("about-memberships", "about", convertedCulture));
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-memberships", "about", convertedCulture));
     ViewModel.AboutMandates =
-      await mediator.Send(new GetPageContentByKeyValueQuery("about-mandates", "about", convertedCulture));
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-mandates", "about", convertedCulture));
     ViewModel.AboutHonoraryPositions =
-      await mediator.Send(new GetPageContentByKeyValueQuery("about-hpos", "about", convertedCulture));
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-hpos", "about", convertedCulture));
     ViewModel.AboutPublications =
-      await mediator.Send(new GetPageContentByKeyValueQuery("about-publications", "about", convertedCulture));
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-publications", "about", convertedCulture));
     ViewModel.AboutRepositories =
-      await mediator.Send(new GetPageContentByKeyValueQuery("about-opensource", "about", convertedCulture));
-    ViewModel.LastUpdated = await mediator.Send(new GetPageContentByKeyValueQuery("last-updated", "about", convertedCulture));
-    ViewModel.NugetTitle = await mediator.Send(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
-    ViewModel.NugetPackages = await mediator.Send(new GetAllNugetPackagesQuery());
-    ViewModel.Testimonials = await mediator.Send(new GetAllTestimonialsQuery(Audience.Testimonials));
-    ViewModel.SocialLinks = await mediator.Send(new GetAllSocialLinksQuery());
+      await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-opensource", "about", convertedCulture));
+    ViewModel.LastUpdated = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("last-updated", "about", convertedCulture));
+    ViewModel.NugetTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("nuget", "about", convertedCulture));
+    ViewModel.NugetPackages = await mediator.QueryAsync(new GetAllNugetPackagesQuery());
+    ViewModel.Testimonials = await mediator.QueryAsync(new GetAllTestimonialsQuery(Audience.Testimonials));
+    //ViewModel.SocialLinks = await mediator.Send(new GetSocialLinkQuery());
     return Page();
   }
 }
@@ -68,5 +67,5 @@ public class AboutViewModel
   public PagesContentEntity LastUpdated { get; set; }
   public PagesContentEntity NugetTitle { get; set; }
   public List<NugetPackage> NugetPackages { get; set; }
-  public SocialLink[] SocialLinks { get; set; }
+  //public SocialLink[] SocialLinks { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿@page
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Moonglade.Core.PostFeature
+@using Moonglade.Data.DTO
+@using Moonglade.Features.Post
 @using Moonglade.Web.PagedList
 
 @{
@@ -21,7 +22,7 @@
     </a>
 </h2>
 
-@if (Posts.Count > 0)
+@if (Posts?.Count > 0)
 {
     <partial name="_PostList" model="Posts" />
 }
@@ -34,17 +35,32 @@ else
 
 @functions
 {
-    public BasePagedList<PostDigest> Posts { get; set; }
+    public BasePagedList<PostDigest> Posts { get; set; } = new BasePagedList<PostDigest>([], 1, 1, 0);
 
-    public async Task OnGet(int p = 1)
+    [FromQuery]
+    public int P { get; set; } = 1;
+
+    public async Task<IActionResult> OnGetAsync(int p = 1)
     {
-        var pagesize = BlogConfig.ContentSettings.PostListPageSize;
+        if (P == 0) return BadRequest();
 
-        var posts = await Mediator.Send(new ListPostsQuery(pagesize, p));
-        var totalPostsCount = await Mediator.Send(new CountPostQuery(CountType.Public));
+        P = p;
+        var pageSize = BlogConfig.ContentSettings.PostListPageSize;
 
-        var list = new BasePagedList<PostDigest>(posts, p, pagesize, totalPostsCount);
+        var posts = await QueryMediator.QueryAsync(new ListPostsQuery(pageSize, p));
+        var totalPostsCount = await QueryMediator.QueryAsync(new CountPostQuery(CountType.Public));
 
-        Posts = list;
+        // Calculate total pages to validate current page
+        var totalPages = (int)Math.Ceiling((double)totalPostsCount / pageSize);
+
+        // Redirect if page is beyond available pages and we have posts
+        if (p > totalPages && totalPostsCount > 0)
+        {
+            return RedirectToPage("Index", new { p = totalPages });
+        }
+
+        Posts = new BasePagedList<PostDigest>(posts ?? [], p, pageSize, totalPostsCount);
+
+        return Page();
     }
 }

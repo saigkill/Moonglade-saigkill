@@ -1,8 +1,9 @@
 ﻿@page "/category/{slug:regex(^(?!-)([a-zA-Z0-9-]){{1,64}}$)}"
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Moonglade.Core.CategoryFeature
-@using Moonglade.Core.PostFeature
+@using Moonglade.Data.DTO
 @using Moonglade.Data.Entities
+@using Moonglade.Features.Category
+@using Moonglade.Features.Post
 @using Moonglade.Web.PagedList
 @{
     ViewBag.TitlePrefix = Cat.DisplayName;
@@ -33,7 +34,7 @@ else
     </div>
 }
 
-@functions{
+@functions {
     [BindProperty(SupportsGet = true)]
     public int P { get; set; } = 1;
     public BasePagedList<PostDigest> Posts { get; set; }
@@ -42,14 +43,15 @@ else
     public async Task<IActionResult> OnGetAsync(string slug)
     {
         if (string.IsNullOrWhiteSpace(slug)) return NotFound();
+        if (P == 0) return BadRequest();
 
         var pageSize = BlogConfig.ContentSettings.PostListPageSize;
-        Cat = await Mediator.Send(new GetCategoryBySlugQuery(slug));
+        Cat = await QueryMediator.QueryAsync(new GetCategoryBySlugQuery(slug));
 
         if (Cat is null) return NotFound();
 
-        var postCount = await Mediator.Send(new CountPostQuery(CountType.Category, Cat.Id));
-        var postList = await Mediator.Send(new ListPostsQuery(pageSize, P, Cat.Id));
+        var postCount = await QueryMediator.QueryAsync(new CountPostQuery(CountType.Category, Cat.Id));
+        var postList = await QueryMediator.QueryAsync(new ListPostsQuery(pageSize, P, Cat.Id));
 
         Posts = new(postList, P, pageSize, postCount);
         return Page();

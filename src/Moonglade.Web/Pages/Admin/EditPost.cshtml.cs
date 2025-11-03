@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.CategoryFeature;
-using Moonglade.Core.PostFeature;
+using LiteBus.Queries.Abstractions;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Moonglade.Features.Category;
+using Moonglade.Features.Post;
 
 namespace Moonglade.Web.Pages.Admin;
 
-public class EditPostModel(IMediator mediator, IBlogConfig blogConfig) : PageModel
+public class EditPostModel(IQueryMediator queryMediator, IBlogConfig blogConfig) : PageModel
 {
     public PostEditModel ViewModel { get; set; } = new()
     {
@@ -18,9 +18,9 @@ public class EditPostModel(IMediator mediator, IBlogConfig blogConfig) : PageMod
 
   public List<CategoryCheckBox> CategoryList { get; set; }
 
-  public async Task<IActionResult> OnGetAsync(Guid? id)
-  {
-    var cats = await mediator.Send(new GetCategoriesQuery());
+    public async Task<IActionResult> OnGetAsync(Guid? id)
+    {
+        var cats = await queryMediator.QueryAsync(new ListCategoriesQuery());
 
     if (id is null)
     {
@@ -34,16 +34,16 @@ public class EditPostModel(IMediator mediator, IBlogConfig blogConfig) : PageMod
               IsChecked = false
             });
 
-        CategoryList = cbCatList.ToList();
-      }
+                CategoryList = [.. cbCatList];
+            }
 
       ViewModel.Author = blogConfig.GeneralSettings.OwnerName;
 
       return Page();
     }
 
-    var post = await mediator.Send(new GetPostByIdQuery(id.Value));
-    if (null == post) return NotFound();
+        var post = await queryMediator.QueryAsync(new GetPostByIdQuery(id.Value));
+        if (null == post) return NotFound();
 
         ViewModel = new()
         {
@@ -70,7 +70,7 @@ public class EditPostModel(IMediator mediator, IBlogConfig blogConfig) : PageMod
 
         if (post.ScheduledPublishTimeUtc != null)
         {
-            ViewModel.ScheduledPublishTime = post.ScheduledPublishTimeUtc.Value;
+            ViewModel.ScheduledPublishTimeUtc = post.ScheduledPublishTimeUtc.Value;
         }
 
     var tagStr = post.Tags
@@ -80,17 +80,17 @@ public class EditPostModel(IMediator mediator, IBlogConfig blogConfig) : PageMod
     tagStr = tagStr.TrimEnd(',');
     ViewModel.Tags = tagStr;
 
-    if (cats.Count > 0)
-    {
-      var cbCatList = cats.Select(p =>
-          new CategoryCheckBox
-          {
-            Id = p.Id,
-            DisplayText = p.DisplayName,
-            IsChecked = post.PostCategory.Any(q => q.CategoryId == p.Id)
-          });
-      CategoryList = cbCatList.ToList();
-    }
+        if (cats.Count > 0)
+        {
+            var cbCatList = cats.Select(p =>
+                new CategoryCheckBox
+                {
+                    Id = p.Id,
+                    DisplayText = p.DisplayName,
+                    IsChecked = post.PostCategory.Any(q => q.CategoryId == p.Id)
+                });
+            CategoryList = [.. cbCatList];
+        }
 
     return Page();
   }

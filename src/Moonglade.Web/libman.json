@@ -1,49 +1,38 @@
 {
-  "version": "1.0",
-  "defaultProvider": "jsdelivr",
-  "libraries": [
-    {
-      "library": "@codersrank/activity@0.9.14",
-      "destination": "wwwroot/lib/codersrank/activity/"
-    },
-    {
-      "library": "@codersrank/education@0.9.12",
-      "destination": "wwwroot/lib/codersrank/education/"
-    },
-    {
-      "library": "@codersrank/portfolio@0.9.10",
-      "destination": "wwwroot/lib/codersrank/portfolio/"
-    },
-    {
-      "library": "@codersrank/skills-chart@0.9.21",
-      "destination": "wwwroot/lib/codersrank/skills-chart/"
-    },
-    {
-      "library": "@codersrank/summary@0.9.13",
-      "destination": "wwwroot/lib/codersrank/summary/"
-    },
-    {
-      "library": "@codersrank/timeline@0.9.2",
-      "destination": "wwwroot/lib/codersrank/timeline/"
-    },
-    {
-      "library": "@codersrank/work-experience@0.9.8",
-      "destination": "wwwroot/lib/codersrank/work-experience/"
-    },
-    {
-      "provider": "unpkg",
-      "library": "typeit@8.8.5",
-      "destination": "wwwroot/lib/typeit/"
-    },
-    {
-      "provider": "unpkg",
-      "library": "@fortawesome/fontawesome-free@6.6.0",
-      "destination": "wwwroot/lib/fortawesome/fontawesome-free/"
-    },
-    {
-      "provider": "unpkg",
-      "library": "@syncfusion/ej2@29.2.4",
-      "destination": "wwwroot/lib/syncfusion/ej2/"
-    }
-  ]
+    "version": "1.0",
+    "defaultProvider": "jsdelivr",
+    "libraries": [
+        {
+            "library": "@codersrank/activity@0.9.14",
+            "destination": "wwwroot/lib/codersrank/activity/"
+        },
+        {
+            "library": "@codersrank/education@0.9.12",
+            "destination": "wwwroot/lib/codersrank/education/"
+        },
+        {
+            "library": "@codersrank/portfolio@0.9.10",
+            "destination": "wwwroot/lib/codersrank/portfolio/"
+        },
+        {
+            "library": "@codersrank/skills-chart@0.9.21",
+            "destination": "wwwroot/lib/codersrank/skills-chart/"
+        },
+        {
+            "library": "@codersrank/summary@0.9.13",
+            "destination": "wwwroot/lib/codersrank/summary/"
+        },
+        {
+            "library": "@codersrank/timeline@0.9.2",
+            "destination": "wwwroot/lib/codersrank/timeline/"
+        },
+        {
+            "library": "@codersrank/work-experience@0.9.8",
+            "destination": "wwwroot/lib/codersrank/work-experience/"
+        },
+        {
+            "library": "typeit@8.8.6",
+            "destination": "wwwroot/lib/typeit/"
+        }
+    ]
 }

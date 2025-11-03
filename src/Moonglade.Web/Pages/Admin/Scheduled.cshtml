@@ -1,11 +1,11 @@
 ﻿@page "/admin/post/scheduled"
-@using Moonglade.Core.PostFeature
 @using Moonglade.Data.Specifications
+@using Moonglade.Features.Post
 @inject IConfiguration Configuration
 
 @{
     ViewBag.Title = "Scheduled";
-    var posts = await Mediator.Send(new ListPostSegmentByStatusQuery(PostStatus.Scheduled));
+    var posts = await QueryMediator.QueryAsync(new ListPostSegmentByStatusQuery(PostStatus.Scheduled));
 }
 
 @section scripts {

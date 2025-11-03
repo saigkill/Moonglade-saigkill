@@ -1,14 +1,13 @@
-﻿using System.Globalization;
-
+using System.Globalization;
+using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
 using Moonglade.Data.Specifications;
+using Moonglade.Features.SaschaFeature;
 
 namespace Moonglade.Web.Pages
 {
-  public class DemocraticYearModel(IMediator mediator) : PageModel
+  public class DemocraticYearModel(IQueryMediator mediator) : PageModel
   {
     public List<TestimonialEntity> Testimonials { get; set; } = new();
     public PagesContentEntity ButtonWord { get; set; }
@@ -19,14 +18,14 @@ namespace Moonglade.Web.Pages
 
     public async Task<IActionResult> OnGetAsync()
     {
-      Testimonials = await mediator.Send(new GetAllTestimonialsQuery(Audience.Demoyear));
+      Testimonials = await mediator.QueryAsync(new GetAllTestimonialsQuery(Audience.Demoyear));
       var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
       var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
-      ButtonWord = await mediator.Send(new GetPageContentByKeyValueQuery("word-download", "root", convertedCulture));
-      ButtonPdf = await mediator.Send(new GetPageContentByKeyValueQuery("pdf-download", "root", convertedCulture));
-      DownloadTaz = await mediator.Send(new GetPageContentByKeyValueQuery("taz-download", "demoyear", convertedCulture));
-      DownloadFaz = await mediator.Send(new GetPageContentByKeyValueQuery("faz-download", "demoyear", convertedCulture));
-      DownloadTagesspiegel = await mediator.Send(new GetPageContentByKeyValueQuery("tagesspiegel-download", "demoyear", convertedCulture));
+      ButtonWord = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("word-download", "root", convertedCulture));
+      ButtonPdf = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("pdf-download", "root", convertedCulture));
+      DownloadTaz = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("taz-download", "demoyear", convertedCulture));
+      DownloadFaz = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("faz-download", "demoyear", convertedCulture));
+      DownloadTagesspiegel = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("tagesspiegel-download", "demoyear", convertedCulture));
 
       return Page();
     }

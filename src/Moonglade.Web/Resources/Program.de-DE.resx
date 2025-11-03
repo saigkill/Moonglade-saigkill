@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
     <!-- 
     Microsoft ResX Schema 
@@ -249,10 +249,7 @@
     <data name="Clear Now" xml:space="preserve">
     <value>Jetzt löschen</value>
   </data>
-    <data name="Clear Pingback Logs" xml:space="preserve">
-    <value>Pingback-Logs löschen</value>
-  </data>
-    <data name="Close" xml:space="preserve">
+  <data name="Close" xml:space="preserve">
     <value>Schliessen</value>
   </data>
     <data name="Comment of this post is disabled." xml:space="preserve">
@@ -546,10 +543,7 @@
     <data name="Password" xml:space="preserve">
     <value>Passwort</value>
   </data>
-    <data name="Pingbacks" xml:space="preserve">
-    <value>Pingbacks</value>
-  </data>
-    <data name="Post footer HTML code" xml:space="preserve">
+  <data name="Post footer HTML code" xml:space="preserve">
     <value>Artikelfußzeilen-HTML</value>
   </data>
     <data name="Post list page size" xml:space="preserve">
@@ -774,10 +768,7 @@
     <data name="Account" xml:space="preserve">
     <value>Konto</value>
   </data>
-    <data name="Enable Pingback" xml:space="preserve">
-    <value>Pingback aktivieren</value>
-  </data>
-    <data name="Include in feed and sitemap" xml:space="preserve">
+  <data name="Include in feed and sitemap" xml:space="preserve">
     <value>Hinzufügen von Abonnements und Sitemaps</value>
   </data>
     <data name="Friend links" xml:space="preserve">
@@ -1005,10 +996,7 @@
     <data name="Change Password" xml:space="preserve">
     <value>Ändern Sie Ihr Passwort</value>
   </data>
-    <data name="Unpublish this post" xml:space="preserve">
-    <value>Veröffentlichung dieses Artikels aufheben</value>
-  </data>
-    <data name="Unpublish Post" xml:space="preserve">
+  <data name="Unpublish Post" xml:space="preserve">
     <value>Veröffentlichung des Artikels aufheben</value>
   </data>
     <data name="Unpublishing this post will remove it from the public site and turn it into a draft. This will have impact on SEO. Please confirm." xml:space="preserve">
@@ -1076,5 +1064,8 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>sein</value>
+  </data>
+  <data name="Unpublish" xml:space="preserve">
+    <value>Veröffentlichung aufheben</value>
   </data>
 </root>

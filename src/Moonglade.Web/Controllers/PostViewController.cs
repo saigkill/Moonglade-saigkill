@@ -1,4 +1,6 @@
-﻿using Moonglade.Core.PostFeature;
+﻿using Edi.AspNetCore.Utils;
+using LiteBus.Commands.Abstractions;
+using Moonglade.Features.Post;
 using Moonglade.Web.Attributes;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,9 +8,12 @@ namespace Moonglade.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PostViewController(IConfiguration configuration, IBlogConfig blogConfig, IMediator mediator) : ControllerBase
+public class PostViewController(IConfiguration configuration, IBlogConfig blogConfig, ICommandMediator commandMediator) : ControllerBase
 {
     private readonly bool _isEnabled = configuration.GetValue<bool>("Post:EnableViewCount");
+    private readonly HashSet<string> _knownBots = new(
+        configuration.GetSection("Post:KnownBots").Get<string[]>() ?? [],
+        StringComparer.OrdinalIgnoreCase);
 
     [HttpPost]
     public async Task<IActionResult> AddViewCount([FromBody] ViewRequest request)
@@ -16,7 +21,14 @@ public class PostViewController(IConfiguration configuration, IBlogConfig blogCo
         if (!_isEnabled) return NotFound();
 
         var referer = Request.Headers.Referer.ToString();
-        if (string.IsNullOrEmpty(referer) || !referer.Contains(blogConfig.GeneralSettings.CanonicalPrefix))
+        if (string.IsNullOrEmpty(referer))
+        {
+            return BadRequest();
+        }
+
+        var uri = new Uri(referer);
+        var canonicalPrefix = blogConfig.GeneralSettings.CanonicalPrefix;
+        if (!uri.IsLocalhostUrl() && !string.IsNullOrWhiteSpace(canonicalPrefix) && !referer.Contains(canonicalPrefix))
         {
             return BadRequest();
         }
@@ -40,51 +52,17 @@ public class PostViewController(IConfiguration configuration, IBlogConfig blogCo
 
     private async Task SaveViewRecord(Guid postId, string ip)
     {
-        await mediator.Send(new AddViewCountCommand(postId, ip));
+        await commandMediator.SendAsync(new AddViewCountCommand(postId, ip));
     }
 
     private bool IsKnownBot(string userAgent)
     {
-        var bots = new[]
+        if (string.IsNullOrEmpty(userAgent))
         {
-            "Google",
-            "Bingbot",
-            "Baidu",
-            "YandexBot",
-            "Sogou",
-            "Exabot",
-            "ia_archiver",
-            "facebookexternalhit",
-            "Twitterbot",
-            "rogerbot",
-            "linkedinbot",
-            "embedly",
-            "showyoubot",
-            "outbrain",
-            "pinterest",
-            "slackbot",
-            "vkShare",
-            "W3C_Validator",
-            "redditbot",
-            "Applebot",
-            "WhatsApp",
-            "flipboard",
-            "tumblr",
-            "bitlybot",
-            "SkypeUriPreview",
-            "nuzzel",
-            "Discordbot",
-            "Qwantify",
-            "pinterestbot",
-            "bitlybot",
-            "TelegramBot",
-            "Chrome-Lighthouse",
-            "DuckDuckGo",
-            "DuckDuckBot",
-            "Slack"
-        };
+            return false;
+        }
 
-        return bots.Any(b => userAgent.Contains(b, StringComparison.OrdinalIgnoreCase));
+        return _knownBots.Any(bot => userAgent.Contains(bot, StringComparison.OrdinalIgnoreCase));
     }
 }
 

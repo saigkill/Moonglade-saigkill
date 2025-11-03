@@ -1,13 +1,12 @@
-﻿using System.Globalization;
-
+using System.Globalization;
+using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
+using Moonglade.Features.SaschaFeature;
 
 namespace Moonglade.Web.Pages;
 
-public class VideosModel(IMediator mediator) : PageModel
+public class VideosModel(IQueryMediator mediator) : PageModel
 {
   public List<VideoEntity> Videos { get; set; }
   public PagesContentEntity VideosTitle { get; set; }
@@ -15,11 +14,11 @@ public class VideosModel(IMediator mediator) : PageModel
 
   public async Task<IActionResult> OnGetAsync()
   {
-    Videos = await mediator.Send(new GetAllVideoQuery());
+    Videos = await mediator.QueryAsync(new GetAllVideoQuery());
     var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
     var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
-    VideosTitle = await mediator.Send(new GetPageContentByKeyValueQuery("videos", "videos", convertedCulture));
-    Held = await mediator.Send(new GetPageContentByKeyValueQuery("held", "talks", convertedCulture));
+    VideosTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("videos", "videos", convertedCulture));
+    Held = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("held", "talks", convertedCulture));
 
     return Page();
   }

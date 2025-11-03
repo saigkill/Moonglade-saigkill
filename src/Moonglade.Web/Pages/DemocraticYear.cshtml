@@ -1,4 +1,4 @@
-﻿@page "/pages/projects/petitions/democratic_year"
+@page "/pages/projects/petitions/democratic_year"
 @model Moonglade.Web.Pages.DemocraticYearModel
 @{
 }
@@ -19,21 +19,18 @@
 }
 
 @section Scripts {
-    <script src="~/lib/syncfusion/ej2/dist/ej2.min.js" type="text/javascript"></script>
-    <script src="~/js/app/apply-syncfusion.js" type="text/javascript"></script>
-
     <script>
         document.getElementById('konzept-download-pdf').onclick = function() {
-            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Konzeptpapier.pdf");
+            window.open("https://moongladesm.blob.core.windows.net/download/Project/democratic_year/Konzeptpapier.pdf");
         };
         document.getElementById('download-faz').onclick = function() {
-            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Mehr%20Realit%C3%A4tssinn%20wagen%20%20Warum%20ein%20(Bl%C3%A4tterFAZ).pdf");
+            window.open("https://moongladesm.blob.core.windows.net/download/Project/democratic_year/Mehr.Realit%C3%A4tssinn.wagen.(Bl%C3%A4tterFAZ).pdf");
         };
         document.getElementById('download-tagesspiegel').onclick = function() {
-            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Zw%C3%B6lf%20Monate%20f%C3%BCr%20mehr%20Vertrauen%20(Tagesspiegel).pdf");
+            window.open("https://moongladesm.blob.core.windows.net/download/Project/democratic_year/Ein.Jahr.bevor.ihr.regiert.(TAZ).pdf");
         };
         document.getElementById('download-taz').onclick = function() {
-            window.open("https://moongladesm.blob.core.windows.net/images/project/democratic_year/Ein%20Jahr%20bevor%20ihr%20regiert%20(TAZ).pdf");
+            window.open("https://moongladesm.blob.core.windows.net/download/Project/democratic_year/Ein.Jahr.bevor.ihr.regiert.(TAZ).pdf");
         };
     </script>
 }

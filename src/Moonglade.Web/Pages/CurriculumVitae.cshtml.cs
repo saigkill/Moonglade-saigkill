@@ -1,13 +1,12 @@
-﻿using System.Globalization;
-
+using System.Globalization;
+using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
+using Moonglade.Features.SaschaFeature;
 
 namespace Moonglade.Web.Pages;
 
-public class CurriculumVitaeModel(IMediator mediator) : PageModel
+public class CurriculumVitaeModel(IQueryMediator mediator) : PageModel
 {
   public List<CertificateEntity> Certificates { get; set; }
   public PagesContentEntity Intro { get; set; }
@@ -31,28 +30,28 @@ public class CurriculumVitaeModel(IMediator mediator) : PageModel
 
   public async Task<IActionResult> OnGetAsync()
   {
-    Certificates = await mediator.Send(new GetAllCertificatesQuery());
+    Certificates = await mediator.QueryAsync(new GetAllCertificatesQuery());
 
     var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
     var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
-    Intro = await mediator.Send(new GetPageContentByKeyValueQuery("cvintro", "curriculum_vitae", convertedCulture));
-    Intro1 = await mediator.Send(new GetPageContentByKeyValueQuery("cvintro1", "curriculum_vitae", convertedCulture));
-    Intro2 = await mediator.Send(new GetPageContentByKeyValueQuery("cvintro2", "curriculum_vitae", convertedCulture));
-    Masterheaad = await mediator.Send(new GetPageContentByKeyValueQuery("masterhead-lead", "curriculum_vitae", convertedCulture));
-    AboutName = await mediator.Send(new GetPageContentByKeyValueQuery("about-name", "curriculum_vitae", convertedCulture));
-    AboutJob = await mediator.Send(new GetPageContentByKeyValueQuery("about-jobs", "curriculum_vitae", convertedCulture));
-    AboutYear = await mediator.Send(new GetPageContentByKeyValueQuery("about-year", "curriculum_vitae", convertedCulture));
-    AboutProgram = await mediator.Send(new GetPageContentByKeyValueQuery("about-program", "curriculum_vitae", convertedCulture));
-    AboutYear1 = await mediator.Send(new GetPageContentByKeyValueQuery("about-year1", "curriculum_vitae", convertedCulture));
-    AboutExperience = await mediator.Send(new GetPageContentByKeyValueQuery("about-experience", "curriculum_vitae", convertedCulture));
-    SkillsTitle = await mediator.Send(new GetPageContentByKeyValueQuery("skills-title", "curriculum_vitae", convertedCulture));
-    AboutOtherSkills = await mediator.Send(new GetPageContentByKeyValueQuery("about-other-skills", "curriculum_vitae", convertedCulture));
-    ActivityAll = await mediator.Send(new GetPageContentByKeyValueQuery("activity-all", "curriculum_vitae", convertedCulture));
-    ActivityLast30 = await mediator.Send(new GetPageContentByKeyValueQuery("activity-last30", "curriculum_vitae", convertedCulture));
-    JobsTitle = await mediator.Send(new GetPageContentByKeyValueQuery("jobs-title", "curriculum_vitae", convertedCulture));
-    EducationTitle = await mediator.Send(new GetPageContentByKeyValueQuery("education-title", "curriculum_vitae", convertedCulture));
-    PortfolioTitle = await mediator.Send(new GetPageContentByKeyValueQuery("portfolio-title", "curriculum_vitae", convertedCulture));
-    DownloadCV = await mediator.Send(new GetPageContentByKeyValueQuery("cv-download", "curriculum_vitae", convertedCulture));
+    Intro = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("cvintro", "curriculum_vitae", convertedCulture));
+    Intro1 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("cvintro1", "curriculum_vitae", convertedCulture));
+    Intro2 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("cvintro2", "curriculum_vitae", convertedCulture));
+    Masterheaad = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("masterhead-lead", "curriculum_vitae", convertedCulture));
+    AboutName = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-name", "curriculum_vitae", convertedCulture));
+    AboutJob = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-jobs", "curriculum_vitae", convertedCulture));
+    AboutYear = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-year", "curriculum_vitae", convertedCulture));
+    AboutProgram = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-program", "curriculum_vitae", convertedCulture));
+    AboutYear1 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-year1", "curriculum_vitae", convertedCulture));
+    AboutExperience = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-experience", "curriculum_vitae", convertedCulture));
+    SkillsTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("skills-title", "curriculum_vitae", convertedCulture));
+    AboutOtherSkills = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("about-other-skills", "curriculum_vitae", convertedCulture));
+    ActivityAll = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("activity-all", "curriculum_vitae", convertedCulture));
+    ActivityLast30 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("activity-last30", "curriculum_vitae", convertedCulture));
+    JobsTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("jobs-title", "curriculum_vitae", convertedCulture));
+    EducationTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("education-title", "curriculum_vitae", convertedCulture));
+    PortfolioTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("portfolio-title", "curriculum_vitae", convertedCulture));
+    DownloadCV = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("cv-download", "curriculum_vitae", convertedCulture));
 
     return Page();
   }

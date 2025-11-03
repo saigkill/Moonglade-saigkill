@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Ardalis.Specification;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Moonglade.Configuration;
 using Moonglade.Data;
+using Moonglade.Data.DTO;
 using Moonglade.Data.Entities;
 using Moonglade.Data.Specifications;
 using Moonglade.Utils;
@@ -50,22 +52,14 @@ public class SyndicationDataSource(
         }
 
         var postSpec = new PostByCatSpec(catId, top);
-        var list = await postRepo.SelectAsync(postSpec, p => p.PubDateUtc != null ? new FeedEntry
-        {
-            Id = p.Id.ToString(),
-            Title = p.Title,
-            PubDateUtc = p.PubDateUtc.Value,
-            Description = blogConfig.FeedSettings.UseFullContent ? p.PostContent : p.ContentAbstract,
-            Link = $"{_baseUrl}/post/{p.PubDateUtc.Value.Year}/{p.PubDateUtc.Value.Month}/{p.PubDateUtc.Value.Day}/{p.Slug}",
-            Author = blogConfig.GeneralSettings.OwnerName,
-            AuthorEmail = blogConfig.GeneralSettings.OwnerEmail,
-            LangCode = p.ContentLanguageCode,
-            Categories = p.PostCategory.Select(pc => pc.Category.DisplayName).ToArray()
-        } : null);
+        var dtoSpec = new PostEntityToFeedEntrySpec(_baseUrl);
+        var newSpec = postSpec.WithProjectionOf(dtoSpec);
+
+        var list = await postRepo.ListAsync(newSpec);
 
         // Workaround EF limitation
         // Man, this is super ugly
-        if (blogConfig.FeedSettings.UseFullContent && list.Any())
+        if (blogConfig.FeedSettings.UseFullContent && list.Count != 0)
         {
             foreach (var simpleFeedItem in list)
             {
@@ -78,8 +72,15 @@ public class SyndicationDataSource(
 
     private string FormatPostContent(string rawContent)
     {
-        return configuration.GetValue<EditorChoice>("Post:Editor") == EditorChoice.Markdown ?
+        var htmlContent = configuration.GetValue<EditorChoice>("Post:Editor") == EditorChoice.Markdown ?
             ContentProcessor.MarkdownToContent(rawContent, ContentProcessor.MarkdownConvertType.Html, false) :
             rawContent;
+
+        if (blogConfig.ImageSettings.EnableCDNRedirect)
+        {
+            htmlContent = htmlContent.ReplaceCDNEndpointToImgTags(blogConfig.ImageSettings.CDNEndpoint);
+        }
+
+        return htmlContent;
     }
 }

@@ -1,13 +1,12 @@
-﻿using System.Globalization;
-
+using System.Globalization;
+using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
+using Moonglade.Features.SaschaFeature;
 
 namespace Moonglade.Web.Pages;
 
-public class ImprintModel(IMediator mediator, IConfiguration configuration) : PageModel
+public class ImprintModel(IQueryMediator mediator, IConfiguration configuration) : PageModel
 {
   public PagesContentEntity Disclaimer1 { get; set; }
   public PagesContentEntity Disclaimer2 { get; set; }
@@ -36,19 +35,19 @@ public class ImprintModel(IMediator mediator, IConfiguration configuration) : Pa
 
     var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
     var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
-    Disclaimer1 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer1", "imprint", convertedCulture));
-    Disclaimer2 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer2", "imprint", convertedCulture));
-    Disclaimer3 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer3", "imprint", convertedCulture));
-    Disclaimer4 = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer4", "imprint", convertedCulture));
-    ImprintHeader = await mediator.Send(new GetPageContentByKeyValueQuery("imprint-header", "imprint", convertedCulture));
-    ImprintService = await mediator.Send(new GetPageContentByKeyValueQuery("imprint-service", "imprint", convertedCulture));
-    Contact = await mediator.Send(new GetPageContentByKeyValueQuery("contact", "imprint", convertedCulture));
-    Socialmedia = await mediator.Send(new GetPageContentByKeyValueQuery("socialmedia", "imprint", convertedCulture));
-    Other = await mediator.Send(new GetPageContentByKeyValueQuery("other", "imprint", convertedCulture));
-    Liability = await mediator.Send(new GetPageContentByKeyValueQuery("liability", "imprint", convertedCulture));
-    Disclaimer = await mediator.Send(new GetPageContentByKeyValueQuery("disclaimer", "imprint", convertedCulture));
-    Privacy = await mediator.Send(new GetPageContentByKeyValueQuery("privacy-title", "privacy", convertedCulture));
-    PrivacyLink = await mediator.Send(new GetPageContentByKeyValueQuery("privacy-link-text", "imprint", convertedCulture));
+    Disclaimer1 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("disclaimer1", "imprint", convertedCulture));
+    Disclaimer2 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("disclaimer2", "imprint", convertedCulture));
+    Disclaimer3 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("disclaimer3", "imprint", convertedCulture));
+    Disclaimer4 = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("disclaimer4", "imprint", convertedCulture));
+    ImprintHeader = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("imprint-header", "imprint", convertedCulture));
+    ImprintService = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("imprint-service", "imprint", convertedCulture));
+    Contact = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("contact", "imprint", convertedCulture));
+    Socialmedia = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("socialmedia", "imprint", convertedCulture));
+    Other = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("other", "imprint", convertedCulture));
+    Liability = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("liability", "imprint", convertedCulture));
+    Disclaimer = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("disclaimer", "imprint", convertedCulture));
+    Privacy = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("privacy-title", "privacy", convertedCulture));
+    PrivacyLink = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("privacy-link-text", "imprint", convertedCulture));
     return Page();
   }
 

@@ -1,4 +1,6 @@
 ﻿@page "/admin/comments"
+@using System.ComponentModel.DataAnnotations
+@using Moonglade.Data.DTO
 @using Moonglade.Utils
 @using Moonglade.Web.PagedList
 @{
@@ -31,6 +33,13 @@
 }
 
 <div>
+    <form method="post">
+        <div class="d-flex search-box mb-3">
+            <input type="search" aria-label="Search" asp-for="SearchTerm" class="form-control" placeholder="Search user name or email" />
+            <button class="btn btn-light btn-search my-sm-0" type="submit"><i class="bi-search text-dark"></i></button>
+        </div>
+    </form>
+
     @if (CommentDetailedItems.Count == 0)
     {
         <div class="alert alert-info">
@@ -75,9 +84,9 @@
                         <form>
                             <div class="mb-2">
                                 <textarea class="form-control"
-                                          id="replycontent-@item.Id"
-                                          name="ReplyContent"
-                                          placeholder="Content" type="text"></textarea>
+                                  id="replycontent-@item.Id"
+                                  name="ReplyContent"
+                                  placeholder="Content" type="text"></textarea>
                             </div>
 
                             <a class="btn btn-sm btn-outline-accent btn-reply-post" href="#" data-commentid="@item.Id">
@@ -117,21 +126,35 @@
     }
 
 
-    @Html.PagedListPager(CommentDetailedItems, page => $"?pageIndex={page}", new()
-{
-    UlElementClasses = ["pagination mt-3"]
-})
+    @Html.PagedListPager(CommentDetailedItems, page => $"?pageIndex={page}&searchTerm={SearchTerm}", new()
+    {
+        UlElementClasses = ["pagination mt-3"]
+    })
 </div>
 
 @functions
 {
     public BasePagedList<CommentDetailedItem> CommentDetailedItems { get; set; }
 
-    public async Task OnGet(int pageIndex = 1)
+    private const int PageSize = 5;
+
+    [BindProperty]
+    [MaxLength(32)]
+    public string SearchTerm { get; set; }
+
+    public async Task OnPost() => await GetComments(1);
+
+    public async Task OnGet(int pageIndex = 1, string searchTerm = null)
     {
-        const int pageSize = 5;
-        var comments = await Mediator.Send(new GetCommentsQuery(pageSize, pageIndex));
-        var count = await Mediator.Send(new CountCommentsQuery());
-        CommentDetailedItems = new(comments, pageIndex, pageSize, count);
+        if (!string.IsNullOrWhiteSpace(searchTerm)) SearchTerm = searchTerm;
+
+        await GetComments(pageIndex);
+    }
+
+    public async Task GetComments(int pageIndex)
+    {
+        var comments = await QueryMediator.QueryAsync(new ListCommentsQuery(PageSize, pageIndex, SearchTerm));
+        var count = await QueryMediator.QueryAsync(new CountCommentsQuery());
+        CommentDetailedItems = new(comments, pageIndex, PageSize, count);
     }
 }

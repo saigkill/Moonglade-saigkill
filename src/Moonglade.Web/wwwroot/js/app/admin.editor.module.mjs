@@ -1,4 +1,4 @@
-import { moongladeFetch } from './httpService.mjs'
+﻿import { fetch2 } from './httpService.mjs?v=1427'
 import { getPreferredTheme } from './themeService.mjs';
 
 function slugify(text) {
@@ -13,7 +13,7 @@ function slugify(text) {
         .replace(/ +/g, '-');
 }
 
-export function initEvents(slugifyTitle) {
+export async function initEvents(slugifyTitle) {
 
     if (slugifyTitle) {
         document.querySelector('#ViewModel_Title').addEventListener('change', function () {
@@ -70,26 +70,20 @@ export function initEvents(slugifyTitle) {
         }
     }
 
-    moongladeFetch('/api/tags/names',
-        'GET',
-        {},
-        async (resp) => {
-            var data = await resp.json();
-
-            var input = document.querySelector('#ViewModel_Tags'),
-                tagify = new Tagify(input,
-                    {
-                        pattern: /^[a-zA-Z 0-9\.\-\+\#\s]*$/i,
-                        whitelist: data,
-                        originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
-                        maxTags: 10,
-                        dropdown: {
-                            maxItems: 30,
-                            classname: 'tags-dropdown',
-                            enabled: 0,
-                            closeOnSelect: false
-                        }
-                    });
+    const data = await fetch2('/api/tags/names', 'GET', {});
+    const input = document.querySelector('#ViewModel_Tags');
+    const tagify = new Tagify(input,
+        {
+            pattern: /^[a-zA-Z 0-9\.\-\+\#\s]*$/i,
+            whitelist: data,
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
+            maxTags: 10,
+            dropdown: {
+                maxItems: 30,
+                classname: 'tags-dropdown',
+                enabled: 0,
+                closeOnSelect: false
+            }
         });
 
     document.querySelector('#ViewModel_Title').focus();
@@ -126,6 +120,7 @@ export function loadTinyMCE(textareaSelector) {
     const isDarkTheme = preferredTheme === 'dark';
 
     window.tinyMCE.init({
+        license_key: 'gpl', // https://www.tiny.cloud/docs/tinymce/latest/license-key/
         selector: textareaSelector,
         themes: 'silver',
         skin: isDarkTheme ? 'oxide-dark' : 'oxide',

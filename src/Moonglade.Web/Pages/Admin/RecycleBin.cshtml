@@ -1,17 +1,17 @@
 ﻿@page "/admin/post/recycle-bin"
-@using Moonglade.Core.PostFeature
 @using Moonglade.Data.Specifications
+@using Moonglade.Features.Post
 @{
     ViewBag.Title = "Recycle Bin";
-    var posts = await Mediator.Send(new ListPostSegmentByStatusQuery(PostStatus.Deleted));
+    var posts = await QueryMediator.QueryAsync(new ListPostSegmentByStatusQuery(PostStatus.Deleted));
 }
 
-@section scripts{
+@section scripts {
     <script type="module" src="~/js/app/admin.recyclebin.mjs" asp-append-version="true"></script>
 }
 @Html.AntiForgeryToken()
 
-@section admintoolbar{
+@section admintoolbar {
     <partial name="_PostManageHeader" />
 }
 

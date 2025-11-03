@@ -1,4 +1,4 @@
-﻿import { moongladeFetch } from './httpService.mjs'
+﻿import { fetch2 } from './httpService.mjs?v=1427'
 import { formatUtcTime, parseMetaContent } from './utils.module.mjs';
 import { resetCaptchaImage, showCaptcha } from './captchaService.mjs';
 import { resizeImages, applyImageZooming } from './post.imageutils.mjs';
@@ -6,7 +6,7 @@ import { renderCodeHighlighter, renderLaTeX } from './post.highlight.mjs';
 import { calculateReadingTime } from './post.readingtime.mjs';
 import { cleanupLocalStorage, recordPostView } from './postview.mjs';
 
-function submitComment(pid) {
+async function submitComment(pid) {
     const thxForComment = document.querySelector('#thx-for-comment');
     const thxForCommentNonReview = document.querySelector('#thx-for-comment-non-review');
     const loadingIndicator = document.querySelector('#loadingIndicator');
@@ -16,7 +16,8 @@ function submitComment(pid) {
     const username = document.querySelector('#input-comment-name').value;
     const content = document.querySelector('#input-comment-content').value;
     const email = document.querySelector('#input-comment-email').value;
-    const captchaCode = document.querySelector('#input-comment-captcha').value;
+    const captchaCode = document.querySelector('#captcha-code').value;
+    const captchaToken = document.querySelector('#captcha-token').value;
 
     thxForComment.style.display = 'none';
     thxForCommentNonReview.style.display = 'none';
@@ -24,31 +25,20 @@ function submitComment(pid) {
     btnSubmitComment.classList.add('disabled');
     btnSubmitComment.setAttribute('disabled', 'disabled');
 
-    moongladeFetch(
-        `/api/comment/${pid}`,
-        'POST',
-        { username, content, email, captchaCode },
-        (success) => {
-            commentForm.reset();
-            resetCaptchaImage();
+    const data = await fetch2(`/api/comment/${pid}`, 'POST', { username, content, email, captchaCode, captchaToken });
+    commentForm.reset();
+    resetCaptchaImage();
 
-            const { status: httpCode } = success;
-            if (httpCode === 201) {
-                thxForComment.style.display = 'block';
-            } else if (httpCode === 200) {
-                thxForCommentNonReview.style.display = 'block';
-            }
-        },
-        (always) => {
-            loadingIndicator.style.display = 'none';
-            btnSubmitComment.classList.remove('disabled');
-            btnSubmitComment.removeAttribute('disabled');
-        },
-        //(error) => {
-        //    console.error('Error submitting comment:', error);
-        //    // Optionally handle specific error cases
-        //}
-    );
+    if (data.requireCommentReview) {
+        thxForComment.style.display = 'block';
+    }
+    else {
+        thxForCommentNonReview.style.display = 'block';
+    }
+
+    loadingIndicator.style.display = 'none';
+    btnSubmitComment.classList.remove('disabled');
+    btnSubmitComment.removeAttribute('disabled');
 }
 
 document.addEventListener('DOMContentLoaded', () => {

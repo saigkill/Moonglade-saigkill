@@ -1,4 +1,4 @@
-import { moongladeFetch } from './httpService.mjs'
+import { fetch2 } from './httpService.mjs?v=1427'
 import { parseMetaContent, toMagicJson } from './utils.module.mjs'
 import { success, error } from './toastService.mjs'
 import { initEvents, loadTinyMCE, keepAlive, warnDirtyForm } from './admin.editor.module.mjs'
@@ -9,6 +9,8 @@ const heroImageFormSelector = '#form-hero-image';
 const postEditFormSelector = '.post-edit-form';
 const heroImageModalElement = document.getElementById('heroImageModal');
 const editorChoice = parseMetaContent('editor-choice');
+const scheduledPublishTimeElement = document.querySelector('input[name="ViewModel.ScheduledPublishTime"]');
+const postIdElement = document.querySelector('input[name="ViewModel.PostId"]');
 
 let isPreviewRequired = false;
 const heroImageModal = new bootstrap.Modal(heroImageModalElement);
@@ -73,51 +75,71 @@ const handlePostSubmit = async (event) => {
     btnSubmitPost.classList.add('disabled');
     btnSubmitPost.setAttribute('disabled', 'disabled');
 
-    moongladeFetch(event.currentTarget.action,
-        'POST',
-        requestData,
-        async (resp) => {
-            var respJson = await resp.json();
-            if (respJson.postId) {
-                document.querySelector('input[name="ViewModel.PostId"]').value = respJson.postId;
-                success('Post saved successfully.');
+    var respJson = await fetch2(event.currentTarget.action, 'POST', requestData);
 
-                if (isPreviewRequired) {
-                    isPreviewRequired = false;
-                    window.open(`/admin/post/preview/${respJson.postId}`);
-                }
-            }
-        }, function (resp) {
-            btnSubmitPost.classList.remove('disabled');
-            btnSubmitPost.removeAttribute('disabled');
-        });
+    if (respJson.postId) {
+        postIdElement.value = respJson.postId;
+        success('Post saved successfully.');
+
+        if (isPreviewRequired) {
+            isPreviewRequired = false;
+            window.open(`/admin/post/preview/${respJson.postId}`);
+        }
+    }
+
+    btnSubmitPost.classList.remove('disabled');
+    btnSubmitPost.removeAttribute('disabled');
 };
 
-function UnpublishPost(postId) {
-    moongladeFetch(
-        `/api/post/${postId}/unpublish`,
-        'PUT',
-        {},
-        (resp) => {
-            success('Post unpublished');
-            location.reload();
-        });
+async function UnpublishPost(postId) {
+    await fetch2(`/api/post/${postId}/unpublish`, 'PUT', {});
+
+    success('Post unpublished');
+    location.reload();
+}
+
+function setInputDateTime(dateObj, inputElement) {
+    const pad = n => n < 10 ? '0' + n : n;
+
+    const year = dateObj.getFullYear();
+    const month = pad(dateObj.getMonth() + 1); // Months are zero-based!
+    const day = pad(dateObj.getDate());
+    const hours = pad(dateObj.getHours());
+    const minutes = pad(dateObj.getMinutes());
+
+    // No seconds in datetime-local value attribute
+    const localDatetime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    inputElement.value = localDatetime;
 }
 
 function setMinScheduleDate() {
     const now = new Date();
     const minDate = now.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
-    document.querySelector('input[name="ViewModel.ScheduledPublishTime"]').setAttribute('min', minDate);
+    scheduledPublishTimeElement.setAttribute('min', minDate);
 }
 
 function updateScheduleInfo() {
     const postStatus = document.querySelector('input[name="ViewModel.PostStatus"]').value;
 
     const scheduleInfoDiv = document.querySelector('.schedule-info');
-    const scheduledTime = document.querySelector('input[name="ViewModel.ScheduledPublishTime"]').value;
+    const scheduledTime = scheduledPublishTimeElement.value;
+    const scheduledTimeUtc = document.querySelector('input[name="ViewModel.ScheduledPublishTimeUtc"]').value;
 
     if (postStatus === 'scheduled') {
-        scheduleInfoDiv.innerHTML = `<i class="bi-clock"></i> <span>Scheduled for: ${new Date(scheduledTime).toLocaleString()}</span>`;
+        let displayTime;
+
+        if (scheduledTime) {
+            displayTime = new Date(scheduledTime).toLocaleString();
+        }
+        else if (scheduledTimeUtc) {
+            const utcDate = new Date(scheduledTimeUtc);
+            const localDate = new Date(utcDate.getTime() - utcDate.getTimezoneOffset() * 60000);
+            displayTime = localDate.toLocaleString();
+
+            setInputDateTime(localDate, scheduledPublishTimeElement);
+        }
+
+        scheduleInfoDiv.innerHTML = `<i class="bi-clock"></i> <span>Scheduled for: ${displayTime}</span>`;
     } else {
         scheduleInfoDiv.innerHTML = '';
     }
@@ -163,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function () {
     warnDirtyForm('.post-edit-form');
 });
 
-document.getElementById('btn-unpublish-post').addEventListener('click', function () {
-    const postId = document.querySelector('input[name="ViewModel.PostId"]').value;
-    UnpublishPost(postId);
+document.getElementById('btn-unpublish-post').addEventListener('click', async function () {
+    const postId = postIdElement.value;
+    await UnpublishPost(postId);
 });
 
 document.getElementById('btn-cancel-schedule').addEventListener('click', function () {
-    document.querySelector('input[name="ViewModel.ScheduledPublishTime"]').value = '';
+    scheduledPublishTimeElement.value = '';
     document.querySelector('input[name="ViewModel.PostStatus"]').value = 'draft';
 
     updateScheduleInfo();
@@ -178,14 +200,14 @@ document.getElementById('btn-cancel-schedule').addEventListener('click', functio
 document.getElementById('btn-schedule-publish').addEventListener('click', function () {
     document.querySelector('input[name="ViewModel.PostStatus"]').value = 'scheduled';
 
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    document.querySelector('input[name="ViewModel.ClientTimeZoneId"]').value = timeZone;
-
     updateScheduleInfo();
 });
 
 setMinScheduleDate();
 updateScheduleInfo();
+
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+document.querySelector('input[name="ViewModel.ClientTimeZoneId"]').value = timeZone;
 
 const postEditForm = document.querySelector(postEditFormSelector);
 postEditForm.addEventListener('submit', handlePostSubmit);

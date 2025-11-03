@@ -1,13 +1,12 @@
-﻿using System.Globalization;
-
+using System.Globalization;
+using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.SaschaFeature;
 using Moonglade.Data.Entities;
+using Moonglade.Features.SaschaFeature;
 
 namespace Moonglade.Web.Pages;
 
-public class ImpulsesModel(IMediator mediator) : PageModel
+public class ImpulsesModel(IQueryMediator mediator) : PageModel
 {
   public PagesContentEntity Impulses { get; set; }
   public PagesContentEntity ImpulsesSlogan { get; set; }
@@ -25,17 +24,17 @@ public class ImpulsesModel(IMediator mediator) : PageModel
   {
     var langCode = CultureInfo.CurrentUICulture.ToString().ToLower();
     var convertedCulture = LanguageExtensions.FromLangCodeToLang(langCode);
-    Impulses = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-title", "impulse", convertedCulture));
-    ImpulsesSlogan = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-slogan", "impulse", convertedCulture));
-    ImpulsesSeelsorge = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-seelsorge", "impulse", convertedCulture));
-    ImpulsesSeelsorgeTitle = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-seelsorge-title", "impulse", convertedCulture));
-    ImpulsesBibleTitle = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-bible-title", "impulse", convertedCulture));
-    ImpulsesBible = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-bible", "impulse", convertedCulture));
-    ImpulsesPsychologicalTitle = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-psychological-title", "impulse", convertedCulture));
-    ImpulsesPsychological = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-psychological", "impulse", convertedCulture));
-    ImpulsesLang = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-lang", "impulse", convertedCulture));
-    ImpulsesBookPastoral = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-book-pastoral", "impulse", convertedCulture));
-    ImpulsesBookBiblestudy = await mediator.Send(new GetPageContentByKeyValueQuery("impulse-book-bible", "impulse", convertedCulture));
+    Impulses = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-title", "impulse", convertedCulture));
+    ImpulsesSlogan = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-slogan", "impulse", convertedCulture));
+    ImpulsesSeelsorge = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-seelsorge", "impulse", convertedCulture));
+    ImpulsesSeelsorgeTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-seelsorge-title", "impulse", convertedCulture));
+    ImpulsesBibleTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-bible-title", "impulse", convertedCulture));
+    ImpulsesBible = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-bible", "impulse", convertedCulture));
+    ImpulsesPsychologicalTitle = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-psychological-title", "impulse", convertedCulture));
+    ImpulsesPsychological = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-psychological", "impulse", convertedCulture));
+    ImpulsesLang = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-lang", "impulse", convertedCulture));
+    ImpulsesBookPastoral = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-book-pastoral", "impulse", convertedCulture));
+    ImpulsesBookBiblestudy = await mediator.QueryAsync(new GetPageContentByKeyValueQuery("impulse-book-bible", "impulse", convertedCulture));
 
     return Page();
   }

@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Builder
+@using Edi.AspNetCore.Utils
+@using Microsoft.AspNetCore.Builder
 @using Moonglade.Utils
 
 @inject IOptions<RequestLocalizationOptions> LocOptions
@@ -16,7 +17,7 @@
                     @Html.Raw(Helper.FormatCopyright2Html(BlogConfig.GeneralSettings.Copyright))
                 </div>
                 <small>
-                    Powered by <a href="https://github.com/saigkill/Moonglade-saigkill" target="_blank">Moonglade</a> @Helper.AppVersion
+                    Powered by <a href="https://github.com/saigkill/Moonglade-saigkill" target="_blank">Moonglade</a> @VersionHelper.AppVersion
                 </small>
                 <br />
                 <a href="/pages/imprint">Imprint</a>
@@ -34,7 +35,7 @@
                         {
                             <li>
                                 <a class="dropdown-item"
-                                   asp-controller="Settings"
+                                   asp-controller="Language"
                                    asp-action="SetLanguage"
                                    asp-route-returnUrl="@returnUrl"
                                    asp-route-culture="@item.Value">
@@ -66,7 +67,7 @@
                     @foreach (var item in cultureItems)
                     {
                         <li>
-                            <a asp-controller="Settings" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" asp-route-culture="@item.Value" rel="nofollow">@item.NativeName</a>
+                            <a asp-controller="Language" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" asp-route-culture="@item.Value" rel="nofollow">@item.NativeName</a>
                         </li>
                     }
                 </ul>

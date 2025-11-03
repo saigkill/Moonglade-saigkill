@@ -1,8 +1,11 @@
-﻿using Edi.PasswordGenerator;
-
-using Microsoft.AspNetCore.Localization;
-
+using Edi.AspNetCore.Utils;
+using Edi.PasswordGenerator;
+using LiteBus.Commands.Abstractions;
+using LiteBus.Events.Abstractions;
+using LiteBus.Queries.Abstractions;
 using Moonglade.Email.Client;
+using Moonglade.Features.Asset;
+using Moonglade.Web.Extensions;
 
 namespace Moonglade.Web.Controllers;
 
@@ -12,35 +15,11 @@ namespace Moonglade.Web.Controllers;
 public class SettingsController(
         IBlogConfig blogConfig,
         ILogger<SettingsController> logger,
-        IMediator mediator) : ControllerBase
+        IEventMediator eventMediator,
+        IQueryMediator queryMediator,
+        ICommandMediator commandMediator) : ControllerBase
 {
-  [AllowAnonymous]
-  [HttpGet("set-lang")]
-  public IActionResult SetLanguage(string culture, string returnUrl)
-  {
-    try
-    {
-      if (string.IsNullOrWhiteSpace(culture)) return BadRequest();
-
-      Response.Cookies.Append(
-          CookieRequestCultureProvider.DefaultCookieName,
-          CookieRequestCultureProvider.MakeCookieValue(new(culture)),
-          new() { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-      );
-
-      return LocalRedirect(string.IsNullOrWhiteSpace(returnUrl) ? "~/" : returnUrl);
-    }
-    catch (Exception e)
-    {
-      logger.LogError(e, e.Message, culture, returnUrl);
-
-      // We shall not respect the return URL now, because the returnUrl might be hacking.
-      return NoContent();
-    }
-  }
-
     [HttpPost("general")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> General(GeneralSettings model)
     {
@@ -55,7 +34,6 @@ public class SettingsController(
   }
 
     [HttpPost("content")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Content(ContentSettings model)
     {
@@ -66,7 +44,6 @@ public class SettingsController(
   }
 
     [HttpPost("comment")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Comment(CommentSettings model)
     {
@@ -77,7 +54,6 @@ public class SettingsController(
     }
 
     [HttpPost("notification")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Notification(NotificationSettings model)
     {
@@ -87,24 +63,23 @@ public class SettingsController(
     return NoContent();
   }
 
-  [HttpPost("email/test")]
-  [IgnoreAntiforgeryToken]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  public async Task<IActionResult> TestEmail()
-  {
-    try
+    [HttpPost("email/test")]
+    [IgnoreAntiforgeryToken]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> TestEmail()
     {
-      await mediator.Publish(new TestNotification());
-      return Ok(true);
+        try
+        {
+            await eventMediator.PublishAsync(new TestEmailEvent());
+            return Ok(true);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        }
     }
-    catch (Exception e)
-    {
-      return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-    }
-  }
 
     [HttpPost("subscription")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Subscription(FeedSettings model)
     {
@@ -115,21 +90,20 @@ public class SettingsController(
   }
 
     [HttpPost("watermark")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Image(ImageSettings model, IBlogImageStorage imageStorage)
     {
         blogConfig.ImageSettings = model;
 
-    if (model.EnableCDNRedirect)
-    {
-      if (null != blogConfig.GeneralSettings.AvatarUrl
-      && !blogConfig.GeneralSettings.AvatarUrl.StartsWith(model.CDNEndpoint))
-      {
-        try
+        if (model.EnableCDNRedirect)
         {
-          var avatarData = await mediator.Send(new GetAssetQuery(AssetId.AvatarBase64));
+            if (null != blogConfig.GeneralSettings.AvatarUrl
+            && !blogConfig.GeneralSettings.AvatarUrl.StartsWith(model.CDNEndpoint))
+            {
+                try
+                {
+                    var avatarData = await queryMediator.QueryAsync(new GetAssetQuery(AssetId.AvatarBase64));
 
           if (!string.IsNullOrWhiteSpace(avatarData))
           {
@@ -159,7 +133,6 @@ public class SettingsController(
   }
 
     [HttpPost("advanced")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Advanced(AdvancedSettings model)
     {
@@ -170,14 +143,13 @@ public class SettingsController(
   }
 
     [HttpPost("social-link")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> SocialLink(SocialLinkSettingsJsonModel model)
     {
         if (model.IsEnabled && string.IsNullOrWhiteSpace(model.JsonData))
         {
             ModelState.AddModelError(nameof(SocialLinkSettingsJsonModel.JsonData), "JsonData is required");
-            return BadRequest(ModelState.CombineErrorMessages());
+            return BadRequest(ModelState.GetCombinedErrorMessage());
         }
 
         var links = model.JsonData.FromJson<SocialLink[]>();
@@ -188,29 +160,29 @@ public class SettingsController(
             if (string.IsNullOrWhiteSpace(link.Name))
             {
                 ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Name)}", "Name is required");
-                return BadRequest(ModelState.CombineErrorMessages());
+                return BadRequest(ModelState.GetCombinedErrorMessage());
             }
 
             if (string.IsNullOrWhiteSpace(link.Icon))
             {
                 ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Icon)}", "Icon is required");
-                return BadRequest(ModelState.CombineErrorMessages());
+                return BadRequest(ModelState.GetCombinedErrorMessage());
             }
 
             if (string.IsNullOrWhiteSpace(link.Url))
             {
                 ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Url)}", "Url is required");
-                return BadRequest(ModelState.CombineErrorMessages());
+                return BadRequest(ModelState.GetCombinedErrorMessage());
             }
 
             if (!Uri.TryCreate(link.Url, UriKind.Absolute, out _))
             {
                 ModelState.AddModelError($"{nameof(Moonglade.Configuration.SocialLink)}.{nameof(Moonglade.Configuration.SocialLink.Url)}", "Url is invalid");
-                return BadRequest(ModelState.CombineErrorMessages());
+                return BadRequest(ModelState.GetCombinedErrorMessage());
             }
 
             // Sterilize
-            link.Url = Helper.SterilizeLink(link.Url);
+            link.Url = SecurityHelper.SterilizeLink(link.Url);
         }
 
         blogConfig.SocialLinkSettings = new()
@@ -224,7 +196,6 @@ public class SettingsController(
   }
 
     [HttpPost("appearance")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCachePartition.General, "theme"])]
@@ -233,7 +204,7 @@ public class SettingsController(
         if (model.EnableCustomCss && string.IsNullOrWhiteSpace(model.CssCode))
         {
             ModelState.AddModelError(nameof(AppearanceSettings.CssCode), "CSS Code is required");
-            return BadRequest(ModelState.CombineErrorMessages());
+            return BadRequest(ModelState.GetCombinedErrorMessage());
         }
 
         blogConfig.AppearanceSettings = model;
@@ -243,7 +214,6 @@ public class SettingsController(
     }
 
     [HttpPost("custom-menu")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CustomMenu(CustomMenuSettingsJsonModel model)
@@ -251,7 +221,7 @@ public class SettingsController(
         if (model.IsEnabled && string.IsNullOrWhiteSpace(model.MenuJson))
         {
             ModelState.AddModelError(nameof(CustomMenuSettingsJsonModel.MenuJson), "Menus is required");
-            return BadRequest(ModelState.CombineErrorMessages());
+            return BadRequest(ModelState.GetCombinedErrorMessage());
         }
 
     blogConfig.CustomMenuSettings = new()
@@ -277,27 +247,26 @@ public class SettingsController(
   }
 
     [HttpPut("password/local")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> UpdateLocalAccountPassword(UpdateLocalAccountPasswordRequest request)
     {
-        var oldPasswordValid = blogConfig.LocalAccountSettings.PasswordHash == Helper.HashPassword(request.OldPassword.Trim(), blogConfig.LocalAccountSettings.PasswordSalt);
+        var oldPasswordValid = blogConfig.LocalAccountSettings.PasswordHash == SecurityHelper.HashPassword(request.OldPassword.Trim(), blogConfig.LocalAccountSettings.PasswordSalt);
 
     if (!oldPasswordValid) return Conflict("Old password is incorrect.");
 
-    var newSalt = Helper.GenerateSalt();
-    blogConfig.LocalAccountSettings.Username = request.NewUsername.Trim();
-    blogConfig.LocalAccountSettings.PasswordSalt = newSalt;
-    blogConfig.LocalAccountSettings.PasswordHash = Helper.HashPassword(request.NewPassword, newSalt);
+        var newSalt = SecurityHelper.GenerateSalt();
+        blogConfig.LocalAccountSettings.Username = request.NewUsername.Trim();
+        blogConfig.LocalAccountSettings.PasswordSalt = newSalt;
+        blogConfig.LocalAccountSettings.PasswordHash = SecurityHelper.HashPassword(request.NewPassword, newSalt);
 
     await SaveConfigAsync(blogConfig.LocalAccountSettings);
     return NoContent();
   }
 
-  private async Task SaveConfigAsync<T>(T blogSettings) where T : IBlogSettings
-  {
-    var kvp = blogConfig.UpdateAsync(blogSettings);
-    await mediator.Send(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
-  }
+    private async Task SaveConfigAsync<T>(T blogSettings) where T : IBlogSettings
+    {
+        var kvp = blogConfig.UpdateAsync(blogSettings);
+        await commandMediator.SendAsync(new UpdateConfigurationCommand(kvp.Key, kvp.Value));
+    }
 }

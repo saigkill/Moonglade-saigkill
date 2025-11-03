@@ -1,7 +1,7 @@
 ﻿@page "/admin/friendlink"
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Moonglade.Data.Entities
-@using Moonglade.FriendLink
+@using Moonglade.Features.FriendLink
 
 @{
     ViewBag.Title = "Friend Links";
@@ -29,7 +29,7 @@
 <div>
     @foreach (var item in Links.OrderBy(m => m.Rank).ThenBy(m => m.Title))
     {
-        <div class="friendlink-entry p-3 mb-2 rounded-3 shadow-sm border">
+        <div class="friendlink-entry p-3 rounded-3 border mb-1">
             <div id="tr-@item.Id" class="row">
                 <div class="col">
                     <h6>
@@ -85,5 +85,5 @@
 
     public List<FriendLinkEntity> Links { get; set; }
 
-    public async Task OnGet() => Links = await Mediator.Send(new GetAllLinksQuery());
+    public async Task OnGet() => Links = await QueryMediator.QueryAsync(new ListLinksQuery());
 }

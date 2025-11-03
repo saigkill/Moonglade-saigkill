@@ -1,7 +1,9 @@
-﻿using Moonglade.Core.PostFeature;
+﻿using LiteBus.Commands.Abstractions;
+using Moonglade.Features.Post;
 using Moonglade.IndexNow.Client;
-using Moonglade.Pingback;
 using Moonglade.Web.Attributes;
+using Moonglade.Web.BackgroundServices;
+using Moonglade.Web.Extensions;
 using Moonglade.Webmention;
 
 using System.ComponentModel.DataAnnotations;
@@ -12,15 +14,16 @@ namespace Moonglade.Web.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class PostController(
+        ICacheAside cache,
         IConfiguration configuration,
-        IMediator mediator,
+        ICommandMediator commandMediator,
         IBlogConfig blogConfig,
+        ScheduledPublishWakeUp wakeUp,
         ILogger<PostController> logger,
         //IIndexNowClient indexNowClient,
         CannonService cannonService) : ControllerBase
 {
     [HttpPost("createoredit")]
-    [ReadonlyMode]
     [TypeFilter(typeof(ClearBlogCache), Arguments =
     [
         BlogCacheType.SiteMap |
@@ -32,7 +35,7 @@ public class PostController(
     {
         try
         {
-            if (!ModelState.IsValid) return Conflict(ModelState.CombineErrorMessages());
+            if (!ModelState.IsValid) return Conflict(ModelState.GetCombinedErrorMessage());
 
             if (model.ChangePublishDate &&
                 model.PublishDate.HasValue &&
@@ -62,20 +65,30 @@ public class PostController(
                     model.PostStatus = PostStatusConstants.Published;
                     model.ScheduledPublishTime = null;
                 }
+                else
+                {
+                    logger.LogInformation("Post scheduled for publish at {clientUtcTime} UTC.", clientUtcTime);
+
+                    wakeUp.WakeUp();
+
+                    logger.LogInformation("Scheduled publish wake-up triggered for post: {PostId}", model.PostId);
+                }
             }
 
             var postEntity = model.PostId == Guid.Empty ?
-                await mediator.Send(new CreatePostCommand(model)) :
-                await mediator.Send(new UpdatePostCommand(model.PostId, model));
+                await commandMediator.SendAsync(new CreatePostCommand(model)) :
+                await commandMediator.SendAsync(new UpdatePostCommand(model.PostId, model));
+
+            cache.Remove(BlogCachePartition.Post.ToString(), postEntity.RouteLink);
 
             if (model.PostStatus != PostStatusConstants.Published)
             {
                 return Ok(new { PostId = postEntity.Id });
             }
 
-            logger.LogInformation($"Trying to Ping URL for post: {postEntity.Id}");
+            logger.LogInformation("Trying to Ping URL for post: {Id}", postEntity.Id);
 
-            var baseUri = new Uri(Helper.ResolveRootUrl(HttpContext, null, removeTailSlash: true));
+            var baseUri = new Uri(UrlHelper.ResolveRootUrl(HttpContext, null, removeTailSlash: true));
             var link = new Uri(baseUri, $"post/{postEntity.RouteLink.ToLower()}");
 
             NotifyExternalServices(postEntity.PostContent, link);
@@ -85,18 +98,13 @@ public class PostController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error Creating New Post.");
+            logger.LogError(ex, "Error updating post.");
             return Conflict(ex.Message);
         }
     }
 
     private void NotifyExternalServices(string postContent, Uri link)
     {
-        if (blogConfig.AdvancedSettings.EnablePingback)
-        {
-            cannonService.FireAsync<IPingbackSender>(async sender => await sender.TrySendPingAsync(link.ToString(), postContent));
-        }
-
         if (blogConfig.AdvancedSettings.EnableWebmention)
         {
             cannonService.FireAsync<IWebmentionSender>(async sender => await sender.SendWebmentionAsync(link.ToString(), postContent));
@@ -125,40 +133,40 @@ public class PostController(
         BlogCacheType.Subscription
       ])]
     [HttpDelete("{postId:guid}/recycle")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete([NotEmpty] Guid postId)
     {
-        await mediator.Send(new DeletePostCommand(postId, true));
+        await commandMediator.SendAsync(new DeletePostCommand(postId, true));
         return NoContent();
     }
 
     [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
     [HttpPut("{postId:guid}/publish")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Publish([NotEmpty] Guid postId)
     {
-        await mediator.Send(new PublishPostCommand(postId));
+        await commandMediator.SendAsync(new PublishPostCommand(postId));
+        cache.Remove(BlogCachePartition.Post.ToString(), postId.ToString());
+
         return NoContent();
     }
 
     [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCacheType.Subscription | BlogCacheType.SiteMap])]
     [HttpPut("{postId:guid}/unpublish")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Unpublish([NotEmpty] Guid postId)
     {
-        await mediator.Send(new UnpublishPostCommand(postId));
+        await commandMediator.SendAsync(new UnpublishPostCommand(postId));
+        cache.Remove(BlogCachePartition.Post.ToString(), postId.ToString());
+
         return NoContent();
     }
 
     [HttpPut("{postId:guid}/postpone")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Postpone([NotEmpty] Guid postId, [FromQuery][Range(1, 24)] int hours = 24)
     {
-        await mediator.Send(new PostponePostCommand(postId, hours));
+        await commandMediator.SendAsync(new PostponePostCommand(postId, hours));
         return NoContent();
     }
 

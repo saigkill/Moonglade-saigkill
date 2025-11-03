@@ -2,6 +2,7 @@
 @model Moonglade.Web.Pages.PostModel
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Moonglade.Utils
+@inject IConfiguration Configuration
 
 @Html.AntiForgeryToken()
 
@@ -15,7 +16,11 @@
     ViewBag.PostLangCode = Model.Post.ContentLanguageCode;
     ViewBag.MetaDescription = Model.Post.ContentAbstract;
 
-    @if (Model.Post.Tags.Any())
+    @if (!string.IsNullOrWhiteSpace(Model.Post.Keywords))
+    {
+        ViewBag.Keywords = Model.Post.Keywords;
+    }
+    else if (Model.Post.Tags.Any())
     {
         ViewBag.Keywords = string.Join(", ", Model.Post.Tags.Select(t => t.NormalizedName));
     }
@@ -40,7 +45,7 @@
 
     @if (BlogConfig.AdvancedSettings.EnableWebmention)
     {
-        <link rel="webmention" href="@(Helper.ResolveCanonicalUrl(BlogConfig.GeneralSettings.CanonicalPrefix, "webmention"))">
+        <link rel="webmention" href="@(UrlHelper.ResolveCanonicalUrl(BlogConfig.GeneralSettings.CanonicalPrefix, "webmention"))">
     }
     
     @if (Model.Twitter != null)
@@ -70,7 +75,7 @@
     <meta property="og:description" content="@Model.Post.ContentAbstract" />
     @if (!string.IsNullOrWhiteSpace(BlogConfig.GeneralSettings.CanonicalPrefix))
     {
-        <meta property="og:url" content="@(Helper.ResolveCanonicalUrl(BlogConfig.GeneralSettings.CanonicalPrefix, HttpContext.Request.Path))" />
+        <meta property="og:url" content="@(UrlHelper.ResolveCanonicalUrl(BlogConfig.GeneralSettings.CanonicalPrefix, HttpContext.Request.Path))" />
     }
     <meta property="fb:app_id" content="@BlogConfig.GeneralSettings.FacebookAppId" />
 }
@@ -146,7 +151,7 @@
     @if (!string.IsNullOrWhiteSpace(Model.Post.HeroImageUrl))
     {
         <div class="post-hero-image-container text-center mb-3">
-            <img src="@Helper.SterilizeLink(Model.Post.HeroImageUrl)" class="post-hero-image img-fluid rounded-3 shadow-sm" />
+            <img src="@SecurityHelper.SterilizeLink(Model.Post.HeroImageUrl)" class="post-hero-image img-fluid rounded-3 shadow-sm" />
         </div>
     }
 
@@ -185,62 +190,66 @@
     <partial name="_PostActions" model="Model.Post" />
 </article>
 
-@if (!Helper.GetAppDomainData<bool>("IsReadonlyMode") && BlogConfig.CommentSettings.EnableComments)
-{
-    var days = DateTime.UtcNow.Date.Subtract(Model.Post.PubDateUtc.GetValueOrDefault()).Days;
+<div class="@(BlogConfig.CommentSettings.EnableCommentSectionOnMobile ? null : "d-none d-md-block")">
 
-    if (BlogConfig.CommentSettings.CloseCommentAfterDays > 0 && days > BlogConfig.CommentSettings.CloseCommentAfterDays)
+    @if (BlogConfig.CommentSettings.EnableComments)
     {
-        <div class="text-muted text-center">
-            <span class="bi-dash-circle"></span>
-            @SharedLocalizer["Comment is closed."]
-        </div>
-    }
-    else
-    {
-        switch (BlogConfig.CommentSettings.CommentProvider)
+        var days = DateTime.UtcNow.Date.Subtract(Model.Post.PubDateUtc.GetValueOrDefault()).Days;
+
+        if (BlogConfig.CommentSettings.CloseCommentAfterDays > 0 && days > BlogConfig.CommentSettings.CloseCommentAfterDays)
         {
-            case CommentProvider.BuiltIn:
-                <div class="d-print-none">
-                    @if (Model.Post.CommentEnabled)
-                    {
-                        <section class="comment-form-containter rounded-3 shadow-sm border bg-white mb-4">
-                            <h5 class="card-subtitle mb-3 text-muted">
-                                <i class="bi-chat-left-text"></i>
-                                @SharedLocalizer["Comments"]
-                            </h5>
-                            <partial name="_CommentForm" />
-                        </section>
+            <div class="text-muted text-center">
+                <span class="bi-dash-circle"></span>
+                @SharedLocalizer["Comment is closed."]
+            </div>
+        }
+        else
+        {
+            switch (BlogConfig.CommentSettings.CommentProvider)
+            {
+                case CommentProvider.BuiltIn:
+                    <div class="d-print-none">
+                        @if (Model.Post.CommentEnabled)
+                        {
+                            <section class="comment-form-containter rounded-3 shadow-sm border bg-white mb-4">
+                                <h5 class="card-subtitle mb-3 text-muted">
+                                    <i class="bi-chat-left-text"></i>
+                                    @SharedLocalizer["Comments"]
+                                </h5>
+                                <partial name="_CommentForm" />
+                            </section>
 
-                        <div id="thx-for-comment" class="alert alert-warning" style="display: none;">
-                            @SharedLocalizer["Thanks, your comment is pending approval now."] <br />
-                            @SharedLocalizer["It will show up once blog administrator approved your comment."]
-                        </div>
+                            <div id="thx-for-comment" class="alert alert-warning" style="display: none;">
+                                @SharedLocalizer["Thanks, your comment is pending approval now."] <br />
+                                @SharedLocalizer["It will show up once blog administrator approved your comment."]
+                            </div>
 
-                        <div id="thx-for-comment-non-review" class="alert alert-success" style="display: none;">
-                            @SharedLocalizer["Thanks for your comment."] <br />
-                            @SharedLocalizer["Refresh the page to see your comment."]
-                        </div>
+                            <div id="thx-for-comment-non-review" class="alert alert-success" style="display: none;">
+                                @SharedLocalizer["Thanks for your comment."] <br />
+                                @SharedLocalizer["Refresh the page to see your comment."]
+                            </div>
 
-                        <section id="comments-list">
-                            @await Component.InvokeAsync("CommentList", new { postId = Model.Post.Id })
-                        </section>
-                    }
-                    else
-                    {
-                        <div class="text-muted text-center">
-                            <span class="bi-ban"></span>
-                            @SharedLocalizer["Comment of this post is disabled."]
-                        </div>
-                    }
-                </div>
-                break;
-            case CommentProvider.ThirdParty:
-                @Html.Raw(BlogConfig.CommentSettings.ThirdPartyCommentHtmlPitch)
-                break;
+                            <section id="comments-list">
+                                @await Component.InvokeAsync("CommentList", new { postId = Model.Post.Id })
+                            </section>
+                        }
+                        else
+                        {
+                            <div class="text-muted text-center">
+                                <span class="bi-ban"></span>
+                                @SharedLocalizer["Comment of this post is disabled."]
+                            </div>
+                        }
+                    </div>
+                    break;
+                case CommentProvider.ThirdParty:
+                    @Html.Raw(BlogConfig.CommentSettings.ThirdPartyCommentHtmlPitch)
+                    break;
+            }
         }
     }
-}
+
+</div>
 
 <div class="modal fade" id="imgzoomModal" tabindex="-1" role="dialog" aria-labelledby="imgzoomModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-imgzoom" role="document" style="max-width: 100%">

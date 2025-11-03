@@ -1,26 +1,31 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Net;
 using System.Text.Json.Serialization;
-
+using Edi.AspNetCore.Utils;
 using Edi.Captcha;
 using Edi.PasswordGenerator;
-
+using LiteBus.Commands;
+using LiteBus.Events;
+using LiteBus.Extensions.Microsoft.DependencyInjection;
+using LiteBus.Queries;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Rewrite;
-
-using Moonglade.Comments.Moderator;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Moonglade.Data.MySql;
 using Moonglade.Data.PostgreSql;
 using Moonglade.Data.SqlServer;
 using Moonglade.Email.Client;
 using Moonglade.Github.Client;
 using Moonglade.IndexNow.Client;
-using Moonglade.Mention.Common;
+using Moonglade.Moderation;
 using Moonglade.Nuget.Client;
-using Moonglade.Pingback;
 using Moonglade.Setup;
 using Moonglade.Syndication;
 using Moonglade.Web.BackgroundServices;
+using Moonglade.Web.Extensions;
 using Moonglade.Web.Handlers;
+using Moonglade.Web.HealthChecks;
 using Moonglade.Webmention;
 
 using NLog;
@@ -50,12 +55,7 @@ public class Program
     ConfigureSyncfusion(builder);
     ConfigureServices(builder.Services, builder.Configuration, cultures);
 
-    var app = builder.Build();
-    if (!app.Environment.IsDevelopment() && await Helper.IsRunningInChina())
-    {
-      Helper.SetAppDomainData("IsReadonlyMode", true);
-      app.Logger.LogWarning("Positive China detection, Moonglade is now in readonly mode.");
-    }
+        var app = builder.Build();
 
     await app.InitStartUp();
     ConfigureMiddleware(app, cultures);
@@ -63,26 +63,18 @@ public class Program
     await app.RunAsync();
   }
 
-  private static void LoadAssemblies()
-  {
-    var assemblies = new[]
+    private static void LoadAssemblies()
     {
-            // Core/Mention
-            "Moonglade.Mention.Common",
-            "Moonglade.Pingback",
+        var assemblies = new[]
+        {
             "Moonglade.Webmention",
-            // Core
             "Moonglade.Auth",
-            "Moonglade.Comments",
-            "Moonglade.Core",
+            "Moonglade.Features",
             "Moonglade.Email.Client",
-            "Moonglade.FriendLink",
             "Moonglade.IndexNow.Client",
             "Moonglade.Syndication",
             "Moonglade.Theme",
-            // Data
             "Moonglade.Data",
-            // Infrastructure
             "Moonglade.Configuration"
         };
 
@@ -92,76 +84,92 @@ public class Program
     }
   }
 
-  private static List<CultureInfo> GetSupportedCultures()
-  {
-    var cultureCodes = new[] { "en-US", "zh-Hans", "zh-Hant", "de-DE", "ja-JP" };
-    return cultureCodes.Select(code => new CultureInfo(code)).ToList();
-  }
-
-  private static void ConfigureLogging(WebApplicationBuilder builder)
-  {
-    if (Helper.IsRunningOnAzureAppService())
+    private static List<CultureInfo> GetSupportedCultures()
     {
-      builder.Logging.AddAzureWebAppDiagnostics();
+        var cultureCodes = new[] { "en-US", "zh-Hans", "zh-Hant", "de-DE", "ja-JP" };
+        return [.. cultureCodes.Select(code => new CultureInfo(code))];
     }
-    builder.Services.AddApplicationInsightsTelemetry();
-    builder.Host.UseNLog();
-  }
-  private static void ConfigureSyncfusion(WebApplicationBuilder builder)
-  {
-    if (builder.Configuration["SyncfusionLicenseKey"] is not null)
-    {
-      Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
-    }
-  }
-  private static void ConfigureServices(IServiceCollection services, IConfiguration configuration, List<CultureInfo> cultures)
-  {
-    var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-    assemblies = [.. assemblies.Where(x => x.FullName!.StartsWith("Moonglade"))];
 
-    services.AddHttpClient();
-    services.AddMediatR(config => config.RegisterServicesFromAssemblies(assemblies));
-    services.AddOptions().AddHttpContextAccessor();
-    ConfigureSession(services);
-    ConfigureCaptcha(services, configuration);
-    ConfigureLocalization(services);
-    ConfigureControllers(services);
-    ConfigureRazorPages(services);
-    services.AddSingleton(Encoder.MoongladeHtmlEncoder);
-    ConfigureAntiforgery(services);
-    ConfigureRequestLocalization(services, cultures);
-    ConfigureRouteOptions(services);
-    services.AddTransient<IPasswordGenerator, DefaultPasswordGenerator>();
-    services.AddHealthChecks();
-    ConfigureMoongladeServices(services, configuration);
-    ConfigureDatabase(services, configuration);
-    ConfigureInitializers(services);
-  }
-
-  private static void ConfigureSession(IServiceCollection services)
-  {
-    services.AddSession(options =>
+    private static void ConfigureLogging(WebApplicationBuilder builder)
     {
-      options.IdleTimeout = TimeSpan.FromMinutes(20);
-      options.Cookie.HttpOnly = true;
-    });
-  }
-
-  private static void ConfigureCaptcha(IServiceCollection services, IConfiguration configuration)
-  {
-    services.AddSessionBasedCaptcha(options =>
-    {
-      var magics = new List<string>
+        if (EnvironmentHelper.IsRunningOnAzureAppService())
         {
-                Encoding.UTF8.GetString(BitConverter.GetBytes('✔'.GetHashCode())
-                    .Zip(BitConverter.GetBytes(0x242F2E32)).Select(x => (byte)(x.First + x.Second)).ToArray()),
-                Helper.GetMagic(0x6B441, 11, 15),
-                Helper.GetMagic(0x1499E, 10, 14)
-        };
+            builder.Logging.AddAzureWebAppDiagnostics();
+        }
+    }
 
-      options.FontStyle = FontStyle.Bold;
-      options.BlockedCodes = [.. magics];
-    });
+    private static void ConfigureServices(IServiceCollection services, IConfiguration configuration, List<CultureInfo> cultures)
+    {
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        assemblies = [.. assemblies.Where(x => x.FullName!.StartsWith("Moonglade"))];
+
+        services.AddLiteBus(liteBus =>
+        {
+            liteBus.AddCommandModule(module =>
+            {
+                foreach (var assembly in assemblies)
+                {
+                    module.RegisterFromAssembly(assembly);
+                }
+            });
+
+            liteBus.AddQueryModule(module =>
+            {
+                foreach (var assembly in assemblies)
+                {
+                    module.RegisterFromAssembly(assembly);
+                }
+            });
+
+            liteBus.AddEventModule(module =>
+            {
+                foreach (var assembly in assemblies)
+                {
+                    module.RegisterFromAssembly(assembly);
+                }
+            });
+        });
+
+        services.AddHttpClient();
+        services.AddOptions().AddHttpContextAccessor();
+        ConfigureCaptcha(services, configuration);
+        ConfigureLocalization(services);
+        ConfigureControllers(services);
+        ConfigureRazorPages(services);
+        services.AddSingleton(Encoder.MoongladeHtmlEncoder);
+        ConfigureAntiforgery(services);
+        ConfigureRequestLocalization(services, cultures);
+        ConfigureRouteOptions(services);
+        services.AddTransient<IPasswordGenerator, DefaultPasswordGenerator>();
+        services.AddHealthChecks()
+            .AddCheck("self", () => HealthCheckResult.Healthy("Application is running"))
+            .AddDbContextCheck<BlogDbContext>("database", tags: ["db", "ready"])
+            .AddCheck<DatabaseConnectivityHealthCheck>("database_connectivity", tags: ["db"]);
+        ConfigureMoongladeServices(services, configuration);
+        ConfigureDatabase(services, configuration);
+        ConfigureInitializers(services);
+    }
+
+    private static void ConfigureCaptcha(IServiceCollection services, IConfiguration configuration)
+    {
+        var magics = new List<string>
+            {
+                Encoding.UTF8.GetString([.. BitConverter.GetBytes('✔'.GetHashCode())
+                    .Zip(BitConverter.GetBytes(0x242F2E32)).Select(x => (byte)(x.First + x.Second))]),
+                Helper.GetMagic(0x6B441, 11, 15)
+            };
+
+        var captchaKey = configuration["CaptchaSettings:SharedKey"];
+        var expirationMinutes = configuration.GetValue<int>("CaptchaSettings:TokenExpirationMinutes", 5);
+
+        services.AddSharedKeyStatelessCaptcha(options =>
+        {
+            options.SharedKey = captchaKey;
+            options.TokenExpiration = TimeSpan.FromMinutes(expirationMinutes);
+            options.FontStyle = FontStyle.Bold;
+            options.BlockedCodes = [.. magics];
+            options.DrawLines = true;
+        });
 
     services.AddScoped<ValidateCaptcha>();
   }
@@ -171,25 +179,38 @@ public class Program
     services.AddLocalization(options => options.ResourcesPath = "Resources");
   }
 
-  private static void ConfigureControllers(IServiceCollection services)
+  private static void ConfigureSyncfusion(WebApplicationBuilder builder)
+  {
+      if (builder.Configuration["SyncfusionLicenseKey"] is not null)
+      {
+          Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
+      }
+  }
+
+    private static void ConfigureControllers(IServiceCollection services)
   {
     services.AddControllers(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()))
         .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
         .ConfigureApiBehaviorOptions(ConfigureApiBehavior.BlogApiBehavior);
   }
 
-  private static void ConfigureRazorPages(IServiceCollection services)
-  {
-    services.AddRazorPages()
-        .AddDataAnnotationsLocalization(options =>
-            options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(Program)))
-        .AddRazorPagesOptions(options =>
-        {
-          options.Conventions.AddPageRoute("/Admin/Post", "admin");
-          options.Conventions.AuthorizeFolder("/Admin");
-          options.Conventions.AuthorizeFolder("/Settings");
-        });
-  }
+    private static void ConfigureRazorPages(IServiceCollection services)
+    {
+        services.AddRazorPages()
+            .AddDataAnnotationsLocalization(options =>
+                options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(Program)))
+            .AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AddPageRoute("/Admin/Post", "admin");
+                options.Conventions.AuthorizeFolder("/Admin");
+                options.Conventions.AuthorizeFolder("/Settings");
+            })
+            .AddViewOptions(options =>
+            {
+                // Fix '__Invariant' form input rendering issue
+                options.HtmlHelperOptions.FormInputRenderMode = FormInputRenderMode.AlwaysUseCurrentCulture;
+            });
+    }
 
   private static void ConfigureAntiforgery(IServiceCollection services)
   {
@@ -221,11 +242,9 @@ public class Program
     });
   }
 
-  private static void ConfigureMoongladeServices(IServiceCollection services, IConfiguration configuration)
-  {
-    services.AddMentionCommon()
-            .AddPingback()
-            .AddWebmention();
+    private static void ConfigureMoongladeServices(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddWebmention();
 
     services.AddSyndication()
             .AddInMemoryCacheAside()
@@ -240,43 +259,43 @@ public class Program
     services.AddNugetClient();
     services.AddGithubClient();
 
-    if (configuration.GetValue<bool>("PostScheduler:Enabled"))
-    {
-      services.AddHostedService<ScheduledPublishService>();
-    }
+        if (configuration.GetValue<bool>("PostScheduler:Enabled"))
+        {
+            services.AddSingleton<ScheduledPublishWakeUp>();
+            services.AddHostedService<ScheduledPublishService>();
+        }
 
     services.AddSingleton<CannonService>();
   }
 
-  private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
-  {
-    var connStr = configuration.GetConnectionString("MoongladeDatabase");
-    var dbType = DatabaseTypeHelper.DetermineDatabaseType(connStr!);
-
-    switch (dbType)
+    private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
     {
-      case DatabaseType.MySQL:
-        services.AddMySqlStorage(connStr!);
-        break;
-      case DatabaseType.PostgreSQL:
-        services.AddPostgreSqlStorage(connStr!);
-        break;
-      case DatabaseType.SQLServer:
-        services.AddSqlServerStorage(connStr!);
-        break;
-      case DatabaseType.Unknown:
-      default:
-        throw new NotSupportedException("Unknown database type, please check connection string.");
-    }
-  }
+        var connStr = configuration.GetConnectionString("MoongladeDatabase");
+        var dbType = configuration.GetConnectionString("DatabaseProvider");
 
-  private static void ConfigureInitializers(IServiceCollection services)
-  {
-    services.AddTransient<ISiteIconInitializer, SiteIconInitializer>();
-    services.AddScoped<IMigrationManager, MigrationManager>();
-    services.AddScoped<IBlogConfigInitializer, BlogConfigInitializer>();
-    services.AddScoped<IStartUpInitializer, StartUpInitializer>();
-  }
+        switch (dbType.ToLower())
+        {
+            case "mysql":
+                services.AddMySqlStorage(connStr!);
+                break;
+            case "postgresql":
+                services.AddPostgreSqlStorage(connStr!);
+                break;
+            case "sqlserver":
+                services.AddSqlServerStorage(connStr!);
+                break;
+            default:
+                throw new NotSupportedException("Unknown database type, please check connection string.");
+        }
+    }
+
+    private static void ConfigureInitializers(IServiceCollection services)
+    {
+        services.AddTransient<ISiteIconBuilder, SiteIconBuilder>();
+        services.AddScoped<IMigrationManager, MigrationManager>();
+        services.AddScoped<IConfigInitializer, ConfigInitializer>();
+        services.AddScoped<IStartUpInitializer, StartUpInitializer>();
+    }
 
   private static void ConfigureMiddleware(WebApplication app, List<CultureInfo> cultures)
   {
@@ -313,26 +332,28 @@ public class Program
       SupportedUICultures = cultures
     });
 
-    var options = new RewriteOptions().AddRedirect(@"(.*)/$", @"\$1", (int)HttpStatusCode.MovedPermanently);
-    app.UseRewriter(options);
-    app.UseStaticFiles();
-    app.UseSession().UseCaptchaImage(p =>
-    {
-      p.RequestPath = "/captcha-image";
-      p.ImageHeight = 36;
-      p.ImageWidth = 100;
-    });
+        var options = new RewriteOptions().AddRedirect(@"(.*)/$", @"$1", (int)HttpStatusCode.MovedPermanently);
+        app.UseRewriter(options);
+        app.UseStaticFiles();
+        //app.UseCaptchaImage(p =>
+        //{
+        //    p.RequestPath = "/captcha-image";
+        //    p.ImageHeight = 36;
+        //    p.ImageWidth = 100;
+        //});
 
     app.UseRouting();
     app.UseAuthentication().UseAuthorization();
 
-    app.MapHealthChecks("/ping", new()
-    {
-      ResponseWriter = PingEndpoint.WriteResponse
-    });
-    app.MapControllers();
-    app.MapRazorPages();
-    app.MapGet("/robots.txt", RobotsTxtMapHandler.Handler);
+        app.MapHealthChecks("/health", new HealthCheckOptions
+        {
+            ResponseWriter = PingEndpoint.WriteResponse,
+            AllowCachingResponses = false
+        });
+
+        app.MapControllers();
+        app.MapRazorPages();
+        app.MapGet("/robots.txt", RobotsTxtMapHandler.Handler);
 
     if (!string.IsNullOrWhiteSpace(app.Configuration["IndexNow:ApiKey"]))
     {

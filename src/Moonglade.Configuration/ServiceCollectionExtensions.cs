@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Moonglade.Configuration;
@@ -16,13 +16,6 @@ public static class ServiceCollectionExtensions
         var section = configuration.GetSection("Analytics");
         services.Configure<AnalyticsSettings>(section);
 
-        return services;
-    }
-
-    public static IServiceCollection AddSyndication(this IServiceCollection services, IConfiguration configuration)
-    {
-        var section = configuration.GetSection("Syndication");
-        services.Configure<SyndicationSettings>(section);
         return services;
     }
 }
