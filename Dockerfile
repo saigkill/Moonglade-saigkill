@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 LABEL maintainer="himself@saschamanns.de"
 LABEL repo="https://github.com/saigkill/Moonglade-saigkill"
 
