@@ -2,8 +2,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 LABEL maintainer="himself@saschamanns.de"
 LABEL repo="https://github.com/saigkill/Moonglade-saigkill"
 
-USER app
-
 # If use aspnet:8.0-alpine, see https://github.com/dotnet/dotnet-docker/issues/1366
 #RUN apk add --no-cache tzdata
 
@@ -39,4 +37,5 @@ COPY --from=publish /app/publish .
 
 RUN chown -R app:app /app/wwwroot/images
 
+USER app
 ENTRYPOINT ["dotnet", "Moonglade.Web.dll"]
