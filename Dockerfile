@@ -35,7 +35,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-RUN chown -R app:app /app/wwwroot/images
+RUN chown -R app:app /app/wwwroot/images/store
 
 USER app
 ENTRYPOINT ["dotnet", "Moonglade.Web.dll"]
