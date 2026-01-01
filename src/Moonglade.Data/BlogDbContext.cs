@@ -21,7 +21,6 @@ public class BlogDbContext : DbContext
     public virtual DbSet<PostTagEntity> PostTag { get; set; }
     public virtual DbSet<PostViewEntity> PostView { get; set; }
     public virtual DbSet<TagEntity> Tag { get; set; }
-    public virtual DbSet<FriendLinkEntity> FriendLink { get; set; }
     public virtual DbSet<PageEntity> CustomPage { get; set; }
     public virtual DbSet<LoginHistoryEntity> LoginHistory { get; set; }
     public virtual DbSet<MentionEntity> Mention { get; set; }
@@ -40,12 +39,12 @@ public class BlogDbContext : DbContext
     public virtual DbSet<TestimonialEntity> Testimonial { get; set; }
     public virtual DbSet<VideoEntity> Video { get; set; }
     public virtual DbSet<PagesContentEntity> PagesContent { get; set; }
+    public virtual DbSet<WidgetEntity> Widget { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-        modelBuilder.ApplyConfiguration(new FriendLinkConfiguration());
 
         modelBuilder
             .Entity<PostEntity>()
@@ -76,7 +75,6 @@ public static class BlogDbContextExtension
         await context.Post.ExecuteDeleteAsync();
         await context.Category.ExecuteDeleteAsync();
         await context.Tag.ExecuteDeleteAsync();
-        await context.FriendLink.ExecuteDeleteAsync();
         await context.Mention.ExecuteDeleteAsync();
         await context.BlogConfiguration.ExecuteDeleteAsync();
         await context.BlogAsset.ExecuteDeleteAsync();

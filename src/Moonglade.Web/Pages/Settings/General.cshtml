@@ -23,7 +23,7 @@
 
 @section scripts {
     <script src="~/js/3rd/bs-custom-file-input.min.js"></script>
-    <script type="module" src="~/js/app/admin.settings.general.mjs" asp-append-version="true"></script>
+    <script type="module" src="~/js/app/admin.settings.general.mjs"></script>
 }
 
 @section admintoolbar {
@@ -344,41 +344,19 @@
                         </div>
                     </div>
 
-                    <div class="border-top settings-entry row align-items-center px-2 py-3">
-                        <div class="col-auto">
-                            <i class="bi-link-45deg settings-entry-icon"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="@ViewModel.WidgetsFriendLink" class="form-check-label"></label>
-                        </div>
-                        <div class="col-md-5 text-end">
-                            <div class="form-check form-switch form-control-lg">
-                                <input type="hidden" name="WidgetsFriendLink" value="false">
-                                <input type="checkbox" name="WidgetsFriendLink" value="true" class="form-check-input" @(ViewModel.WidgetsFriendLink ? "checked" : null)>
+                        <div class="border-top settings-entry row align-items-center rounded-bottom-3 py-3 px-2">
+                            <div class="col-auto">
+                                <i class="bi-menu-button settings-entry-icon"></i>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="border-top settings-entry row align-items-center rounded-bottom-3 px-2 py-3">
-                        <div class="col-auto">
-                            <i class="bi-menu-button settings-entry-icon"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="@ViewModel.WidgetsSubscriptionButtons" class="form-check-label"></label>
-                        </div>
-                        <div class="col-md-5 text-end">
-                            <div class="form-check form-switch form-control-lg">
-                                <input type="hidden" name="WidgetsSubscriptionButtons" value="false">
-                                <input type="checkbox" name="WidgetsSubscriptionButtons" value="true" class="form-check-input" @(ViewModel.WidgetsSubscriptionButtons ? "checked" : null)>
+                            <div class="col">
+                                <label asp-for="@ViewModel.WidgetsSubscriptionButtons" class="form-check-label"></label>
                             </div>
-                        </div>
-                    </div>
-                    <h4 class="admin-subtitle fw-bold mb-2">
-                        APIKeys
-                    </h4>
-                    <div class="settings-entry2 row align-items-center rounded-3 border px-2 py-3 shadow-sm">
-                        <div class="col-auto">
-                            <i class="bi-link settings-entry-icon"></i>
+                            <div class="col-md-5 text-end">
+                                <div class="form-check form-switch form-control-lg">
+                                    <input type="hidden" name="WidgetsSubscriptionButtons" value="false">
+                                    <input type="checkbox" name="WidgetsSubscriptionButtons" value="true" class="form-check-input" @(ViewModel.WidgetsSubscriptionButtons ? "checked" : null)>
+                                </div>
+                            </div>
                         </div>
                         <div class="col">
                             <label asp-for="@ViewModel.GithubPat"></label>

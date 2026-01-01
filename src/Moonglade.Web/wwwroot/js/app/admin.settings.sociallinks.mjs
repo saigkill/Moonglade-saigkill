@@ -151,7 +151,7 @@ function addOrUpdateLink() {
     showToast(`Social link "${name}" ${action} successfully!`, 'success');
 }
 
-window.editLink = function (index) {
+window.editLink = function(index) {
     const link = links[index];
     elements.nameInput.value = link.name;
     elements.iconInput.value = link.icon;
@@ -165,7 +165,7 @@ window.editLink = function (index) {
     elements.nameInput.focus();
 }
 
-window.deleteLink = function (index) {
+window.deleteLink = function(index) {
     const link = links[index];
     if (confirm(`Are you sure you want to delete "${link.name}"?`)) {
         links.splice(index, 1);
@@ -234,4 +234,4 @@ form.addEventListener('submit', handleFormSubmission);
 });
 
 // Initialize
-renderTable();
+renderTable(); 

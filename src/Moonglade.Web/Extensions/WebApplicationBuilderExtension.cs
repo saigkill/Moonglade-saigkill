@@ -1,5 +1,4 @@
-﻿using Edi.AspNetCore.Utils;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
@@ -7,8 +6,8 @@ namespace Moonglade.Web.Extensions;
 
 public static class WebApplicationBuilderExtension
 {
-    private const int MaxValueLength = 35;
-    private const int KeyColumnWidth = 20;
+    private const int MaxValueLength = 40;
+    private const int KeyColumnWidth = 16;
     private const string Separator = "----------------------------------------------------------";
 
     public static void WriteParameterTable(this WebApplicationBuilder builder)
@@ -18,6 +17,7 @@ public static class WebApplicationBuilderExtension
         var appVersion = VersionHelper.AppVersion;
         var output = new StringBuilder();
 
+        output.AppendLine(Separator);
         output.AppendLine($"Moonglade {appVersion} | .NET {Environment.Version}");
         output.AppendLine(Separator);
 
@@ -31,7 +31,6 @@ public static class WebApplicationBuilderExtension
         }
 
         output.AppendLine(Separator);
-        output.AppendLine("https://github.com/EdiWang/Moonglade");
 
         Console.Write(output.ToString());
     }

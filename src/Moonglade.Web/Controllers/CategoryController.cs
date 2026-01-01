@@ -2,7 +2,6 @@
 using LiteBus.Queries.Abstractions;
 using Moonglade.Data.Entities;
 using Moonglade.Features.Category;
-using Moonglade.Web.Attributes;
 
 namespace Moonglade.Web.Controllers;
 
@@ -10,7 +9,6 @@ namespace Moonglade.Web.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class CategoryController(
-    ICacheAside cache,
     IQueryMediator queryMediator,
     ICommandMediator commandMediator) : ControllerBase
 {
@@ -38,8 +36,6 @@ public class CategoryController(
     public async Task<IActionResult> Create(CreateCategoryCommand command)
     {
         await commandMediator.SendAsync(command);
-        cache.Remove(BlogCachePartition.General.ToString(), "allcats");
-
         return Created(string.Empty, command);
     }
 
@@ -51,8 +47,6 @@ public class CategoryController(
         var oc = await commandMediator.SendAsync(command);
         if (oc == OperationCode.ObjectNotFound) return NotFound();
 
-        cache.Remove(BlogCachePartition.General.ToString(), "allcats");
-
         return NoContent();
     }
 
@@ -62,8 +56,6 @@ public class CategoryController(
     {
         var oc = await commandMediator.SendAsync(new DeleteCategoryCommand(id));
         if (oc == OperationCode.ObjectNotFound) return NotFound();
-
-        cache.Remove(BlogCachePartition.General.ToString(), "allcats");
 
         return NoContent();
     }

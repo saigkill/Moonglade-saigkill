@@ -18,6 +18,7 @@
 // </copyright>
 
 using LiteBus.Queries.Abstractions;
+
 using Moonglade.Configuration;
 
 namespace Moonglade.Features.SaschaFeature;
@@ -39,4 +40,3 @@ public class GetSocialLinkQueryHandler(IBlogConfig blogConfig) : IQueryHandler<G
         return Task.FromResult(link);
     }
 }
-

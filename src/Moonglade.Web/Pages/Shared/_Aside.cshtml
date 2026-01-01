@@ -17,7 +17,7 @@
             <div class="aside-widget rounded-3 border p-3 shadow-sm">
                 <h6 class="card-subtitle text-secondary mb-3">@SharedLocalizer["Tags"]</h6>
                 <div>
-                    <cache expires-after="@TimeSpan.FromMinutes(int.Parse(Configuration["WidgetCacheMinutes:Tags"]!))">
+                    <cache expires-after="@TimeSpan.FromMinutes(int.Parse(Configuration["WidgetCacheMinutes"]!))">
                         <partial name="_WidgetRender" model="@("Tags")" />
                     </cache>
                     <hr />
@@ -40,23 +40,7 @@
         </section>
     }
 
-    @if (BlogConfig.SocialLinkSettings.IsEnabled)
-    {
-        <section id="aside-sociallink" class="mb-4">
-            <partial name="_WidgetRender" model="@("SocialLink")" />
-        </section>
-    }
-
-    @if (BlogConfig.GeneralSettings.WidgetsFriendLink)
-    {
-        <section id="aside-friendlink" class="mb-4">
-            <cache expires-after="@TimeSpan.FromMinutes(int.Parse(Configuration["WidgetCacheMinutes:FriendLink"]!))">
-                <partial name="_WidgetRender" model="@("FriendLink")"/>
-            </cache>
-        </section>
-
-    }
-    <br />
+    <partial name="_WidgetRender" model="@("Widgets")" />
 
     @if (BlogConfig.GeneralSettings.WidgetsSubscriptionButtons)
     {

@@ -1,6 +1,8 @@
-﻿using LiteBus.Commands.Abstractions;
+using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
+
 using Microsoft.Extensions.Logging;
+
 using Moonglade.Configuration;
 
 namespace Moonglade.Setup;
