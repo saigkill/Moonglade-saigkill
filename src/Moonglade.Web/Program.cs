@@ -374,5 +374,7 @@ public class Program
         {
             app.MapGet("/sitemap.xml", SiteMapMapHandler.Handler);
         }
+
+        app.UseStaticFiles();
     }
 }
