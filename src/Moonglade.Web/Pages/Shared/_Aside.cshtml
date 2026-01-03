@@ -1,6 +1,6 @@
-﻿@inject IConfiguration Configuration
+@inject IConfiguration Configuration
 
-<aside class="blog-sidebar col d-none d-lg-block">
+<aside class="blog-sidebar d-none d-lg-block">
     @if (BlogConfig.GeneralSettings.WidgetsProfile)
     {
         <partial name="_WidgetsProfile" />
@@ -11,13 +11,13 @@
         @Html.Raw(BlogConfig.GeneralSettings.SideBarCustomizedHtmlPitch)
     }
 
-    @if (BlogConfig.GeneralSettings.WidgetsTags)
+    @if (BlogConfig.GeneralSettings.HotTagAmount > 0)
     {
-        <section id="aside-tags" class="mt-4 mb-4">
-            <div class="aside-widget p-3 rounded-3 shadow-sm border">
-                <h6 class="card-subtitle mb-3 text-secondary">@SharedLocalizer["Tags"]</h6>
+        <section id="aside-tags" class="mb-4 mt-4">
+            <div class="aside-widget rounded-3 border p-3 shadow-sm">
+                <h6 class="card-subtitle text-secondary mb-3">@SharedLocalizer["Tags"]</h6>
                 <div>
-                    <cache expires-after="@TimeSpan.FromMinutes(int.Parse(Configuration["Widget:TagsCacheMinutes"]!))">
+                    <cache expires-after="@TimeSpan.FromMinutes(int.Parse(Configuration["WidgetCacheMinutes"]!))">
                         <partial name="_WidgetRender" model="@("Tags")" />
                     </cache>
                     <hr />
@@ -33,41 +33,18 @@
     @if (BlogConfig.GeneralSettings.WidgetsCategoryList)
     {
         <section id="aside-cats" class="mb-4">
-            <div class="aside-widget p-3 rounded-3 shadow-sm border">
-                <h6 class="card-subtitle mb-3 text-secondary">@SharedLocalizer["Categories"]</h6>
+            <div class="aside-widget rounded-3 border p-3 shadow-sm">
+                <h6 class="card-subtitle text-secondary mb-3">@SharedLocalizer["Categories"]</h6>
                 @await Component.InvokeAsync("CategoryList", new { isMenu = false })
             </div>
         </section>
     }
 
-    @if (BlogConfig.SocialLinkSettings.IsEnabled)
-    {
-        <section id="aside-sociallink" class="mb-4">
-            <partial name="_WidgetRender" model="@("SocialLink")" />
-        </section>
-    }
-
-    @if (BlogConfig.GeneralSettings.WidgetsFriendLink)
-    {
-        <section id="aside-friendlink" class="mb-4">
-            <cache expires-after="@TimeSpan.FromMinutes(int.Parse(Configuration["Widget:FriendLinkCacheMinutes"]!))">
-                <partial name="_WidgetRender" model="@("FriendLink")" />
-            </cache>
-        </section>
-    }
-    
-    @if (BlogConfig.AdvancedSettings.EnableSyndication)
-    {
-        <section id="aside-syndication">
-            @await Component.InvokeAsync("Syndication")
-        </section>
-    }
-    
-    <br />
+    <partial name="_WidgetRender" model="@("Widgets")" />
 
     @if (BlogConfig.GeneralSettings.WidgetsSubscriptionButtons)
     {
-        <section id="aside-subscription" class="text-center mb-4">
+        <section id="aside-subscription" class="mb-4 text-center">
             <a class="btn btn-sm rounded-pill btn-outline-secondary me-2" href="#" data-bs-toggle="modal" data-bs-target="#subscriptionmodal">
                 <i class="bi-rss"></i>
                 RSS / Atom

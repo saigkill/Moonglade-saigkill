@@ -1,25 +1,25 @@
-﻿
+
 namespace Moonglade.Configuration;
 
 public interface IBlogSettings;
 
 public interface IBlogConfig
 {
-  GeneralSettings GeneralSettings { get; set; }
-  ContentSettings ContentSettings { get; set; }
-  CommentSettings CommentSettings { get; set; }
-  NotificationSettings NotificationSettings { get; set; }
-  FeedSettings FeedSettings { get; set; }
-  ImageSettings ImageSettings { get; set; }
-  AdvancedSettings AdvancedSettings { get; set; }
-  AppearanceSettings AppearanceSettings { get; set; }
-  CustomMenuSettings CustomMenuSettings { get; set; }
-  LocalAccountSettings LocalAccountSettings { get; set; }
-  SocialLinkSettings SocialLinkSettings { get; set; }
-  SystemManifestSettings SystemManifestSettings { get; set; }
+    GeneralSettings GeneralSettings { get; set; }
+    ContentSettings ContentSettings { get; set; }
+    CommentSettings CommentSettings { get; set; }
+    NotificationSettings NotificationSettings { get; set; }
+    FeedSettings FeedSettings { get; set; }
+    ImageSettings ImageSettings { get; set; }
+    AdvancedSettings AdvancedSettings { get; set; }
+    AppearanceSettings AppearanceSettings { get; set; }
+    CustomMenuSettings CustomMenuSettings { get; set; }
+    LocalAccountSettings LocalAccountSettings { get; set; }
+    SocialLinkSettings SocialLinkSettings { get; set; }
+    SystemManifestSettings SystemManifestSettings { get; set; }
 
-  IEnumerable<string> LoadFromConfig(IDictionary<string, string> config);
-  KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings;
+    IEnumerable<string> LoadFromConfig(IDictionary<string, string> config);
+    KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings;
 }
 
 public class BlogConfig : IBlogConfig
@@ -79,19 +79,19 @@ public class BlogConfig : IBlogConfig
             }
         }
 
-    _keysToInit.Add(name);
-    return defaultValue;
-  }
+        _keysToInit.Add(name);
+        return defaultValue;
+    }
 
-  public KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings
-  {
-    var name = typeof(T).Name;
-    var json = blogSettings.ToJson();
+    public KeyValuePair<string, string> UpdateAsync<T>(T blogSettings) where T : IBlogSettings
+    {
+        var name = typeof(T).Name;
+        var json = blogSettings.ToJson();
 
-    // update singleton itself
-    var prop = GetType().GetProperty(name);
-    prop?.SetValue(this, blogSettings);
+        // update singleton itself
+        var prop = GetType().GetProperty(name);
+        prop?.SetValue(this, blogSettings);
 
-    return new(name, json);
-  }
+        return new(name, json);
+    }
 }

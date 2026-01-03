@@ -1,8 +1,6 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 LABEL maintainer="himself@saschamanns.de"
 LABEL repo="https://github.com/saigkill/Moonglade-saigkill"
-
-USER app
 
 # If use aspnet:8.0-alpine, see https://github.com/dotnet/dotnet-docker/issues/1366
 #RUN apk add --no-cache tzdata
@@ -16,7 +14,7 @@ EXPOSE 8081
 
 ENV ASPNETCORE_FORWARDEDHEADERS_ENABLED=true
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
@@ -36,4 +34,9 @@ RUN dotnet publish "Moonglade.Web.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+RUN mkdir -p /app/wwwroot/images/store
+RUN chown -R app:app /app/wwwroot/images/store
+
+USER app
 ENTRYPOINT ["dotnet", "Moonglade.Web.dll"]

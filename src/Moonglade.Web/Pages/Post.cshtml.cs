@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using Moonglade.Core.PostFeature;
+using LiteBus.Commands.Abstractions;
+using LiteBus.Queries.Abstractions;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moonglade.Data.Entities;
-using Moonglade.Pingback;
+using Moonglade.Features.Post;
+using Moonglade.Features.SaschaFeature;
 
 namespace Moonglade.Web.Pages;
 
-[AddPingbackHeader("pingback")]
-public class PostModel(IConfiguration configuration, IMediator mediator) : PageModel
+public class PostModel(
+    IConfiguration configuration,
+    ICacheAside cache,
+    IQueryMediator queryMediator,
+    ICommandMediator commandMediator) : PageModel
 {
   public PostEntity Post { get; set; }
   public SocialLink Twitter { get; set; }
@@ -16,31 +20,39 @@ public class PostModel(IConfiguration configuration, IMediator mediator) : PageM
   public SocialLink Patreon { get; set; }
   public SocialLink AmazonWishlist { get; set; }
   public SocialLink Paypal { get; set; }
-    public PostViewEntity PostView { get; set; }
+  public PostViewEntity PostView { get; set; }
 
     public bool IsViewCountEnabled { get; } = configuration.GetValue<bool>("Post:EnableViewCount");
 
     public async Task<IActionResult> OnGetAsync(int year, int month, int day, string slug)
     {
-        Twitter = await mediator.Send(new GetSocialLinkQuery("Twitter"));
-        BuyMeACoffee = await mediator.Send(new GetSocialLinkQuery("BuyMeACoffee"));
-        Liberapay = await mediator.Send(new GetSocialLinkQuery("Liberapay"));
-        Patreon = await mediator.Send(new GetSocialLinkQuery("Patreon"));
-        AmazonWishlist = await mediator.Send(new GetSocialLinkQuery("AmazonWishlist"));
-        Paypal = await mediator.Send(new GetSocialLinkQuery("Paypal"));
+        Twitter = await queryMediator.QueryAsync(new GetSocialLinkQuery("Twitter"));
+        BuyMeACoffee = await queryMediator.QueryAsync(new GetSocialLinkQuery("BuyMeACoffee"));
+        Liberapay = await queryMediator.QueryAsync(new GetSocialLinkQuery("Liberapay"));
+        Patreon = await queryMediator.QueryAsync(new GetSocialLinkQuery("Patreon"));
+        AmazonWishlist = await queryMediator.QueryAsync(new GetSocialLinkQuery("AmazonWishlist"));
+        Paypal = await queryMediator.QueryAsync(new GetSocialLinkQuery("Paypal"));
         if (year > DateTime.UtcNow.Year || string.IsNullOrWhiteSpace(slug)) return NotFound();
 
-    var post = await mediator.Send(new GetPostBySlugQuery(year, month, day, slug));
+        var routeLink = $"{year}/{month}/{day}/{slug}".ToLower();
 
-    if (post is null) return NotFound();
+        var psm = await cache.GetOrCreateAsync(BlogCachePartition.Post.ToString(), $"{routeLink}", async entry =>
+        {
+            entry.SlidingExpiration = TimeSpan.FromMinutes(int.Parse(configuration["Post:CacheMinutes"]!));
 
-        Post = post;
+            var post = await queryMediator.QueryAsync(new GetPostBySlugQuery(routeLink));
+            return post;
+        });
+
+        if (psm is null) return NotFound();
+
+        Post = psm;
         ViewData["TitlePrefix"] = $"{Post.Title}";
 
         if (IsViewCountEnabled)
         {
-            await mediator.Send(new AddRequestCountCommand(post.Id));
-            PostView = await mediator.Send(new GetPostViewQuery(post.Id));
+            await commandMediator.SendAsync(new AddRequestCountCommand(psm.Id));
+            PostView = await queryMediator.QueryAsync(new GetPostViewQuery(psm.Id));
         }
 
         return Page();

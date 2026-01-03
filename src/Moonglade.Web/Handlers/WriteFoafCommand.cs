@@ -1,17 +1,18 @@
-﻿using Moonglade.Data.Entities;
+﻿using LiteBus.Commands.Abstractions;
+using Moonglade.Widgets.Types;
 using System.Security.Cryptography;
 using System.Xml;
 
 namespace Moonglade.Web.Handlers;
 
-public class WriteFoafCommand(FoafDoc doc, string currentRequestUrl, List<FriendLinkEntity> links)
-    : IRequest<string>
+public class WriteFoafCommand(FoafDoc doc, string currentRequestUrl, List<LinkListItem> links)
+    : ICommand<string>
 {
     public FoafDoc Doc { get; set; } = doc;
 
     public string CurrentRequestUrl { get; set; } = currentRequestUrl;
 
-    public List<FriendLinkEntity> Links { get; set; } = links;
+    public List<LinkListItem> Links { get; set; } = links;
 
     public static string ContentType => "application/rdf+xml";
 }
@@ -19,7 +20,7 @@ public class WriteFoafCommand(FoafDoc doc, string currentRequestUrl, List<Friend
 /// <summary>
 /// http://xmlns.com/foaf/spec/20140114.html
 /// </summary>
-public class WriteFoafCommandHandler : IRequestHandler<WriteFoafCommand, string>
+public class WriteFoafCommandHandler : ICommandHandler<WriteFoafCommand, string>
 {
     private static Dictionary<string, string> _xmlNamespaces;
     private static Dictionary<string, string> SupportedNamespaces =>
@@ -29,7 +30,7 @@ public class WriteFoafCommandHandler : IRequestHandler<WriteFoafCommand, string>
             { "rdfs", "http://www.w3.org/2000/01/rdf-schema#" }
         };
 
-    public async Task<string> Handle(WriteFoafCommand request, CancellationToken ct)
+    public async Task<string> HandleAsync(WriteFoafCommand request, CancellationToken ct)
     {
         var sw = new StringWriter();
         var writer = await GetWriter(sw);
@@ -55,10 +56,10 @@ public class WriteFoafCommandHandler : IRequestHandler<WriteFoafCommand, string>
 
         foreach (var friend in request.Links)
         {
-            me.Friends.Add(new("#" + friend.Id)
+            me.Friends.Add(new("#" + friend.Order)
             {
-                Name = friend.Title,
-                Homepage = friend.LinkUrl
+                Name = friend.Name,
+                Homepage = friend.Url
             });
         }
 
@@ -168,8 +169,7 @@ public class WriteFoafCommandHandler : IRequestHandler<WriteFoafCommand, string>
     private static string CalculateSha1(string text, Encoding enc)
     {
         var buffer = enc.GetBytes(text);
-        var cryptoTransformSha1 = SHA1.Create();
-        var hash = BitConverter.ToString(cryptoTransformSha1.ComputeHash(buffer)).Replace("-", string.Empty);
+        var hash = BitConverter.ToString(SHA1.HashData(buffer)).Replace("-", string.Empty);
 
         return hash.ToLower();
     }

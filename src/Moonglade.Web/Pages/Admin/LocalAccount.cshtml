@@ -2,11 +2,11 @@
 @using System.Globalization
 @{
     ViewBag.Title = "Account";
-    var loginHistoryList = await Mediator.Send(new GetLoginHistoryQuery());
+    var loginHistoryList = await QueryMediator.QueryAsync(new ListLoginHistoryQuery());
 }
 
 @section scripts {
-    <script type="module" src="~/js/app/admin.localaccount.mjs" asp-append-version="true"></script>
+    <script type="module" src="~/js/app/admin.localaccount.mjs"></script>
 }
 
 @section admintoolbar {

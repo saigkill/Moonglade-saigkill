@@ -1,11 +1,17 @@
-﻿using Moonglade.Setup;
+﻿using LiteBus.Events.Abstractions;
+using LiteBus.Queries.Abstractions;
+using Moonglade.Features.Asset;
+using Moonglade.Setup;
 using SixLabors.ImageSharp;
 
 namespace Moonglade.Web.Controllers;
 
 [ApiController]
 public class AssetsController(
-    IMediator mediator, IWebHostEnvironment env, ILogger<AssetsController> logger) : ControllerBase
+    IEventMediator eventMediator,
+    IQueryMediator queryMediator,
+    IWebHostEnvironment env,
+    ILogger<AssetsController> logger) : ControllerBase
 {
     [HttpGet("avatar")]
     [ResponseCache(Duration = 300)]
@@ -15,7 +21,7 @@ public class AssetsController(
         {
             logger.LogTrace("Avatar not on cache, getting new avatar image...");
 
-            var data = await mediator.Send(new GetAssetQuery(AssetId.AvatarBase64));
+            var data = await queryMediator.QueryAsync(new GetAssetQuery(AssetId.AvatarBase64));
             if (string.IsNullOrWhiteSpace(data)) return null;
 
             var avatarBytes = Convert.FromBase64String(data);
@@ -30,7 +36,6 @@ public class AssetsController(
 
     [Authorize]
     [HttpPost("avatar")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [TypeFilter(typeof(ClearBlogCache), Arguments = [BlogCachePartition.General, "avatar"])]
@@ -57,7 +62,8 @@ public class AssetsController(
             return Conflict(e.Message);
         }
 
-        await mediator.Publish(new SaveAssetCommand(AssetId.AvatarBase64, base64Img));
+        await eventMediator.PublishAsync(new SaveAssetEvent(AssetId.AvatarBase64, base64Img));
+        logger.LogInformation("Avatar image updated successfully.");
 
         return Ok();
     }
@@ -71,7 +77,7 @@ public class AssetsController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult SiteIcon(string filename)
     {
-        var iconBytes = MemoryStreamIconGenerator.GetIcon(filename);
+        var iconBytes = InMemoryIconGenerator.GetIcon(filename);
         if (iconBytes is null) return NotFound();
 
         var contentType = "image/png";
@@ -89,7 +95,7 @@ public class AssetsController(
     [HttpGet("siteicon")]
     public async Task<IActionResult> SiteIconOrigin()
     {
-        var data = await mediator.Send(new GetAssetQuery(AssetId.SiteIconBase64));
+        var data = await queryMediator.QueryAsync(new GetAssetQuery(AssetId.SiteIconBase64));
         var fallbackImageFile = Path.Join($"{env.WebRootPath}", "images", "siteicon-default.png");
         if (string.IsNullOrWhiteSpace(data))
         {
@@ -110,7 +116,6 @@ public class AssetsController(
 
     [Authorize]
     [HttpPost("siteicon")]
-    [ReadonlyMode]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> UpdateSiteIcon([FromBody] string base64Img)
@@ -124,7 +129,9 @@ public class AssetsController(
 
         using var bmp = await Image.LoadAsync(new MemoryStream(base64Chars));
         if (bmp.Height != bmp.Width) return Conflict("image height must be equal to width");
-        await mediator.Publish(new SaveAssetCommand(AssetId.SiteIconBase64, base64Img));
+        await eventMediator.PublishAsync(new SaveAssetEvent(AssetId.SiteIconBase64, base64Img));
+
+        logger.LogInformation("Site icon image updated successfully.");
 
         return NoContent();
     }

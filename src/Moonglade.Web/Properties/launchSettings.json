@@ -5,9 +5,9 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "MOONGLADE_TAGS": "local, dev"
+        "APP_TAGS": "local, dev"
       },
-      "applicationUrl": "https://localhost:17251"
+      "applicationUrl": "https://localhost:10210"
     }
   }
 }

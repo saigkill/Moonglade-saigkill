@@ -1,4 +1,5 @@
 using Edi.Captcha;
+using LiteBus.Commands.Abstractions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -10,9 +11,9 @@ using System.Security.Claims;
 namespace Moonglade.Web.Pages;
 
 public class SignInModel(IOptions<AuthenticationSettings> authSettings,
-        IMediator mediator,
+        ICommandMediator commandMediator,
         ILogger<SignInModel> logger,
-        ISessionBasedCaptcha captcha)
+        IStatelessCaptcha captcha)
     : PageModel
 {
     private readonly AuthenticationSettings _authenticationSettings = authSettings.Value;
@@ -37,6 +38,10 @@ public class SignInModel(IOptions<AuthenticationSettings> authSettings,
     [StringLength(4)]
     public string CaptchaCode { get; set; }
 
+    [BindProperty]
+    [Required]
+    public string CaptchaToken { get; set; }
+
     public async Task<IActionResult> OnGetAsync()
     {
         switch (_authenticationSettings.Provider)
@@ -58,15 +63,9 @@ public class SignInModel(IOptions<AuthenticationSettings> authSettings,
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (Helper.GetAppDomainData<bool>("IsReadonlyMode"))
-        {
-            ModelState.AddModelError(string.Empty, "System is in readonly mode, please try again later.");
-            return Page();
-        }
-
         try
         {
-            if (!captcha.Validate(CaptchaCode, HttpContext.Session))
+            if (!captcha.Validate(CaptchaCode, CaptchaToken))
             {
                 ModelState.AddModelError(nameof(CaptchaCode), "Wrong Captcha Code");
             }
@@ -80,7 +79,7 @@ public class SignInModel(IOptions<AuthenticationSettings> authSettings,
 
             if (ModelState.IsValid)
             {
-                var isValid = await mediator.Send(new ValidateLoginCommand(Username, Password));
+                var isValid = await commandMediator.SendAsync(new ValidateLoginCommand(Username, Password));
                 if (isValid)
                 {
                     var claims = new List<Claim>
@@ -92,7 +91,7 @@ public class SignInModel(IOptions<AuthenticationSettings> authSettings,
                     var p = new ClaimsPrincipal(ci);
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, p);
-                    await mediator.Send(new LogSuccessLoginCommand(Helper.GetClientIP(HttpContext), ua, "TODO"));
+                    await commandMediator.SendAsync(new LogSuccessLoginCommand(ClientIPHelper.GetClientIP(HttpContext), ua));
 
                     var successMessage = $@"Authentication success for local account ""{Username}""";
 

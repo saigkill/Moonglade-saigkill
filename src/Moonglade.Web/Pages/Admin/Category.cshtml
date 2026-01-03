@@ -1,14 +1,14 @@
 ﻿@page "/admin/category"
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Moonglade.Core.CategoryFeature
 @using Moonglade.Data.Entities
+@using Moonglade.Features.Category
 @{
     ViewBag.Title = "Categories";
 }
 
 @section scripts {
-    <script type="module" src="~/js/app/json2csv.mjs" asp-append-version="true"></script>
-    <script type="module" src="~/js/app/admin.category.mjs" asp-append-version="true"></script>
+    <script type="module" src="~/js/app/json2csv.mjs"></script>
+    <script type="module" src="~/js/app/admin.category.mjs"></script>
 }
 
 @section admintoolbar {
@@ -90,5 +90,5 @@
 
     public List<CategoryEntity> Categories { get; set; }
 
-    public async Task OnGet() => Categories = await Mediator.Send(new GetCategoriesQuery());
+    public async Task OnGet() => Categories = await QueryMediator.QueryAsync(new ListCategoriesQuery());
 }

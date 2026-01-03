@@ -1,4 +1,4 @@
-﻿using Moonglade.Utils;
+﻿using Edi.AspNetCore.Utils;
 using System.Text.Json.Serialization;
 
 namespace Moonglade.Configuration;
@@ -18,7 +18,7 @@ public class SystemManifestSettings : IBlogSettings
     [JsonIgnore]
     public static SystemManifestSettings DefaultValueNew => new()
     {
-        VersionString = Helper.AppVersionBasic,
+        VersionString = VersionHelper.AppVersionBasic,
         InstallTimeUtc = DateTime.UtcNow
     };
 }

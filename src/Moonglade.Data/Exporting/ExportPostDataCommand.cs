@@ -1,39 +1,19 @@
-﻿using MediatR;
+﻿using LiteBus.Commands.Abstractions;
 using Moonglade.Data.Entities;
+using Moonglade.Data.Specifications;
 
 namespace Moonglade.Data.Exporting;
 
-public record ExportPostDataCommand : IRequest<ExportResult>;
+public record ExportPostDataCommand : ICommand<ExportResult>;
 
-public class ExportPostDataCommandHandler(MoongladeRepository<PostEntity> repo) : IRequestHandler<ExportPostDataCommand, ExportResult>
+public class ExportPostDataCommandHandler(MoongladeRepository<PostEntity> repo) : ICommandHandler<ExportPostDataCommand, ExportResult>
 {
-    public Task<ExportResult> Handle(ExportPostDataCommand request, CancellationToken ct)
+    public Task<ExportResult> HandleAsync(ExportPostDataCommand request, CancellationToken ct)
     {
         var exporter = new ZippedJsonExporter<PostEntity>(repo, "moonglade-posts", Path.GetTempPath());
-        var data = exporter.ExportData(p => new
-        {
-            p.Id,
-            p.Title,
-            p.Slug,
-            p.RouteLink,
-            p.Author,
-            p.ContentAbstract,
-            p.PostContent,
-            p.HeroImageUrl,
-            p.CreateTimeUtc,
-            p.LastModifiedUtc,
-            p.ScheduledPublishTimeUtc,
-            p.CommentEnabled,
-            p.PubDateUtc,
-            p.ContentLanguageCode,
-            p.IsDeleted,
-            p.IsFeedIncluded,
-            p.IsFeatured,
-            p.PostStatus,
-            p.IsOutdated,
-            Categories = p.PostCategory.Select(pc => pc.Category.DisplayName),
-            Tags = p.Tags.Select(pt => pt.DisplayName)
-        }, ct);
+        var spec = new PostEntityToPostExportModelSpec();
+
+        var data = exporter.ExportData(spec, ct);
 
         return data;
     }

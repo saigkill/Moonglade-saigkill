@@ -1,75 +1,72 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>Moonglade.Web</AssemblyName>
-    <RootNamespace>Moonglade.Web</RootNamespace>
-    <IsTestProject>false</IsTestProject>
-    <IsPackable>false</IsPackable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/EdiWang/Moonglade</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/EdiWang/Moonglade</RepositoryUrl>
-  </PropertyGroup>
-  <ItemGroup>
-    <Using Include="System.Text" />
-    <Using Include="Microsoft.AspNetCore.Mvc" />
-    <Using Include="Microsoft.AspNetCore.Authorization" />
-    <Using Include="MediatR" />
-    <Using Include="Edi.CacheAside.InMemory" />
-    <Using Include="Moonglade.Web" />
-    <Using Include="Moonglade.Web.Configuration" />
-    <Using Include="Moonglade.Web.Filters" />
-    <Using Include="Moonglade.Web.Middleware" />
-    <Using Include="Moonglade.Auth" />
-    <Using Include="Moonglade.Core" />
-    <Using Include="Moonglade.Configuration" />
-    <Using Include="Moonglade.Comments" />
-    <Using Include="Moonglade.Theme" />
-    <Using Include="Moonglade.Utils" />
-    <Using Include="Moonglade.Data" />
-    <Using Include="Moonglade.ImageStorage" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
-    <Content Update="wwwroot\css\tinymce-custom-dark.css">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Edi.Gravatar" Version="1.2.0" />
-    <PackageReference Include="Edi.ImageWatermark" Version="2.18.1" />
-    <PackageReference Include="Edi.PasswordGenerator" Version="2.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="9.0.7" />
-    <PackageReference Include="NLog" Version="6.0.1" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="6.0.1" />
-    <PackageReference Include="Sentry.AspNetCore" Version="5.11.2" />
-    <PackageReference Include="Sentry.Extensions.Logging" Version="5.11.2" />
-    <PackageReference Include="Sentry.NLog" Version="5.11.2" />
-    <PackageReference Include="TinyMCE" Version="7.9.1" />
-    <PackageReference Include="Moonglade.MonacoEditor" Version="0.50.0.1002" />
-    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="30.1.39" />
-    <PackageReference Include="Syncfusion.Licensing" Version="30.1.39" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Moonglade.Auth\Moonglade.Auth.csproj" />
-    <ProjectReference Include="..\Moonglade.Comments\Moonglade.Comments.csproj" />
-    <ProjectReference Include="..\Moonglade.Core\Moonglade.Core.csproj" />
-    <ProjectReference Include="..\Moonglade.Data.MySql\Moonglade.Data.MySql.csproj" />
-    <ProjectReference Include="..\Moonglade.Data.PostgreSql\Moonglade.Data.PostgreSql.csproj" />
-    <ProjectReference Include="..\Moonglade.Data.SqlServer\Moonglade.Data.SqlServer.csproj" />
-    <ProjectReference Include="..\Moonglade.FriendLink\Moonglade.FriendLink.csproj" />
-    <ProjectReference Include="..\Moonglade.Github.Client\Moonglade.Github.Client.csproj" />
-    <ProjectReference Include="..\Moonglade.ImageStorage\Moonglade.ImageStorage.csproj" />
-    <ProjectReference Include="..\Moonglade.Email.Client\Moonglade.Email.Client.csproj" />
-    <ProjectReference Include="..\Moonglade.IndexNow.Client\Moonglade.IndexNow.Client.csproj" />
-    <ProjectReference Include="..\Moonglade.Nuget.Client\Moonglade.Nuget.Client.csproj" />
-    <ProjectReference Include="..\Moonglade.Pingback\Moonglade.Pingback.csproj" />
-    <ProjectReference Include="..\Moonglade.Setup\Moonglade.Setup.csproj" />
-    <ProjectReference Include="..\Moonglade.Syndication\Moonglade.Syndication.csproj" />
-    <ProjectReference Include="..\Moonglade.Theme\Moonglade.Theme.csproj" />
-    <ProjectReference Include="..\Moonglade.Webmention\Moonglade.Webmention.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<PackageLicenseExpression>GNU General Public License v3.0</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/EdiWang/Moonglade</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/EdiWang/Moonglade</RepositoryUrl>
+		<UserSecretsId>815d7740-c953-413c-bfbf-497b9e341a1e</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<Using Include="System.Text" />
+		<Using Include="Microsoft.AspNetCore.Mvc" />
+		<Using Include="Microsoft.AspNetCore.Authorization" />
+		<Using Include="Edi.CacheAside.InMemory" />
+		<Using Include="Edi.AspNetCore.Utils" />
+		<Using Include="Moonglade.Web" />
+		<Using Include="Moonglade.Web.Configuration" />
+		<Using Include="Moonglade.Web.Filters" />
+		<Using Include="Moonglade.Web.Middleware" />
+		<Using Include="Moonglade.Auth" />
+		<Using Include="Moonglade.Features" />
+		<Using Include="Moonglade.Configuration" />
+		<Using Include="Moonglade.Features.Comment" />
+		<Using Include="Moonglade.Theme" />
+		<Using Include="Moonglade.Utils" />
+		<Using Include="Moonglade.Data" />
+		<Using Include="Moonglade.ImageStorage" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+		<Content Update="wwwroot\css\tinymce-custom-dark.css">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Edi.CacheAside.InMemory" Version="2.1.0" />
+		<PackageReference Include="Edi.Gravatar" Version="1.4.0" />
+		<PackageReference Include="Edi.ImageWatermark" Version="2.22.0" />
+		<PackageReference Include="Edi.PasswordGenerator" Version="2.3.0" />
+		<PackageReference Include="LiteBus.Extensions.MicrosoftDependencyInjection" Version="3.1.0" />
+		<PackageReference Include="LiteBus.Queries.Abstractions" Version="4.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.21" />
+		<PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
+		<PackageReference Include="NLog" Version="6.0.5" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="6.0.5" />
+		<PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="31.2.4" />
+		<PackageReference Include="Syncfusion.Licensing" Version="31.2.4" />
+
+		<PackageReference Include="TinyMCE" Version="8.3.1" />
+		<PackageReference Include="Moonglade.MonacoEditor" Version="0.50.0.1002" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Moonglade.Auth\Moonglade.Auth.csproj" />
+		<ProjectReference Include="..\Moonglade.Features\Moonglade.Features.csproj" />
+		<ProjectReference Include="..\Moonglade.Data.MySql\Moonglade.Data.MySql.csproj" />
+		<ProjectReference Include="..\Moonglade.Data.PostgreSql\Moonglade.Data.PostgreSql.csproj" />
+		<ProjectReference Include="..\Moonglade.Data.SqlServer\Moonglade.Data.SqlServer.csproj" />
+		<ProjectReference Include="..\Moonglade.ImageStorage\Moonglade.ImageStorage.csproj" />
+		<ProjectReference Include="..\Moonglade.Email.Client\Moonglade.Email.Client.csproj" />
+		<ProjectReference Include="..\Moonglade.IndexNow.Client\Moonglade.IndexNow.Client.csproj" />
+		<ProjectReference Include="..\Moonglade.Moderation\Moonglade.Moderation.csproj" />
+		<ProjectReference Include="..\Moonglade.Setup\Moonglade.Setup.csproj" />
+		<ProjectReference Include="..\Moonglade.Syndication\Moonglade.Syndication.csproj" />
+		<ProjectReference Include="..\Moonglade.Theme\Moonglade.Theme.csproj" />
+		<ProjectReference Include="..\Moonglade.Web.Middleware\Moonglade.Web.Middleware.csproj" />
+		<ProjectReference Include="..\Moonglade.Webmention\Moonglade.Webmention.csproj" />
+		<ProjectReference Include="..\Moonglade.Widgets\Moonglade.Widgets.csproj" />
+	</ItemGroup>
 </Project>

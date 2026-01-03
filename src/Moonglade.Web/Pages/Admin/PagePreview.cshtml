@@ -1,7 +1,7 @@
 ﻿@page "/admin/page/preview/{pageId:guid}"
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Moonglade.Core.PageFeature
 @using Moonglade.Data.Entities
+@using Moonglade.Features.Page
 
 @{
     Layout = "_Layout";
@@ -13,7 +13,7 @@
 @section head {
     @if (!string.IsNullOrWhiteSpace(BlogPage.CssId))
     {
-        <link href="~/content.css?id=@BlogPage.CssId" rel="stylesheet" asp-append-version="true" />
+        <link href="~/content.css?id=@BlogPage.CssId" rel="stylesheet" />
     }
 }
 
@@ -35,7 +35,7 @@
 
     public async Task<IActionResult> OnGetAsync(Guid pageId)
     {
-        var page = await Mediator.Send(new GetPageByIdQuery(pageId));
+        var page = await QueryMediator.QueryAsync(new GetPageByIdQuery(pageId));
         if (page is null) return NotFound();
 
         BlogPage = page;

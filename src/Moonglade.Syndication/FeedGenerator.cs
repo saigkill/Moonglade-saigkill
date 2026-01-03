@@ -1,6 +1,7 @@
 ﻿using Edi.SyndicationFeed.ReaderWriter;
 using Edi.SyndicationFeed.ReaderWriter.Atom;
 using Edi.SyndicationFeed.ReaderWriter.Rss;
+using Moonglade.Data.DTO;
 using System.Text;
 using System.Xml;
 
@@ -98,7 +99,7 @@ public class FeedGenerator : IFeedGenerator, IRssGenerator, IAtomGenerator
         return xml;
     }
 
-    private static IEnumerable<SyndicationItem> GetItemCollection(IEnumerable<FeedEntry> itemCollection)
+    private static List<SyndicationItem> GetItemCollection(IEnumerable<FeedEntry> itemCollection)
     {
         var synItemCollection = new List<SyndicationItem>();
         if (null == itemCollection) return synItemCollection;

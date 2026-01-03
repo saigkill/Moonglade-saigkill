@@ -1,10 +1,11 @@
+using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Moonglade.Core.PageFeature;
 using Moonglade.Data.Entities;
+using Moonglade.Features.Page;
 
 namespace Moonglade.Web.Pages;
 
-public class BlogPageModel(IMediator mediator, ICacheAside cache, IConfiguration configuration) : PageModel
+public class BlogPageModel(IQueryMediator queryMediator, ICacheAside cache, IConfiguration configuration) : PageModel
 {
     public PageEntity BlogPage { get; set; }
 
@@ -14,9 +15,9 @@ public class BlogPageModel(IMediator mediator, ICacheAside cache, IConfiguration
 
         var page = await cache.GetOrCreateAsync(BlogCachePartition.Page.ToString(), slug.ToLower(), async entry =>
         {
-            entry.SlidingExpiration = TimeSpan.FromMinutes(int.Parse(configuration["Page:CacheMinutes"]!));
+            entry.SlidingExpiration = TimeSpan.FromMinutes(int.Parse(configuration["PagesCacheMinutes"]!));
 
-            var p = await mediator.Send(new GetPageBySlugQuery(slug));
+            var p = await queryMediator.QueryAsync(new GetPageBySlugQuery(slug));
             return p;
         });
 
@@ -24,7 +25,7 @@ public class BlogPageModel(IMediator mediator, ICacheAside cache, IConfiguration
 
         BlogPage = page;
 
-        if (page.UpdateTimeUtc.HasValue && bool.Parse(configuration["Page:LastModifiedHeader"]!))
+        if (page.UpdateTimeUtc.HasValue)
         {
             Response.Headers.LastModified = page.UpdateTimeUtc.Value.ToString("R");
 

@@ -249,9 +249,6 @@
   <data name="Clear Now" xml:space="preserve">
     <value>立即清空</value>
   </data>
-  <data name="Clear Pingback Logs" xml:space="preserve">
-    <value>清空Pingback日誌</value>
-  </data>
   <data name="Close" xml:space="preserve">
     <value>關閉</value>
   </data>
@@ -405,12 +402,6 @@
   <data name="Footer HTML code" xml:space="preserve">
     <value>頁腳HTML區域</value>
   </data>
-  <data name="Friend Link Information" xml:space="preserve">
-    <value>友情連結資訊</value>
-  </data>
-  <data name="Friend Link Options" xml:space="preserve">
-    <value>友情連結選項</value>
-  </data>
   <data name="General" xml:space="preserve">
     <value>一般</value>
   </data>
@@ -545,9 +536,6 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>密碼</value>
-  </data>
-  <data name="Pingbacks" xml:space="preserve">
-    <value>引用</value>
   </data>
   <data name="Post footer HTML code" xml:space="preserve">
     <value>文章頁腳HTML內容</value>
@@ -774,14 +762,8 @@
   <data name="Account" xml:space="preserve">
     <value>帳號</value>
   </data>
-  <data name="Enable Pingback" xml:space="preserve">
-    <value>啟用Pingback</value>
-  </data>
   <data name="Include in feed and sitemap" xml:space="preserve">
     <value>加入訂閱及網站地圖</value>
-  </data>
-  <data name="Friend links" xml:space="preserve">
-    <value>友情鏈結</value>
   </data>
   <data name="How many tags to show on sidebar" xml:space="preserve">
     <value>側邊欄顯示標籤數量</value>
@@ -1005,8 +987,8 @@
   <data name="Change Password" xml:space="preserve">
     <value>修改密碼</value>
   </data>
-  <data name="Unpublish this post" xml:space="preserve">
-    <value>取消發佈這篇文章</value>
+  <data name="Unpublish" xml:space="preserve">
+    <value>取消發佈</value>
   </data>
   <data name="Unpublish Post" xml:space="preserve">
     <value>取消發佈文章</value>
@@ -1016,12 +998,6 @@
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>確認</value>
-  </data>
-  <data name="Enable Social Links" xml:space="preserve">
-    <value>啟用社交連結</value>
-  </data>
-  <data name="Social Links" xml:space="preserve">
-    <value>社交連結</value>
   </data>
   <data name="System Themes" xml:space="preserve">
     <value>系統主題</value>
@@ -1070,5 +1046,11 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>是</value>
+  </data>
+  <data name="Enable Social Links" xml:space="preserve">
+    <value>启用社交链接</value>
+  </data>
+  <data name="Social Links" xml:space="preserve">
+    <value>社交链接&lt;</value>
   </data>
 </root>

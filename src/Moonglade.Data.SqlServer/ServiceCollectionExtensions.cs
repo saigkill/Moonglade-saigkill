@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using Moonglade.Data.SqlServer.Infrastructure;
@@ -12,13 +12,12 @@ public static class ServiceCollectionExtensions
   {
     services.AddScoped(typeof(MoongladeRepository<>), typeof(SqlServerDbContextRepository<>));
 
-    services.AddDbContext<BlogDbContext, SqlServerBlogDbContext>(options =>
-        options.UseLazyLoadingProxies()
-            .UseSqlServer(connectionString, builder =>
-            {
-              builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(30), null);
-            }).EnableDetailedErrors()
-            .EnableSensitiveDataLogging());
+        services.AddDbContext<BlogDbContext, SqlServerBlogDbContext>(options => options
+                .UseSqlServer(connectionString, builder =>
+                {
+                    builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(30), null);
+                }).
+                EnableDetailedErrors());
 
     return services;
   }

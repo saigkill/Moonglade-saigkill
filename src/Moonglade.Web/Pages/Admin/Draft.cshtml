@@ -1,13 +1,13 @@
 ﻿@page "/admin/post/draft"
-@using Moonglade.Core.PostFeature
 @using Moonglade.Data.Specifications
+@using Moonglade.Features.Post
 @{
     ViewBag.Title = "Drafts";
-    var posts = await Mediator.Send(new ListPostSegmentByStatusQuery(PostStatus.Draft));
+    var posts = await QueryMediator.QueryAsync(new ListPostSegmentByStatusQuery(PostStatus.Draft));
 }
 
 @section scripts {
-    <script type="module" src="~/js/app/admin.draft.mjs" asp-append-version="true"></script>
+    <script type="module" src="~/js/app/admin.draft.mjs"></script>
 }
 
 @section admintoolbar {

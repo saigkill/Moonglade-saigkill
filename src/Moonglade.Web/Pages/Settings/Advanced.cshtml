@@ -1,4 +1,4 @@
-﻿@page "/admin/settings/advanced"
+@page "/admin/settings/advanced"
 @using System.Reflection
 @inject IConfiguration Configuration
 
@@ -10,7 +10,7 @@
     var currentVersion = (new Version(asm!.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version)).ToString();
 }
 @section scripts {
-    <script type="module" src="~/js/app/admin.settings.advanced.mjs" asp-append-version="true"></script>
+    <script type="module" src="~/js/app/admin.settings.advanced.mjs"></script>
 }
 
 @section admintoolbar {
@@ -24,7 +24,7 @@
                 <div class="mb-4">
                     <h4 class="admin-subtitle fw-bold mb-2">@SharedLocalizer["Advanced Settings"]</h4>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
+                    <div class="settings-entry row align-items-center rounded-3 mb-1 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-bell settings-entry-icon"></i>
                         </div>
@@ -39,22 +39,7 @@
                         </div>
                     </div>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
-                        <div class="col-auto">
-                            <i class="bi-signpost settings-entry-icon"></i>
-                        </div>
-                        <div class="col">
-                            <label asp-for="@settings.EnablePingback" class="form-check-label"></label>
-                        </div>
-                        <div class="col-md-4 text-end">
-                            <div class="form-check form-switch form-control-lg">
-                                <input type="hidden" name="EnablePingback" value="false">
-                                <input type="checkbox" name="EnablePingback" value="true" class="form-check-input" @(settings.EnablePingback ? "checked" : null)>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
+                    <div class="settings-entry row align-items-center rounded-3 mb-1 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-map settings-entry-icon"></i>
                         </div>
@@ -69,7 +54,7 @@
                         </div>
                     </div>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
+                    <div class="settings-entry row align-items-center rounded-3 mb-1 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-file-earmark-check settings-entry-icon"></i>
                         </div>
@@ -88,7 +73,7 @@
                         </div>
                     </div>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
+                    <div class="settings-entry row align-items-center rounded-3 mb-1 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-search settings-entry-icon"></i>
                         </div>
@@ -103,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
+                    <div class="settings-entry row align-items-center rounded-3 mb-1 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-diagram-2 settings-entry-icon"></i>
                         </div>
@@ -119,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
+                    <div class="settings-entry row align-items-center rounded-3 mb-1 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-filetype-xml settings-entry-icon"></i>
                         </div>
@@ -134,7 +119,7 @@
                         </div>
                     </div>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border">
+                    <div class="settings-entry row align-items-center rounded-3 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-exclamation-triangle settings-entry-icon"></i>
                         </div>
@@ -153,12 +138,12 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <h4 class="admin-subtitle fw-bold mb-2">@Html.DisplayNameFor(m => settings.RobotsTxtContent)</h4>
-                    <div class="p-3 rounded-3 shadow-sm border mb-3">
+                    <div class="rounded-3 mb-3 border p-3">
                         <textarea asp-for="@settings.RobotsTxtContent" class="form-control textarea-code" cols="60" rows="10" spellcheck="false"></textarea>
                     </div>
 
                     <h4 class="admin-subtitle fw-bold mb-2">@Html.DisplayNameFor(m => settings.FootScripts)</h4>
-                    <div class="p-3 rounded-3 shadow-sm border mb-3">
+                    <div class="rounded-3 mb-3 border p-3">
                         <div class="alert alert-warning">
                             @SharedLocalizer["Using a third party script may cause your website to be blocked by some browsers or ad blockers, it can have security risks too. Please use with caution."]
                         </div>
@@ -177,7 +162,7 @@
                         @SharedLocalizer["Options"]
                     </h4>
 
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb-2">
+                    <div class="settings-entry row align-items-center rounded-3 mb-1 border px-2 py-3">
                         <div class="col-auto">
                             <i class="bi-moon-stars settings-entry-icon"></i>
                         </div>
@@ -193,7 +178,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border">
+                    <div class="settings-entry row align-items-center rounded-3 border px-2 py-3 shadow-sm">
                         <div class="col-auto">
                             <i class="bi-eraser settings-entry-icon"></i>
                         </div>
@@ -210,87 +195,11 @@
                         </div>
                     </div>
                     <br/>
-                    <h4 class="admin-subtitle fw-bold mb-2">
-                        @SharedLocalizer["Syndication"]
-                    </h4>
-                    <div class="settings-entry row align-items-center py-3 px-2 rounded-3 shadow-sm border mb2">
-
-                        <div class="row g-3 align-items-center settings-entry mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.EnableSyndication" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="EnableSyndication" value="false">
-                                    <input type="checkbox" name="EnableSyndication" value="true" class="form-check-input" @(settings.EnableSyndication ? "checked" : null)>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.BloggereiEnabled" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="BloggereiEnabled" value="false">
-                                    <input type="checkbox" name="BloggereiEnabled" value="true" class="form-check-input" @(settings.BloggereiEnabled ? "checked" : null)>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.BloggingfusionEnabled" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="BloggingfusionEnabled" value="false">
-                                    <input type="checkbox" name="BloggingfusionEnabled" value="true" class="form-check-input" @(settings.BloggingfusionEnabled ? "checked" : null)>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row g-3 align-items-center settings-entry mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.BloggeramtEnabled" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="BloggeramtEnabled" value="false">
-                                    <input type="checkbox" name="BloggeramtEnabled" value="true" class="form-check-input" @(settings.BloggeramtEnabled ? "checked" : null)>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-3 align-items-center settings-entry mb-4">
-                            <div class="col-auto">
-                                <i class="bi bi-book settings-entry-icon"></i>
-                            </div>
-                            <div class="col">
-                                <label asp-for="@settings.TopblogsEnabled" class="form-check-label"></label>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="TopblogsEnabled" value="false">
-                                    <input type="checkbox" name="TopblogsEnabled" value="true" class="form-check-input" @(settings.TopblogsEnabled ? "checked" : null)>
-                                </div>
-                            </div>
-                        </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="admin-settings-action-container border-top pt-2 mt-2">
+    <div class="admin-settings-action-container border-top mt-2 pt-2">
         <input id="btn-save-settings" type="submit" value="@SharedLocalizer["Save"]" class="btn btn-outline-accent" />
     </div>
 </form>

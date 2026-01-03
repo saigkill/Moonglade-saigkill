@@ -68,19 +68,13 @@ public partial class GeneralSettings : IBlogSettings
     [Display(Name = "Profile")]
     public bool WidgetsProfile { get; set; } = true;
 
-    [Display(Name = "Tags")]
-    public bool WidgetsTags { get; set; } = true;
-
     [Required]
     [Display(Name = "How many tags to show on sidebar")]
-    [Range(5, 20)]
+    [Range(0, 20)]
     public int HotTagAmount { get; set; } = 10;
 
     [Display(Name = "Categories")]
     public bool WidgetsCategoryList { get; set; } = true;
-
-    [Display(Name = "Friend links")]
-    public bool WidgetsFriendLink { get; set; } = true;
 
     [Display(Name = "Subscription buttons")]
     public bool WidgetsSubscriptionButtons { get; set; } = true;

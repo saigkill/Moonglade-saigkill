@@ -1,26 +1,25 @@
-﻿using MediatR;
+﻿using LiteBus.Commands.Abstractions;
 using Microsoft.Extensions.Logging;
 using Moonglade.Data;
 using Moonglade.Data.Entities;
 using Moonglade.Data.Specifications;
-using Moonglade.Mention.Common;
 using Moonglade.Utils;
 
 namespace Moonglade.Webmention;
 
-public record ReceiveWebmentionCommand(string Source, string Target, string RemoteIp) : IRequest<WebmentionResponse>;
+public record ReceiveWebmentionCommand(string Source, string Target, string RemoteIp) : ICommand<WebmentionResponse>;
 
 public class ReceiveWebmentionCommandHandler(
     ILogger<ReceiveWebmentionCommandHandler> logger,
     IMentionSourceInspector sourceInspector,
     MoongladeRepository<MentionEntity> mentionRepo,
     MoongladeRepository<PostEntity> postRepo
-    ) : IRequestHandler<ReceiveWebmentionCommand, WebmentionResponse>
+    ) : ICommandHandler<ReceiveWebmentionCommand, WebmentionResponse>
 {
     private string _sourceUrl;
     private string _targetUrl;
 
-    public async Task<WebmentionResponse> Handle(ReceiveWebmentionCommand request, CancellationToken ct)
+    public async Task<WebmentionResponse> HandleAsync(ReceiveWebmentionCommand request, CancellationToken ct)
     {
         try
         {
@@ -52,7 +51,7 @@ public class ReceiveWebmentionCommandHandler(
                 return WebmentionResponse.SpamDetectedFakeNotFound;
             }
 
-            var routeLink = Helper.GetRouteLinkFromUrl(mentionRequest.TargetUrl);
+            var routeLink = UrlHelper.GetRouteLinkFromUrl(mentionRequest.TargetUrl);
             var spec = new PostByRouteLinkForIdTitleSpec(routeLink);
             var (id, title) = await postRepo.FirstOrDefaultAsync(spec, ct);
             if (id == Guid.Empty)

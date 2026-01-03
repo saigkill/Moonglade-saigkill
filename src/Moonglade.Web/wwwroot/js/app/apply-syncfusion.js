@@ -1,4 +1,4 @@
-﻿function getMode() {
+function getMode() {
     return localStorage.getItem('theme') || 'auto';
 }
 
@@ -14,11 +14,11 @@ function applyTheme() {
     let cssFiles = [];
     if (mode === 'dark') {
         cssFiles = [
-            "/lib/syncfusion/ej2/bootstrap5-dark.css",
+            "https://cdn.syncfusion.com/ej2/31.2.2/bootstrap5-dark.css"
         ];
     } else {
         cssFiles = [
-            "/lib/syncfusion/ej2/bootstrap5.css",
+            "https://cdn.syncfusion.com/ej2/31.2.2/bootstrap5.css"
         ];
     }
 

@@ -6,82 +6,97 @@ namespace Moonglade.ImageStorage;
 
 public static class ServiceCollectionExtensions
 {
+    private const string ImageStorageSection = nameof(ImageStorage);
+
     public static IServiceCollection AddImageStorage(this IServiceCollection services, IConfiguration configuration)
     {
-        var section = configuration.GetSection(nameof(ImageStorage));
+        var section = configuration.GetSection(ImageStorageSection);
         var settings = section.Get<ImageStorageSettings>();
+
+        ValidateSettings(settings);
         services.Configure<ImageStorageSettings>(section);
 
-        if (settings == null)
-        {
-            throw new ArgumentNullException(nameof(settings), "ImageStorage settings cannot be null.");
-        }
-
-        var provider = settings.Provider?.ToLower();
-        if (string.IsNullOrWhiteSpace(provider))
-        {
-            throw new ArgumentNullException("Provider", "Provider can not be empty.");
-        }
-
-        switch (provider)
-        {
-            case "azurestorage":
-                if (settings.AzureStorageSettings == null)
-                {
-                    throw new ArgumentNullException(nameof(settings.AzureStorageSettings), "AzureStorageSettings can not be null.");
-                }
-                services.AddAzureStorage(settings.AzureStorageSettings);
-                break;
-            case "filesystem":
-                if (string.IsNullOrWhiteSpace(settings.FileSystemPath))
-                {
-                    throw new ArgumentNullException(nameof(settings.FileSystemPath), "FileSystemPath can not be null or empty.");
-                }
-                services.AddFileSystemStorage(settings.FileSystemPath);
-                break;
-            case "miniostorage":
-                if (settings.MinioStorageSettings == null)
-                {
-                    throw new ArgumentNullException(nameof(settings.MinioStorageSettings), "MinioStorageSettings can not be null.");
-                }
-                services.AddMinioStorage(settings.MinioStorageSettings);
-                break;
-            default:
-                var msg = $"Provider {provider} is not supported.";
-                throw new NotSupportedException(msg);
-        }
+        RegisterImageStorageProvider(services, settings);
 
         return services;
     }
 
-    private static void AddAzureStorage(this IServiceCollection services, AzureStorageSettings settings)
+    private static void ValidateSettings(ImageStorageSettings settings)
     {
-        var conn = settings.ConnectionString;
-        var container = settings.ContainerName;
-        var secondaryContainer = settings.SecondaryContainerName;
-        services.AddSingleton(_ => new AzureBlobConfiguration(conn, container, secondaryContainer))
-                .AddSingleton<IBlogImageStorage, AzureBlobImageStorage>()
-                .AddScoped<IFileNameGenerator>(_ => new GuidFileNameGenerator(Guid.NewGuid()));
+        if (settings is null)
+        {
+            throw new InvalidOperationException($"ImageStorage settings cannot be null. Ensure the '{ImageStorageSection}' section exists in configuration.");
+        }
+
+        if (string.IsNullOrWhiteSpace(settings.Provider))
+        {
+            throw new InvalidOperationException("ImageStorage provider cannot be null or empty. Please specify a valid provider in configuration.");
+        }
     }
 
-    private static void AddFileSystemStorage(this IServiceCollection services, string fileSystemPath)
+    private static void RegisterImageStorageProvider(IServiceCollection services, ImageStorageSettings settings)
     {
-        var fullPath = FileSystemImageStorage.ResolveImageStoragePath(fileSystemPath);
+        var provider = settings.Provider.ToLowerInvariant();
+
+        switch (provider)
+        {
+            case "azurestorage":
+                RegisterAzureStorage(services, settings.AzureStorageSettings);
+                break;
+            case "filesystem":
+                RegisterFileSystemStorage(services, settings.FileSystemPath);
+                break;
+            default:
+                var supportedProviders = string.Join(", ", ["azurestorage", "filesystem"]);
+                throw new NotSupportedException($"Provider '{provider}' is not supported. Supported providers: {supportedProviders}");
+        }
+    }
+
+    private static void RegisterAzureStorage(IServiceCollection services, AzureStorageSettings settings)
+    {
+        if (settings is null)
+        {
+            throw new InvalidOperationException("AzureStorageSettings cannot be null when using Azure Storage provider.");
+        }
+
+        ValidateAzureStorageSettings(settings);
+
+        services.AddSingleton(_ => new AzureBlobConfiguration(
+                settings.ConnectionString,
+                settings.ContainerName,
+                settings.SecondaryContainerName))
+            .AddSingleton<IBlogImageStorage, AzureBlobImageStorage>()
+            .AddScoped<IFileNameGenerator, DatedGuidFileNameGenerator>();
+    }
+
+    private static void RegisterFileSystemStorage(IServiceCollection services, string fileSystemPath)
+    {
+        var path = string.IsNullOrWhiteSpace(fileSystemPath)
+            ? FileSystemImageStorage.DefaultPath
+            : fileSystemPath;
+
+        if (string.IsNullOrWhiteSpace(fileSystemPath))
+        {
+            Console.WriteLine($"FileSystemPath is not set, using default path: {path}");
+        }
+
+        var fullPath = FileSystemImageStorage.ResolveImageStoragePath(path);
+
         services.AddSingleton(_ => new FileSystemImageConfiguration(fullPath))
-                .AddSingleton<IBlogImageStorage, FileSystemImageStorage>()
-                .AddScoped<IFileNameGenerator>(_ => new GuidFileNameGenerator(Guid.NewGuid()));
+            .AddSingleton<IBlogImageStorage, FileSystemImageStorage>()
+            .AddScoped<IFileNameGenerator, DatedGuidFileNameGenerator>();
     }
 
-    private static void AddMinioStorage(this IServiceCollection services, MinioStorageSettings settings)
+    private static void ValidateAzureStorageSettings(AzureStorageSettings settings)
     {
-        services.AddSingleton<IBlogImageStorage, MinioBlobImageStorage>()
-                .AddScoped<IFileNameGenerator>(_ => new GuidFileNameGenerator(Guid.NewGuid()))
-                .AddSingleton(_ => new MinioBlobConfiguration(
-                    settings.EndPoint,
-                    settings.AccessKey,
-                    settings.SecretKey,
-                    settings.BucketName,
-                    settings.SecondaryBucketName,
-                    settings.WithSSL));
+        if (string.IsNullOrWhiteSpace(settings.ConnectionString))
+        {
+            throw new InvalidOperationException("Azure Storage connection string cannot be null or empty.");
+        }
+
+        if (string.IsNullOrWhiteSpace(settings.ContainerName))
+        {
+            throw new InvalidOperationException("Azure Storage container name cannot be null or empty.");
+        }
     }
 }

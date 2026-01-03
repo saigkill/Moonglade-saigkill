@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Moonglade.Configuration;
@@ -15,11 +15,8 @@ public partial class AdvancedSettings : IBlogSettings
     [MaxLength(2048)]
     public string FootScripts { get; set; }
 
-	[Display(Name = "Enable Pingback")]
-	public bool EnablePingback { get; set; } = true;
-
-	[Display(Name = "Enable Webmention")]
-	public bool EnableWebmention { get; set; } = true;
+    [Display(Name = "Enable Webmention")]
+    public bool EnableWebmention { get; set; } = true;
 
 	[Display(Name = "Enable OpenSearch")]
 	public bool EnableOpenSearch { get; set; } = true;
